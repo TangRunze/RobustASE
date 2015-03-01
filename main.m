@@ -1,15 +1,15 @@
 
 %% --- Parameters Setting ---
-epsilon = 0.1;
+epsilon = 0.3;
 m = 10;
 nVertex = 150;
 nBlock = 3;
-epsilonInB = 0.1;
+epsilonInB = 0.07;
 theta = ones(1, nBlock);
 dimLatentPosition = nBlock;
 rho = repmat(1/nBlock, 1, nBlock);
 iStart = 1;
-iEnd = 10;
+iEnd = 100;
 
 % block probability matrix
 B = (0.5 - epsilonInB)*ones(nBlock, nBlock) + 2*epsilonInB*eye(nBlock);
@@ -31,18 +31,18 @@ xHatHL = asge(B, dimLatentPosition);
 
 errorRateMean = zeros(1, iEnd);
 errorRateHL = zeros(1, iEnd);
+aMean = zeros(1, iEnd);
+aHL = zeros(1, iEnd);
 
 for iIter = iStart:iEnd
-    adjMatrixTmp = zeros(nVertex, nVertex);
-    for iGraph = ((iIter-1)*m+1):iIter*m
-        % Generate data if there does not exist one, otherwise read the
-        % existing data.
-        [adjMatrix, tauStar, xStar] = datagenerator(nVertex, nBlock, ...
-            dimLatentPosition, B, nuStar, rho, epsilon, iGraph);
-        adjMatrixTmp = adjMatrixTmp + adjMatrix;
-    end
-    adjMatrixMean = adjMatrixTmp/m;
-    adjMatrixHL = hlcalculator(adjMatrixTmp, m);
+    
+    % Generate data if there does not exist one, otherwise read the
+    % existing data.
+    [adjMatrixSum, tauStar] = datagenerator(nVertex, nBlock, ...
+        dimLatentPosition, B, nuStar, rho, epsilon, m, iIter);
+    
+    adjMatrixMean = adjMatrixSum/m;
+    adjMatrixHL = hlcalculator(adjMatrixSum, m);
     
     % mean
     xHatMean = asge(adjMatrixMean, dimLatentPosition);
@@ -58,7 +58,9 @@ for iIter = iStart:iEnd
     
 end
 
+errorRateMean
 
+errorRateHL
 
 
 %% --- Close Parallel Computing ---
