@@ -1,18 +1,17 @@
-function [adjMatrixSum, tauStar, xStar] = datagenerator(nVertex, nBlock, ...
-    dimLatentPosition, B, nuStar, rho, epsilon, m, iIter)
+function [adjMatrix, tauStar, xStar, vertexNoise] = ...
+    datagenerator(nVertex, nBlock, dimLatentPosition, B, nuStar, rho, ...
+    epsilon, scale, ratio, iGraph)
+
 % Generate data if there does not exist one, otherwise read the
 % existing data.
-
 if exist(['data/sim-n' num2str(nVertex) '-diag' num2str(B(1, 1)) ...
         '-offdiag' num2str(B(1, 2)) '-eps' num2str(epsilon) ...
-        '-size' num2str(m) '-group' int2str(iIter) '.mat'], 'file') == 0
+        '-graph' int2str(iGraph) '.mat'], 'file') == 0
     
-    disp(['Generating graph group ' int2str(iIter) '...'])
+    disp(['Generating graph ' int2str(iGraph) '...'])
     
-    adjMatrixSum = zeros(nVertex, nVertex);
-    
-    % Assign block memberships randomly.
-    nVectorStar = mnrnd(nVertex, [(1-epsilon)*rho, epsilon]);
+    % Assign block memberships.
+    nVectorStar = rho*nVertex;
     
     % Calculate the sizes
     nVectorStarStart = cumsum(nVectorStar);
@@ -26,52 +25,76 @@ if exist(['data/sim-n' num2str(nVertex) '-diag' num2str(B(1, 1)) ...
             i*ones(1, nVectorStar(i));
     end
     
-    for iGraph = 1:m
-        % Generate true latent positions.
-        xStar = zeros(nVertex, dimLatentPosition);
-        xStar(1:nVectorStarEnd(nBlock), :) = ...
-            nuStar(tauStar(1:nVectorStarEnd(nBlock)), :);
-        for iVertex = nVectorStarStart(nBlock+1):nVertex
-            xTmp = 2*rand(1, dimLatentPosition) - 1;
+    % Vertices with noise.
+    vertexNoise = find(binornd(1, epsilon, 1, nVertex) == 1);
+    
+    xStar = zeros(nVertex, dimLatentPosition);
+    xStar(1:nVectorStarEnd(nBlock), :) = ...
+        nuStar(tauStar(1:nVectorStarEnd(nBlock)), :);
+    
+%     % Generate true latent positions.
+%     xNoise = xStar;
+%     for iVertex = vertexNoise
+%         xTmp = 2*rand(1, dimLatentPosition) - 1;
+%         pXTmp = xTmp*xTmp';
+%         while (pXTmp > 1) || (pXTmp < 0)
+%             xTmp = 2*rand(1, dimLatentPosition) - 1;
+%             pXTmp = xTmp*xTmp';
+%         end
+%         pTmp = xNoise*xTmp';
+%         while any(pTmp > 1) || any(pTmp < 0)
+%             xTmp = 2*rand(1, dimLatentPosition) - 1;
+%             pXTmp = xTmp*xTmp';
+%             while (pXTmp > 1) || (pXTmp < 0)
+%                 xTmp = 2*rand(1, dimLatentPosition) - 1;
+%                 pXTmp = xTmp*xTmp';
+%             end
+%             pTmp = xNoise*xTmp';
+%         end
+%         xNoise(iVertex, :) = xTmp;
+%     end
+    
+    xNoise = xStar;
+    for iVertex = vertexNoise
+        xTmp = (2*rand(1, dimLatentPosition) - 1)*scale*ratio;
+        pXTmp = xTmp*xTmp';
+        while (pXTmp < 0)
+            xTmp = (2*rand(1, dimLatentPosition) - 1)*scale*ratio;
             pXTmp = xTmp*xTmp';
-            while (pXTmp > 1) || (pXTmp < 0)
-                xTmp = rand(1, dimLatentPosition);
-                pXTmp = xTmp*xTmp';
-            end
-            pTmp = xStar(1:(iVertex-1), :)*xTmp';
-            while any(pTmp > 1) || any(pTmp < 0)
-                xTmp = 2*rand(1, dimLatentPosition) - 1;
-                pXTmp = xTmp*xTmp';
-                while (pXTmp > 1) || (pXTmp < 0)
-                    xTmp = rand(1, dimLatentPosition);
-                    pXTmp = xTmp*xTmp';
-                end
-                pTmp = xStar(1:(iVertex-1), :)*xTmp';
-            end
-            xStar(iVertex, :) = xTmp;
         end
-        
-        % Generate graph adjacency matrix.
-        pMatrix = xStar*xStar';
-        adjMatrixTmp = reshape(binornd(ones(1, nVertex*nVertex), ...
-            reshape(pMatrix, 1, nVertex*nVertex)), nVertex, nVertex);
-        adjMatrixTmp = triu(adjMatrixTmp, 1);
-        adjMatrixTmp = adjMatrixTmp + adjMatrixTmp';
-        
-        adjMatrixSum = adjMatrixSum + adjMatrixTmp;
-        
+        pTmp = xNoise*xTmp';
+        while any(pTmp < 0)
+            xTmp = (2*rand(1, dimLatentPosition) - 1)*scale*ratio;
+            pXTmp = xTmp*xTmp';
+            while (pXTmp < 0)
+                xTmp = (2*rand(1, dimLatentPosition) - 1)*scale*ratio;
+                pXTmp = xTmp*xTmp';
+            end
+            pTmp = xNoise*xTmp';
+        end
+        xNoise(iVertex, :) = xTmp;
     end
+
+    % Generate graph adjacency matrix.
+    pMatrix = xNoise*xNoise';
+%     adjMatrix = reshape(binornd(ones(1, nVertex*nVertex), ...
+%         reshape(pMatrix, 1, nVertex*nVertex)), nVertex, nVertex);
+    adjMatrix = poissrnd(pMatrix);
+    adjMatrix = triu(adjMatrix, 1);
+    adjMatrix = adjMatrix + adjMatrix';
     
     % Save the data
     save(['data/sim-n' num2str(nVertex) '-diag' num2str(B(1, 1)) ...
         '-offdiag' num2str(B(1, 2)) '-eps' num2str(epsilon) ...
-        '-size' num2str(m) '-group' int2str(iIter) '.mat'], ...
-        'adjMatrixSum', 'tauStar');
+        '-graph' int2str(iGraph) '.mat'], 'adjMatrix', 'tauStar', ...
+        'xStar', 'vertexNoise');
 else
     % Read the existing data
     data = load(['data/sim-n' num2str(nVertex) '-diag' num2str(B(1, 1)) ...
         '-offdiag' num2str(B(1, 2)) '-eps' num2str(epsilon) ...
-        '-size' num2str(m) '-group' int2str(iIter) '.mat']);
-    adjMatrixSum = data.adjMatrixSum;
+        '-graph' int2str(iGraph) '.mat']);
+    adjMatrix = data.adjMatrix;
     tauStar = data.tauStar;
+    xStar = data.xStar;
+    vertexNoise = data.vertexNoise;
 end

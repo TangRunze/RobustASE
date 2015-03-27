@@ -1,0 +1,1916 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     66745,       1907]
+NotebookOptionsPosition[     57669,       1697]
+NotebookOutlinePosition[     58008,       1712]
+CellTagsIndexPosition[     57965,       1709]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"x1", "*", "y1"}], ")"}], "^", "2"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535614741013*^9, 3.635535630430779*^9}, {
+   3.635535697049222*^9, 3.635535698577232*^9}, 3.635537315173238*^9}],
+
+Cell[BoxData[
+ FractionBox["1", "9"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.6355356244347553`*^9, 3.635535699234415*^9, 
+  3.635537315173443*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"x1", "*", "y1"}], "+", 
+      RowBox[{"x2", "*", "y2"}]}], ")"}], "^", "2"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535586454153*^9, 3.635535598468803*^9}, {
+   3.635535701390998*^9, 3.635535711387175*^9}, 3.635537315173545*^9}],
+
+Cell[BoxData[
+ FractionBox["25", "72"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635535600286769*^9, 3.635535712622367*^9, 
+  3.6355373151736403`*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"x1", "*", "y1"}], "+", 
+      RowBox[{"x2", "*", "y2"}], "+", 
+      RowBox[{"x3", "*", "y3"}]}], ")"}], "^", "2"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y3", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535562957944*^9, 3.6355355691117*^9}, {
+   3.635535715180045*^9, 3.635535724670076*^9}, 3.635537315173736*^9}],
+
+Cell[BoxData[
+ FractionBox["17", "24"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535564397008*^9, 3.63553557729634*^9}, 
+   3.63553572710395*^9, 3.635537315173828*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"x1", "*", "y1"}], "+", 
+      RowBox[{"x2", "*", "y2"}], "+", 
+      RowBox[{"x3", "*", "y3"}], "+", 
+      RowBox[{"x4", "*", "y4"}]}], ")"}], "^", "2"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y4", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535650103908*^9, 3.635535665745556*^9}, {
+   3.635535728676931*^9, 3.635535741514043*^9}, 3.635537315173917*^9}],
+
+Cell[BoxData[
+ FractionBox["43", "36"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635535686427034*^9, 3.635535745648677*^9, 
+  3.635537315174006*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"x1", "*", "y1"}], "+", 
+      RowBox[{"x2", "*", "y2"}], "+", 
+      RowBox[{"x3", "*", "y3"}], "+", 
+      RowBox[{"x4", "*", "y4"}], "+", 
+      RowBox[{"x5", "*", "y5"}]}], ")"}], "^", "2"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y5", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535790012266*^9, 3.635535800494179*^9}, 
+   3.6355373151741056`*^9}],
+
+Cell[BoxData[
+ FractionBox["65", "36"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.6355358073697557`*^9, 3.6355373151741953`*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"x1", "*", "y1"}], "+", 
+      RowBox[{"x2", "*", "y2"}], "+", 
+      RowBox[{"x3", "*", "y3"}], "+", 
+      RowBox[{"x4", "*", "y4"}], "+", 
+      RowBox[{"x5", "*", "y5"}], "+", 
+      RowBox[{"x6", "*", "y6"}]}], ")"}], "^", "2"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x6", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y6", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535790012266*^9, 3.635535800494179*^9}, {
+   3.635535837821022*^9, 3.635535846216737*^9}, 3.635537315174285*^9}],
+
+Cell[BoxData[
+ FractionBox["61", "24"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635535857274006*^9, 3.6355373151743727`*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"x1", "*", "y1"}], "+", 
+      RowBox[{"x2", "*", "y2"}], "+", 
+      RowBox[{"x3", "*", "y3"}], "+", 
+      RowBox[{"x4", "*", "y4"}], "+", 
+      RowBox[{"x5", "*", "y5"}], "+", 
+      RowBox[{"x6", "*", "y6"}], "+", 
+      RowBox[{"x7", "*", "y7"}]}], ")"}], "^", "2"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x6", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y6", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x7", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y7", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535790012266*^9, 3.635535800494179*^9}, {
+   3.635535837821022*^9, 3.635535846216737*^9}, {3.635535976205297*^9, 
+   3.6355359844701023`*^9}, 3.635537315174474*^9}],
+
+Cell[BoxData[
+ FractionBox["245", "72"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635536000945772*^9, 3.635537315174548*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"x1", "*", "y1"}], "+", 
+      RowBox[{"x2", "*", "y2"}], "+", 
+      RowBox[{"x3", "*", "y3"}], "+", 
+      RowBox[{"x4", "*", "y4"}], "+", 
+      RowBox[{"x5", "*", "y5"}], "+", 
+      RowBox[{"x6", "*", "y6"}], "+", 
+      RowBox[{"x7", "*", "y7"}], "+", 
+      RowBox[{"x8", "*", "y8"}]}], ")"}], "^", "2"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x6", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y6", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x7", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y7", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x8", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y8", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535790012266*^9, 3.635535800494179*^9}, {
+   3.635535837821022*^9, 3.635535846216737*^9}, {3.635535976205297*^9, 
+   3.6355359844701023`*^9}, {3.635536125841393*^9, 3.635536135164584*^9}, 
+   3.6355373151746187`*^9}],
+
+Cell[BoxData[
+ FractionBox["79", "18"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635536158220683*^9, 3.635537315174692*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"x1", "*", "y1"}], "+", 
+      RowBox[{"x2", "*", "y2"}], "+", 
+      RowBox[{"x3", "*", "y3"}], "+", 
+      RowBox[{"x4", "*", "y4"}], "+", 
+      RowBox[{"x5", "*", "y5"}], "+", 
+      RowBox[{"x6", "*", "y6"}], "+", 
+      RowBox[{"x7", "*", "y7"}], "+", 
+      RowBox[{"x8", "*", "y8"}], "+", 
+      RowBox[{"x9", "*", "y9"}]}], ")"}], "^", "2"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x6", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y6", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x7", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y7", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x8", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y8", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x9", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y9", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535790012266*^9, 3.635535800494179*^9}, {
+   3.635535837821022*^9, 3.635535846216737*^9}, {3.635535976205297*^9, 
+   3.6355359844701023`*^9}, {3.635536125841393*^9, 3.635536135164584*^9}, {
+   3.635536316125598*^9, 3.6355363263753643`*^9}, 3.635537315174761*^9}],
+
+Cell[BoxData[
+ FractionBox["79", "18"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635536158220683*^9, 3.6355373151748323`*^9}],
+
+Cell[BoxData[
+ RowBox[{"N", "[", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{"1", "/", "9"}], ",", 
+    RowBox[{"25", "/", "72"}], ",", 
+    RowBox[{"17", "/", "24"}], ",", 
+    RowBox[{"43", "/", "36"}], ",", 
+    RowBox[{"65", "/", "36"}], ",", 
+    RowBox[{"61", "/", "24"}], ",", 
+    RowBox[{"245", "/", "72"}], ",", 
+    RowBox[{"79", "/", "18"}]}], "}"}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635536033241115*^9, 3.635536060735446*^9}, {
+   3.635536181040545*^9, 3.635536183207635*^9}, 3.635537315174902*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+  "0.1111111111111111`", ",", "0.3472222222222222`", ",", 
+   "0.7083333333333334`", ",", "1.1944444444444444`", ",", 
+   "1.8055555555555556`", ",", "2.5416666666666665`", ",", 
+   "3.4027777777777777`", ",", "4.388888888888889`"}], "}"}]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635536054200303*^9, 3.635536061169839*^9}, 
+   3.6355361836412973`*^9, 3.635537315174973*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"1", "/", "9"}], ",", 
+   RowBox[{"25", "/", "72"}], ",", 
+   RowBox[{"17", "/", "24"}], ",", 
+   RowBox[{"43", "/", "36"}], ",", 
+   RowBox[{"65", "/", "36"}], ",", 
+   RowBox[{"61", "/", "24"}], ",", 
+   RowBox[{"245", "/", "72"}], ",", 
+   RowBox[{"79", "/", "18"}]}], "}"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635537315175041*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   FractionBox["1", "9"], ",", 
+   FractionBox["25", "72"], ",", 
+   FractionBox["17", "24"], ",", 
+   FractionBox["43", "36"], ",", 
+   FractionBox["65", "36"], ",", 
+   FractionBox["61", "24"], ",", 
+   FractionBox["245", "72"], ",", 
+   FractionBox["79", "18"]}], "}"}]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635536197480165*^9, 3.635537315175109*^9}],
+
+Cell[BoxData[
+ RowBox[{"InterpolatingPolynomial", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     FractionBox["1", "9"], ",", 
+     FractionBox["25", "72"], ",", 
+     FractionBox["17", "24"], ",", 
+     FractionBox["43", "36"], ",", 
+     FractionBox["65", "36"], ",", 
+     FractionBox["61", "24"], ",", 
+     FractionBox["245", "72"], ",", 
+     FractionBox["79", "18"]}], "}"}], ",", "x"}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635537315175179*^9},
+ NumberMarks->False],
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox["1", "9"], "+", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     FractionBox["17", "72"], "+", 
+     RowBox[{
+      FractionBox["1", "16"], " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"-", "2"}], "+", "x"}], ")"}]}]}], ")"}], " ", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"-", "1"}], "+", "x"}], ")"}]}]}]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.6355362554068527`*^9, 3.635537315175249*^9}],
+
+Cell[BoxData[
+ RowBox[{"InterpolatingPolynomial", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     FractionBox["1", "9"], ",", 
+     FractionBox["25", "72"], ",", 
+     FractionBox["17", "24"]}], "}"}], ",", "x"}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635536629285699*^9, 3.6355373151753187`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox["1", "9"], "+", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     FractionBox["17", "72"], "+", 
+     RowBox[{
+      FractionBox["1", "16"], " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"-", "2"}], "+", "x"}], ")"}]}]}], ")"}], " ", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"-", "1"}], "+", "x"}], ")"}]}]}]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635536630245529*^9, 3.6355373151753883`*^9}],
+
+Cell[BoxData[
+ RowBox[{"FullSimplify", "[", 
+  RowBox[{
+   FractionBox["1", "9"], "+", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      FractionBox["17", "72"], "+", 
+      RowBox[{
+       FractionBox["1", "16"], " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"-", "2"}], "+", "x"}], ")"}]}]}], ")"}], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "1"}], "+", "x"}], ")"}]}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635537315175456*^9},
+ NumberMarks->False],
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox["1", "144"], " ", "x", " ", 
+  RowBox[{"(", 
+   RowBox[{"7", "+", 
+    RowBox[{"9", " ", "x"}]}], ")"}]}]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635536636327353*^9, 3.6355373151755238`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   FractionBox["1", "144"], " ", "x", " ", 
+   RowBox[{"(", 
+    RowBox[{"7", "+", 
+     RowBox[{"9", " ", "x"}]}], ")"}]}], "/.", 
+  RowBox[{"x", "\[Rule]", "8"}]}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635536270451261*^9, 3.635536308230462*^9}, {
+   3.635536644903653*^9, 3.635536649360284*^9}, 3.635537315175604*^9}],
+
+Cell[BoxData[
+ FractionBox["79", "18"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635536273623989*^9, 3.6355363086705112`*^9}, {
+   3.6355366462712193`*^9, 3.635536649714747*^9}, 3.635537315175665*^9}]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"x1", "*", "z1"}], ")"}], "^", "2"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{{3.635537349727387*^9, 3.635537368675715*^9}, {
+   3.6355374431192207`*^9, 3.635537444543659*^9}, 3.635541771868712*^9}],
+
+Cell[BoxData[
+ FractionBox[
+  SuperscriptBox["z1", "2"], "3"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{{3.635537354359765*^9, 3.635537371166276*^9}, 
+   3.63553744517085*^9, 3.6355417718689747`*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"x1", "*", "z1"}], "+", 
+      RowBox[{"x2", "*", "z2"}]}], ")"}], "^", "2"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{{3.635537379605109*^9, 3.635537390071225*^9}, {
+   3.635537449413398*^9, 3.635537453912944*^9}, 3.6355417718691397`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox["1", "6"], " ", 
+  RowBox[{"(", 
+   RowBox[{
+    RowBox[{"2", " ", 
+     SuperscriptBox["z1", "2"]}], "+", 
+    RowBox[{"3", " ", "z1", " ", "z2"}], "+", 
+    RowBox[{"2", " ", 
+     SuperscriptBox["z2", "2"]}]}], ")"}]}]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{3.6355373907264853`*^9, 3.635537454549354*^9, 
+  3.635541771869336*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"x1", "*", "z1"}], "+", 
+      RowBox[{"x2", "*", "z2"}], "+", 
+      RowBox[{"x3", "*", "z3"}]}], ")"}], "^", "2"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{{3.635537379605109*^9, 3.635537390071225*^9}, {
+   3.635537449413398*^9, 3.635537465780072*^9}, 3.635541771869465*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox["1", "6"], " ", 
+  RowBox[{"(", 
+   RowBox[{
+    RowBox[{"2", " ", 
+     SuperscriptBox["z1", "2"]}], "+", 
+    RowBox[{"2", " ", 
+     SuperscriptBox["z2", "2"]}], "+", 
+    RowBox[{"3", " ", "z2", " ", "z3"}], "+", 
+    RowBox[{"2", " ", 
+     SuperscriptBox["z3", "2"]}], "+", 
+    RowBox[{"3", " ", "z1", " ", 
+     RowBox[{"(", 
+      RowBox[{"z2", "+", "z3"}], ")"}]}]}], ")"}]}]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{3.63553746678386*^9, 3.635541771869685*^9}],
+
+Cell[BoxData[
+ RowBox[{"Factor", "[", 
+  RowBox[{
+   FractionBox["1", "6"], " ", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"2", " ", 
+      SuperscriptBox["z1", "2"]}], "+", 
+     RowBox[{"2", " ", 
+      SuperscriptBox["z2", "2"]}], "+", 
+     RowBox[{"3", " ", "z2", " ", "z3"}], "+", 
+     RowBox[{"2", " ", 
+      SuperscriptBox["z3", "2"]}], "+", 
+     RowBox[{"3", " ", "z1", " ", 
+      RowBox[{"(", 
+       RowBox[{"z2", "+", "z3"}], ")"}]}]}], ")"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{3.6355417718697968`*^9},
+ NumberMarks->False],
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox["1", "6"], " ", 
+  RowBox[{"(", 
+   RowBox[{
+    RowBox[{"2", " ", 
+     SuperscriptBox["z1", "2"]}], "+", 
+    RowBox[{"3", " ", "z1", " ", "z2"}], "+", 
+    RowBox[{"2", " ", 
+     SuperscriptBox["z2", "2"]}], "+", 
+    RowBox[{"3", " ", "z1", " ", "z3"}], "+", 
+    RowBox[{"3", " ", "z2", " ", "z3"}], "+", 
+    RowBox[{"2", " ", 
+     SuperscriptBox["z3", "2"]}]}], ")"}]}]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{3.635537567741702*^9, 3.635541771869933*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"x1", "*", "z1"}], "+", 
+      RowBox[{"x2", "*", "z2"}], "+", 
+      RowBox[{"x3", "*", "z3"}], "+", 
+      RowBox[{"x4", "*", "z4"}]}], ")"}], "^", "2"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x4", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{{3.635537379605109*^9, 3.635537390071225*^9}, {
+   3.635537449413398*^9, 3.635537479135715*^9}, 3.635541771870037*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox["1", "6"], " ", 
+  RowBox[{"(", 
+   RowBox[{
+    RowBox[{"2", " ", 
+     SuperscriptBox["z1", "2"]}], "+", 
+    RowBox[{"2", " ", 
+     SuperscriptBox["z2", "2"]}], "+", 
+    RowBox[{"2", " ", 
+     SuperscriptBox["z3", "2"]}], "+", 
+    RowBox[{"3", " ", "z3", " ", "z4"}], "+", 
+    RowBox[{"2", " ", 
+     SuperscriptBox["z4", "2"]}], "+", 
+    RowBox[{"3", " ", "z2", " ", 
+     RowBox[{"(", 
+      RowBox[{"z3", "+", "z4"}], ")"}]}], "+", 
+    RowBox[{"3", " ", "z1", " ", 
+     RowBox[{"(", 
+      RowBox[{"z2", "+", "z3", "+", "z4"}], ")"}]}]}], ")"}]}]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{3.635537481048064*^9, 3.635541771870227*^9}],
+
+Cell[BoxData[
+ RowBox[{"Factor", "[", 
+  RowBox[{
+   FractionBox["1", "6"], " ", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"2", " ", 
+      SuperscriptBox["z1", "2"]}], "+", 
+     RowBox[{"2", " ", 
+      SuperscriptBox["z2", "2"]}], "+", 
+     RowBox[{"2", " ", 
+      SuperscriptBox["z3", "2"]}], "+", 
+     RowBox[{"3", " ", "z3", " ", "z4"}], "+", 
+     RowBox[{"2", " ", 
+      SuperscriptBox["z4", "2"]}], "+", 
+     RowBox[{"3", " ", "z2", " ", 
+      RowBox[{"(", 
+       RowBox[{"z3", "+", "z4"}], ")"}]}], "+", 
+     RowBox[{"3", " ", "z1", " ", 
+      RowBox[{"(", 
+       RowBox[{"z2", "+", "z3", "+", "z4"}], ")"}]}]}], ")"}]}], 
+  "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{3.635541771870302*^9},
+ NumberMarks->False],
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox["1", "6"], " ", 
+  RowBox[{"(", 
+   RowBox[{
+    RowBox[{"2", " ", 
+     SuperscriptBox["z1", "2"]}], "+", 
+    RowBox[{"3", " ", "z1", " ", "z2"}], "+", 
+    RowBox[{"2", " ", 
+     SuperscriptBox["z2", "2"]}], "+", 
+    RowBox[{"3", " ", "z1", " ", "z3"}], "+", 
+    RowBox[{"3", " ", "z2", " ", "z3"}], "+", 
+    RowBox[{"2", " ", 
+     SuperscriptBox["z3", "2"]}], "+", 
+    RowBox[{"3", " ", "z1", " ", "z4"}], "+", 
+    RowBox[{"3", " ", "z2", " ", "z4"}], "+", 
+    RowBox[{"3", " ", "z3", " ", "z4"}], "+", 
+    RowBox[{"2", " ", 
+     SuperscriptBox["z4", "2"]}]}], ")"}]}]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{3.635537585089222*^9, 3.6355417718703823`*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"x1", "*", "z1"}], "+", 
+      RowBox[{"x2", "*", "z2"}], "+", 
+      RowBox[{"x3", "*", "z3"}], "+", 
+      RowBox[{"x4", "*", "z4"}], "+", 
+      RowBox[{"x5", "*", "z5"}]}], ")"}], "^", "2"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x5", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{{3.635537379605109*^9, 3.635537390071225*^9}, {
+   3.635537449413398*^9, 3.635537479135715*^9}, {3.635537533051013*^9, 
+   3.6355375392382727`*^9}, 3.635541771870447*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox["1", "6"], " ", 
+  RowBox[{"(", 
+   RowBox[{
+    RowBox[{"2", " ", 
+     SuperscriptBox["z1", "2"]}], "+", 
+    RowBox[{"2", " ", 
+     SuperscriptBox["z2", "2"]}], "+", 
+    RowBox[{"2", " ", 
+     SuperscriptBox["z3", "2"]}], "+", 
+    RowBox[{"3", " ", "z3", " ", "z4"}], "+", 
+    RowBox[{"2", " ", 
+     SuperscriptBox["z4", "2"]}], "+", 
+    RowBox[{"3", " ", "z3", " ", "z5"}], "+", 
+    RowBox[{"3", " ", "z4", " ", "z5"}], "+", 
+    RowBox[{"2", " ", 
+     SuperscriptBox["z5", "2"]}], "+", 
+    RowBox[{"3", " ", "z2", " ", 
+     RowBox[{"(", 
+      RowBox[{"z3", "+", "z4", "+", "z5"}], ")"}]}], "+", 
+    RowBox[{"3", " ", "z1", " ", 
+     RowBox[{"(", 
+      RowBox[{"z2", "+", "z3", "+", "z4", "+", "z5"}], ")"}]}]}], 
+   ")"}]}]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{3.635537542608643*^9, 3.635541771870544*^9}],
+
+Cell[BoxData[
+ RowBox[{"Factor", "[", 
+  RowBox[{
+   FractionBox["1", "6"], " ", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"2", " ", 
+      SuperscriptBox["z1", "2"]}], "+", 
+     RowBox[{"2", " ", 
+      SuperscriptBox["z2", "2"]}], "+", 
+     RowBox[{"2", " ", 
+      SuperscriptBox["z3", "2"]}], "+", 
+     RowBox[{"3", " ", "z3", " ", "z4"}], "+", 
+     RowBox[{"2", " ", 
+      SuperscriptBox["z4", "2"]}], "+", 
+     RowBox[{"3", " ", "z3", " ", "z5"}], "+", 
+     RowBox[{"3", " ", "z4", " ", "z5"}], "+", 
+     RowBox[{"2", " ", 
+      SuperscriptBox["z5", "2"]}], "+", 
+     RowBox[{"3", " ", "z2", " ", 
+      RowBox[{"(", 
+       RowBox[{"z3", "+", "z4", "+", "z5"}], ")"}]}], "+", 
+     RowBox[{"3", " ", "z1", " ", 
+      RowBox[{"(", 
+       RowBox[{"z2", "+", "z3", "+", "z4", "+", "z5"}], ")"}]}]}], ")"}]}], 
+  "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{3.6355417718706083`*^9},
+ NumberMarks->False],
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox["1", "6"], " ", 
+  RowBox[{"(", 
+   RowBox[{
+    RowBox[{"2", " ", 
+     SuperscriptBox["z1", "2"]}], "+", 
+    RowBox[{"3", " ", "z1", " ", "z2"}], "+", 
+    RowBox[{"2", " ", 
+     SuperscriptBox["z2", "2"]}], "+", 
+    RowBox[{"3", " ", "z1", " ", "z3"}], "+", 
+    RowBox[{"3", " ", "z2", " ", "z3"}], "+", 
+    RowBox[{"2", " ", 
+     SuperscriptBox["z3", "2"]}], "+", 
+    RowBox[{"3", " ", "z1", " ", "z4"}], "+", 
+    RowBox[{"3", " ", "z2", " ", "z4"}], "+", 
+    RowBox[{"3", " ", "z3", " ", "z4"}], "+", 
+    RowBox[{"2", " ", 
+     SuperscriptBox["z4", "2"]}], "+", 
+    RowBox[{"3", " ", "z1", " ", "z5"}], "+", 
+    RowBox[{"3", " ", "z2", " ", "z5"}], "+", 
+    RowBox[{"3", " ", "z3", " ", "z5"}], "+", 
+    RowBox[{"3", " ", "z4", " ", "z5"}], "+", 
+    RowBox[{"2", " ", 
+     SuperscriptBox["z5", "2"]}]}], ")"}]}]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{3.635537597992188*^9, 3.635541771870693*^9}]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{"x1", "*", "y1"}], ")"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535614741013*^9, 3.635535630430779*^9}, {
+   3.635535697049222*^9, 3.635535698577232*^9}, 3.635537315173238*^9, {
+   3.6355967062360206`*^9, 3.6355967172848406`*^9}, {3.635596765540725*^9, 
+   3.6355968462430677`*^9}}],
+
+Cell[BoxData[
+ FractionBox["1", "4"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6355356244347553`*^9, 3.635535699234415*^9, 3.635537315173443*^9, {
+   3.635596794904977*^9, 3.63559681898182*^9}, 3.6355968635997*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"x1", "*", "y1"}], "+", 
+     RowBox[{"x2", "*", "y2"}]}], ")"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535586454153*^9, 3.635535598468803*^9}, {
+   3.635535701390998*^9, 3.635535711387175*^9}, 3.635537315173545*^9, {
+   3.635596800598987*^9, 3.6355968593314915`*^9}}],
+
+Cell[BoxData[
+ FractionBox["1", "2"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.635535600286769*^9, 3.635535712622367*^9, 3.6355373151736403`*^9, {
+   3.6355968098714037`*^9, 3.6355968300910397`*^9}, 3.635596860456693*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"x1", "*", "y1"}], "+", 
+     RowBox[{"x2", "*", "y2"}], "+", 
+     RowBox[{"x3", "*", "y3"}]}], ")"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y3", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535562957944*^9, 3.6355355691117*^9}, {
+   3.635535715180045*^9, 3.635535724670076*^9}, 3.635537315173736*^9, {
+   3.6355968681297083`*^9, 3.6355968683013086`*^9}}],
+
+Cell[BoxData[
+ FractionBox["3", "4"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535564397008*^9, 3.63553557729634*^9}, 
+   3.63553572710395*^9, 3.635537315173828*^9, 3.6355968691125097`*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"x1", "*", "y1"}], "+", 
+     RowBox[{"x2", "*", "y2"}], "+", 
+     RowBox[{"x3", "*", "y3"}], "+", 
+     RowBox[{"x4", "*", "y4"}]}], ")"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y4", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535650103908*^9, 3.635535665745556*^9}, {
+   3.635535728676931*^9, 3.635535741514043*^9}, 3.635537315173917*^9, {
+   3.6355969521090565`*^9, 3.6355969523274574`*^9}}],
+
+Cell[BoxData["1"], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635535686427034*^9, 3.635535745648677*^9, 
+  3.635537315174006*^9, 3.6355969532634587`*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"x1", "*", "y1"}], "+", 
+     RowBox[{"x2", "*", "y2"}], "+", 
+     RowBox[{"x3", "*", "y3"}], "+", 
+     RowBox[{"x4", "*", "y4"}], "+", 
+     RowBox[{"x5", "*", "y5"}]}], ")"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y5", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535790012266*^9, 3.635535800494179*^9}, 
+   3.6355373151741056`*^9, {3.635596956024664*^9, 3.635596956180664*^9}}],
+
+Cell[BoxData[
+ FractionBox["5", "4"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.6355358073697557`*^9, 3.6355373151741953`*^9, 
+  3.635596957038666*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"x1", "*", "y1"}], "+", 
+     RowBox[{"x2", "*", "y2"}], "+", 
+     RowBox[{"x3", "*", "y3"}], "+", 
+     RowBox[{"x4", "*", "y4"}], "+", 
+     RowBox[{"x5", "*", "y5"}], "+", 
+     RowBox[{"x6", "*", "y6"}]}], ")"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x6", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y6", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535790012266*^9, 3.635535800494179*^9}, {
+   3.635535837821022*^9, 3.635535846216737*^9}, 3.635537315174285*^9, {
+   3.6355969590726695`*^9, 3.6355969592442694`*^9}}],
+
+Cell[BoxData[
+ FractionBox["3", "2"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635535857274006*^9, 3.6355373151743727`*^9, 
+  3.6355969602426715`*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"x1", "*", "y1"}], "+", 
+     RowBox[{"x2", "*", "y2"}], "+", 
+     RowBox[{"x3", "*", "y3"}], "+", 
+     RowBox[{"x4", "*", "y4"}], "+", 
+     RowBox[{"x5", "*", "y5"}], "+", 
+     RowBox[{"x6", "*", "y6"}], "+", 
+     RowBox[{"x7", "*", "y7"}]}], ")"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x6", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y6", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x7", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y7", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535790012266*^9, 3.635535800494179*^9}, {
+   3.635535837821022*^9, 3.635535846216737*^9}, {3.635535976205297*^9, 
+   3.6355359844701023`*^9}, 3.635537315174474*^9, {3.635596963113076*^9, 
+   3.635596963253477*^9}}],
+
+Cell[BoxData[
+ FractionBox["7", "4"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635536000945772*^9, 3.635537315174548*^9, 
+  3.635596964563879*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"x1", "*", "y1"}], "+", 
+     RowBox[{"x2", "*", "y2"}], "+", 
+     RowBox[{"x3", "*", "y3"}], "+", 
+     RowBox[{"x4", "*", "y4"}], "+", 
+     RowBox[{"x5", "*", "y5"}], "+", 
+     RowBox[{"x6", "*", "y6"}], "+", 
+     RowBox[{"x7", "*", "y7"}], "+", 
+     RowBox[{"x8", "*", "y8"}]}], ")"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x6", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y6", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x7", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y7", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x8", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y8", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535790012266*^9, 3.635535800494179*^9}, {
+   3.635535837821022*^9, 3.635535846216737*^9}, {3.635535976205297*^9, 
+   3.6355359844701023`*^9}, {3.635536125841393*^9, 3.635536135164584*^9}, 
+   3.6355373151746187`*^9, {3.6355969665762825`*^9, 3.6355969667322826`*^9}}],
+
+Cell[BoxData["2"], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635536158220683*^9, 3.635537315174692*^9, 
+  3.6355969683234854`*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"1", "/", "4"}], ",", 
+   RowBox[{"1", "/", "2"}], ",", 
+   RowBox[{"3", "/", "4"}]}], "}"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.635537315175041*^9, {3.635596900679366*^9, 3.6355969079821787`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   FractionBox["1", "4"], ",", 
+   FractionBox["1", "2"], ",", 
+   FractionBox["3", "4"]}], "}"}]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635536197480165*^9, 3.635537315175109*^9, 
+  3.635596908278579*^9}],
+
+Cell[BoxData[
+ RowBox[{"InterpolatingPolynomial", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"1", "/", "4"}], ",", 
+     RowBox[{"1", "/", "2"}], ",", 
+     RowBox[{"3", "/", "4"}]}], "}"}], ",", "x"}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635537315175179*^9, 3.635596926612612*^9},
+ NumberMarks->False],
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox["1", "4"], "+", 
+  RowBox[{
+   FractionBox["1", "4"], " ", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"-", "1"}], "+", "x"}], ")"}]}]}]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.6355362554068527`*^9, 3.635537315175249*^9, 
+  3.635596927800214*^9}]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{"x1", "*", "z1"}], ")"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{{3.635537349727387*^9, 3.635537368675715*^9}, {
+   3.6355374431192207`*^9, 3.635537444543659*^9}, 3.635541771868712*^9, {
+   3.635597014869368*^9, 3.6355970462646236`*^9}}],
+
+Cell[BoxData[
+ FractionBox["z1", "2"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{{3.635537354359765*^9, 3.635537371166276*^9}, 
+   3.63553744517085*^9, 3.6355417718689747`*^9, {3.635597018862975*^9, 
+   3.635597047029025*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"x1", "*", "z1"}], "+", 
+     RowBox[{"x2", "*", "z2"}]}], ")"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{{3.635537379605109*^9, 3.635537390071225*^9}, {
+   3.635537449413398*^9, 3.635537453912944*^9}, 3.6355417718691397`*^9, {
+   3.6355970258713875`*^9, 3.635597056627042*^9}}],
+
+Cell[BoxData[
+ FractionBox[
+  RowBox[{"z1", "+", "z2"}], "2"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{
+  3.6355373907264853`*^9, 3.635537454549354*^9, 3.635541771869336*^9, {
+   3.6355970324857993`*^9, 3.635597057157443*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"x1", "*", "z1"}], "+", 
+     RowBox[{"x2", "*", "z2"}], "+", 
+     RowBox[{"x3", "*", "z3"}]}], ")"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{{3.635537379605109*^9, 3.635537390071225*^9}, {
+   3.635537449413398*^9, 3.635537465780072*^9}, 3.635541771869465*^9, {
+   3.6355970604178486`*^9, 3.635597060589449*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox["1", "2"], " ", 
+  RowBox[{"(", 
+   RowBox[{"z1", "+", "z2", "+", "z3"}], ")"}]}]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.},
+ CellChangeTimes->{3.63553746678386*^9, 3.635541771869685*^9, 
+  3.635597061884251*^9}]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{"x1", "*", "x1"}], ")"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535614741013*^9, 3.635535630430779*^9}, {
+   3.635535697049222*^9, 3.635535698577232*^9}, 3.635537315173238*^9, {
+   3.6355967062360206`*^9, 3.6355967172848406`*^9}, {3.635596765540725*^9, 
+   3.6355968462430677`*^9}, {3.6357614441791315`*^9, 3.6357614442441316`*^9}}],
+
+Cell[BoxData[
+ FractionBox["1", "3"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.6355356244347553`*^9, 3.635535699234415*^9, 3.635537315173443*^9, {
+   3.635596794904977*^9, 3.63559681898182*^9}, 3.6355968635997*^9, 
+   3.6357614462441344`*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"x1", "*", "x1"}], "+", 
+     RowBox[{"x2", "*", "x2"}]}], ")"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535586454153*^9, 3.635535598468803*^9}, {
+   3.635535701390998*^9, 3.635535711387175*^9}, 3.635537315173545*^9, {
+   3.635596800598987*^9, 3.6355968593314915`*^9}, {3.6357614857041893`*^9, 
+   3.635761488499193*^9}}],
+
+Cell[BoxData[
+ FractionBox["2", "3"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.635535600286769*^9, 3.635535712622367*^9, 3.6355373151736403`*^9, {
+   3.6355968098714037`*^9, 3.6355968300910397`*^9}, 3.635596860456693*^9, 
+   3.6357614891591945`*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"x1", "*", "x1"}], "+", 
+     RowBox[{"x2", "*", "x2"}], "+", 
+     RowBox[{"x3", "*", "x3"}]}], ")"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y3", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535562957944*^9, 3.6355355691117*^9}, {
+   3.635535715180045*^9, 3.635535724670076*^9}, 3.635537315173736*^9, {
+   3.6355968681297083`*^9, 3.6355968683013086`*^9}, {3.6357614921641984`*^9, 
+   3.635761497604206*^9}}],
+
+Cell[BoxData["1"], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535564397008*^9, 3.63553557729634*^9}, 
+   3.63553572710395*^9, 3.635537315173828*^9, 3.6355968691125097`*^9, 
+   3.6357614992892084`*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"x1", "*", "y1"}], "+", 
+     RowBox[{"x2", "*", "y2"}], "+", 
+     RowBox[{"x3", "*", "y3"}], "+", 
+     RowBox[{"x4", "*", "y4"}]}], ")"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y4", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535650103908*^9, 3.635535665745556*^9}, {
+   3.635535728676931*^9, 3.635535741514043*^9}, 3.635537315173917*^9, {
+   3.6355969521090565`*^9, 3.6355969523274574`*^9}}],
+
+Cell[BoxData["1"], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635535686427034*^9, 3.635535745648677*^9, 
+  3.635537315174006*^9, 3.6355969532634587`*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"x1", "*", "y1"}], "+", 
+     RowBox[{"x2", "*", "y2"}], "+", 
+     RowBox[{"x3", "*", "y3"}], "+", 
+     RowBox[{"x4", "*", "y4"}], "+", 
+     RowBox[{"x5", "*", "y5"}]}], ")"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y5", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535790012266*^9, 3.635535800494179*^9}, 
+   3.6355373151741056`*^9, {3.635596956024664*^9, 3.635596956180664*^9}}],
+
+Cell[BoxData[
+ FractionBox["5", "4"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.6355358073697557`*^9, 3.6355373151741953`*^9, 
+  3.635596957038666*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"x1", "*", "y1"}], "+", 
+     RowBox[{"x2", "*", "y2"}], "+", 
+     RowBox[{"x3", "*", "y3"}], "+", 
+     RowBox[{"x4", "*", "y4"}], "+", 
+     RowBox[{"x5", "*", "y5"}], "+", 
+     RowBox[{"x6", "*", "y6"}]}], ")"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x6", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y6", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535790012266*^9, 3.635535800494179*^9}, {
+   3.635535837821022*^9, 3.635535846216737*^9}, 3.635537315174285*^9, {
+   3.6355969590726695`*^9, 3.6355969592442694`*^9}}],
+
+Cell[BoxData[
+ FractionBox["3", "2"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635535857274006*^9, 3.6355373151743727`*^9, 
+  3.6355969602426715`*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"x1", "*", "y1"}], "+", 
+     RowBox[{"x2", "*", "y2"}], "+", 
+     RowBox[{"x3", "*", "y3"}], "+", 
+     RowBox[{"x4", "*", "y4"}], "+", 
+     RowBox[{"x5", "*", "y5"}], "+", 
+     RowBox[{"x6", "*", "y6"}], "+", 
+     RowBox[{"x7", "*", "y7"}]}], ")"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x6", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y6", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x7", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y7", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535790012266*^9, 3.635535800494179*^9}, {
+   3.635535837821022*^9, 3.635535846216737*^9}, {3.635535976205297*^9, 
+   3.6355359844701023`*^9}, 3.635537315174474*^9, {3.635596963113076*^9, 
+   3.635596963253477*^9}}],
+
+Cell[BoxData[
+ FractionBox["7", "4"]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635536000945772*^9, 3.635537315174548*^9, 
+  3.635596964563879*^9}],
+
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"x1", "*", "y1"}], "+", 
+     RowBox[{"x2", "*", "y2"}], "+", 
+     RowBox[{"x3", "*", "y3"}], "+", 
+     RowBox[{"x4", "*", "y4"}], "+", 
+     RowBox[{"x5", "*", "y5"}], "+", 
+     RowBox[{"x6", "*", "y6"}], "+", 
+     RowBox[{"x7", "*", "y7"}], "+", 
+     RowBox[{"x8", "*", "y8"}]}], ")"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y1", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y2", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y3", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y4", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y5", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x6", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y6", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x7", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y7", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x8", ",", "0", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y8", ",", "0", ",", "1"}], "}"}]}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{{3.635535790012266*^9, 3.635535800494179*^9}, {
+   3.635535837821022*^9, 3.635535846216737*^9}, {3.635535976205297*^9, 
+   3.6355359844701023`*^9}, {3.635536125841393*^9, 3.635536135164584*^9}, 
+   3.6355373151746187`*^9, {3.6355969665762825`*^9, 3.6355969667322826`*^9}}],
+
+Cell[BoxData["2"], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.635536158220683*^9, 3.635537315174692*^9, 
+  3.6355969683234854`*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"1", "/", "3"}], ",", 
+   RowBox[{"2", "/", "3"}], ",", "1"}], "}"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.635537315175041*^9, {3.635596900679366*^9, 3.6355969079821787`*^9}, {
+   3.6357615092342224`*^9, 3.635761518124235*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   FractionBox["1", "3"], ",", 
+   FractionBox["2", "3"], ",", "1"}], "}"}]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.635536197480165*^9, 3.635537315175109*^9, 3.635596908278579*^9, {
+   3.635761515114231*^9, 3.6357615187192354`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"InterpolatingPolynomial", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"1", "/", "3"}], ",", 
+     RowBox[{"2", "/", "3"}], ",", "1"}], "}"}], ",", "x"}], "]"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{
+  3.635537315175179*^9, 3.635596926612612*^9, {3.6357615232842417`*^9, 
+   3.635761530199252*^9}},
+ NumberMarks->False],
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox["1", "3"], "+", 
+  RowBox[{
+   FractionBox["1", "3"], " ", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"-", "1"}], "+", "x"}], ")"}]}]}]], "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ CellChangeTimes->{3.6355362554068527`*^9, 3.635537315175249*^9, 
+  3.635596927800214*^9, 3.6357615308292527`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Simplify", "[", 
+  RowBox[{
+   FractionBox["1", "3"], "+", 
+   RowBox[{
+    FractionBox["1", "3"], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "1"}], "+", "x"}], ")"}]}]}], "]"}]], "Input",
+ NumberMarks->False],
+
+Cell[BoxData[
+ FractionBox["x", "3"]], "Output",
+ CellChangeTimes->{3.6357615338592567`*^9}]
+}, Open  ]]
+},
+WindowSize->{740, 756},
+WindowMargins->{{4, Automatic}, {Automatic, 4}},
+FrontEndVersion->"10.0 for Microsoft Windows (64-bit) (July 1, 2014)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 483, 12, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[1065, 36, 192, 4, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[1260, 42, 679, 18, 52, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[1942, 62, 194, 4, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2139, 68, 856, 23, 52, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[2998, 93, 215, 4, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[3216, 99, 1037, 28, 52, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[4256, 129, 192, 4, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[4451, 135, 1172, 33, 72, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[5626, 170, 171, 3, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[5800, 175, 1395, 38, 72, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[7198, 215, 169, 3, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[7370, 220, 1626, 44, 92, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[8999, 266, 168, 3, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[9170, 271, 1857, 50, 92, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[11030, 323, 167, 3, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[11200, 328, 2082, 55, 92, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[13285, 385, 169, 3, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[13457, 390, 567, 14, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[14027, 406, 460, 9, 31, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[14490, 417, 434, 12, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[14927, 431, 441, 12, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[15371, 445, 531, 15, 46, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[15905, 462, 489, 16, 47, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[16397, 480, 353, 9, 46, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[16753, 491, 489, 16, 47, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[17245, 509, 537, 18, 46, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[17785, 529, 274, 7, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[18062, 538, 402, 10, 46, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[18467, 550, 245, 4, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[18749, 559, 415, 10, 25, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[19167, 571, 241, 5, 50, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[19411, 578, 541, 14, 28, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[19955, 594, 415, 12, 48, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[20373, 608, 648, 17, 28, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[21024, 627, 551, 16, 48, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[21578, 645, 598, 18, 49, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[22179, 665, 545, 15, 48, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[22727, 682, 757, 20, 46, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[23487, 704, 727, 21, 48, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[24217, 727, 779, 24, 49, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[24999, 753, 751, 20, 48, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[25753, 775, 918, 24, 46, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[26674, 801, 910, 26, 72, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[27587, 829, 964, 28, 106, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[28554, 859, 1000, 26, 72, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[29591, 890, 563, 13, 25, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[30157, 905, 261, 5, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[30421, 912, 703, 18, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[31127, 932, 268, 5, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[31398, 939, 881, 23, 52, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[32282, 964, 237, 4, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[32522, 970, 1061, 28, 52, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[33586, 1000, 194, 3, 31, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[33783, 1005, 1187, 32, 72, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[34973, 1039, 194, 4, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[35170, 1045, 1417, 38, 72, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[36590, 1085, 194, 4, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[36787, 1091, 1643, 44, 92, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[38433, 1137, 190, 4, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[38626, 1143, 1873, 49, 92, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[40502, 1194, 172, 3, 31, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[40677, 1199, 300, 8, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[40980, 1209, 291, 8, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[41274, 1219, 374, 10, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[41651, 1231, 330, 10, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[42018, 1246, 441, 10, 25, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[42462, 1258, 267, 5, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[42732, 1265, 565, 14, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[43300, 1281, 269, 6, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[43572, 1289, 671, 17, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}],
+Cell[44246, 1308, 272, 7, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10001.}]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[44555, 1320, 613, 13, 25, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[45171, 1335, 289, 6, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[45463, 1343, 755, 19, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[46221, 1364, 296, 6, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[46520, 1372, 933, 24, 52, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[47456, 1398, 245, 4, 31, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[47704, 1404, 1061, 28, 52, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[48768, 1434, 194, 3, 31, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[48965, 1439, 1187, 32, 72, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[50155, 1473, 194, 4, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[50352, 1479, 1417, 38, 72, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[51772, 1519, 194, 4, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[51969, 1525, 1643, 44, 92, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[53615, 1571, 190, 4, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[53808, 1577, 1873, 49, 92, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[55684, 1628, 172, 3, 31, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[55859, 1633, 328, 8, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[56190, 1643, 321, 8, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[56514, 1653, 403, 11, 31, "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+Cell[56920, 1666, 354, 10, 46, "Output",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[57311, 1681, 247, 9, 46, "Input"],
+Cell[57561, 1692, 92, 2, 77, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
