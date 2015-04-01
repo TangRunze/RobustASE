@@ -5,8 +5,10 @@ close all
 %% --- Parameters Setting ---
 epsilon = 0.2;
 epsilonInB = 0.01;
+scaleB = 1;
+scaleVar = 10;
+m = 5;
 
-m = 20;
 nVertex = 150;
 nBlock = 3;
 theta = ones(1, nBlock);
@@ -15,8 +17,7 @@ rho = repmat(1/nBlock, 1, nBlock);
 iStart = 1;
 iEnd = 100;
 
-scaleB = 1;
-scaleVar = 10;
+
 
 % block probability matrix
 B = (0.5 - epsilonInB)*ones(nBlock, nBlock) + 2*epsilonInB*eye(nBlock);

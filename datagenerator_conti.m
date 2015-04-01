@@ -1,4 +1,4 @@
-function [adjMatrix, tauStar, vertexNoiseInd] = ...
+function [adjMatrix, tauStar, edgeNoise] = ...
     datagenerator_conti(nVertex, nBlock, B, rho, epsilon, scaleVar, iGraph)
 
 % Generate data if there does not exist one, otherwise read the
@@ -25,28 +25,23 @@ if exist(['data/sim-n' num2str(nVertex) '-diag' num2str(B(1, 1)) ...
     end
     
     % Vertices with noise.
-    vertexNoise = (binornd(1, epsilon, 1, nVertex) == 1);
-    vertexNoiseInd = find(vertexNoise);
+    edgeNoise = (binornd(1, epsilon, nVertex, nVertex) == 1);
+    edgeNoise = triu(edgeNoise, 1);
+    edgeNoise = edgeNoise + edgeNoise';
     
-    muMatrix = B(tauStar, tauStar);
-    sigmaMatrix = muMatrix/scaleVar;
-    sigmaMatrix(vertexNoise, :) = ...
-        sigmaMatrix(vertexNoise, :)*scaleVar;
-    sigmaMatrix(:, vertexNoise) = ...
-        sigmaMatrix(:, vertexNoise)*scaleVar;
-    sigmaMatrix(vertexNoise, vertexNoise) = ...
-        sigmaMatrix(vertexNoise, vertexNoise)/scaleVar;
-
     % Generate graph adjacency matrix.
     adjMatrix = zeros(nVertex, nVertex);
     for i = 1:nVertex
         for j = (i+1):nVertex
-            adjMatrix(i, j) = normrnd(muMatrix(i, j), ...
-                sigmaMatrix(i, j));
-            while (adjMatrix(i, j) < 0) || ...
-                    (adjMatrix(i, j) > 2*muMatrix(i, j))
-                adjMatrix(i, j) = normrnd(muMatrix(i, j), ...
-                    sigmaMatrix(i, j));
+            mu = B(tauStar(i), tauStar(j));
+            if (edgeNoise(i, j) == 1)
+                sigma = mu;
+            else
+                sigma = mu/scaleVar;
+            end
+            adjMatrix(i, j) = normrnd(mu, sigma);
+            while (adjMatrix(i, j) < 0) || (adjMatrix(i, j) > 2*mu)
+                adjMatrix(i, j) = normrnd(mu, sigma);
             end
             adjMatrix(j, i) = adjMatrix(i, j);
         end
@@ -56,7 +51,7 @@ if exist(['data/sim-n' num2str(nVertex) '-diag' num2str(B(1, 1)) ...
     save(['data/sim-n' num2str(nVertex) '-diag' num2str(B(1, 1)) ...
         '-offdiag' num2str(B(1, 2)) '-eps' num2str(epsilon) ...
         '-graph' int2str(iGraph) '.mat'], 'adjMatrix', 'tauStar', ...
-        'vertexNoiseInd');
+        'edgeNoise');
 else
     % Read the existing data
     data = load(['data/sim-n' num2str(nVertex) '-diag' num2str(B(1, 1)) ...
@@ -64,5 +59,5 @@ else
         '-graph' int2str(iGraph) '.mat']);
     adjMatrix = data.adjMatrix;
     tauStar = data.tauStar;
-    vertexNoiseInd = data.vertexNoiseInd;
+    edgeNoise = data.edgeNoise;
 end
