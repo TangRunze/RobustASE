@@ -7,7 +7,7 @@ epsilon = 0.2;
 epsilonInB = 0.01;
 scaleB = 1;
 scaleVar = 10;
-m = 5;
+m = 10;
 
 nVertex = 150;
 nBlock = 3;
