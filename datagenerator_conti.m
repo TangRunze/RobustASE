@@ -24,7 +24,7 @@ if exist(['data/sim-n' num2str(nVertex) '-diag' num2str(B(1, 1)) ...
             i*ones(1, nVectorStar(i));
     end
     
-    % Vertices with noise.
+    % Edge with noise.
     edgeNoise = (binornd(1, epsilon, nVertex, nVertex) == 1);
     edgeNoise = triu(edgeNoise, 1);
     edgeNoise = edgeNoise + edgeNoise';
