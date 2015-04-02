@@ -40,11 +40,16 @@ AXDiffHL = zeros(1, iEnd);
 for iIter = iStart:iEnd
     adjMatrixTotal = zeros(m, nVertex, nVertex);
     adjMatrixSum = zeros(nVertex, nVertex);
+    
+    % Generate block assignment.
+    tauStarInd = mnrnd(1, rho, nVertex);
+    tauStar = [1:nBlock]*tauStarInd';
+    
     for iGraph = ((iIter - 1)*m+1):(iIter*m)
         % Generate data if there does not exist one, otherwise read the
         % existing data.
-        [adjMatrix, tauStar, ~] = datagenerator_conti(nVertex, ...
-            nBlock, B, rho, epsilon, scaleVar, iGraph);
+        [adjMatrix, ~] = datagenerator_conti(nVertex, ...
+            B, tauStar, epsilon, scaleVar, iGraph);
         adjMatrixTotal(iGraph - (iIter - 1)*m, :, :) = adjMatrix;
         adjMatrixSum = adjMatrixSum + adjMatrix;
     end
