@@ -1,4 +1,8 @@
 *.mat
 *.asv
+*.nb
+*.txt
+Ref/
+writeup/
 data/
 results/
