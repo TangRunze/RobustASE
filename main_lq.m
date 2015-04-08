@@ -22,11 +22,19 @@ rho = repmat(1/nBlock, 1, nBlock);
 iStart = 1;
 iEnd = 1;
 
-
-
 % block probability matrix
 B = (0.5 - epsilonInB)*ones(nBlock, nBlock) + 2*epsilonInB*eye(nBlock);
 B = scaleB^2*B;
+[U, S, V] = svd(B);
+muStar = U*sqrt(S);
+
+% plot(muStar(:, 1), muStar(:, 2), '.b');
+% hold on;
+theta = -3*pi/4;
+rotationMatrix = [cos(theta), -sin(theta); sin(theta), cos(theta)];
+muStar = muStar*rotationMatrix';
+% plot(muStar(:, 1), muStar(:, 2), '.r');
+% hold off;
 
 %% --- Parallel Computing ---
 % delete(gcp('nocreate'))
@@ -80,15 +88,13 @@ for iIter = iStart:iEnd
     PStar = B(tauStar, tauStar);
     
     % Diagonal Augmentation.
-%     adjMatrixMeanDA = adjMatrixMean + adjMatrixMean';
-%     adjMatrixMeanDA = 1*(adjMatrixMeanDA > 0);
-%     adjMatrixMeanDA = adjMatrixMeanDA + diag(sum(adjMatrixMeanDA))/...
-%         (size(adjMatrixMeanDA, 1) - 1);
-%     
-%     adjMatrixLqDA = adjMatrixLq + adjMatrixLq';
-%     adjMatrixLqDA = 1*(adjMatrixLqDA > 0);
-%     adjMatrixLqDA = adjMatrixLqDA + diag(sum(adjMatrixLqDA))/...
-%         (size(adjMatrixLqDA, 1) - 1);
+    adjMatrixMeanDA = adjMatrixMean;
+    adjMatrixMeanDA = adjMatrixMeanDA + diag(sum(adjMatrixMeanDA, 2))/...
+        (size(adjMatrixMeanDA, 2) - 1);
+    
+    adjMatrixLqDA = adjMatrixLq;
+    adjMatrixLqDA = adjMatrixLqDA + diag(sum(adjMatrixLqDA, 2))/...
+        (size(adjMatrixLqDA, 2) - 1);
     
     adjMatrixMeanDA = adjMatrixMean;
     adjMatrixLqDA = adjMatrixLq;
@@ -108,10 +114,38 @@ for iIter = iStart:iEnd
     muHatLq = gmLq.mu;
     sigmaHatLq = gmLq.Sigma;
     
+    % Rotate xHatMean to match muStar
+    wMean = procrustes(muHatMean, muStar);
+    muHatMean = muHatMean*wMean;
+    xHatMean = xHatMean*wMean;
+    for i = 1:nBlock
+        sigmaHatMean(:, :, i) = wMean'*squeeze(sigmaHatMean(:, :, i))*wMean;
+    end
+    
+    
+    
+%     scatterplot(xHatLq, tauHatLq, muHatLq, sigmaHatLq, 'r', 'before');
+%     hold on;
+%     plot(muStar(:, 1), muStar(:, 2), 'og');
+    
+    % Rotate xHatLq to match muStar
+    wLq = procrustes(muHatLq, muStar);
+    muHatLq = muHatLq*wLq;
+    xHatLq = xHatLq*wLq;
+    for i = 1:nBlock
+        sigmaHatLq(:, :, i) = wLq'*squeeze(sigmaHatLq(:, :, i))*wLq;
+    end
+    
+%     hold on;
+%     scatterplot(xHatLq, tauHatLq, muHatLq, sigmaHatLq, 'b', 'Lq');
+    
+    plot(muStar(:, 1), muStar(:, 2), 'ko');
+    hold on;
+    
     scatterplot(xHatMean, tauHatMean, muHatMean, sigmaHatMean, 'r', 'Mean');
     hold on;
     scatterplot(xHatLq, tauHatLq, muHatLq, sigmaHatLq, 'b', 'Lq');
-    plotLegend = legend('Mean: embedded points', ...
+    plotLegend = legend('muStar', 'Mean: embedded points', ...
         'Mean: mean of cluster', 'Mean: 95% ellipse', ...
         'Lq: embedded points', 'Lq: mean of cluster', 'Lq: 95% ellipse');
     set(plotLegend, 'FontSize', 14);
