@@ -11,7 +11,7 @@ epsilon = 0.2;
 epsilonInB = 0.3;
 scaleB = 1;
 c = 20;
-m = 10;
+m = 20;
 q = 0.90;
 
 nVertex = 100;
@@ -57,7 +57,10 @@ for iIter = iStart:iEnd
     adjMatrixTotal = zeros(m, nVertex, nVertex);
     adjMatrixSum = zeros(nVertex, nVertex);
     adjMatrixLq = zeros(nVertex, nVertex);
-    
+    adjMatrixTotal0 = zeros(m, nVertex, nVertex);
+    adjMatrixSum0 = zeros(nVertex, nVertex);
+    adjMatrixLq0 = zeros(nVertex, nVertex);
+
     % Generate block assignment.
     tauStarInd = mnrnd(1, rho, nVertex);
     tauStar = (1:nBlock)*tauStarInd';
@@ -65,23 +68,26 @@ for iIter = iStart:iEnd
     for iGraph = ((iIter - 1)*m+1):(iIter*m)
         % Generate data if there does not exist one, otherwise read the
         % existing data.
-        [adjMatrix, ~] = datagenerator_lq(nVertex, ...
-            B, tauStar, epsilon, c, iGraph);
+        [adjMatrix, ~, adjMatrix0] = datagenerator_lq(nVertex, B, ...
+            tauStar, epsilon, c, iGraph);
         adjMatrixTotal(iGraph - (iIter - 1)*m, :, :) = adjMatrix;
         adjMatrixSum = adjMatrixSum + adjMatrix;
+        adjMatrixTotal0(iGraph - (iIter - 1)*m, :, :) = adjMatrix0;
+        adjMatrixSum0 = adjMatrixSum0 + adjMatrix0;
     end
     
     adjMatrixMean = adjMatrixSum/m;
+    adjMatrixMean0 = adjMatrixSum0/m;
     for i = 1:nVertex
         for j = (i + 1):nVertex
             [i j]
 %             adjMatrixLq(i, j) = fsolve(@(theta) ...
 %                 objectivefun(theta, q, squeeze(adjMatrixTotal(:,i,j))), ...
 %                 adjMatrixMean(i, j));
-            
             adjMatrixLq(i, j) = lqsolve(squeeze(adjMatrixTotal(:,i,j)), q);
-            
             adjMatrixLq(j, i) = adjMatrixLq(i, j);
+            adjMatrixLq0(i, j) = lqsolve(squeeze(adjMatrixTotal0(:,i,j)), q);
+            adjMatrixLq0(j, i) = adjMatrixLq0(i, j);
         end
     end
     
@@ -96,9 +102,16 @@ for iIter = iStart:iEnd
     adjMatrixLqDA = adjMatrixLqDA + diag(sum(adjMatrixLqDA, 2))/...
         (size(adjMatrixLqDA, 2) - 1);
     
-    adjMatrixMeanDA = adjMatrixMean;
-    adjMatrixLqDA = adjMatrixLq;
+    adjMatrixMeanDA0 = adjMatrixMean0;
+    adjMatrixMeanDA0 = adjMatrixMeanDA0 + diag(sum(adjMatrixMeanDA0, 2))/...
+        (size(adjMatrixMeanDA0, 2) - 1);
+    
+    adjMatrixLqDA0 = adjMatrixLq0;
+    adjMatrixLqDA0 = adjMatrixLqDA0 + diag(sum(adjMatrixLqDA0, 2))/...
+        (size(adjMatrixLqDA0, 2) - 1);
 
+    
+    
     % ASGE
     xHatMean = asge(adjMatrixMeanDA, dimLatentPosition);
     gmMean = fitgmdist(xHatMean, nBlock, 'Replicates', 10);
@@ -114,6 +127,22 @@ for iIter = iStart:iEnd
     muHatLq = gmLq.mu;
     sigmaHatLq = gmLq.Sigma;
     
+    
+    xHatMean0 = asge(adjMatrixMeanDA0, dimLatentPosition);
+    gmMean0 = fitgmdist(xHatMean0, nBlock, 'Replicates', 10);
+    tauHatMean0 = cluster(gmMean0, xHatMean0)';
+    pTauHatMean0 = posterior(gmMean0, xHatMean0)';
+    muHatMean0 = gmMean0.mu;
+    sigmaHatMean0 = gmMean0.Sigma;
+    
+    xHatLq0 = asge(adjMatrixLqDA0, dimLatentPosition);
+    gmLq0 = fitgmdist(xHatLq0, nBlock, 'Replicates', 10);
+    tauHatLq0 = cluster(gmLq0, xHatLq0)';
+    pTauHatLq0 = posterior(gmLq0, xHatLq0)';
+    muHatLq0 = gmLq0.mu;
+    sigmaHatLq0 = gmLq0.Sigma;
+    
+    
     % Rotate xHatMean to match muStar
     wMean = procrustes(muHatMean, muStar);
     muHatMean = muHatMean*wMean;
@@ -121,12 +150,6 @@ for iIter = iStart:iEnd
     for i = 1:nBlock
         sigmaHatMean(:, :, i) = wMean'*squeeze(sigmaHatMean(:, :, i))*wMean;
     end
-    
-    
-    
-%     scatterplot(xHatLq, tauHatLq, muHatLq, sigmaHatLq, 'r', 'before');
-%     hold on;
-%     plot(muStar(:, 1), muStar(:, 2), 'og');
     
     % Rotate xHatLq to match muStar
     wLq = procrustes(muHatLq, muStar);
@@ -136,18 +159,42 @@ for iIter = iStart:iEnd
         sigmaHatLq(:, :, i) = wLq'*squeeze(sigmaHatLq(:, :, i))*wLq;
     end
     
-%     hold on;
-%     scatterplot(xHatLq, tauHatLq, muHatLq, sigmaHatLq, 'b', 'Lq');
+    % Rotate xHatMean0 to match muStar
+    wMean0 = procrustes(muHatMean0, muStar);
+    muHatMean0 = muHatMean0*wMean0;
+    xHatMean0 = xHatMean0*wMean0;
+    for i = 1:nBlock
+        sigmaHatMean0(:, :, i) = wMean0'*squeeze(sigmaHatMean0(:, :, i))*wMean0;
+    end
     
-    plot(muStar(:, 1), muStar(:, 2), 'ko');
-    hold on;
+    % Rotate xHatLq0 to match muStar
+    wLq0 = procrustes(muHatLq0, muStar);
+    muHatLq0 = muHatLq0*wLq0;
+    xHatLq0 = xHatLq0*wLq0;
+    for i = 1:nBlock
+        sigmaHatLq0(:, :, i) = wLq0'*squeeze(sigmaHatLq0(:, :, i))*wLq0;
+    end
+    
+    
+    
+    
     
     scatterplot(xHatMean, tauHatMean, muHatMean, sigmaHatMean, 'r', 'Mean');
     hold on;
     scatterplot(xHatLq, tauHatLq, muHatLq, sigmaHatLq, 'b', 'Lq');
-    plotLegend = legend('muStar', 'Mean: embedded points', ...
+    
+    scatterplot(xHatMean0, tauHatMean0, muHatMean0, sigmaHatMean0, 'g', 'Mean0');
+    scatterplot(xHatLq0, tauHatLq0, muHatLq0, sigmaHatLq0, 'y', 'Lq0');
+    
+    plot(muStar(:, 1), muStar(:, 2), 'ko');
+    
+    plotLegend = legend('Mean: embedded points', ...
         'Mean: mean of cluster', 'Mean: 95% ellipse', ...
-        'Lq: embedded points', 'Lq: mean of cluster', 'Lq: 95% ellipse');
+        'Lq: embedded points', 'Lq: mean of cluster', ...
+        'Lq: 95% ellipse', 'Mean0: embedded points', ...
+        'Mean0: mean of cluster', 'Mean0: 95% ellipse', ...
+        'Lq0: embedded points', 'Lq0: mean of cluster', ...
+        'Lq0: 95% ellipse', 'muStar');
     set(plotLegend, 'FontSize', 14);
     hold off;
     

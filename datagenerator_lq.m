@@ -1,4 +1,4 @@
-function [adjMatrix, edgeNoise] = ...
+function [adjMatrix, edgeNoise, adjMatrix0] = ...
     datagenerator_lq(nVertex, B, tauStar, epsilon, c, iGraph)
 
 % Generate data if there does not exist one, otherwise read the
@@ -16,15 +16,19 @@ if exist(['data/sim-n' num2str(nVertex) '-diag' num2str(B(1, 1)) ...
     
     % Generate graph adjacency matrix.
     adjMatrix = zeros(nVertex, nVertex);
+    adjMatrix0 = adjMatrix;
     for i = 1:nVertex
         for j = (i+1):nVertex
+            mu = B(tauStar(i), tauStar(j));
+            adjMatrix0(i, j) = poissrnd(mu);
             if (edgeNoise(i, j) == 1)
                 mu = c*rand;
+                adjMatrix(i, j) = poissrnd(mu);
             else
-                mu = B(tauStar(i), tauStar(j));
+                adjMatrix(i, j) = adjMatrix0(i, j);
             end
-            adjMatrix(i, j) = poissrnd(mu);
             adjMatrix(j, i) = adjMatrix(i, j);
+            adjMatrix0(j, i) = adjMatrix0(i, j);
         end
     end
     
@@ -32,7 +36,7 @@ if exist(['data/sim-n' num2str(nVertex) '-diag' num2str(B(1, 1)) ...
     save(['data/sim-n' num2str(nVertex) '-diag' num2str(B(1, 1)) ...
         '-offdiag' num2str(B(1, 2)) '-eps' num2str(epsilon) ...
         '-graph' int2str(iGraph) '.mat'], 'adjMatrix', 'tauStar', ...
-        'edgeNoise');
+        'edgeNoise', 'adjMatrix0');
 else
     % Read the existing data
     data = load(['data/sim-n' num2str(nVertex) '-diag' num2str(B(1, 1)) ...
@@ -41,4 +45,5 @@ else
     adjMatrix = data.adjMatrix;
     % tauStar = data.tauStar;
     edgeNoise = data.edgeNoise;
+    adjMatrix0 = data.adjMatrix0;
 end
