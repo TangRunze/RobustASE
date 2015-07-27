@@ -7,7 +7,8 @@ close all
 seed = 12345;
 rng(seed);
 
-hasPlot = 1;
+hasPlot = 0;
+nGraph = 100;
 
 epsilon = 0.2;
 muB = 5;
@@ -21,11 +22,10 @@ nVertex = 50;
 nBlock = 2;
 dimLatentPosition = nBlock;
 rho = repmat(1/nBlock, 1, nBlock);
-iStart = 1;
-iEnd = 1;
+
 
 if (hasPlot == 1)
-    iEnd = 1;
+    nGraph = 1;
 end
 
 % block probability matrix
@@ -34,13 +34,9 @@ B = scaleB^2*B;
 [U, S, V] = svd(B);
 nuStar = U*sqrt(S);
 
-% plot(muStar(:, 1), muStar(:, 2), '.b');
-% hold on;
 theta = -3*pi/4;
 rotationMatrix = [cos(theta), -sin(theta); sin(theta), cos(theta)];
 nuStar = nuStar*rotationMatrix';
-% plot(muStar(:, 1), muStar(:, 2), '.r');
-% hold off;
 
 %% --- Parallel Computing ---
 % delete(gcp('nocreate'))
@@ -52,14 +48,25 @@ nuStar = nuStar*rotationMatrix';
 options = optimoptions('fmincon', 'TolX', 1e-6, 'MaxIter', 10000, ...
     'MaxFunEvals', 10000);
 
-errorRateMean = zeros(1, iEnd);
-errorRateLq = zeros(1, iEnd);
-ADiffMean = zeros(1, iEnd);
-ADiffLq = zeros(1, iEnd);
-AXDiffMean = zeros(1, iEnd);
-AXDiffLq = zeros(1, iEnd);
+errorRateL1 = zeros(1, nGraph);
+errorRateLq = zeros(1, nGraph);
+PDiffL1 = zeros(1, nGraph);
+PDiffLq = zeros(1, nGraph);
+XXTDiffL1 = zeros(1, nGraph);
+XXTDiffLq = zeros(1, nGraph);
+nunuTDiffL1 = zeros(1, nGraph);
+nunuTDiffLq = zeros(1, nGraph);
+errorRateL10 = zeros(1, nGraph);
+errorRateLq0 = zeros(1, nGraph);
+PDiffL10 = zeros(1, nGraph);
+PDiffLq0 = zeros(1, nGraph);
+XXTDiffL10 = zeros(1, nGraph);
+XXTDiffLq0 = zeros(1, nGraph);
+nunuTDiffL10 = zeros(1, nGraph);
+nunuTDiffLq0 = zeros(1, nGraph);
 
-for iIter = iStart:iEnd
+for iIter = 1:nGraph
+    iIter
     adjMatrixTotal = zeros(m, nVertex, nVertex);
     adjMatrixSum = zeros(nVertex, nVertex);
     PLq = zeros(nVertex, nVertex);
@@ -88,7 +95,7 @@ for iIter = iStart:iEnd
     adjMatrixMean0 = adjMatrixSum0/m;
     for i = 1:nVertex
         for j = (i + 1):nVertex
-            [i j]
+%             [i j]
             PLq(i, j) = fsolve(@(theta) ...
                 objectivefun_exp(theta, q, squeeze(adjMatrixTotal(:,i,j))), ...
                 1/adjMatrixMean(i, j));
@@ -131,14 +138,14 @@ for iIter = iStart:iEnd
     gmL1 = fitgmdist(xHatL1, nBlock, 'Replicates', 10);
     tauHatL1 = cluster(gmL1, xHatL1)';
     pTauHatL1 = posterior(gmL1, xHatL1)';
-    muHatL1 = gmL1.mu;
+    nuHatL1 = gmL1.mu;
     sigmaHatL1 = gmL1.Sigma;
     
     xHatLq = asge(PLqDA, dimLatentPosition);
     gmLq = fitgmdist(xHatLq, nBlock, 'Replicates', 10);
     tauHatLq = cluster(gmLq, xHatLq)';
     pTauHatLq = posterior(gmLq, xHatLq)';
-    muHatLq = gmLq.mu;
+    nuHatLq = gmLq.mu;
     sigmaHatLq = gmLq.Sigma;
     
     
@@ -146,43 +153,43 @@ for iIter = iStart:iEnd
     gmL10 = fitgmdist(xHatL10, nBlock, 'Replicates', 10);
     tauHatL10 = cluster(gmL10, xHatL10)';
     pTauHatL10 = posterior(gmL10, xHatL10)';
-    muHatL10 = gmL10.mu;
+    nuHatL10 = gmL10.mu;
     sigmaHatL10 = gmL10.Sigma;
     
     xHatLq0 = asge(PLqDA0, dimLatentPosition);
     gmLq0 = fitgmdist(xHatLq0, nBlock, 'Replicates', 10);
     tauHatLq0 = cluster(gmLq0, xHatLq0)';
     pTauHatLq0 = posterior(gmLq0, xHatLq0)';
-    muHatLq0 = gmLq0.mu;
+    nuHatLq0 = gmLq0.mu;
     sigmaHatLq0 = gmLq0.Sigma;
     
-    % Rotate xHatMean to match muStar
-    wL1 = procrustes(muHatL1, nuStar);
-    muHatL1 = muHatL1*wL1;
+    % Rotate xHatL1 to match muStar
+    wL1 = procrustes(nuHatL1, nuStar);
+    nuHatL1 = nuHatL1*wL1;
     xHatL1 = xHatL1*wL1;
     for i = 1:nBlock
         sigmaHatL1(:, :, i) = wL1'*squeeze(sigmaHatL1(:, :, i))*wL1;
     end
     
     % Rotate xHatLq to match muStar
-    wLq = procrustes(muHatLq, nuStar);
-    muHatLq = muHatLq*wLq;
+    wLq = procrustes(nuHatLq, nuStar);
+    nuHatLq = nuHatLq*wLq;
     xHatLq = xHatLq*wLq;
     for i = 1:nBlock
         sigmaHatLq(:, :, i) = wLq'*squeeze(sigmaHatLq(:, :, i))*wLq;
     end
     
-    % Rotate xHatMean0 to match muStar
-    wL10 = procrustes(muHatL10, nuStar);
-    muHatL10 = muHatL10*wL10;
+    % Rotate xHatL10 to match muStar
+    wL10 = procrustes(nuHatL10, nuStar);
+    nuHatL10 = nuHatL10*wL10;
     xHatL10 = xHatL10*wL10;
     for i = 1:nBlock
         sigmaHatL10(:, :, i) = wL10'*squeeze(sigmaHatL10(:, :, i))*wL10;
     end
     
     % Rotate xHatLq0 to match muStar
-    wLq0 = procrustes(muHatLq0, nuStar);
-    muHatLq0 = muHatLq0*wLq0;
+    wLq0 = procrustes(nuHatLq0, nuStar);
+    nuHatLq0 = nuHatLq0*wLq0;
     xHatLq0 = xHatLq0*wLq0;
     for i = 1:nBlock
         sigmaHatLq0(:, :, i) = wLq0'*squeeze(sigmaHatLq0(:, :, i))*wLq0;
@@ -193,6 +200,7 @@ for iIter = iStart:iEnd
     BL1Exp = [0.47619, 0.416667; 0.416667, 0.47619];
     PL1Exp = BL1Exp(tauStar, tauStar);
     PL1ExpDA = PL1Exp;
+    PL1ExpDA(1:(nVertex+1):end) = 0;
     PL1ExpDA = PL1ExpDA + diag(sum(PL1ExpDA, 2))/...
         (size(PL1ExpDA, 2) - 1);
     xHatL1Exp = asge(PL1Exp, dimLatentPosition);
@@ -200,6 +208,7 @@ for iIter = iStart:iEnd
     BLqExp = [9.27334, 1.9577; 1.9577, 9.27334];
     PLqExp = BLqExp(tauStar, tauStar);
     PLqExpDA = PLqExp;
+    PLqExpDA(1:(nVertex+1):end) = 0;
     PLqExpDA = PLqExpDA + diag(sum(PLqExpDA, 2))/...
         (size(PLqExpDA, 2) - 1);
     xHatLqExp = asge(PLqExp, dimLatentPosition);
@@ -218,11 +227,11 @@ for iIter = iStart:iEnd
     
     % Plot
     if (hasPlot == 1)
-        scatterplot(xHatL1, tauHatL1, muHatL1, sigmaHatL1, 'r', 'Mean');
+        scatterplot(xHatL1, tauHatL1, nuHatL1, sigmaHatL1, 'r', 'Mean');
         hold on;
-        scatterplot(xHatLq, tauHatLq, muHatLq, sigmaHatLq, 'b', 'Lq');
-        scatterplot(xHatL10, tauHatL10, muHatL10, sigmaHatL10, 'g', 'Mean0');
-        scatterplot(xHatLq0, tauHatLq0, muHatLq0, sigmaHatLq0, 'm', 'Lq0');
+        scatterplot(xHatLq, tauHatLq, nuHatLq, sigmaHatLq, 'b', 'Lq');
+        scatterplot(xHatL10, tauHatL10, nuHatL10, sigmaHatL10, 'g', 'Mean0');
+        scatterplot(xHatLq0, tauHatLq0, nuHatLq0, sigmaHatLq0, 'm', 'Lq0');
         plot(xHatL1Exp(:, 1), xHatL1Exp(:, 2), 'oc', 'MarkerEdgeColor', 'c',...
             'MarkerFaceColor', 'c', 'markersize', 6);
         plot(xHatLqExp(:, 1), xHatLqExp(:, 2), 'oy', 'MarkerEdgeColor', 'y',...
@@ -257,52 +266,64 @@ for iIter = iStart:iEnd
         set(plotTitle, 'FontSize', 14, 'Interpreter', 'latex');
     end
     
-    % mean
-    ADiffMean(iIter) = norm(adjMatrixMean - PStar);
-    
-%     xHatMean = asge(adjMatrixMean, dimLatentPosition);
-%     gm = fitgmdist(xHatMean, nBlock, 'Replicates', 10);
-%     tauHatMean = cluster(gm, xHatMean)';
-    errorRateMean(iIter) = errorratecalculator(tauStar, tauHatL1, nBlock);
-    
-    AXDiffMean(iIter) = norm(xHatL1*xHatL1' - PStar);
+    % L1
+    PDiffL1(iIter) = norm(PL1 - PStar, 'fro');
+    errorRateL1(iIter) = errorratecalculator(tauStar, tauHatL1, nBlock);
+    XXTDiffL1(iIter) = norm(xHatL1*xHatL1' - PStar, 'fro');
+    nunuTDiffL1(iIter) = norm(nuHatL1(tauHatL1, :)*nuHatL1(tauHatL1, :)'...
+        - PStar, 'fro');
     
     % Lq
-    ADiffLq(iIter) = norm(PLq - PStar);
-    
-%     xHatHL = asge(adjMatrixLq, dimLatentPosition);
-%     gm = fitgmdist(xHatHL, nBlock, 'Replicates', 10);
-%     tauHatHL = cluster(gm, xHatHL)';
+    PDiffLq(iIter) = norm(PLq - PStar, 'fro');
     errorRateLq(iIter) = errorratecalculator(tauStar, tauHatLq, nBlock);
+    XXTDiffLq(iIter) = norm(xHatLq*xHatLq' - PStar, 'fro');
+    nunuTDiffLq(iIter) = norm(nuHatLq(tauHatLq, :)*nuHatLq(tauHatLq, :)'...
+        - PStar, 'fro');
     
-    AXDiffLq(iIter) = norm(xHatLq*xHatLq' - PStar);
+    % L10
+    PDiffL10(iIter) = norm(PL10 - PStar, 'fro');
+    errorRateL10(iIter) = errorratecalculator(tauStar, tauHatL10, nBlock);
+    XXTDiffL10(iIter) = norm(xHatL10*xHatL10' - PStar, 'fro');
+    nunuTDiffL10(iIter) = norm(nuHatL10(tauHatL10, :)*...
+        nuHatL10(tauHatL10, :)' - PStar, 'fro');
+    
+    % Lq0
+    PDiffLq0(iIter) = norm(PLq0 - PStar, 'fro');
+    errorRateLq0(iIter) = errorratecalculator(tauStar, tauHatLq0, nBlock);
+    XXTDiffLq0(iIter) = norm(xHatLq0*xHatLq0' - PStar, 'fro');
+    nunuTDiffLq0(iIter) = norm(nuHatLq0(tauHatLq0, :)*...
+        nuHatLq0(tauHatLq0, :)' - PStar, 'fro');
 end
 
-[mean(errorRateMean), mean(errorRateLq)]
+[mean(errorRateL1), mean(errorRateLq)]
+pValueError = signtest(errorRateL1, errorRateLq)
 
-% 1-sided sign-test HA errorRateMean > errorRateHL
-tmpStats = sum(errorRateMean > errorRateLq);
-pValueError = 1 - binocdf(tmpStats - 1, iEnd, 0.5)
+[mean(PDiffL1), mean(PDiffLq)]
+pValuePDiff = signtest(PDiffL1, PDiffLq)
 
-[mean(ADiffMean), mean(ADiffLq)]
+[mean(XXTDiffL1), mean(XXTDiffLq)]
+pValueXXTDiff = signtest(XXTDiffL1, XXTDiffLq)
 
-% 1-sided sign-test
-tmpStats = sum(ADiffMean > ADiffLq);
-pValueADiff = 1 - binocdf(tmpStats - 1, iEnd, 0.5)
+[mean(nunuTDiffL1), mean(nunuTDiffLq)]
+pValuenunuTDiff = signtest(nunuTDiffL1, nunuTDiffLq)
 
-[mean(AXDiffMean), mean(AXDiffLq)]
-
-% 1-sided sign-test
-tmpStats = sum(AXDiffMean > AXDiffLq);
-pValueAXDiff = 1 - binocdf(tmpStats - 1, iEnd, 0.5)
+signtest(PDiffLq, XXTDiffLq)
+signtest(XXTDiffLq, nunuTDiffLq)
 
 
 
+[mean(errorRateL10), mean(errorRateLq0)]
+pValueError0 = signtest(errorRateLq0, errorRateL10)
 
-%% --- Plot ---
-% plot3(xHatMean(:, 1), xHatMean(:, 2), xHatMean(:, 3), '.')
-% hold on;
-% plot3(xHatHL(:, 1), xHatHL(:, 2), xHatHL(:, 3), 'r.')
+[mean(PDiffL10), mean(PDiffLq0)]
+pValuePDiff0 = signtest(PDiffLq0, PDiffL10)
 
-%% --- Close Parallel Computing ---
-% delete(gcp('nocreate'))
+[mean(XXTDiffL10), mean(XXTDiffLq0)]
+pValueXXTDiff0 = signtest(XXTDiffLq0, XXTDiffL10)
+
+[mean(nunuTDiffL10), mean(nunuTDiffLq0)]
+pValuenunuTDiff0 = signtest(nunuTDiffLq0, nunuTDiffL10)
+
+signtest(PDiffLq0, XXTDiffLq0)
+signtest(XXTDiffLq0, nunuTDiffLq0)
+
