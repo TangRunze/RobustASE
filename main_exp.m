@@ -32,13 +32,13 @@ end
 B = (muB - epsilonInB)*ones(nBlock, nBlock) + 2*epsilonInB*eye(nBlock);
 B = scaleB^2*B;
 [U, S, V] = svd(B);
-muStar = U*sqrt(S);
+nuStar = U*sqrt(S);
 
 % plot(muStar(:, 1), muStar(:, 2), '.b');
 % hold on;
 theta = -3*pi/4;
 rotationMatrix = [cos(theta), -sin(theta); sin(theta), cos(theta)];
-muStar = muStar*rotationMatrix';
+nuStar = nuStar*rotationMatrix';
 % plot(muStar(:, 1), muStar(:, 2), '.r');
 % hold off;
 
@@ -157,7 +157,7 @@ for iIter = iStart:iEnd
     sigmaHatLq0 = gmLq0.Sigma;
     
     % Rotate xHatMean to match muStar
-    wL1 = procrustes(muHatL1, muStar);
+    wL1 = procrustes(muHatL1, nuStar);
     muHatL1 = muHatL1*wL1;
     xHatL1 = xHatL1*wL1;
     for i = 1:nBlock
@@ -165,7 +165,7 @@ for iIter = iStart:iEnd
     end
     
     % Rotate xHatLq to match muStar
-    wLq = procrustes(muHatLq, muStar);
+    wLq = procrustes(muHatLq, nuStar);
     muHatLq = muHatLq*wLq;
     xHatLq = xHatLq*wLq;
     for i = 1:nBlock
@@ -173,7 +173,7 @@ for iIter = iStart:iEnd
     end
     
     % Rotate xHatMean0 to match muStar
-    wL10 = procrustes(muHatL10, muStar);
+    wL10 = procrustes(muHatL10, nuStar);
     muHatL10 = muHatL10*wL10;
     xHatL10 = xHatL10*wL10;
     for i = 1:nBlock
@@ -181,7 +181,7 @@ for iIter = iStart:iEnd
     end
     
     % Rotate xHatLq0 to match muStar
-    wLq0 = procrustes(muHatLq0, muStar);
+    wLq0 = procrustes(muHatLq0, nuStar);
     muHatLq0 = muHatLq0*wLq0;
     xHatLq0 = xHatLq0*wLq0;
     for i = 1:nBlock
@@ -209,10 +209,10 @@ for iIter = iStart:iEnd
         indXHat(k) = find(tauStar == k, 1);
     end
     
-    wL1Exp = procrustes(xHatL1Exp(indXHat, :), muStar);
+    wL1Exp = procrustes(xHatL1Exp(indXHat, :), nuStar);
     xHatL1Exp = xHatL1Exp*wL1Exp;
     
-    wLqExp = procrustes(xHatLqExp(indXHat, :), muStar);
+    wLqExp = procrustes(xHatLqExp(indXHat, :), nuStar);
     xHatLqExp = xHatLqExp*wLqExp;
     
     
@@ -228,7 +228,7 @@ for iIter = iStart:iEnd
         plot(xHatLqExp(:, 1), xHatLqExp(:, 2), 'oy', 'MarkerEdgeColor', 'y',...
             'MarkerFaceColor', 'y', 'markersize', 6);
         
-        plot(muStar(:, 1), muStar(:, 2), 'ks', 'MarkerEdgeColor', 'k',...
+        plot(nuStar(:, 1), nuStar(:, 2), 'ks', 'MarkerEdgeColor', 'k',...
             'MarkerFaceColor', 'k', 'markersize', 5);
         
         plotLegend = legend(['$\hat{X}_{q=1}$ \ \ with $\epsilon=' num2str(epsilon) '$'], ...
