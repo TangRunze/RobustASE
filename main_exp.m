@@ -7,6 +7,8 @@ close all
 seed = 12345;
 rng(seed);
 
+hasPlot = 1;
+
 epsilon = 0.2;
 muB = 5;
 epsilonInB = 3;
@@ -21,6 +23,10 @@ dimLatentPosition = nBlock;
 rho = repmat(1/nBlock, 1, nBlock);
 iStart = 1;
 iEnd = 1;
+
+if (hasPlot == 1)
+    iEnd = 1;
+end
 
 % block probability matrix
 B = (muB - epsilonInB)*ones(nBlock, nBlock) + 2*epsilonInB*eye(nBlock);
@@ -120,7 +126,7 @@ for iIter = iStart:iEnd
 
     
     
-    % ASGE
+    % GMM o ASE
     xHatL1 = asge(PL1DA, dimLatentPosition);
     gmL1 = fitgmdist(xHatL1, nBlock, 'Replicates', 10);
     tauHatL1 = cluster(gmL1, xHatL1)';
@@ -149,27 +155,6 @@ for iIter = iStart:iEnd
     pTauHatLq0 = posterior(gmLq0, xHatLq0)';
     muHatLq0 = gmLq0.mu;
     sigmaHatLq0 = gmLq0.Sigma;
-    
-    BL1Exp = [0.47619, 0.416667; 0.416667, 0.47619];
-    PL1Exp = BL1Exp(tauStar, tauStar);
-    PL1ExpDA = PL1Exp;
-    PL1ExpDA = PL1ExpDA + diag(sum(PL1ExpDA, 2))/...
-        (size(PL1ExpDA, 2) - 1);
-    xHatL1Exp = asge(PL1Exp, dimLatentPosition);
-
-    BLqExp = [9.27334, 1.9577; 1.9577, 9.27334];
-    PLqExp = BLqExp(tauStar, tauStar);
-    PLqExpDA = PLqExp;
-    PLqExpDA = PLqExpDA + diag(sum(PLqExpDA, 2))/...
-        (size(PLqExpDA, 2) - 1);
-    xHatLqExp = asge(PLqExp, dimLatentPosition);
-
-    wL1Exp = procrustes(xHatL1Exp(1:2, :), muStar);
-    xHatL1Exp = xHatL1Exp*wL1Exp;
-    
-    wLqExp = procrustes(xHatLqExp(1:2, :), muStar);
-    xHatLqExp = xHatLqExp*wLqExp;
-
     
     % Rotate xHatMean to match muStar
     wL1 = procrustes(muHatL1, muStar);
@@ -204,49 +189,73 @@ for iIter = iStart:iEnd
     end
     
     
+    % Calculate Rotation o GMM o ASE(expect value of MLqE)
+    BL1Exp = [0.47619, 0.416667; 0.416667, 0.47619];
+    PL1Exp = BL1Exp(tauStar, tauStar);
+    PL1ExpDA = PL1Exp;
+    PL1ExpDA = PL1ExpDA + diag(sum(PL1ExpDA, 2))/...
+        (size(PL1ExpDA, 2) - 1);
+    xHatL1Exp = asge(PL1Exp, dimLatentPosition);
+    
+    BLqExp = [9.27334, 1.9577; 1.9577, 9.27334];
+    PLqExp = BLqExp(tauStar, tauStar);
+    PLqExpDA = PLqExp;
+    PLqExpDA = PLqExpDA + diag(sum(PLqExpDA, 2))/...
+        (size(PLqExpDA, 2) - 1);
+    xHatLqExp = asge(PLqExp, dimLatentPosition);
+    
+    indXHat = zeros(1, nBlock);
+    for k = 1:nBlock
+        indXHat(k) = find(tauStar == k, 1);
+    end
+    
+    wL1Exp = procrustes(xHatL1Exp(indXHat, :), muStar);
+    xHatL1Exp = xHatL1Exp*wL1Exp;
+    
+    wLqExp = procrustes(xHatLqExp(indXHat, :), muStar);
+    xHatLqExp = xHatLqExp*wLqExp;
     
     
-    scatterplot(xHatL1, tauHatL1, muHatL1, sigmaHatL1, 'r', 'Mean');
-    hold on;
-    scatterplot(xHatLq, tauHatLq, muHatLq, sigmaHatLq, 'b', 'Lq');
-    
-    scatterplot(xHatL10, tauHatL10, muHatL10, sigmaHatL10, 'g', 'Mean0');
-    scatterplot(xHatLq0, tauHatLq0, muHatLq0, sigmaHatLq0, 'm', 'Lq0');
-    
-    plot(xHatL1Exp(:, 1), xHatL1Exp(:, 2), 'oc', 'MarkerEdgeColor', 'c',...
-                'MarkerFaceColor', 'c', 'markersize', 6);
-    plot(xHatLqExp(:, 1), xHatLqExp(:, 2), 'oy', 'MarkerEdgeColor', 'y',...
-                'MarkerFaceColor', 'y', 'markersize', 6);
-    
-    plot(muStar(:, 1), muStar(:, 2), 'ks', 'MarkerEdgeColor', 'k',...
-                'MarkerFaceColor', 'k', 'markersize', 5);
-    
-    plotLegend = legend(['$\hat{X}_{q=1}$ \ \ with $\epsilon=' num2str(epsilon) '$'], ...
-        ['$\hat{\nu}_{q=1}$ \ \ with $\epsilon=' num2str(epsilon) '$'], ...
-        ['$\hat{\Sigma}_{q=1}$ \ \ with $\epsilon=' num2str(epsilon) '$'], ...
-        ['$\hat{X}_{q=' num2str(q) '}$ \ \ with $\epsilon=' num2str(epsilon) '$'], ...
-        ['$\hat{\nu}_{q=' num2str(q) '}$ \ \ with $\epsilon=' num2str(epsilon) '$'], ...
-        ['$\hat{\Sigma}_{q=' num2str(q) '}$ \ \ with $\epsilon=' num2str(epsilon) '$'], ...
-        '$\hat{X}_{q=1}$ \ \ with $\epsilon=0$', ...
-        '$\hat{\nu}_{q=1}$ \ \ with $\epsilon=0$', ...
-        '$\hat{\Sigma}_{q=1}$ \ \ with $\epsilon=0$', ...
-        ['$\hat{X}_{q=' num2str(q) '}$ \ \ with $\epsilon=0$'], ...
-        ['$\hat{\nu}_{q=' num2str(q) '}$ \ \ with $\epsilon=0$'], ...
-        ['$\hat{\Sigma}_{q=' num2str(q) '}$ \ \ with $\epsilon=0$'], ...
-        ['$\nu_{q=1}^{\mathrm{Expect}}$ \ \ with $\epsilon=' num2str(epsilon) '$'], ...
-        ['$\nu_{q=' num2str(q) '}^{\mathrm{Expect}}$ \ \ with $\epsilon=' num2str(epsilon) '$'], ...
-        '$\nu$');
-    set(plotLegend, 'FontSize', 14, 'Interpreter', 'latex');
-    hold off;
-
-    
-    plotTitle = title(strcat('n=', num2str(nVertex), ', K=', ...
-        num2str(nBlock), ', $\epsilon$=', num2str(epsilon), ', diag=', ...
-        num2str(muB + epsilonInB), ', offdiag=', ...
-        num2str(muB - epsilonInB), ', q=', num2str(q), ...
-        ', C=', num2str(c), ', m=', num2str(m), ...
-        ', seed=', num2str(seed)));
-    set(plotTitle, 'FontSize', 14, 'Interpreter', 'latex');
+    % Plot
+    if (hasPlot == 1)
+        scatterplot(xHatL1, tauHatL1, muHatL1, sigmaHatL1, 'r', 'Mean');
+        hold on;
+        scatterplot(xHatLq, tauHatLq, muHatLq, sigmaHatLq, 'b', 'Lq');
+        scatterplot(xHatL10, tauHatL10, muHatL10, sigmaHatL10, 'g', 'Mean0');
+        scatterplot(xHatLq0, tauHatLq0, muHatLq0, sigmaHatLq0, 'm', 'Lq0');
+        plot(xHatL1Exp(:, 1), xHatL1Exp(:, 2), 'oc', 'MarkerEdgeColor', 'c',...
+            'MarkerFaceColor', 'c', 'markersize', 6);
+        plot(xHatLqExp(:, 1), xHatLqExp(:, 2), 'oy', 'MarkerEdgeColor', 'y',...
+            'MarkerFaceColor', 'y', 'markersize', 6);
+        
+        plot(muStar(:, 1), muStar(:, 2), 'ks', 'MarkerEdgeColor', 'k',...
+            'MarkerFaceColor', 'k', 'markersize', 5);
+        
+        plotLegend = legend(['$\hat{X}_{q=1}$ \ \ with $\epsilon=' num2str(epsilon) '$'], ...
+            ['$\hat{\nu}_{q=1}$ \ \ with $\epsilon=' num2str(epsilon) '$'], ...
+            ['$\hat{\Sigma}_{q=1}$ \ \ with $\epsilon=' num2str(epsilon) '$'], ...
+            ['$\hat{X}_{q=' num2str(q) '}$ \ \ with $\epsilon=' num2str(epsilon) '$'], ...
+            ['$\hat{\nu}_{q=' num2str(q) '}$ \ \ with $\epsilon=' num2str(epsilon) '$'], ...
+            ['$\hat{\Sigma}_{q=' num2str(q) '}$ \ \ with $\epsilon=' num2str(epsilon) '$'], ...
+            '$\hat{X}_{q=1}$ \ \ with $\epsilon=0$', ...
+            '$\hat{\nu}_{q=1}$ \ \ with $\epsilon=0$', ...
+            '$\hat{\Sigma}_{q=1}$ \ \ with $\epsilon=0$', ...
+            ['$\hat{X}_{q=' num2str(q) '}$ \ \ with $\epsilon=0$'], ...
+            ['$\hat{\nu}_{q=' num2str(q) '}$ \ \ with $\epsilon=0$'], ...
+            ['$\hat{\Sigma}_{q=' num2str(q) '}$ \ \ with $\epsilon=0$'], ...
+            ['$\nu_{q=1}^{\mathrm{Expect}}$ \ \ with $\epsilon=' num2str(epsilon) '$'], ...
+            ['$\nu_{q=' num2str(q) '}^{\mathrm{Expect}}$ \ \ with $\epsilon=' num2str(epsilon) '$'], ...
+            '$\nu$');
+        set(plotLegend, 'FontSize', 14, 'Interpreter', 'latex');
+        hold off;
+        plotTitle = title(strcat('n=', num2str(nVertex), ', K=', ...
+            num2str(nBlock), ', $\epsilon$=', num2str(epsilon), ', diag=', ...
+            num2str(muB + epsilonInB), ', offdiag=', ...
+            num2str(muB - epsilonInB), ', q=', num2str(q), ...
+            ', C=', num2str(c), ', m=', num2str(m), ...
+            ', seed=', num2str(seed)));
+        set(plotTitle, 'FontSize', 14, 'Interpreter', 'latex');
+    end
     
     % mean
     ADiffMean(iIter) = norm(adjMatrixMean - PStar);
