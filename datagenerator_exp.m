@@ -1,4 +1,4 @@
-function [adjMatrix, edgeNoise, adjMatrix0] = ...
+function [adjMatrix, edgeNoise, adjMatrix0, tauStar] = ...
     datagenerator_exp(nVertex, B, tauStar, epsilon, c, iGraph)
 
 % Generate data if there does not exist one, otherwise read the
@@ -47,7 +47,7 @@ else
         '-offdiag' num2str(B(1, 2)) '-c' num2str(c) ...
         '-eps' num2str(epsilon) '-graph' int2str(iGraph) '.mat']);
     adjMatrix = data.adjMatrix;
-    % tauStar = data.tauStar;
+    tauStar = data.tauStar;
     edgeNoise = data.edgeNoise;
     adjMatrix0 = data.adjMatrix0;
 end

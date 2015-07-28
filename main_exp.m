@@ -16,7 +16,7 @@ epsilonInB = 3;
 scaleB = 1;
 c = 0.1;
 m = 20;
-q = 0.8;
+q = 0.95;
 
 nVertex = 50;
 nBlock = 2;
@@ -44,9 +44,6 @@ nuStar = nuStar*rotationMatrix';
 
 
 %% Monte Carlo Simulation
-
-options = optimoptions('fmincon', 'TolX', 1e-6, 'MaxIter', 10000, ...
-    'MaxFunEvals', 10000);
 
 errorRateL1 = zeros(1, nGraph);
 errorRateLq = zeros(1, nGraph);
@@ -83,8 +80,8 @@ for iIter = 1:nGraph
     for iGraph = ((iIter - 1)*m+1):(iIter*m)
         % Generate data if there does not exist one, otherwise read the
         % existing data.
-        [adjMatrix, ~, adjMatrix0] = datagenerator_exp(nVertex, B, ...
-            tauStar, epsilon, c, iGraph);
+        [adjMatrix, ~, adjMatrix0, tauStar] = datagenerator_exp(nVertex,...
+            B, tauStar, epsilon, c, iGraph);
         adjMatrixTotal(iGraph - (iIter - 1)*m, :, :) = adjMatrix;
         adjMatrixSum = adjMatrixSum + adjMatrix;
         adjMatrixTotal0(iGraph - (iIter - 1)*m, :, :) = adjMatrix0;
