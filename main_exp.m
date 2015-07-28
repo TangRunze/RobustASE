@@ -8,7 +8,7 @@ seed = 12345;
 rng(seed);
 
 hasPlot = 0;
-nGraph = 100;
+nGraph = 2;
 
 epsilon = 0.2;
 muB = 5;
@@ -16,7 +16,7 @@ epsilonInB = 3;
 scaleB = 1;
 c = 0.1;
 m = 20;
-q = 0.95;
+q = 0.8;
 
 nVertex = 50;
 nBlock = 2;
@@ -160,70 +160,71 @@ for iIter = 1:nGraph
     nuHatLq0 = gmLq0.mu;
     sigmaHatLq0 = gmLq0.Sigma;
     
-    % Rotate xHatL1 to match muStar
-    wL1 = procrustes(nuHatL1, nuStar);
-    nuHatL1 = nuHatL1*wL1;
-    xHatL1 = xHatL1*wL1;
-    for i = 1:nBlock
-        sigmaHatL1(:, :, i) = wL1'*squeeze(sigmaHatL1(:, :, i))*wL1;
-    end
-    
-    % Rotate xHatLq to match muStar
-    wLq = procrustes(nuHatLq, nuStar);
-    nuHatLq = nuHatLq*wLq;
-    xHatLq = xHatLq*wLq;
-    for i = 1:nBlock
-        sigmaHatLq(:, :, i) = wLq'*squeeze(sigmaHatLq(:, :, i))*wLq;
-    end
-    
-    % Rotate xHatL10 to match muStar
-    wL10 = procrustes(nuHatL10, nuStar);
-    nuHatL10 = nuHatL10*wL10;
-    xHatL10 = xHatL10*wL10;
-    for i = 1:nBlock
-        sigmaHatL10(:, :, i) = wL10'*squeeze(sigmaHatL10(:, :, i))*wL10;
-    end
-    
-    % Rotate xHatLq0 to match muStar
-    wLq0 = procrustes(nuHatLq0, nuStar);
-    nuHatLq0 = nuHatLq0*wLq0;
-    xHatLq0 = xHatLq0*wLq0;
-    for i = 1:nBlock
-        sigmaHatLq0(:, :, i) = wLq0'*squeeze(sigmaHatLq0(:, :, i))*wLq0;
-    end
-    
-    
-    % Calculate Rotation o GMM o ASE(expect value of MLqE)
-    BL1Exp = [0.47619, 0.416667; 0.416667, 0.47619];
-    PL1Exp = BL1Exp(tauStar, tauStar);
-    PL1ExpDA = PL1Exp;
-    PL1ExpDA(1:(nVertex+1):end) = 0;
-    PL1ExpDA = PL1ExpDA + diag(sum(PL1ExpDA, 2))/...
-        (size(PL1ExpDA, 2) - 1);
-    xHatL1Exp = asge(PL1Exp, dimLatentPosition);
-    
-    BLqExp = [9.27334, 1.9577; 1.9577, 9.27334];
-    PLqExp = BLqExp(tauStar, tauStar);
-    PLqExpDA = PLqExp;
-    PLqExpDA(1:(nVertex+1):end) = 0;
-    PLqExpDA = PLqExpDA + diag(sum(PLqExpDA, 2))/...
-        (size(PLqExpDA, 2) - 1);
-    xHatLqExp = asge(PLqExp, dimLatentPosition);
-    
-    indXHat = zeros(1, nBlock);
-    for k = 1:nBlock
-        indXHat(k) = find(tauStar == k, 1);
-    end
-    
-    wL1Exp = procrustes(xHatL1Exp(indXHat, :), nuStar);
-    xHatL1Exp = xHatL1Exp*wL1Exp;
-    
-    wLqExp = procrustes(xHatLqExp(indXHat, :), nuStar);
-    xHatLqExp = xHatLqExp*wLqExp;
-    
-    
     % Plot
     if (hasPlot == 1)
+        
+        % Rotate xHatL1 to match muStar
+        wL1 = procrustes(nuHatL1, nuStar);
+        nuHatL1 = nuHatL1*wL1;
+        xHatL1 = xHatL1*wL1;
+        for i = 1:nBlock
+            sigmaHatL1(:, :, i) = wL1'*squeeze(sigmaHatL1(:, :, i))*wL1;
+        end
+        
+        % Rotate xHatLq to match muStar
+        wLq = procrustes(nuHatLq, nuStar);
+        nuHatLq = nuHatLq*wLq;
+        xHatLq = xHatLq*wLq;
+        for i = 1:nBlock
+            sigmaHatLq(:, :, i) = wLq'*squeeze(sigmaHatLq(:, :, i))*wLq;
+        end
+        
+        % Rotate xHatL10 to match muStar
+        wL10 = procrustes(nuHatL10, nuStar);
+        nuHatL10 = nuHatL10*wL10;
+        xHatL10 = xHatL10*wL10;
+        for i = 1:nBlock
+            sigmaHatL10(:, :, i) = wL10'*squeeze(sigmaHatL10(:, :, i))*wL10;
+        end
+        
+        % Rotate xHatLq0 to match muStar
+        wLq0 = procrustes(nuHatLq0, nuStar);
+        nuHatLq0 = nuHatLq0*wLq0;
+        xHatLq0 = xHatLq0*wLq0;
+        for i = 1:nBlock
+            sigmaHatLq0(:, :, i) = wLq0'*squeeze(sigmaHatLq0(:, :, i))*wLq0;
+        end
+        
+        
+        % Calculate Rotation o GMM o ASE(expect value of MLqE)
+        BL1Exp = [0.47619, 0.416667; 0.416667, 0.47619];
+        PL1Exp = BL1Exp(tauStar, tauStar);
+        PL1ExpDA = PL1Exp;
+        PL1ExpDA(1:(nVertex+1):end) = 0;
+        PL1ExpDA = PL1ExpDA + diag(sum(PL1ExpDA, 2))/...
+            (size(PL1ExpDA, 2) - 1);
+        xHatL1Exp = asge(PL1Exp, dimLatentPosition);
+        
+        BLqExp = [9.27334, 1.9577; 1.9577, 9.27334];
+        PLqExp = BLqExp(tauStar, tauStar);
+        PLqExpDA = PLqExp;
+        PLqExpDA(1:(nVertex+1):end) = 0;
+        PLqExpDA = PLqExpDA + diag(sum(PLqExpDA, 2))/...
+            (size(PLqExpDA, 2) - 1);
+        xHatLqExp = asge(PLqExp, dimLatentPosition);
+        
+        indXHat = zeros(1, nBlock);
+        for k = 1:nBlock
+            indXHat(k) = find(tauStar == k, 1);
+        end
+        
+        wL1Exp = procrustes(xHatL1Exp(indXHat, :), nuStar);
+        xHatL1Exp = xHatL1Exp*wL1Exp;
+        
+        wLqExp = procrustes(xHatLqExp(indXHat, :), nuStar);
+        xHatLqExp = xHatLqExp*wLqExp;
+        
+        % Plot
         scatterplot(xHatL1, tauHatL1, nuHatL1, sigmaHatL1, 'r', 'Mean');
         hold on;
         scatterplot(xHatLq, tauHatLq, nuHatLq, sigmaHatLq, 'b', 'Lq');
