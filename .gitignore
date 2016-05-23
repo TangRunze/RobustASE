@@ -6,3 +6,10 @@ Ref/
 writeup/
 data/
 results/
+*.aux
+
+*.log
+
+*.out
+
+*.gz
