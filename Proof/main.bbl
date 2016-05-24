@@ -1,0 +1,19 @@
+\begin{thebibliography}{1}
+
+\bibitem{davis1970rotation}
+Chandler Davis and William~Morton Kahan.
+\newblock The rotation of eigenvectors by a perturbation. iii.
+\newblock {\em SIAM Journal on Numerical Analysis}, 7(1):1--46, 1970.
+
+\bibitem{oliveira2009concentration}
+Roberto~Imbuzeiro Oliveira.
+\newblock Concentration of the adjacency matrix and of the laplacian in random
+  graphs with independent edges.
+\newblock {\em arXiv preprint arXiv:0911.0600}, 2009.
+
+\bibitem{tropp2012user}
+Joel~A Tropp.
+\newblock User-friendly tail bounds for sums of random matrices.
+\newblock {\em Foundations of computational mathematics}, 12(4):389--434, 2012.
+
+\end{thebibliography}

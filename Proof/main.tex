@@ -184,13 +184,13 @@ Let $\hat{P}^{(1)}$ be the element-wise MLE based on exponential distribution wi
 Define $H_{ij}^{(1)} = E[\hat{P}_{ij}^{(1)}] = (1-\epsilon) P_{ij} + \epsilon C_{ij}$,
 then for any constant $c > 0$, there exists another constant $n_0(c)$, independent of $n$, $P$, $C$ and $\epsilon$, such that if $n > n_0$, then for all $\eta$ satisfying $n^{-c} \le \eta \le 1/2$,
 \[
-	P \left( \| \hat{P}^{(1)} - H^{(1)} \|_2 \le 2 R \sqrt{n \ln(n/\eta) / m}\right) \ge 1 - \eta.
+	P \left( \| \hat{P}^{(1)} - H^{(1)} \|_2 \le 4 R \sqrt{n \ln(n/\eta)}\right) \ge 1 - \eta.
 \]
 \end{theorem}
-\textbf{Remark:} This is the extended version of Theorem 3.1 in \href{url}{http://arxiv.org/pdf/0911.0600v2.pdf}.
+\textbf{Remark:} This is the extended version of Theorem 3.1 in \cite{oliveira2009concentration}.
 
-Define $H^{(1)} = E[\hat{P}^{(1)}] = (1-\epsilon) P + \epsilon C$, where $P = X X^T$, $C = Y Y^T$.
-Let $Z = [\sqrt{1-\epsilon} X, \sqrt{\epsilon} Y]$, then $H^{(1)} = Z Z^T$.
+Define $H^{(1)} = E[\hat{P}^{(1)}] = (1-\epsilon) P + \epsilon C$, where $P = X X^T$, $X \in \mathbb{R}^{n \times d}$, $C = Y Y^T$, $Y \in \mathbb{R}^n$.
+Let $Z = [\sqrt{1-\epsilon} X, \sqrt{\epsilon} Y] \in \mathbb{R}^{n \times (d+1)}$, then $H^{(1)} = Z Z^T$ with rank at most $d+1$.
 
 Let $d^{(1)} = \mathrm{rank}(H^{(1)})$ be the dimension in which we are going to embed $\hat{P}^{(1)}$.
 
@@ -490,7 +490,7 @@ Then the following chain of inequalities holds for all $t \ge 0$.
 	P \left( \lambda_{\max} \left( \sum_k X_k \right) \ge t \right) \le d \cdot \exp \left( \frac{-t^2/2}{\sigma^2 + R t} \right).
 \]
 \end{theorem}
-\textbf{Remark:} See Theorem 6.2 in \href{url}{http://arxiv.org/pdf/1004.4389.pdf}.
+\textbf{Remark:} Theorem 6.2 in \cite{tropp2012user}.
 
 
 
@@ -510,10 +510,12 @@ Let $\hat{P}^{(1)}$ be the element-wise MLE based on exponential distribution wi
 Define $H_{ij}^{(1)} = E[\hat{P}_{ij}^{(1)}] = (1-\epsilon) P_{ij} + \epsilon C_{ij}$,
 then for any constant $c > 0$, there exists another constant $n_0(c)$, independent of $n$, $P$, $C$ and $\epsilon$, such that if $n > n_0$, then for all $\eta$ satisfying $n^{-c} \le \eta \le 1/2$,
 \[
-	P \left( \| \hat{P}^{(1)} - H^{(1)} \|_2 \le 2 R \sqrt{n \ln(n/\eta) / m}\right) \ge 1 - \eta.
+	P \left( \| \hat{P}^{(1)} - H^{(1)} \|_2 \le 4 R \sqrt{n \ln(n/\eta)}\right) \ge 1 - \eta.
 \]
 \end{theorem}
-\textbf{Remark:} This is the extended version of Theorem 3.1 in \href{url}{http://arxiv.org/pdf/0911.0600v2.pdf}.
+\textbf{Remark:} This is the extended version of Theorem 3.1 in \cite{oliveira2009concentration}.
+
+\noindent
 \begin{proof}
 Let $\{e_i\}_{i=1}^n$ be the canonical basis for $\mathbb{R}^n$. For each $1 \le i, j \le n$, define a corresponding matrix $G_{ij}$:
 \[
@@ -542,10 +544,11 @@ we have
     = & E[(\frac{1}{m}\sum_{t=1}^m A^{(t)}_{ij} - H^{(1)}_{ij})^k] \\
     = & E[(\frac{1}{m}\sum_{t=1}^m (A^{(t)}_{ij} - H^{(1)}_{ij}))^k] \\
     = & \frac{1}{m^k} E[(\sum_{t=1}^m (A^{(t)}_{ij} - H^{(1)}_{ij}))^k] \\
-    \le & \frac{1}{m^k} R^k k!.
+%    \le & \frac{1}{m^k} R^k k!.
+    \le & R^k k!.
     \stepcounter{equation}\tag{\theequation}\label{eqn:expectpdiffqpowerkL1}
 \end{align*}
-Combined with for $i \ne j$,
+Combined with
 \[
     G_{ij}^k \equiv \left\{
     \begin{array}{l l}
@@ -558,29 +561,29 @@ thus we have
 \begin{enumerate}
 \item When $k$ is even,
 \[
-E[X_{ij}^k] = E[(\hat{P}^{(1)}_{ij} - H^{(1)}_{ij})^k] G_{ij}^2 \preceq k! (R/m)^k G_{ij}^2;
+E[X_{ij}^k] = E[(\hat{P}^{(1)}_{ij} - H^{(1)}_{ij})^k] G_{ij}^2 \preceq k! R^k G_{ij}^2;
 \]
 \item When $k$ is odd,
 \[
-E[X_{ij}^k] = E[(\hat{P}^{(1)}_{ij} - H^{(1)}_{ij})^k] G_{ij} \preceq k! (R/m)^k G_{ij}^2.
+E[X_{ij}^k] = E[(\hat{P}^{(1)}_{ij} - H^{(1)}_{ij})^k] G_{ij} \preceq k! R^k G_{ij}^2.
 \]
 \end{enumerate}
 So
 \[
-E[X_{ij}^k] \preceq k! (R/m)^k G_{ij}^2.
+E[X_{ij}^k] \preceq k! R^k G_{ij}^2.
 \]
 Let
 \[
-	\sigma^2 := \left\| \sum_{1 \le i < j \le n} (\sqrt{2} R G_{ij}/m)^2 \right\| = 2 R^2 \| (n-1) I \|/m^2 = 2 R^2 (n-1)/m^2,
+	\sigma^2 := \left\| \sum_{1 \le i \le j \le n} (\sqrt{2} R G_{ij})^2 \right\|_2 = 2 R^2 \| n I \|_2 = 2 R^2 n.
 \]
-notice that random matrices $X_{ij}$ are independent, self-adjoint and have mean zero, apply Theorem \ref{thm:BernsteinMatrix} we have
+Notice that random matrices $X_{ij}$ are independent, self-adjoint and have mean zero, apply Theorem \ref{thm:BernsteinMatrix} we have
 \begin{align*}
 	P \left( \lambda_{\max}(\hat{P}^{(1)} - H^{(1)}) \ge t \right) &
-    \le n \exp \left( - \frac{t^2/2}{\sigma^2 + R t/m} \right) \\
-    & \le n \exp \left( - \frac{t^2/2}{2 R^2 n / m^2 + R t / m} \right).
+    \le n \exp \left( - \frac{t^2/2}{\sigma^2 + R t} \right) \\
+    & \le n \exp \left( - \frac{t^2/2}{2 R^2 n + R t} \right).
 \end{align*}
 
-Now consider $Y_{ij} \equiv \left( H^{(1)} - \hat{P}^{(1)} \right) G_{ij}$, $1 \le i < j \le n$. Then we have $H^{(1)} - \hat{P}^{(1)} = \sum_{1 \le i < j \le n} Y_{ij}$.
+Now consider $Y_{ij} \equiv \left( H^{(1)} - \hat{P}^{(1)} \right) G_{ij}$, $1 \le i \le j \le n$. Then we have $H^{(1)} - \hat{P}^{(1)} = \sum_{1 \le i \le j \le n} Y_{ij}$.
 Since
 \[
 	E[(H^{(1)} - \hat{P}^{(1)})^k]
@@ -589,39 +592,43 @@ Since
 \begin{enumerate}
 \item When $k$ is even,
 \[
-E[Y_{ij}^k] = E[(\hat{P}^{(1)} - H^{(1)})^k] G_{ij}^2 \preceq k! (R/m)^k G_{ij}^2;
+E[Y_{ij}^k] = E[(\hat{P}^{(1)} - H^{(1)})^k] G_{ij}^2 \preceq k! R^k G_{ij}^2;
 \]
 \item When $k$ is odd,
 \[
-E[Y_{ij}^k] = - E[(\hat{P}^{(1)} - H^{(1)})^k] G_{ij} \preceq k! (R/m)^k G_{ij}^2.
+E[Y_{ij}^k] = - E[(\hat{P}^{(1)} - H^{(1)})^k] G_{ij} \preceq k! R^k G_{ij}^2.
 \]
 \end{enumerate}
-Thus
+Thus by similar arguments,
 \begin{align*}
 	P \left( \lambda_{\min}(\hat{P}^{(1)} - H^{(1)}) \le -t \right) &
     = P \left( \lambda_{\max}(H^{(1)} - \hat{P}^{(1)}) \ge t \right) \\
-    & \le n \exp \left( - \frac{t^2/2}{2 R^2 n / m^2 + R t / m} \right).
+    & \le n \exp \left( - \frac{t^2/2}{2 R^2 n + R t} \right).
 \end{align*}
 Therefore we have
 \[
-	P \left( \| \hat{P}^{(1)} - H^{(1)} \| \ge t \right)
-    \le n \exp \left( - \frac{t^2/2}{2 R^2 n / m^2 + R t / m} \right).
+	P \left( \| \hat{P}^{(1)} - H^{(1)} \|_2 \ge t \right)
+    \le n \exp \left( - \frac{t^2/2}{2 R^2 n + R t} \right).
 \]
 
 Now let $c > 0$ be given and assume $n^{-c} \le \eta \le 1/2$. Then there exists a $n_0(c)$ independent of $n$, $P$, $C$ and $\epsilon$ such that whenever $n > n_0(c)$,
 \[
-	t =  2 R \sqrt{n \ln(n/\eta) / m} \le 2 R n.
+	t =  4 R \sqrt{n \ln(n/\eta)} \le 6 R n.
 \]
 
 Plugging this $t$ into the equation above, we get
 \[
-	P(\| \hat{P}^{(1)} - H^{(1)} \| \ge 2 R \sqrt{n \ln(n/\eta) / m})
-    \le n \exp\left(-\frac{t^2}{4 R^2 n / m}\right) = \eta.
+	P(\| \hat{P}^{(1)} - H^{(1)} \| \ge 4 R \sqrt{n \ln(n/\eta)})
+    \le n \exp\left(-\frac{t^2}{16 R^2 n}\right) = \eta.
 \]
 \end{proof}
 
+Define $H^{(1)} = E[\hat{P}^{(1)}] = (1-\epsilon) P + \epsilon C$, where $P = X X^T$, $X \in \mathbb{R}^{n \times d}$, $C = Y Y^T$, $Y \in \mathbb{R}^n$.
+Let $d^{(1)} = \mathrm{rank}(H^{(1)})$ be the dimension in which we are going to embed $\hat{P}^{(1)}$. Then we can define $H^{(1)} = Z Z^T$ where $Z \in \mathbb{R}^{n \times d^{(1)}}$.
+Since $H^{(1)} = [\sqrt{1-\epsilon} X, \sqrt{\epsilon} Y] [\sqrt{1-\epsilon} X, \sqrt{\epsilon} Y]^T$, we have $d^{(1)} \le d+1$.
 
-From now on, we will use $\hat{P}$ to represent $\hat{P}^{(1)}$, use $H$ to represent $H^{(1)}$. Assume $H = U S U^T = Z Z^T$, where $Z$ is a $n$-by-$k$ matrix. Then our estimate for $Z$ up to rotation is $\hat{Z} = \hat{U} \hat{S}^{1/2}$, where $\hat{U} \hat{S} \hat{U}^T$ is the rank-$k$ spectral decomposition of $|\hat{P}| = (\hat{P}^T \hat{P})^{1/2}$.
+
+For simplicity, from now on, we will use $\hat{P}$ to represent $\hat{P}^{(1)}$, use $H$ to represent $H^{(1)}$ and use $d$ to be the dimension $d^{(1)}$ we are going to embed. Assume $H = U S U^T = Z Z^T$, where $Z$ is a $n$-by-$d$ matrix. Then our estimate for $Z$ up to rotation is $\hat{Z} = \hat{U} \hat{S}^{1/2}$, where $\hat{U} \hat{S} \hat{U}^T$ is the rank-$d$ spectral decomposition of $|\hat{P}| = (\hat{P}^T \hat{P})^{1/2}$.
 
 \begin{lemma}
 \label{lemma:eigSShatL1}
@@ -634,29 +641,30 @@ $\| S \|_2 = \Theta(n)$, $\| \hat{S} \|_2 = \Theta(n)$.
 \label{lemma:AlmostOrthogonalL1}
 Let $W_1 \Sigma W_2^T$ be the singular value decomposition of $U^T \hat{U}$. Then for sufficiently large $n$, 
 \[
-	\| U^T \hat{U} - W_1 W_2^T \|_F = O(m^{-1} n^{-1} \log n)
+	\| U^T \hat{U} - W_1 W_2^T \|_F = O(n^{-1} \log n)
 \]
 with high probability.
 \end{lemma}
 \begin{proof}
-Let $\sigma_1, \cdots, \sigma_k$ denote the singular values of $U^T \hat{U}$. Then $\sigma_i = \cos(\theta_i)$ where the $\theta_i$ are the principal angles between the subspaces spanned by $\hat{U}$ and $U$. Furthermore, by the Davis-Kahan $\sin(\Theta)$ theorem, combined with Theorem \ref{thm:P1Diff} and Lemma \ref{lemma:eigSShatL1},
+Let $\sigma_1, \cdots, \sigma_d$ denote the singular values of $U^T \hat{U}$. Then $\sigma_i = \cos(\theta_i)$ where the $\theta_i$ are the principal angles between the subspaces spanned by $\hat{U}$ and $U$. Furthermore, by the Davis-Kahan $\sin(\Theta)$ theorem \cite{davis1970rotation}, combined with Theorem \ref{thm:P1Diff} and Lemma \ref{lemma:eigSShatL1},
 \begin{equation}
 \label{eqn:uhat2u2diffL1}
 	\|\hat{U} \hat{U}^T - U U^T\|_2 = \max_i |\sin(\theta_i)|
-    \le \frac{\|\hat{P} - H\|_2}{\lambda_k(H)}
-    \le \frac{C \sqrt{n \log n / m}}{n} = O(m^{-1/2} n^{-1/2} \sqrt{\log n})
-\end{equation}
-for sufficient large $n$. Here $\lambda_k(H)$denotes the $k$-th largest eigenvalue of $H$.\\
+    \le \frac{\|\hat{P} - H\|_2}{\lambda_d(H)}
+    \le \frac{C \sqrt{n \log n}}{n} = O(n^{-1/2} \sqrt{\log n})
+\end{equation}\RT{$\lambda_d(H) \ge n$?}
+for sufficient large $n$. Here $\lambda_d(H)$ denotes the $d$-th largest eigenvalue of $H$.\\
 We thus have
 \begin{align*}
 	\| U^T \hat{U} - W_1 W_2^T \|_F
     & = \| \Sigma - I \|_F
-    = \sqrt{\sum_{i=1}^k (1-\sigma_i)^2} \\
-    & \le \sum_{i=1}^k (1-\sigma_i) \le \sum_{i=1}^k (1-\sigma_i^2) \\
-    & = \sum_{i=1}^k \sin^2(\theta_i)
-    \le k \|\hat{U} \hat{U}^T - U U^T\|_2^2 \\
-    & = O(m^{-1} n^{-1} \log n).
+    = \sqrt{\sum_{i=1}^d (1-\sigma_i)^2} \\
+    & \le \sum_{i=1}^d (1-\sigma_i) \le \sum_{i=1}^d (1-\sigma_i^2) \\
+    & = \sum_{i=1}^d \sin^2(\theta_i)
+    \le d \|\hat{U} \hat{U}^T - U U^T\|_2^2 \\
+    & = O(n^{-1} \log n).
 \end{align*}
+\RT{First inequality?}
 \end{proof}
 
 We will denote the orthogonal matrix $W_1 W_2^T$ by $W^*$.
@@ -665,14 +673,14 @@ We will denote the orthogonal matrix $W_1 W_2^T$ by $W^*$.
 \label{lemma:exchangeL1}
 For sufficiently large $n$,
 \[
-	\| W^* \hat{S} - S W^* \|_F = O(m^{-1/2} \log n),
+	\| W^* \hat{S} - S W^* \|_F = O(\log n),
 \]
 \[
-	\|W^* \hat{S}^{1/2} - S^{1/2} W^* \|_F = O(m^{-1/2} n^{-1/2} \log n)
+	\|W^* \hat{S}^{1/2} - S^{1/2} W^* \|_F = O(n^{-1/2} \log n)
 \]
 and
 \[
-	\| W^* \hat{S}^{-1/2} - S^{-1/2} W^* \|_F = O(m^{-1/2} n^{-3/2} \log n)
+	\| W^* \hat{S}^{-1/2} - S^{-1/2} W^* \|_F = O(n^{-3/2} \log n)
 \]
 with high probability.
 \end{lemma}
@@ -681,12 +689,12 @@ Let $Q = \hat{U} - U U^T \hat{U}$. And $Q$ is the residual after projecting $\ha
 \[
 	\| \hat{U} - U U^T \hat{U} \|_F \le \| \hat{U} - U T \|_F
 \]
-for all $k \times k$ matrices $T$. Also, by Equation (\ref{eqn:uhat2u2diffL1}) we have
+for all $d \times d$ matrices $T$. Also, by Equation (\ref{eqn:uhat2u2diffL1}) we have
 \begin{equation}
 \label{eqn:QFnormL1}
 	\| Q \|_F = \| \hat{U} - U U^T \hat{U} \|_F
 	= \| \hat{U} \hat{U}^T - U U^T \|_F
-    = O(m^{-1/2} n^{-1/2} \sqrt{\log n}).
+    = O(n^{-1/2} \sqrt{\log n}).
 \end{equation}
 Then
 \begin{align*}
@@ -701,9 +709,9 @@ Combined with Theorem \ref{thm:P1Diff}, Lemma \ref{lemma:eigSShatL1}, Lemma \ref
 	& \| W^* \hat{S} - S W^* \|_F \\
     = & \| (W^* - U^T \hat{U}) \hat{S} + U^T (\hat{P} - H) Q + U^T (\hat{P} - H) U U^T \hat{U} + S (U^T \hat{U} - W^*)\|_F \\
     \le & \| W^* - U^T \hat{U} \|_F (\| \hat{S} \|_2 + \| S \|_2) + \| U^T \|_F \| \hat{P} - H\|_2 \| Q \|_F + \| U^T (\hat{P} - H) U \|_F \\
-    \le & O(m^{-1} \log n) + O(m^{-1/2} \log n) + \| U^T (\hat{P} - H) U \|_F
-\end{align*}
-with high probability. And we know $U^T (\hat{P} - H) U$ is a $k \times k$ matrix with $ij$-th entry to be
+    \le & O(\log n) + O(\log n) + \| U^T (\hat{P} - H) U \|_F
+\end{align*}\RT{last term}
+with high probability. And we know $U^T (\hat{P} - H) U$ is a $d \times d$ matrix with $ij$-th entry to be
 \[
 	u_i^T (\hat{P} - H) u_j
     = \sum_{s=1}^n \sum_{t=1}^n (\hat{P}_{st} - H_{st}) u_{is} u_{jt}
@@ -712,15 +720,15 @@ with high probability. And we know $U^T (\hat{P} - H) U$ is a $k \times k$ matri
 where $u_i$ and $u_j$ are the $i$-th and $j$-th columns of $U$. Thus, conditioned on $H$, $u_i^T (\hat{P} - H) u_j$ is a sum of independent mean 0 random variables and a term of order $O(1)$.
 
 
-By Equation \ref{eqn:expectpdiffqpowerkL1}, we have
+By Equation (\ref{eqn:expectpdiffqpowerkL1}), we have
 \begin{align*}
 	& E\left[\left((\hat{P}_{st} - H_{st}) u_{is} u_{jt}\right)^k\right] \\ 
-    \le & k! (R/m)^k u_{is}^k u_{jt}^k \\
-    \le & \frac{k!}{2} (R/m)^{k-2} (\sqrt{2} u_{is} u_{jt} R / m)^2.
+    \le & k! R^k u_{is}^k u_{jt}^k \\
+    \le & \frac{k!}{2} R^{k-2} (\sqrt{2} u_{is} u_{jt} R)^2.
 \end{align*}
 Also we have
 \[
-	\sigma^2 := |\sum_{s<t} 2 R^2 u_{is}^2 u_{jt}^2 / m^2|
+	\sigma^2 := |\sum_{s<t} 2 R^2 u_{is}^2 u_{jt}^2|
     \le 2 R^2 / m^2,
 \]
 then by Theorem \ref{thm:BernsteinMatrix}, we have
@@ -1568,6 +1576,7 @@ Thus $\theta_{\mathrm{min}}$ solves $f(x,\theta)|_{x_i = 0} = 0$.
 \end{enumerate}
 
 
-
+\bibliography{Bib}{}
+\bibliographystyle{plain}
 
 \end{document}
