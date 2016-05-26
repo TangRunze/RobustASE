@@ -87,13 +87,13 @@
 \subsection{Uncontaminated Model}
 Under the stochastic block model with parameters $(B, \rho)$, we have $X_i \stackrel{iid}{\sim} \sum_{k=1}^K \rho_k \delta_{\nu_k}$, where $\nu = [\nu_1, \cdots, \nu_K]^T \in \mathbb{R}^{K \times d}$ satisfies $B = \nu^T \nu$. Define the block assignment $\tau$ such that $\tau_i = k$ if and only if $X_i = \nu_k$. Let $P = X X^T$ where $X = [X_1, \cdots, X_n]^T$.
 
-First sample $\tau$ from the multinomial distribution with parameter $\rho$. Then we are going to sample $m$ conditionally i.i.d.~symmetric graphs $G^{(1)}, \cdots, G^{(m)}$ such that conditioning on $\tau$, $G^{(k)}_{ij} \stackrel{ind}{\sim} \mathrm{Exp}(P_{ij})$ for each $1 \le k \le m$, $1 \le i \le j \le n$.
+First sample $\tau$ from the multinomial distribution with parameter $\rho$. Then we are going to sample $m$ conditionally i.i.d.~symmetric and hollow graphs $G^{(1)}, \cdots, G^{(m)}$ such that conditioning on $\tau$, $G^{(k)}_{ij} \stackrel{ind}{\sim} \mathrm{Exp}(P_{ij})$ for each $1 \le k \le m$, $1 \le i < j \le n$.
 
 
 \subsection{Contaminated Observations}
 Now we assume the observed edges are contaminated with probability $\epsilon$.
 
-First sample $\tau$ from the multinomial distribution with parameter $\rho$. Then we are going to sample $m$ conditionally i.i.d. symmetric graphs $A^{(1)}, \cdots, A^{(m)}$ such that conditioning on $\tau$, $A^{(t)}_{ij} \stackrel{ind}{\sim} (1-\epsilon) \mathrm{Exp}(P_{ij}) + \epsilon \mathrm{Exp}(C_{ij})$ for each $1 \le t \le m$, $1 \le i \le j \le n$,  where the contamination is a rank-1 matrix $C = Y Y^T$, $Y \in \mathbb{R}^n$. 
+First sample $\tau$ from the multinomial distribution with parameter $\rho$. Then we are going to sample $m$ conditionally i.i.d. symmetric and hollow graphs $A^{(1)}, \cdots, A^{(m)}$ such that conditioning on $\tau$, $A^{(t)}_{ij} \stackrel{ind}{\sim} (1-\epsilon) \mathrm{Exp}(P_{ij}) + \epsilon \mathrm{Exp}(C_{ij})$ for each $1 \le t \le m$, $1 \le i < j \le n$,  where the contamination is a rank-1 matrix $C = Y Y^T$, $Y \in \mathbb{R}^n$. 
 
 
 \subsection{Goal}
@@ -148,7 +148,7 @@ For any $0 < q, \epsilon < 1$, there exists $C_0(P_{ij}, \epsilon, q) > 0$ such 
 	\lim_{m \to \infty} \left| E[\hat{P}^{(q)}_{ij}] - P_{ij} \right| < 
     \lim_{m \to \infty} \left| E[\hat{P}^{(1)}_{ij}] - P_{ij} \right|,
 \]
-for $1 \le i, j \le n$.
+for $1 \le i, j, \le n$ and $i \ne j$.
 \end{lemma}
 
 \begin{lemma}
@@ -161,7 +161,7 @@ For $1 \le i, j \le n$, we have
 \end{lemma}
 Thus,
 \begin{itemize}
-\item By Lemma \ref{lemma:ELqlEMLE}, when $C$ is large enough, for every $1 \le i, j \le n$, $\hat{P}_{ij}^{(q)}$ has smaller asymptotic bias in absolute value than $\hat{P}_{ij}^{(1)}$ as $m \to \infty$;
+\item By Lemma \ref{lemma:ELqlEMLE}, when $C$ is large enough, for every $1 \le i, j, \le n$ and $i \ne j$, $\hat{P}_{ij}^{(q)}$ has smaller asymptotic bias in absolute value than $\hat{P}_{ij}^{(1)}$ as $m \to \infty$;
 \item By Lemma \ref{lemma:VarMLEandLq0}, all entry-wise variances go to 0 for estimating $P$ as $m \to \infty$;
 \item In terms of MSE, $\hat{P}^{(q)}$ is better than $\hat{P}^{(1)}$ when $m$ and $C$ are large enough.
 \end{itemize}
@@ -396,7 +396,7 @@ Thus, we should choose the estimator $\widetilde{P}^{(q)}$.
   % Draw the arrows between the nodes and label them.
   \draw[tofrom] (MLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $n$, $C$ $\mathrm{large}$ $\mathrm{enough}$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(q)})$}
       node[midway,below] {$\underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(1)}) = \underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(q)}) = 0$} (MLqE);
-  \draw[tofrom] (MLE) -- node[midway,left] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(1)}) =$\\$ \underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$\\$ = O(n^{-1} (\log n)^3)$} (XMLE);
+  \draw[tofrom] (MLE) -- node[midway,left] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(1)}) =$\\$ \underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$\\$ = O(m n^{-1} (\log n)^3)$} (XMLE);
   \draw[tofrom] (MLqE) -- node[midway,right] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(q)}) = $\\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(q)})/\mathrm{Var}(\hat{P}_{ij}^{(q)})$\\$= O(m n^{-1} (\log n)^{3})$} (XMLqE);
   \draw[tofrom] (XMLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{sufficiently}$ $\mathrm{ large}$ $m$, $n$ $\mathrm{and}$ $C$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(q)})$}
       node[midway,below] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(1)}) = \underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0$} (XMLqE);
@@ -425,7 +425,7 @@ For any $0 < q < 1$, there exists $C_0(P_{ij}, \epsilon, q) > 0$ such that under
 	\lim_{m \to \infty} \left| E[\hat{P}^{(q)}_{ij}] - P_{ij} \right| < 
     \lim_{m \to \infty} \left| E[\hat{P}^{(1)}_{ij}] - P_{ij} \right|,
 \]
-for $1 \le i, j \le n$.
+for $1 \le i, j, \le n$ and $i \ne j$.
 \end{lemma}
 \begin{proof}
 For the MLE $\hat{P}^{(1)}_{ij} = \bar{A}_{ij}$,
@@ -464,15 +464,6 @@ Both MLE and ML$q$E follows a central limit theorem, which means their variances
 
 \subsection{$\widetilde{P}^{(1)}$ better than $\hat{P}^{(1)}$}
 
-\begin{definition}
-\label{def:CentralMomentBounded}
-A random variable $Z$ is called central moment bounded with real parameter $L > 0$,
-if for any integer $i \ge 1$ we have
-\[
-	E\left[ \left| Z - E[Z] \right|^i \right] \le
-    i \cdot L \cdot E\left[ \left| Z - E[Z] \right|^{i-1} \right].
-\]
-\end{definition}
 
 \begin{theorem}
 \label{thm:BernsteinMatrix}
@@ -501,7 +492,7 @@ Then the following chain of inequalities holds for all $t \ge 0$.
 
 \begin{theorem}[Theorem 3.3]
 \label{thm:P1Diff}
-Let $P$ and $C$ be two $n$-by-$n$ symmetric matrices satisfying element-wise conditions $0 < P_{ij} \le C_{ij} \le R$ for some constant $R > 0$. For $0 < \epsilon < 1$, we define $m$ symmetric matrices as
+Let $P$ and $C$ be two $n$-by-$n$ symmetric matrices satisfying element-wise conditions $0 < P_{ij} \le C_{ij} \le R$ for some constant $R > 0$. For $0 < \epsilon < 1$, we define $m$ symmetric and hollow matrices as
 \[
 	A^{(t)} \stackrel{iid}{\sim} (1-\epsilon) \mathrm{Exp}(P) + \epsilon \mathrm{Exp}(C),
 \]
@@ -526,7 +517,7 @@ Let $\{e_i\}_{i=1}^n$ be the canonical basis for $\mathbb{R}^n$. For each $1 \le
     \end{array}
     \right.
 \]
-Thus $\hat{P}^{(1)} = \sum_{1 \le i \le j \le n} \hat{P}^{(1)}_{ij} G_{ij}$ and $H^{(1)} = \sum_{1 \le i \le j \le n} H^{(1)}_{ij} G_{ij}$. Then we have $\hat{P}^{(1)} - H^{(1)} = \sum_{1 \le i \le j \le n} X_{ij}$, where $X_{ij} \equiv \left( \hat{P}^{(1)}_{ij} - H^{(1)}_{ij} \right) G_{ij}$, $1 \le i \le j \le n$.
+Thus $\hat{P}^{(1)} = \sum_{1 \le i < j \le n} \hat{P}^{(1)}_{ij} G_{ij}$ and $H^{(1)} = \sum_{1 \le i < j \le n} H^{(1)}_{ij} G_{ij}$. Then we have $\hat{P}^{(1)} - H^{(1)} = \sum_{1 \le i < j \le n} X_{ij}$, where $X_{ij} \equiv \left( \hat{P}^{(1)}_{ij} - H^{(1)}_{ij} \right) G_{ij}$, $1 \le i < j \le n$.
 
 First consider the $k$-th moment of $X_{ij}$ for $1 \le i < j \le n$. 
 Since
@@ -574,7 +565,7 @@ E[X_{ij}^k] \preceq k! R^k G_{ij}^2.
 \]
 Let
 \[
-	\sigma^2 := \left\| \sum_{1 \le i \le j \le n} (\sqrt{2} R G_{ij})^2 \right\|_2 = 2 R^2 \| n I \|_2 = 2 R^2 n.
+	\sigma^2 := \left\| \sum_{1 \le i < j \le n} (\sqrt{2} R G_{ij})^2 \right\|_2 = 2 R^2 \| (n - 1) I \|_2 = 2 R^2 (n - 1).
 \]
 Notice that random matrices $X_{ij}$ are independent, self-adjoint and have mean zero, apply Theorem \ref{thm:BernsteinMatrix} we have
 \begin{align*}
@@ -583,7 +574,7 @@ Notice that random matrices $X_{ij}$ are independent, self-adjoint and have mean
     & \le n \exp \left( - \frac{t^2/2}{2 R^2 n + R t} \right).
 \end{align*}
 
-Now consider $Y_{ij} \equiv \left( H^{(1)} - \hat{P}^{(1)} \right) G_{ij}$, $1 \le i \le j \le n$. Then we have $H^{(1)} - \hat{P}^{(1)} = \sum_{1 \le i \le j \le n} Y_{ij}$.
+Now consider $Y_{ij} \equiv \left( H^{(1)} - \hat{P}^{(1)} \right) G_{ij}$, $1 \le i < j \le n$. Then we have $H^{(1)} - \hat{P}^{(1)} = \sum_{1 \le i < j \le n} Y_{ij}$.
 Since
 \[
 	E[(H^{(1)} - \hat{P}^{(1)})^k]
@@ -623,18 +614,18 @@ Plugging this $t$ into the equation above, we get
 \]
 \end{proof}
 
-Define $H^{(1)} = E[\hat{P}^{(1)}] = (1-\epsilon) P + \epsilon C$, where $P = X X^T$, $X \in \mathbb{R}^{n \times d}$, $C = Y Y^T$, $Y \in \mathbb{R}^n$.
+Define $H^{(1)} = E[\hat{P}^{(1)}] = (1-\epsilon) P + \epsilon C$, where $P = X X^T$, $X \in \mathbb{R}^{n \times d}$, $C = Y Y^T$, $Y \in \mathbb{R}^n$. \RT{Extend $C$ to be rank $d'$?}
 Let $d^{(1)} = \mathrm{rank}(H^{(1)})$ be the dimension in which we are going to embed $\hat{P}^{(1)}$. Then we can define $H^{(1)} = Z Z^T$ where $Z \in \mathbb{R}^{n \times d^{(1)}}$.
 Since $H^{(1)} = [\sqrt{1-\epsilon} X, \sqrt{\epsilon} Y] [\sqrt{1-\epsilon} X, \sqrt{\epsilon} Y]^T$, we have $d^{(1)} \le d+1$.
 
 
-For simplicity, from now on, we will use $\hat{P}$ to represent $\hat{P}^{(1)}$, use $H$ to represent $H^{(1)}$ and use $d$ to be the dimension $d^{(1)}$ we are going to embed. Assume $H = U S U^T = Z Z^T$, where $Z$ is a $n$-by-$d$ matrix. Then our estimate for $Z$ up to rotation is $\hat{Z} = \hat{U} \hat{S}^{1/2}$, where $\hat{U} \hat{S} \hat{U}^T$ is the rank-$d$ spectral decomposition of $|\hat{P}| = (\hat{P}^T \hat{P})^{1/2}$.
+For simplicity, from now on, we will use $\hat{P}$ to represent $\hat{P}^{(1)}$, use $H$ to represent $H^{(1)}$ and use $k$ to represent the dimension $d^{(1)}$ we are going to embed. Assume $H = U S U^T = Z Z^T$, where $Z$ is a $n$-by-$k$ matrix. Then our estimate for $Z$ up to rotation is $\hat{Z} = \hat{U} \hat{S}^{1/2}$, where $\hat{U} \hat{S} \hat{U}^T$ is the rank-$d$ spectral decomposition of $|\hat{P}| = (\hat{P}^T \hat{P})^{1/2}$.
 
 \begin{lemma}
 \label{lemma:eigSShatL1}
 $\| S \|_2 = \Theta(n)$, $\| \hat{S} \|_2 = \Theta(n)$.
 \end{lemma}
-\RT{Need proof here.}
+\RT{$S$ by lemma, $\hat{S}$?.}
 
 
 \begin{lemma}
@@ -650,21 +641,20 @@ Let $\sigma_1, \cdots, \sigma_d$ denote the singular values of $U^T \hat{U}$. Th
 \begin{equation}
 \label{eqn:uhat2u2diffL1}
 	\|\hat{U} \hat{U}^T - U U^T\|_2 = \max_i |\sin(\theta_i)|
-    \le \frac{\|\hat{P} - H\|_2}{\lambda_d(H)}
+    \le \frac{\|\hat{P} - H\|_2}{\lambda_k(H)}
     \le \frac{C \sqrt{n \log n}}{n} = O(n^{-1/2} \sqrt{\log n})
-\end{equation}\RT{$\lambda_d(H) \ge n$?}
-for sufficient large $n$. Here $\lambda_d(H)$ denotes the $d$-th largest eigenvalue of $H$.\\
+\end{equation}\RT{$\lambda_k(H) \ge n$, here we need assumption of eigengap?}
+for sufficient large $n$. Here $\lambda_k(H)$ denotes the $k$-th largest eigenvalue of $H$.\\
 We thus have
 \begin{align*}
 	\| U^T \hat{U} - W_1 W_2^T \|_F
     & = \| \Sigma - I \|_F
-    = \sqrt{\sum_{i=1}^d (1-\sigma_i)^2} \\
-    & \le \sum_{i=1}^d (1-\sigma_i) \le \sum_{i=1}^d (1-\sigma_i^2) \\
-    & = \sum_{i=1}^d \sin^2(\theta_i)
-    \le d \|\hat{U} \hat{U}^T - U U^T\|_2^2 \\
+    = \sqrt{\sum_{i=1}^k (1-\sigma_i)^2} \\
+    & \le \sum_{i=1}^k (1-\sigma_i) \le \sum_{i=1}^k (1-\sigma_i^2) \\
+    & = \sum_{i=1}^k \sin^2(\theta_i)
+    \le k \|\hat{U} \hat{U}^T - U U^T\|_2^2 \\
     & = O(n^{-1} \log n).
 \end{align*}
-\RT{First inequality?}
 \end{proof}
 
 We will denote the orthogonal matrix $W_1 W_2^T$ by $W^*$.
@@ -689,13 +679,14 @@ Let $Q = \hat{U} - U U^T \hat{U}$. And $Q$ is the residual after projecting $\ha
 \[
 	\| \hat{U} - U U^T \hat{U} \|_F \le \| \hat{U} - U T \|_F
 \]
-for all $d \times d$ matrices $T$. Also, by Equation (\ref{eqn:uhat2u2diffL1}) we have
+for all $k \times k$ matrices $T$. Also, by Equation (\ref{eqn:uhat2u2diffL1}) we have
 \begin{equation}
 \label{eqn:QFnormL1}
 	\| Q \|_F = \| \hat{U} - U U^T \hat{U} \|_F
 	= \| \hat{U} \hat{U}^T - U U^T \|_F
     = O(n^{-1/2} \sqrt{\log n}).
 \end{equation}
+\RT{This is incorrect}
 Then
 \begin{align*}
 	W^* \hat{S} = & (W^* - U^T \hat{U}) \hat{S} + U^T \hat{U} \hat{S}
@@ -710,15 +701,14 @@ Combined with Theorem \ref{thm:P1Diff}, Lemma \ref{lemma:eigSShatL1}, Lemma \ref
     = & \| (W^* - U^T \hat{U}) \hat{S} + U^T (\hat{P} - H) Q + U^T (\hat{P} - H) U U^T \hat{U} + S (U^T \hat{U} - W^*)\|_F \\
     \le & \| W^* - U^T \hat{U} \|_F (\| \hat{S} \|_2 + \| S \|_2) + \| U^T \|_F \| \hat{P} - H\|_2 \| Q \|_F + \| U^T (\hat{P} - H) U \|_F \\
     \le & O(\log n) + O(\log n) + \| U^T (\hat{P} - H) U \|_F
-\end{align*}\RT{last term}
-with high probability. And we know $U^T (\hat{P} - H) U$ is a $d \times d$ matrix with $ij$-th entry to be
-\[
-	u_i^T (\hat{P} - H) u_j
-    = \sum_{s=1}^n \sum_{t=1}^n (\hat{P}_{st} - H_{st}) u_{is} u_{jt}
-    = 2 \sum_{s<t} (\hat{P}_{st} - H_{st}) u_{is} u_{jt} - \sum_{s=1}^n H_{ss} u_{is} u_{js}
-\]
-where $u_i$ and $u_j$ are the $i$-th and $j$-th columns of $U$. Thus, conditioned on $H$, $u_i^T (\hat{P} - H) u_j$ is a sum of independent mean 0 random variables and a term of order $O(1)$.
-
+\end{align*}
+with high probability. And we know $U^T (\hat{P} - H) U$ is a $k \times k$ matrix with $ij$-th entry to be
+\begin{align*}
+	& u_i^T (\hat{P} - H) u_j
+    = \sum_{s=1}^n \sum_{t=1}^n (\hat{P}_{st} - H_{st}) u_{is} u_{jt} \\
+    = & 2 \sum_{s<t} (\hat{P}_{st} - H_{st}) u_{is} u_{jt} - \sum_{s=1}^n H_{ss} u_{is} u_{js}
+\end{align*}
+where $u_i$ and $u_j$ are the $i$-th and $j$-th columns of $U$. Thus, conditioned on $H$, $U$ is fixed and $u_i^T (\hat{P} - H) u_j$ is a sum of independent mean 0 random variables and a term of order $O(1)$.
 
 By Equation (\ref{eqn:expectpdiffqpowerkL1}), we have
 \begin{align*}
@@ -728,23 +718,22 @@ By Equation (\ref{eqn:expectpdiffqpowerkL1}), we have
 \end{align*}
 Also we have
 \[
-	\sigma^2 := |\sum_{s<t} 2 R^2 u_{is}^2 u_{jt}^2|
-    \le 2 R^2 / m^2,
+	\sigma^2 := |\sum_{s<t} 2 R^2 u_{is}^2 u_{jt}^2| \le R^2,
 \]
 then by Theorem \ref{thm:BernsteinMatrix}, we have
 \[
 	P \left( \left| 2 \sum_{s<t} (\hat{P}_{st} - H_{st}) u_{is} u_{jt} \right| \ge t \right)
-    \le \exp \left( \frac{-t^2/2}{2 R^2 / m^2 + R t / m} \right),
+    \le \exp \left( \frac{-t^2/8}{R^2 + R t} \right),
 \]
-thus each entry of $U^T(\hat{P} - H)U$ is of order $O(m^{-1})$ with high probability and thus 
+thus each entry of $U^T(\hat{P} - H)U$ is of order $O(1)$ with high probability and thus \RT{$O(1)$ here?}
 \begin{equation}
 \label{eqn:uPhatdiffHuL1}
-	\|U^T(\hat{P} - H)U\|_F = O(m^{-1})
+	\|U^T(\hat{P} - H)U\|_F = O(1)
 \end{equation}
 with high probability.
 Hence
 \[
-	\| W^* \hat{S} - S W^* \|_F = O(m^{-1/2} \log n)
+	\| W^* \hat{S} - S W^* \|_F = O(\log n)
 \]
 with high probability.
 Also, since
@@ -752,8 +741,9 @@ Also, since
 	W_{ij}^* (\lambda_j^{1/2}(\hat{P}) - \lambda_i^{1/2}(H)) = W_{ij}^* \frac{\lambda_j(\hat{P}) - \lambda_i(H)}{\lambda_j^{1/2}(\hat{P}) + \lambda_i^{1/2}(H)}
 \]
 and the eigenvalues $\lambda_j^{1/2}(\hat{P})$ and $\lambda_i^{1/2}(H)$ are both of order $\Theta(\sqrt{n})$, we have
+\RT{$\lambda_i(H)$ is of order $O(n)$?}
 \[
-	\| W^* \hat{S}^{1/2} - S^{1/2} W^* \|_F = O(m^{-1/2} n^{-1/2} \log n).
+	\| W^* \hat{S}^{1/2} - S^{1/2} W^* \|_F = O(n^{-1/2} \log n).
 \]
 Similarly, since
 \[
@@ -761,7 +751,7 @@ Similarly, since
 \]
 and the eigenvalues $\lambda_j(\hat{P})$ and $\lambda_i(H)$ are both of order $\Theta(n)$, we have
 \[
-	\| W^* \hat{S}^{-1/2} - S^{-1/2} W^* \|_F = O(m^{-1/2} n^{-3/2} \log n).
+	\| W^* \hat{S}^{-1/2} - S^{-1/2} W^* \|_F = O(n^{-3/2} \log n).
 \]
 \end{proof}
 
@@ -771,7 +761,7 @@ and the eigenvalues $\lambda_j(\hat{P})$ and $\lambda_i(H)$ are both of order $\
 \label{lemma:XhatDiffXWexpressionL1}
 There exists a rotation matrix $W$ such that for sufficiently large $n$,
 \[
-	\|\hat{Z} - Z W\|_F = \| (\hat{P} - H) U S^{-1/2} \|_F + O(m^{-1/2} n^{-1/2} (\log n)^{3/2})
+	\|\hat{Z} - Z W\|_F = \| (\hat{P} - H) U S^{-1/2} \|_F + O(n^{-1/2} (\log n)^{3/2})
 \]
 with high probability.
 \end{lemma}
@@ -787,21 +777,21 @@ Let $Q_1 = U U^T \hat{U} - U W^*$, $Q_2 = W^* \hat{S}^{1/2} - S^{1/2} W^*$ and $
 \end{align*}
 By Lemma \ref{lemma:AlmostOrthogonalL1},
 \[
-	\|Q_1\|_F \le \| U\|_F \| U^T \hat{U} - W^* \|_F = O(m^{-1} n^{-1} \log n).
+	\|Q_1\|_F \le \| U\|_F \| U^T \hat{U} - W^* \|_F = O(n^{-1} \log n).
 \]
 By Lemma \ref{lemma:exchangeL1},
 \[
-	\|Q_2\|_F = O(m^{-1/2} n^{-1/2} \log n).
+	\|Q_2\|_F = O(n^{-1/2} \log n).
 \]
-By Equation \ref{eqn:QFnormL1},
+By Equation (\ref{eqn:QFnormL1}),
 \[
-	\|Q_3\|_F \le \|Q\|_F + \|Q_1\|_F = O(m^{-1/2} n^{-1/2} (\log n)^{1/2}).
+	\|Q_3\|_F \le \|Q\|_F + \|Q_1\|_F = O(n^{-1/2} (\log n)^{1/2}).
 \]
-By Equation \ref{eqn:uPhatdiffHuL1},
+By Equation (\ref{eqn:uPhatdiffHuL1}),
 \[
 	\| U U^T(\hat{P} - H)U W^*\hat{S}^{-1/2} \|_F
     \le \| U^T(\hat{P} - H)U \|_F \| \hat{S}^{-1/2} \|_2
-    = O(m^{-1} n^{-1/2}).
+    = O(n^{-1/2}).
 \]
 By Lemma \ref{lemma:exchangeL1},
 \[
@@ -810,14 +800,15 @@ By Lemma \ref{lemma:exchangeL1},
 Therefore,
 \begin{align*}
 	& \| \hat{Z} - U S^{1/2} W^* \|_F \\
-    = & \| (\hat{P} - H) U W^* \hat{S}^{-1/2} \|_F + O(m^{-1} n^{-1/2})
-    + \|I - U U^T \|_2 \| \hat{P} - H \|_2 O(m^{-1/2} n^{-1} (\log n)^{1/2}) \\
-    & + O(m^{-1} n^{-1/2} \log n) + O(m^{-1/2} n^{-1/2} \log n)\\
-    = & \| (\hat{P} - H) U W^* \hat{S}^{-1/2} \|_F + O(m^{-1/2} n^{-1/2} \log n) \\
-    \le & \| (\hat{P} - H) U S^{-1/2} W^* \|_F + \|(\hat{P} - H) U (W^* \hat{S}^{-1/2} - S^{-1/2} W^*) \|_F + O(m^{-1/2} n^{-1/2} \log n) \\
-    = & \| (\hat{P} - H) U S^{-1/2}\|_F + O(m^{-1} n^{-1} (\log n)^{3/2}) + O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
-    = & \| (\hat{P} - H) U S^{-1/2}\|_F + O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\.
+    = & \| (\hat{P} - H) U W^* \hat{S}^{-1/2} \|_F + O(n^{-1/2})
+    + \|I - U U^T \|_2 \| \hat{P} - H \|_2 O(n^{-1} (\log n)^{1/2}) \\
+    & + O(n^{-1/2} \log n) + O(n^{-1/2} \log n)\\
+    = & \| (\hat{P} - H) U W^* \hat{S}^{-1/2} \|_F + O(n^{-1/2} \log n) \\
+    \le & \| (\hat{P} - H) U S^{-1/2} W^* \|_F + \|(\hat{P} - H) U (W^* \hat{S}^{-1/2} - S^{-1/2} W^*) \|_F + O(n^{-1/2} \log n) \\
+    = & \| (\hat{P} - H) U S^{-1/2}\|_F + O(n^{-1} (\log n)^{3/2}) + O(n^{-1/2} (\log n)^{3/2}) \\
+    = & \| (\hat{P} - H) U S^{-1/2}\|_F + O(n^{-1/2} (\log n)^{3/2}).
 \end{align*}
+\RT{$\|I - U U^T\|_2 = O(1)$}
 Note that $Z = U S^{1/2} W$ for some orthogonal matrix $W$. As $W^*$ is also orthogonal, therefore $Z \tilde{W} = U S^{1/2} W^*$ for some orthogonal $\tilde{W}$, which completes the proof.
 \end{proof}
 
@@ -828,48 +819,47 @@ Note that $Z = U S^{1/2} W$ for some orthogonal matrix $W$. As $W^*$ is also ort
 \label{thm:XhatDiffXWL1}
 There exists a rotation matrix $W$ such that for sufficiently large $n$,
 \[
-	\max_i \| \hat{Z}_i - W Z_i \|_2 = O(m^{-1/2} n^{-1/2} (\log n)^{3/2})
+	\max_i \| \hat{Z}_i - W Z_i \|_2 = O(n^{-1/2} (\log n)^{3/2})
 \]
 with high probability.
 \end{theorem}
 \begin{proof}
 By Lemma \ref{lemma:XhatDiffXWexpressionL1}, we have
 \[
-	\|\hat{Z} - Z W\|_F = \| (\hat{P} - H) U S^{-1/2} \|_F + O(m^{-1/2} n^{-1/2} (\log n)^{3/2})
+	\|\hat{Z} - Z W\|_F = \| (\hat{P} - H) U S^{-1/2} \|_F + O(n^{-1/2} (\log n)^{3/2})
 \]
-and similarly we could have the bound for each row vector \RT{$k$ should be $d$ here?}
+and similarly we could have the bound for each column vector
 \begin{align*}
 	\max_i \| \hat{Z}_i - W Z_i \|_2
-    \le & \frac{1}{\lambda_k^{1/2}(H)} \max_i \| ((\hat{P} - H) U)_i \|_2 + O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
-    \le & \frac{k^{1/2}}{\lambda_k^{1/2}(H)} \max_j \| (\hat{P} - H) u_j \|_{\infty} + O(m^{-1/2} n^{-1/2} (\log n)^{3/2})
+    \le & \frac{1}{\lambda_k^{1/2}(H)} \max_i \| ((\hat{P} - H) U)_i \|_2 + O(n^{-1/2} (\log n)^{3/2}) \\
+    \le & \frac{k^{1/2}}{\lambda_k^{1/2}(H)} \max_j \| (\hat{P} - H) u_j \|_{\infty} + O(n^{-1/2} (\log n)^{3/2})
 \end{align*}
-where $u_j$ denotes the $j$-th column of $U$. Now given $i$ and $j$, the $i$-th element of the vector $(\hat{P} - H) u_j$ is of the form
+where $((\hat{P} - H) U)_i$ represents the $i$-th row of $(\hat{P} - H) U$ and $u_j$ denotes the $j$-th column of $U$. Now given $i$ and $j$, the $i$-th element of the vector $(\hat{P} - H) u_j$ is of the form
 \[
 	\sum_{s=1}^n (\hat{P}_{is} - H_{is}) u_{js} = \sum_{s \ne i} (\hat{P}_{is} - H_{is}) u_{js} - H_{ii} u_{ji}.
 \]
-Thus, conditioned on $H$, the $i$-th element of the vector $(\hat{P} - H) u_j$ is a sum of independent mean 0 random variables and a term of order $O(1)$. \RT{We don't have $O(m^{-1})$ here!}
-By Equation \ref{eqn:expectpdiffqpowerk}, we have
+Thus, conditioned on $H$, the $i$-th element of the vector $(\hat{P} - H) u_j$ is a sum of independent mean 0 random variables and a term of order $O(1)$.
+By Equation (\ref{eqn:expectpdiffqpowerkL1}), we have
 \begin{align*}
 	& E\left[\left((\hat{P}_{is} - H_{is}) u_{js}\right)^k\right] \\ 
-    \le & k! (R/m)^k u_{js}^k \\
-    \le & \frac{k!}{2} (R/m)^{k-2} (\sqrt{2} R u_{js} / m)^2.
+    \le & k! R^k u_{js}^k \\
+    \le & \frac{k!}{2} R^{k-2} (\sqrt{2} R u_{js})^2.
 \end{align*}
 Also we have
 \[
-	\sigma^2 := |\sum_{s \ne i} 2 R^2 u_{js}^2 / m^2|
-    \le 2 R^2 / m^2,
+	\sigma^2 := |\sum_{s \ne i} 2 R^2 u_{js}^2| \le 2 R^2,
 \]
 then by Theorem \ref{thm:BernsteinMatrix}, we have
 \[
 	P \left( \left| \sum_{s \ne i} (\hat{P}_{is} - H_{is}) u_{js} \right| \ge t \right)
-    \le \exp \left( \frac{-t^2/2}{2 R^2 / m^2 + R t / m} \right),
+    \le \exp \left( \frac{-t^2/2}{2 R^2 + R t} \right),
 \]
-i.e. it is of order $O(m^{-1})$ with high probability.
+i.e. it is of order $O(1)$ with high probability. \RT{$O(1)$ here?}
 Taking the union bound over all $i$ and $j$, we have
 \begin{align*}
 	\max_i \| \hat{Z}_i - W Z_i \|_2
-    & \le \frac{C k^{1/2}}{\lambda_k^{1/2}(H)} m^{-1/2} \log n + O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
-    & = O(m^{-1/2} n^{-1/2} (\log n)^{3/2}).
+    & \le \frac{C k^{1/2}}{\lambda_k^{1/2}(H)} \log n + O(n^{-1/2} (\log n)^{3/2}) \\
+    & = O(n^{-1/2} (\log n)^{3/2}).
 \end{align*}
 \RT{$\log n$}
 \end{proof}
@@ -886,16 +876,16 @@ Let $W$ be the rotation matrix in Theorem \ref{thm:XhatDiffXWL1}, then
 \begin{align*}
 	\left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right|
     = & \left| \hat{Z}_i^T \hat{Z}_j - \hat{Z}_i^T W Z_j + \hat{Z}_i^T W Z_j - (W Z_i)^T W Z_j \right| \\
-    \le & \left| \hat{Z}_i^T (\hat{Z}_j - W Z_j) + (\hat{Z}_i^T - (W Z_i^T)) W Z_j \right| \\
-    \le & \|\hat{Z}_i\|_2 \|\hat{Z}_j - W Z_j\|_2 + \|Z_j\|_2 \|\hat{Z}_i^T - (W Z_i^T)\|_2.
+    \le & \left| \hat{Z}_i^T (\hat{Z}_j - W Z_j) + (\hat{Z}_i^T - (W Z_i)^T) W Z_j \right| \\
+    \le & \|\hat{Z}_i\|_2 \|\hat{Z}_j - W Z_j\|_2 + \|Z_j\|_2 \|\hat{Z}_i^T - (W Z_i)^T\|_2.
 \end{align*}
-Since $\|Z_i\|_2^2 = Z_i^T Z_i = H^{q}_{ii} = E[\hat{P}^{(q)}_{ii}] \le E[\hat{P}^{(1)}_{ii}] = (1-\epsilon) P_{ij} + \epsilon C_{ij} \le R$, we have $\|Z_i\|_2 = O(1)$.
+Since $\|Z_i\|_2^2 = Z_i^T Z_i = H^{(1)}_{ii} =  E[\hat{P}^{(1)}_{ii}] = (1-\epsilon) P_{ij} + \epsilon C_{ij} \le R$, we have $\|Z_i\|_2 = O(1)$.
 Combined with Theorem \ref{thm:XhatDiffXWL1},
 \begin{align*}
     \left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right|
-    = & (\|\hat{Z}_i\|_2 + \|Z_j\|_2) O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
-    \le & (\|\hat{Z}_i - W Z_i\|_2 + \|W Z_i\|_2 + \|Z_j\|_2) O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
-    = & O(m^{-1/2} n^{-1/2} (\log n)^{3/2})
+    = & (\|\hat{Z}_i\|_2 + \|Z_j\|_2) O(n^{-1/2} (\log n)^{3/2}) \\
+    \le & (\|\hat{Z}_i - W Z_i\|_2 + \|W Z_i\|_2 + \|Z_j\|_2) O(n^{-1/2} (\log n)^{3/2}) \\
+    = & O(n^{-1/2} (\log n)^{3/2})
 \end{align*}
 with high probability.
 \end{proof}
@@ -922,7 +912,7 @@ Direct result from Lemma \ref{lemma:1stMomentPhatDiffL1} by noticing
 
 \begin{theorem}
 \label{thm:VarASEL1}
-$\mathrm{Var}(\hat{Z}_i^T \hat{Z}_j) = O(m^{-1} n^{-1} (\log n)^3)$ with high probability.
+$\mathrm{Var}(\hat{Z}_i^T \hat{Z}_j) = O(n^{-1} (\log n)^3)$ with high probability.
 \end{theorem}
 \begin{proof}
 By Lemma \ref{lemma:1stMomentPhatDiffL1},
@@ -935,9 +925,9 @@ By Lemma \ref{lemma:1stMomentPhatDiffL1},
     \le & E[(\hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j)^2] + E[(Z_i^T Z_j - E[\hat{Z}_i^T \hat{Z}_j])^2] \\ 
     & + 2\sqrt{E[(\hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j)^2] E[(Z_i^T Z_j - E[\hat{Z}_i^T \hat{Z}_j])^2]} \\
     \le & 4 E[(\hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j)^2] \\
-    = & O(m^{-1} n^{-1} (\log n)^3)
+    = & O(n^{-1} (\log n)^3)
 \end{align*}
-with high probability.
+with high probability. \RT{Expectation with high probability?}
 \end{proof}
 
 
@@ -955,12 +945,16 @@ Direct result from central limit theorem.
 
 \begin{theorem}
 \label{thm:AREL1}
-For fixed $m$, $1 \le i, j \le n$,
+For fixed $m$, $1 \le i, j \le n$ and $i \ne j$,
 \[
-	\frac{\mathrm{Var}(\widetilde{P}_{ij}^{(1)})}{\mathrm{Var}(\hat{P}_{ij}^{(1)}}
-    = O(n^{-1} (\log n)^3).
+	\frac{\mathrm{Var}(\widetilde{P}_{ij}^{(1)})}{\mathrm{Var}(\hat{P}_{ij}^{(1)})}
+    = O(m n^{-1} (\log n)^3).
 \]
 Thus
+\[
+	\mathrm{ARE}(\hat{P}_{ij}^{(1)}, \widetilde{P}_{ij}^{(1)}) = 0.
+\]
+Furthermore, as long as $m$ goes to infinity of order $o(n(\log n)^3)$,
 \[
 	\mathrm{ARE}(\hat{P}_{ij}^{(1)}, \widetilde{P}_{ij}^{(1)}) = 0.
 \]
@@ -1574,6 +1568,20 @@ When $x_i = 0$, It's like $m-1$ points $x^-$; \\
 When $x_i = \infty$, $f(x,\theta) = f(x^-, \theta) - \theta$. \\
 Thus $\theta_{\mathrm{min}}$ solves $f(x,\theta)|_{x_i = 0} = 0$.
 \end{enumerate}
+
+
+
+\section{Appendix}
+\begin{definition}
+\label{def:CentralMomentBounded}
+A random variable $Z$ is called central moment bounded with real parameter $L > 0$,
+if for any integer $i \ge 1$ we have
+\[
+	E\left[ \left| Z - E[Z] \right|^i \right] \le
+    i \cdot L \cdot E\left[ \left| Z - E[Z] \right|^{i-1} \right].
+\]
+\end{definition}
+
 
 
 \bibliography{Bib}{}
