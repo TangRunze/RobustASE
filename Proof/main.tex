@@ -514,11 +514,11 @@ P(|(Z^T Z - n E[Z_1 Z_1^T])_{ij}| \ge R \sqrt{n\log{n}}) \le \frac{2}{n^2}.
 \]
 By the union bound, we have
 \[
-P(\|(Z^T Z - n E[Z_1 Z_1^T])_{ij}\|_F \ge k^2 R \sqrt{n\log{n}}) \le \frac{2 k^2}{n^2}.
+P(\|(Z^T Z - n E[Z_1 Z_1^T])_{ij}\|_F \ge k R \sqrt{n\log{n}}) \le \frac{2 k^2}{n^2}.
 \]
 Then by Weyl's Theorem \cite{horn2012matrix}, we have
 \[
-|\lambda_i(H) - n \lambda_i(Z_1 Z_1^T)| \le \|Z^T Z - n E[Z_1 Z_1^T]\|_2 \le k^2 R \sqrt{n\log{n}}
+|\lambda_i(H) - n \lambda_i(Z_1 Z_1^T)| \le \|Z^T Z - n E[Z_1 Z_1^T]\|_2 \le k R \sqrt{n\log{n}}
 \]
 with probability at least $1 - \frac{2 k^2}{n^2}$.
 Thus $\lambda_i(H) = S_{ii} = \Theta(n)$ with probability at least $1 - \frac{2 k^2}{n^2}$ when $i \le k$.
