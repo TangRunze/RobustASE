@@ -182,7 +182,7 @@ Thus,
 For fixed $m$, $1 \le i, j \le n$,
 \[
 	\frac{\mathrm{Var}(\widetilde{P}_{ij}^{(1)})}{\mathrm{Var}(\hat{P}_{ij}^{(1)}}
-    = O(n^{-1} (\log n)^3).
+    = O(m n^{-1} (\log n)^3).
 \]
 Thus
 \[
@@ -207,7 +207,7 @@ Then
 \begin{itemize}
 	\item For each $1 \le i, j \le n$, both $\hat{P}_{ij}^{(1)}$ and $\widetilde{P}_{ij}^{(1)}$ have the same asymptotic bias as $n \to \infty$;
     \item Fix $m$, for every $1 \le i,j \le n$, $\mathrm{ARE}(\hat{P}_{ij}^{(1)}, \widetilde{P}_{ij}^{(1)}) = \lim_{n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)}) = 0$, which means $\widetilde{P}^{(1)}$ is better than $\hat{P}^{(1)}$;
-    \item Actually when fixing $m$, for every $1 \le i,j \le n$, $\mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$ is of order $O(n^{-1})$ as $n \to \infty$.
+    \item Actually when fixing $m$, for every $1 \le i,j \le n$, $\mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$ is of order $O(n^{-1} (\log n)^3)$ as $n \to \infty$.
 \end{itemize}
 
 
