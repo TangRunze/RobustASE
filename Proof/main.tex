@@ -270,8 +270,8 @@ Thus, we should choose the estimator $\widetilde{P}^{(q)}$.
   % Draw the arrows between the nodes and label them.
   \draw[tofrom] (MLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $n$, $C$ $\mathrm{large}$ $\mathrm{enough}$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(q)})$}
       node[midway,below] {$\underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(1)}) = \underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(q)}) = 0$} (MLqE);
-  \draw[tofrom] (MLE) -- node[midway,left] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(1)}) =$\\$ \underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$\\$ = O(m n^{-1} (\log n)^3)$} (XMLE);
-  \draw[tofrom] (MLqE) -- node[midway,right] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(q)}) = $\\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(q)})/\mathrm{Var}(\hat{P}_{ij}^{(q)})$\\$= O(m n^{-1} (\log n)^{3})$} (XMLqE);
+  \draw[tofrom] (MLE) -- node[midway,left] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(1)}) =$\\$ \underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$\\$ = O(m n^{-2} (\log n)^6)$} (XMLE);
+  \draw[tofrom] (MLqE) -- node[midway,right] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(q)}) = $\\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(q)})/\mathrm{Var}(\hat{P}_{ij}^{(q)})$\\$= O(m n^{-2} (\log n)^{6})$} (XMLqE);
   \draw[tofrom] (XMLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{sufficiently}$ $\mathrm{ large}$ $m$, $n$ $\mathrm{and}$ $C$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(q)})$}
       node[midway,below] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(1)}) = \underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0$} (XMLqE);
 \end{tikzpicture}
@@ -699,7 +699,7 @@ By Equation (\ref{eqn:uPhatdiffHuL1}),
 \[
 	\| U U^T(\hat{P} - H)U W^*\hat{S}^{-1/2} \|_F
     \le \| U^T(\hat{P} - H)U \|_F \| \hat{S}^{-1/2} \|_2
-    = O(n^{-1/2}).
+    = O(n^{-1/2} \log n).
 \]
 By Lemma \ref{lemma:exchangeL1},
 \[
@@ -708,7 +708,7 @@ By Lemma \ref{lemma:exchangeL1},
 Therefore,
 \begin{align*}
 	& \| \hat{Z} - U S^{1/2} W^* \|_F \\
-    = & \| (\hat{P} - H) U W^* \hat{S}^{-1/2} \|_F + O(n^{-1/2})
+    = & \| (\hat{P} - H) U W^* \hat{S}^{-1/2} \|_F + O(n^{-1/2} \log n)
     + \|I - U U^T \|_2 \| \hat{P} - H \|_2 O(n^{-1} (\log n)^{1/2}) \\
     & + O(n^{-1/2} \log n) + O(n^{-1/2} \log n)\\
     = & \| (\hat{P} - H) U W^* \hat{S}^{-1/2} \|_F + O(n^{-1/2} \log n) \\
@@ -776,7 +776,7 @@ Taking the union bound over all $i$ and $j$, with high probability we have
 
 \begin{lemma}
 \label{lemma:1stMomentPhatDiffL1}
-$\left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right| = O(n^{-1/2} (\log n)^{3/2})$ with high probability.
+$\left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right| = O(n^{-1} (\log n)^{3})$ with high probability.
 \end{lemma}
 \begin{proof}
 Let $W$ be the rotation matrix in Theorem \ref{thm:XhatDiffXWL1}, then
@@ -792,7 +792,7 @@ Combined with Theorem \ref{thm:XhatDiffXWL1},
     \left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right|
     = & (\|\hat{Z}_i\|_2 + \|Z_j\|_2) O(n^{-1/2} (\log n)^{3/2}) \\
     \le & (\|\hat{Z}_i - W Z_i\|_2 + \|W Z_i\|_2 + \|Z_j\|_2) O(n^{-1/2} (\log n)^{3/2}) \\
-    = & O(n^{-1/2} (\log n)^{3/2})
+    = & O(n^{-1} (\log n)^{3})
 \end{align*}
 with high probability.
 \end{proof}
@@ -819,7 +819,7 @@ Direct result from Lemma \ref{lemma:1stMomentPhatDiffL1} by noticing
 
 \begin{theorem}
 \label{thm:VarASEL1}
-$\mathrm{Var}(\hat{Z}_i^T \hat{Z}_j) = O(n^{-1} (\log n)^3)$ with high probability.
+$\mathrm{Var}(\hat{Z}_i^T \hat{Z}_j) = O(n^{-2} (\log n)^6)$ with high probability.
 \end{theorem}
 \begin{proof}
 By Lemma \ref{lemma:1stMomentPhatDiffL1},
@@ -832,7 +832,7 @@ By Lemma \ref{lemma:1stMomentPhatDiffL1},
     \le & E[(\hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j)^2] + E[(Z_i^T Z_j - E[\hat{Z}_i^T \hat{Z}_j])^2] \\ 
     & + 2\sqrt{E[(\hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j)^2] E[(Z_i^T Z_j - E[\hat{Z}_i^T \hat{Z}_j])^2]} \\
     \le & 4 E[(\hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j)^2] \\
-    = & O(n^{-1} (\log n)^3)
+    = & O(n^{-2} (\log n)^6)
 \end{align*}
 with high probability. \RT{Expectation with high probability?}
 \end{proof}
@@ -855,7 +855,7 @@ Direct result from central limit theorem.
 For fixed $m$, $1 \le i, j \le n$ and $i \ne j$,
 \[
 	\frac{\mathrm{Var}(\widetilde{P}_{ij}^{(1)})}{\mathrm{Var}(\hat{P}_{ij}^{(1)})}
-    = O(m n^{-1} (\log n)^3).
+    = O(m n^{-2} (\log n)^6).
 \]
 Thus
 \[
@@ -1299,7 +1299,7 @@ Taking the union bound over all $i$ and $j$, we have
 
 \begin{lemma}
 \label{lemma:1stMomentPhatDiffLq}
-$\left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right| = O(n^{-1/2} (\log n)^{3/2})$ with high probability.
+$\left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right| = O(n^{-1} (\log n)^{3})$ with high probability.
 \end{lemma}
 \begin{proof}
 Let $W$ be the rotation matrix in Theorem \ref{thm:XhatDiffXW}, then
@@ -1315,7 +1315,7 @@ Combined with Theorem \ref{thm:XhatDiffXW},
     \left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right|
     = & (\|\hat{Z}_i\|_2 + \|Z_j\|_2) O(n^{-1/2} (\log n)^{3/2}) \\
     \le & (\|\hat{Z}_i - W Z_i\|_2 + \|W Z_i\|_2 + \|Z_j\|_2) O(n^{-1/2} (\log n)^{3/2}) \\
-    = & O(n^{-1/2} (\log n)^{3/2})
+    = & O(n^{-1} (\log n)^{3})
 \end{align*}
 with high probability.
 \end{proof}
@@ -1342,7 +1342,7 @@ Direct result from Lemma \ref{lemma:1stMomentPhatDiffLq} by noticing
 
 \begin{theorem}
 \label{thm:VarASELq}
-$\mathrm{Var}(\hat{Z}_i^T \hat{Z}_j) = O(n^{-1} (\log n)^3)$ with high probability.
+$\mathrm{Var}(\hat{Z}_i^T \hat{Z}_j) = O(n^{-2} (\log n)^6)$ with high probability.
 \end{theorem}
 \begin{proof}
 \begin{align*}
@@ -1354,7 +1354,7 @@ $\mathrm{Var}(\hat{Z}_i^T \hat{Z}_j) = O(n^{-1} (\log n)^3)$ with high probabili
     \le & E[(\hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j)^2] + E[(Z_i^T Z_j - E[\hat{Z}_i^T \hat{Z}_j])^2] \\ 
     & + 2\sqrt{E[(\hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j)^2] E[(Z_i^T Z_j - E[\hat{Z}_i^T \hat{Z}_j])^2]} \\
     \le & 4 E[(\hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j)^2] \\
-    = & O(n^{-1} (\log n)^3)
+    = & O(n^{-2} (\log n)^6)
 \end{align*}
 with high probability.
 \end{proof}
@@ -1380,7 +1380,7 @@ Direct result from Theorem \ref{thm:VarLq}.
 For fixed $m$, $1 \le i, j \le n$,
 \[
 	\frac{\mathrm{Var}(\widetilde{P}_{ij}^{(q)})}{\mathrm{Var}(\hat{P}_{ij}^{(q)})}
-    = O(m n^{-1} (\log n)^3).
+    = O(m n^{-2} (\log n)^6).
 \]
 Thus
 \[
