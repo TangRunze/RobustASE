@@ -1,0 +1,48 @@
+\begin{thebibliography}{1}
+
+\bibitem{davis1970rotation}
+Chandler Davis and William~Morton Kahan.
+\newblock The rotation of eigenvectors by a perturbation. iii.
+\newblock {\em SIAM Journal on Numerical Analysis}, 7(1):1--46, 1970.
+
+\bibitem{ferrari2010}
+Davide Ferrari and Yuhong Yang.
+\newblock Maximum lq-likelihood estimation.
+\newblock {\em Ann. Statist.}, 38(2):753--783, 04 2010.
+
+\bibitem{horn2012matrix}
+Roger~A Horn and Charles~R Johnson.
+\newblock {\em Matrix analysis}.
+\newblock Cambridge university press, 2012.
+
+\bibitem{oliveira2009concentration}
+Roberto~Imbuzeiro Oliveira.
+\newblock Concentration of the adjacency matrix and of the laplacian in random
+  graphs with independent edges.
+\newblock {\em arXiv preprint arXiv:0911.0600}, 2009.
+
+\bibitem{qin2013maximum}
+Yichen Qin and Carey~E Priebe.
+\newblock Maximum l q-likelihood estimation via the expectation-maximization
+  algorithm: A robust estimation of mixture models.
+\newblock {\em Journal of the American Statistical Association},
+  108(503):914--928, 2013.
+
+\bibitem{rohe2011spectral}
+Karl Rohe, Sourav Chatterjee, and Bin Yu.
+\newblock Spectral clustering and the high-dimensional stochastic blockmodel.
+\newblock {\em The Annals of Statistics}, pages 1878--1915, 2011.
+
+\bibitem{sussman2014consistent}
+Daniel~L Sussman, Minh Tang, and Carey~E Priebe.
+\newblock Consistent latent position estimation and vertex classification for
+  random dot product graphs.
+\newblock {\em Pattern Analysis and Machine Intelligence, IEEE Transactions
+  on}, 36(1):48--57, 2014.
+
+\bibitem{tropp2012user}
+Joel~A Tropp.
+\newblock User-friendly tail bounds for sums of random matrices.
+\newblock {\em Foundations of computational mathematics}, 12(4):389--434, 2012.
+
+\end{thebibliography}
