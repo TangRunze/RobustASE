@@ -1261,8 +1261,8 @@ By Lemma \ref{lemma:XhatDiffXWexpression}, we have
 and similarly we could have the bound for each row vector
 \begin{align*}
 	\max_i \| \hat{Z}_i - W Z_i \|_2
-    \le & \frac{1}{\lambda_d^{1/2}(H)} \max_i \| ((\hat{P} - H) U)_i \|_2 + O(n^{-1/2} (\log n)^{3/2}) \\
-    \le & \frac{d^{1/2}}{\lambda_d^{1/2}(H)} \max_j \| (\hat{P} - H) u_j \|_{\infty} + O(n^{-1/2} (\log n)^{3/2})
+    \le & \frac{1}{\lambda_k^{1/2}(H)} \max_i \| ((\hat{P} - H) U)_i \|_2 + O(n^{-1/2} (\log n)^{3/2}) \\
+    \le & \frac{k^{1/2}}{\lambda_k^{1/2}(H)} \max_j \| (\hat{P} - H) u_j \|_{\infty} + O(n^{-1/2} (\log n)^{3/2})
 \end{align*}
 where $u_j$ denotes the $j$-th column of $U$. Now given $i$ and $j$, the $i$-th element of the vector $(\hat{P} - H) u_j$ is of the form
 \[
