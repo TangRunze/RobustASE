@@ -1,15 +1,5 @@
-*.mat
 *.asv
-*.nb
-*.txt
-Ref/
-writeup/
-data/
-results/
 *.aux
-
 *.log
-
 *.out
-
 *.gz
