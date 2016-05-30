@@ -293,6 +293,49 @@ Thus, we should choose the estimator $\widetilde{P}^{(q)}$.
 
 \subsection{$\hat{P}^{(q)}$ better than $\hat{P}^{(1)}$}
 
+\begin{lemma}
+\label{lemma:LqlMLE}
+Consider the model $X_1, \cdots, X_m \stackrel{iid}{\sim} \mathrm{Exp}(\theta)$ with $E[X_1] = \theta$. Given any data $x = (x_1, \cdots, x_m)$ such that $x_{(1)} > 0$ and not all $x_i$'s are the same, then $\hat{\theta}_q(x) < \hat{\theta}_1(x)$ for $0 < q < 1$, i.e. ML$q$E \cite{ferrari2010, qin2013maximum} is always less than MLE under exponential distribution no matter how the data is sampled.
+\end{lemma}
+\begin{proof}
+The MLE is
+\[
+	\hat{\theta}_1(x) = \bar{x}.
+\]
+And the ML$q$E $\hat{\theta}_q(x)$ solves the equation
+\[
+	\sum_{i=1}^m e^{-\frac{(1-q)x_i}{\hat{\theta}_q(x)}}(x_i - \hat{\theta}_q(x)) = 0.
+\]
+Consider the continuous function $g(\theta, x) = \sum_{i=1}^m e^{-\frac{(1-q)x_i}{\theta}}(x_i - \theta)$. 
+
+Let $x_{(1)} \le \cdots \le x_{(l)} \le \bar{x} \le x_{(l+1)} \le \cdots \le x_{(m)}$. Define $s_i = \bar{x} - x_{(i)}$ for $1 \le i \le l$, and $t_{i} = x_{(l+i)} - \bar{x}$ for $1 \le i \le m - l$. Note that $\sum_{i=1}^l s_i = \sum_{i=1}^{m-l} t_i$. Then we have
+\begin{align*}
+g(\hat{\theta}_1(x), x) & = g(\bar{x}, x) \\
+& = \sum_{i=1}^m e^{-\frac{(1-q)x_{(i)}}{\bar{x}}}(x_{(i)} - \bar{x}) \\
+& = - \sum_{i=1}^l e^{-\frac{(1-q)x_{(i)}}{\bar{x}}}s_i
++ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\bar{x}}}t_i\\
+& \le - e^{-(1-q)} \sum_{i=1}^l s_i
++ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\bar{x}}}t_i\\
+& \le - e^{-(1-q)} \sum_{i=1}^{m-l} t_i
++ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\bar{x}}}t_i\\
+& \le - \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\bar{x}}}t_i
++ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\bar{x}}}t_i\\
+= 0,
+\end{align*}
+and equality holds if and only if all $x_i$'s are the same, which is excluded by the assumption.
+Thus $g(\hat{\theta}_1(x), x) < 0$.
+
+Also we know:
+\begin{itemize}
+\item $g(\hat{\theta}_q(x), x) = 0$;
+\item $\lim_{\theta \rightarrow 0^+}g(\theta, x) = 0$;
+\item $g(\theta, x) > 0$ when $\theta < x_{(1)}$;
+\end{itemize}
+Combined with $g(\hat{\theta}_1(x), x) < 0$, we have $\hat{\theta}_q(x) < \hat{\theta}_1(x)$ for $0 < q < 1$.
+\end{proof}
+
+
+
 \begin{lemma} [Lemma \ref{lemma:ELqlEMLE}]
 For any $0 < q < 1$, there exists $C_0(P_{ij}, \epsilon, q) > 0$ such that under the contaminated model with $C > C_0(P_{ij}, \epsilon, q)$,
 \[
@@ -309,12 +352,36 @@ For the MLE $\hat{P}^{(1)}_{ij} = \bar{A}_{ij}$,
     = E[A_{ij}^{(1)}]
     = (1-\epsilon) P_{ij} + \epsilon C_{ij}.
 \]
-For the ML$q$E $\hat{P}^{(q)}_{ij}$,
+For the ML$q$E $\hat{P}^{(q)}_{ij}$, according to Equation (3.2) in \cite{ferrari2010}, the expectation $E[\hat{P}^{(q)}_{ij}]$, denoted as $\theta$ for simplicity, satisfies
 \[
-	E[\hat{P}^{(q)}_{ij}]
+\frac{\epsilon C_{ij}}{(C_{ij}(1-q) + \theta)^2} - \frac{\epsilon}{C_{ij}(1-q) + \theta}
++\frac{(1-\epsilon) P_{ij}}{(P_{ij}(1-q) + \theta)^2} - \frac{(1-\epsilon)}{P_{ij}(1-q) + \theta}
+= 0,
 \]
-solves a cubic equation. \RT{Shown in Mathematica}
+i.e.
+\[
+\frac{\epsilon (\theta - C_{ij}q)}{(C_{ij}(1-q) + \theta)^2} =
+\frac{(1-\epsilon) (P_{ij} q - \theta)}{(P_{ij}(1-q) + \theta)^2}.
+\]
+Thus $\theta - C_{ij} q$ and $\theta - P_{ij} q$ should have different signs. Combined with $C_{ij} > P_{ij}$, we have
+\[
+q P_{ij} < \theta.
+\]
+To have a smaller bias in absolute value, we need
+\[
+|\theta - P_{ij}| < \epsilon (C_{ij} - P_{ij}).
+\]
+Thus combined with Lemma \ref{lemma:LqlMLE}, we need
+\[
+q P_{ij} > P_{ij} - \epsilon(C_{ij} - P_{ij}),
+\]
+i.e.
+\[
+C_{ij} > P_{ij} + \frac{(1-q) P_{ij}}{\epsilon} = C_0(P_{ij}, \epsilon, q).
+\]
 \end{proof}
+
+
 
 \begin{lemma} [Lemma \ref{lemma:VarMLEandLq0}]
 \[
@@ -875,55 +942,6 @@ The results are direct from Theorem \ref{thm:VarASEL1} and Corollary \ref{cor:Va
 \subsection{$\widetilde{P}^{(q)}$ better than $\hat{P}^{(q)}$}
 
 
-\begin{lemma}
-\label{lemma:LqlMLE}
-Consider the model $X_1, \cdots, X_m \stackrel{iid}{\sim} \mathrm{Exp}(\theta)$ with $E[X_1] = \theta$. Given any data $x = (x_1, \cdots, x_m)$ such that $x_{(1)} > 0$ and not all $x_i$'s are the same, then $\hat{\theta}_q(x) < \hat{\theta}_1(x)$ for $0 < q < 1$, i.e. ML$q$E \cite{ferrari2010, qin2013maximum} is always less than MLE under exponential distribution no matter how the data is sampled.
-\end{lemma}
-\begin{proof}
-The MLE is
-\[
-	\hat{\theta}_1(x) = \bar{x}.
-\]
-And the ML$q$E $\hat{\theta}_q(x)$ solves the equation
-\[
-	\sum_{i=1}^m e^{-\frac{(1-q)x_i}{\hat{\theta}_q(x)}}(x_i - \hat{\theta}_q(x)) = 0.
-\]
-Consider the continuous function $g(\theta, x) = \sum_{i=1}^m e^{-\frac{(1-q)x_i}{\theta}}(x_i - \theta)$. 
-
-Let $x_{(1)} \le \cdots \le x_{(l)} \le \bar{x} \le x_{(l+1)} \le \cdots \le x_{(m)}$. Define $s_i = \bar{x} - x_{(i)}$ for $1 \le i \le l$, and $t_{i} = x_{(l+i)} - \bar{x}$ for $1 \le i \le m - l$. Note that $\sum_{i=1}^l s_i = \sum_{i=1}^{m-l} t_i$. Then we have
-\begin{align*}
-g(\hat{\theta}_1(x), x) & = g(\bar{x}, x) \\
-& = \sum_{i=1}^m e^{-\frac{(1-q)x_{(i)}}{\bar{x}}}(x_{(i)} - \bar{x}) \\
-& = - \sum_{i=1}^l e^{-\frac{(1-q)x_{(i)}}{\bar{x}}}s_i
-+ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\bar{x}}}t_i\\
-& \le - e^{-(1-q)} \sum_{i=1}^l s_i
-+ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\bar{x}}}t_i\\
-& \le - e^{-(1-q)} \sum_{i=1}^{m-l} t_i
-+ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\bar{x}}}t_i\\
-& \le - \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\bar{x}}}t_i
-+ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\bar{x}}}t_i\\
-= 0,
-\end{align*}
-and equality holds if and only if all $x_i$'s are the same, which is excluded by the assumption.
-Thus $g(\hat{\theta}_1(x), x) < 0$.
-
-Also we know:
-\begin{itemize}
-\item $g(\hat{\theta}_q(x), x) = 0$;
-\item $\lim_{\theta \rightarrow 0^+}g(\theta, x) = 0$;
-\item $g(\theta, x) > 0$ when $\theta < x_{(1)}$;
-\end{itemize}
-Combined with $g(\hat{\theta}_1(x), x) < 0$, we have $\hat{\theta}_q(x) < \hat{\theta}_1(x)$ for $0 < q < 1$.
-\end{proof}
-
-
-
-
-
-
-
-
-
 \begin{theorem}
 \label{thm:PqDiff}
 Let $P$ and $C$ be two $n$-by-$n$ symmetric and hollow matrices satisfying element-wise conditions $0 < P_{ij} \le C_{ij} \le R$ for some constant $R > 0$. For $0 < \epsilon < 1$, we define $m$ symmetric and hollow matrices as
@@ -1462,7 +1480,7 @@ Define $x = (x_1, \cdots, x_m)$ and $x^- = (x_1, \cdots, x_m) \backslash x_i$, t
 \item $\theta_{\mathrm{max}}$,
 $x_i = c_q \theta \le c_q \bar{x}$ \\
 $\frac{1}{m} \left( c_q \bar{x} + (m-1) \bar{x}^- \right) = \bar{x}$ \\
-Thus $\theta_{\mathrm{max}} \le \frac{m-1}{m-C_q} \bar{x}^-$
+Thus $\theta_{\mathrm{max}} \le \frac{m-1}{m-c_q} \bar{x}^-$
 \item $\theta_{\mathrm{min}}$ \\
 2 candidates: $x_i = 0$ or $x_i = \infty$.\\
 When $x_i = 0$, It's like $m-1$ points $x^-$; \\
