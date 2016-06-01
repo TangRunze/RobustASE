@@ -883,6 +883,7 @@ Direct result from Lemma \ref{lemma:1stMomentPhatDiffL1} by noticing
 \end{proof}
 
 
+Define $(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}$, our estimator for $P_{ij}$, to be a projection of $\hat{Z}_i^T \hat{Z}_j$ onto $[0, \max(\hat{P}_{ij}, R)]$.
 
 \begin{theorem}
 \label{thm:VarASEL1}
@@ -914,21 +915,21 @@ For the first term, we have
 	\le & O(n^{-2} (\log n)^6) (1 - \frac{1}{n^2}) + \frac{1}{n^2} 2 E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}_{ij})^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
 	& + \frac{1}{n^2} 2 E[(\hat{P}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
 	\le & O(n^{-2} (\log n)^6) + \frac{2}{n^2} E[\hat{P}_{ij}^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] + \frac{2}{n^2} E[(\hat{P}_{ij} + M)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
-	\le & O(n^{-2} (\log n)^6) + \frac{2 a^2}{n^2} + \frac{2 (a+M)^2}{n^2} \\
-	\le & O(n^{-2} (\log n)^6) + \frac{4}{n^2} (a + M)^2
+	\le & O(n^{-2} (\log n)^6) + \frac{2 a^2}{n^2} + \frac{2 (a+R)^2}{n^2} \\
+	\le & O(n^{-2} (\log n)^6) + \frac{4}{n^2} (a + R)^2
 \end{align*}
 For the second term, we have
 \begin{align*}
 	& E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} > a\}] \\
 	\le & 2 E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}_{ij})^2 \mathbb{I}\{\hat{P}_{ij} > a\}] + 2 E[(\hat{P}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} > a\}] \\
 	\le & 2 E[\hat{P}_{ij}^2 \mathbb{I}\{\hat{P}_{ij} > a\}] + 2 E[(\hat{P}_{ij} + M)^2 \mathbb{I}\{\hat{P}_{ij} > a\}] \\
-	\le & 2 e^{-a/R} \left( 2a^2 + M^2 + 2MR + 4R^2 + 2a(M+ 2R) \right) \\
-	\le & 4 e^{-a/R} (a + M + 2R)^2
+	\le & 2 e^{-a/R} \left( 2a^2 + 7R^2 + 6a R \right) \\
+	\le & 4 e^{-a/R} (a + 3R)^2
 \end{align*}
 Thus,
 \[
 	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) \le
-	O(n^{-2} (\log n)^6) + 16 (a+M+2R)^2 (\frac{1}{n^2} + e^{-a/R}).
+	O(n^{-2} (\log n)^6) + 16 (a+3R)^2 (\frac{1}{n^2} + e^{-a/R}).
 \]
 Let $a = n^{\epsilon}$ for any $\epsilon > 0$, then
 \begin{align*}
