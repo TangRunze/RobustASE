@@ -442,7 +442,7 @@ Let $\hat{P}^{(1)}$ be the element-wise MLE based on exponential distribution wi
 Define $H_{ij}^{(1)} = E[\hat{P}_{ij}^{(1)}] = (1-\epsilon) P_{ij} + \epsilon C_{ij}$,
 then for any constant $c > 0$, there exists another constant $n_0(c)$, independent of $n$, $P$, $C$ and $\epsilon$, such that if $n > n_0$, then for all $\eta$ satisfying $n^{-c} \le \eta \le 1/2$,
 \[
-	P \left( \| \hat{P}^{(1)} - H^{(1)} \|_2 \le 4 R \sqrt{n \ln(n/\eta)}\right) \ge 1 - \eta.
+	P \left( \| \hat{P}^{(1)} - H^{(1)} \|_2 \le 4 R \sqrt{n \ln(n/\eta)/m}\right) \ge 1 - \eta.
 \]
 \end{theorem}
 \textbf{Remark:} This is the extended version of Theorem 3.1 in \cite{oliveira2009concentration}.
@@ -458,28 +458,27 @@ Let $\{e_i\}_{i=1}^n$ be the canonical basis for $\mathbb{R}^n$. For each $1 \le
     \end{array}
     \right.
 \]
-Thus $\hat{P}^{(1)} = \sum_{1 \le i < j \le n} \hat{P}^{(1)}_{ij} G_{ij}$ and $H^{(1)} = \sum_{1 \le i < j \le n} H^{(1)}_{ij} G_{ij}$. Then we have $\hat{P}^{(1)} - H^{(1)} = \sum_{1 \le i < j \le n} X_{ij}$, where $X_{ij} \equiv \left( \hat{P}^{(1)}_{ij} - H^{(1)}_{ij} \right) G_{ij}$, $1 \le i < j \le n$.
+Thus
+\[
+\hat{P}^{(1)} = \sum_{1 \le i < j \le n} \hat{P}^{(1)}_{ij} G_{ij} = \frac{1}{m}\sum_{t=1}^m \sum_{1 \le i < j \le n} A^{(t)}_{ij} G_{ij}
+\]
+and
+\[
+H^{(1)} = \sum_{1 \le i < j \le n} H^{(1)}_{ij} G_{ij}.
+\]
+Then we have $\hat{P}^{(1)} - H^{(1)} = \frac{1}{m} \sum_{1 \le t \le m, 1 \le i < j \le n} X_{ij}^{(t)}$, where $X_{ij}^{(t)} \equiv \left( A^{(t)}_{ij} - H^{(1)}_{ij} \right) G_{ij}$ for $1 \le t \le m$ and $1 \le i < j \le n$.
 
-First consider the $k$-th moment of $X_{ij}$ for $1 \le i < j \le n$. 
-Since
+First bound the $k$-th moment of $X_{ij}$ for $1 \le i < j \le n$ as following:
 \begin{align*}
-	E[(A^{(1)}_{ij} - H^{(1)}_{ij})^k]
+	E[(A^{(t)}_{ij} - H^{(1)}_{ij})^k]
     \le & (1-\epsilon) \cdot \exp(-H_{ij}/P_{ij}) P_{ij}^k \Gamma(1+k, -H_{ij}/P_{ij}) \\
     & + \epsilon \cdot \exp(-H_{ij}/C_{ij}) C_{ij}^k \Gamma(1+k, -H_{ij}/C_{ij}) \\
     \le & \left( (1-\epsilon) \cdot \exp(-H_{ij}/P_{ij}) P_{ij}^k + \epsilon \cdot \exp(-H_{ij}/C_{ij}) C_{ij}^k \right) k! \\
     \le & \left( (1-\epsilon) \cdot P_{ij}^k + \epsilon \cdot C_{ij}^k \right) k! \\
     \le & R^k k!,
-\end{align*}
-we have
-\begin{align*}
-	E[(\hat{P}^{(1)}_{ij} - H^{(1)}_{ij})^k]
-    = & E[(\frac{1}{m}\sum_{t=1}^m A^{(t)}_{ij} - H^{(1)}_{ij})^k] \\
-    = & E[(\frac{1}{m}\sum_{t=1}^m (A^{(t)}_{ij} - H^{(1)}_{ij}))^k] \\
-    = & \frac{1}{m^k} E[(\sum_{t=1}^m (A^{(t)}_{ij} - H^{(1)}_{ij}))^k] \\
-%    \le & \frac{1}{m^k} R^k k!.
-    \le & R^k k!.
     \stepcounter{equation}\tag{\theequation}\label{eqn:expectpdiffqpowerkL1}
 \end{align*}
+
 Combined with
 \[
     G_{ij}^k \equiv \left\{
@@ -493,29 +492,31 @@ thus we have
 \begin{enumerate}
 \item When $k$ is even,
 \[
-E[X_{ij}^k] = E[(\hat{P}^{(1)}_{ij} - H^{(1)}_{ij})^k] G_{ij}^2 \preceq k! R^k G_{ij}^2;
+E[(X_{ij}^{(t)})^k] = E[(A^{(t)}_{ij} - H^{(1)}_{ij})^k] G_{ij}^2 \preceq k! R^k G_{ij}^2;
 \]
 \item When $k$ is odd,
 \[
-E[X_{ij}^k] = E[(\hat{P}^{(1)}_{ij} - H^{(1)}_{ij})^k] G_{ij} \preceq k! R^k G_{ij}^2.
+E[(X_{ij}^{(t)})^k] = E[(A^{(t)}_{ij} - H^{(1)}_{ij})^k] G_{ij} \preceq k! R^k G_{ij}^2.
 \]
 \end{enumerate}
 So
 \[
-E[X_{ij}^k] \preceq k! R^k G_{ij}^2.
+E[(X_{ij}^{(t)})^k] \preceq k! R^k G_{ij}^2.
 \]
 Let
 \[
-	\sigma^2 := \left\| \sum_{1 \le i < j \le n} (\sqrt{2} R G_{ij})^2 \right\|_2 = 2 R^2 \| (n - 1) I \|_2 = 2 R^2 (n - 1).
+	\sigma^2 := \left\| \sum_{1 \le t \le m, 1 \le i < j \le n} (\sqrt{2} R G_{ij})^2 \right\|_2 = 2 R^2 m \| (n - 1) I \|_2 = 2 R^2 m (n - 1).
 \]
-Notice that random matrices $X_{ij}$ are independent, self-adjoint and have mean zero, apply Theorem \ref{thm:BernsteinMatrix} we have
+Notice that random matrices $X_{ij}^{(t)}$ are independent, self-adjoint and have mean zero, apply Theorem \ref{thm:BernsteinMatrix} we have
 \begin{align*}
-	P \left( \lambda_{\max}(\hat{P}^{(1)} - H^{(1)}) \ge t \right) &
-    \le n \exp \left( - \frac{t^2/2}{\sigma^2 + R t} \right) \\
-    & \le n \exp \left( - \frac{t^2/2}{2 R^2 n + R t} \right).
+	P \left( \lambda_{\max}(\hat{P}^{(1)} - H^{(1)}) \ge t \right)
+	& = P \left( \lambda_{\max}(\frac{1}{m} \sum_{1 \le t \le m, 1 \le i < j \le n} X_{ij}^{(t)}) \ge t \right) \\
+	& = P \left( \lambda_{\max}(\sum_{1 \le t \le m, 1 \le i < j \le n} X_{ij}^{(t)}) \ge m t \right) \\
+	& \le n \exp \left( - \frac{(m t)^2/2}{\sigma^2 + R m t} \right) \\
+	& \le n \exp \left( - \frac{m t^2/2}{2 R^2 n + R t} \right).
 \end{align*}
 
-Now consider $Y_{ij} \equiv \left( H^{(1)} - \hat{P}^{(1)} \right) G_{ij}$, $1 \le i < j \le n$. Then we have $H^{(1)} - \hat{P}^{(1)} = \sum_{1 \le i < j \le n} Y_{ij}$.
+Now consider $Y_{ij}^{(t)} \equiv \left( H_{ij}^{(1)} - A_{ij}^{(t)} \right) G_{ij}$, for $1 \le t \le m$ and $1 \le i < j \le n$. Then we have $H^{(1)} - \hat{P}^{(1)} = \frac{1}{m} \sum_{1 \le t \le m, 1 \le i < j \le n} Y_{ij}^{(t)}$.
 Since
 \[
 	E[(H^{(1)} - \hat{P}^{(1)})^k]
@@ -524,7 +525,7 @@ Since
 \begin{enumerate}
 \item When $k$ is even,
 \[
-E[Y_{ij}^k] = E[(\hat{P}^{(1)} - H^{(1)})^k] G_{ij}^2 \preceq k! R^k G_{ij}^2;
+E[(Y_{ij}^{(t)})^k] = E[(\hat{P}^{(1)} - H^{(1)})^k] G_{ij}^2 \preceq k! R^k G_{ij}^2;
 \]
 \item When $k$ is odd,
 \[
@@ -535,22 +536,22 @@ Thus by similar arguments,
 \begin{align*}
 	P \left( \lambda_{\min}(\hat{P}^{(1)} - H^{(1)}) \le -t \right) &
     = P \left( \lambda_{\max}(H^{(1)} - \hat{P}^{(1)}) \ge t \right) \\
-    & \le n \exp \left( - \frac{t^2/2}{2 R^2 n + R t} \right).
+    & \le n \exp \left( - \frac{m t^2/2}{2 R^2 n + R t} \right).
 \end{align*}
 Therefore we have
 \[
 	P \left( \| \hat{P}^{(1)} - H^{(1)} \|_2 \ge t \right)
-    \le n \exp \left( - \frac{t^2/2}{2 R^2 n + R t} \right).
+    \le n \exp \left( - \frac{m t^2/2}{2 R^2 n + R t} \right).
 \]
 
 Now let $c > 0$ be given and assume $n^{-c} \le \eta \le 1/2$. Then there exists a $n_0(c)$ independent of $n$, $P$, $C$ and $\epsilon$ such that whenever $n > n_0(c)$,
 \[
-	t =  4 R \sqrt{n \ln(n/\eta)} \le 6 R n.
+	t =  4 R \sqrt{n \ln(n/\eta)/m} \le 6 R n.
 \]
 
 Plugging this $t$ into the equation above, we get
 \[
-	P(\| \hat{P}^{(1)} - H^{(1)} \|_2 \ge 4 R \sqrt{n \ln(n/\eta)})
+	P(\| \hat{P}^{(1)} - H^{(1)} \|_2 \ge 4 R \sqrt{n \ln(n/\eta)/m})
     \le n \exp\left(-\frac{t^2}{16 R^2 n}\right) = \eta.
 \]
 \end{proof}
@@ -602,7 +603,7 @@ Combined with Theorem \ref{thm:P1Diff}, with high probability we have $\|\hat{S}
 \label{lemma:AlmostOrthogonalL1}
 Let $W_1 \Sigma W_2^T$ be the singular value decomposition of $U^T \hat{U}$. Then for sufficiently large $n$, 
 \[
-	\| U^T \hat{U} - W_1 W_2^T \|_F = O(n^{-1} \log n)
+	\| U^T \hat{U} - W_1 W_2^T \|_F = O(m^{-1} n^{-1} \log n)
 \]
 with high probability.
 \end{lemma}
@@ -612,7 +613,7 @@ Let $\sigma_1, \cdots, \sigma_d$ denote the singular values of $U^T \hat{U}$. Th
 \label{eqn:uhat2u2diffL1}
 	\|\hat{U} \hat{U}^T - U U^T\|_2 = \max_i |\sin(\theta_i)|
     \le \frac{\|\hat{P} - H\|_2}{\lambda_k(H)}
-    \le \frac{C \sqrt{n \log n}}{n} = O(n^{-1/2} \sqrt{\log n})
+    \le \frac{C \sqrt{n \log n/m}}{n} = O(m^{-1/2} n^{-1/2} \sqrt{\log n})
 \end{equation}
 for sufficiently large $n$. Here $\lambda_k(H)$ denotes the $k$-th largest eigenvalue of $H$.\\
 We thus have
@@ -623,7 +624,7 @@ We thus have
     & \le \sum_{i=1}^k (1-\sigma_i) \le \sum_{i=1}^k (1-\sigma_i^2) \\
     & = \sum_{i=1}^k \sin^2(\theta_i)
     \le k \|\hat{U} \hat{U}^T - U U^T\|_2^2 \\
-    & = O(n^{-1} \log n).
+    & = O(m^{-1} n^{-1} \log n).
 \end{align*}
 \end{proof}
 
@@ -633,27 +634,27 @@ We will denote the orthogonal matrix $W_1 W_2^T$ by $W^*$.
 \label{lemma:exchangeL1}
 For sufficiently large $n$,
 \[
-	\| W^* \hat{S} - S W^* \|_F = O(\log n),
+	\| W^* \hat{S} - S W^* \|_F = O(m^{-1/2} \log n),
 \]
 \[
-	\|W^* \hat{S}^{1/2} - S^{1/2} W^* \|_F = O(n^{-1/2} \log n)
+	\|W^* \hat{S}^{1/2} - S^{1/2} W^* \|_F = O(m^{-1/2} n^{-1/2} \log n)
 \]
 and
 \[
-	\| W^* \hat{S}^{-1/2} - S^{-1/2} W^* \|_F = O(n^{-3/2} \log n)
+	\| W^* \hat{S}^{-1/2} - S^{-1/2} W^* \|_F = O(m^{-1/2} n^{-3/2} \log n)
 \]
 with high probability.
 \end{lemma}
 \begin{proof}
 By Proposition 2.1 in \cite{rohe2011spectral} and Equation (\ref{eqn:uhat2u2diffL1}), we have for some orthogonal matrix $W$,
 \[
-\|\hat{U} - U W\|_F^2 \le \frac{2 \|\hat{U} \hat{U}^T - U U^T\|_F^2}{\delta^2} = O(n^{-1/2} \sqrt{\log n}).
+\|\hat{U} - U W\|_F^2 \le \frac{2 \|\hat{U} \hat{U}^T - U U^T\|_F^2}{\delta^2} = O(m^{-1/2} n^{-1/2} \sqrt{\log n}).
 \]
 \RT{Not right here, I am using the result for spectral norm as frobenius norm.}
 Let $Q = \hat{U} - U U^T \hat{U}$. And $Q$ is the residual after projecting $\hat{U}$ orthogonally onto the column space of $U$, we have
 \begin{equation}
 \label{eqn:QFnormL1}
-\| Q \|_F = \| \hat{U} - U U^T \hat{U} \|_F \le \| \hat{U} - U T \|_F = O(n^{-1/2} \sqrt{\log n}).
+\| Q \|_F = \| \hat{U} - U U^T \hat{U} \|_F \le \| \hat{U} - U T \|_F = O(m^{-1/2} n^{-1/2} \sqrt{\log n}).
 \end{equation}
 for all $k \times k$ matrices $T$. 
 
@@ -670,7 +671,7 @@ Combined with Theorem \ref{thm:P1Diff}, Lemma \ref{lemma:eigSShatL1}, Lemma \ref
 	& \| W^* \hat{S} - S W^* \|_F \\
     = & \| (W^* - U^T \hat{U}) \hat{S} + U^T (\hat{P} - H) Q + U^T (\hat{P} - H) U U^T \hat{U} + S (U^T \hat{U} - W^*)\|_F \\
     \le & \| W^* - U^T \hat{U} \|_F (\| \hat{S} \|_2 + \| S \|_2) + \| U^T \|_F \| \hat{P} - H\|_2 \| Q \|_F + \| U^T (\hat{P} - H) U \|_F \\
-    \le & O(\log n) + O(\log n) + \| U^T (\hat{P} - H) U \|_F
+    \le & O(m^{-1} \log n) + O(m^{-1/2} \log n) + \| U^T (\hat{P} - H) U \|_F
 \end{align*}
 with high probability. And we know $U^T (\hat{P} - H) U$ is a $k \times k$ matrix with $ij$-th entry to be
 \[
@@ -680,36 +681,37 @@ with high probability. And we know $U^T (\hat{P} - H) U$ is a $k \times k$ matri
 \]
 where $u_i$ and $u_j$ are the $i$-th and $j$-th columns of $U$. Thus, conditioned on $H$, $U$ is fixed and $u_i^T (\hat{P} - H) u_j$ is a sum of independent mean 0 random variables.
 
+
 By Equation (\ref{eqn:expectpdiffqpowerkL1}), we have
 \begin{align*}
-	& E\left[\left((\hat{P}_{st} - H_{st}) u_{is} u_{jt}\right)^k\right] \\ 
+	& E\left[\left((A^{(t')}_{st} - H_{st}) u_{is} u_{jt}\right)^k\right] \\
     \le & k! R^k u_{is}^k u_{jt}^k \\
     \le & \frac{k!}{2} R^{k-2} (\sqrt{2} u_{is} u_{jt} R)^2.
 \end{align*}
 Also we have
 \[
-	\sigma^2 := |\sum_{s<t} 2 R^2 u_{is}^2 u_{jt}^2| \le R^2,
+	\sigma^2 := |\sum_{t', s<t} 2 R^2 u_{is}^2 u_{jt}^2| \le m R^2,
 \]
 then by Theorem \ref{thm:BernsteinMatrix}, we have
 \[
 	P \left( \left| 2 \sum_{s<t} (\hat{P}_{st} - H_{st}) u_{is} u_{jt} \right| \ge t \right)
-    \le \exp \left( \frac{-t^2/8}{R^2 + R t} \right).
+    \le \exp \left( \frac{-m t^2/8}{R^2 + R t /2} \right).
 \]
-Let $t = \log n$, we have
+Let $t = m^{-1/2} \log n$, we have
 \[
-P \left( \left| 2 \sum_{s<t} (\hat{P}_{st} - H_{st}) u_{is} u_{jt} \right| \ge \log n \right)
-    \le n^{-c}
+P \left( \left| 2 \sum_{s<t} (\hat{P}_{st} - H_{st}) u_{is} u_{jt} \right| \ge m^{-1} \log n \right)
+    \le n^{-c},
 \]
-for some constant $c$.
-Thus each entry of $U^T(\hat{P} - H)U$ is of order $O(\log n)$ with high probability and
+where $c = 1/(8R)$.
+Thus each entry of $U^T(\hat{P} - H)U$ is of order $O(m^{-1} \log n)$ with high probability and
 \begin{equation}
 \label{eqn:uPhatdiffHuL1}
-	\|U^T(\hat{P} - H)U\|_F = O(\log n)
+	\|U^T(\hat{P} - H)U\|_F = O(m^{-1} \log n)
 \end{equation}
 with high probability.
 Hence
 \[
-	\| W^* \hat{S} - S W^* \|_F = O(\log n)
+	\| W^* \hat{S} - S W^* \|_F = O(m^{-1/2} \log n)
 \]
 with high probability.
 Also, since
@@ -718,7 +720,7 @@ Also, since
 \]
 and the eigenvalues $\lambda_j^{1/2}(\hat{P})$ and $\lambda_i^{1/2}(H)$ are both of order $\Theta(\sqrt{n})$, we have
 \[
-	\| W^* \hat{S}^{1/2} - S^{1/2} W^* \|_F = O(n^{-1/2} \log n).
+	\| W^* \hat{S}^{1/2} - S^{1/2} W^* \|_F = O(m^{-1/2} n^{-1/2} \log n).
 \]
 Similarly, since
 \[
@@ -726,7 +728,7 @@ Similarly, since
 \]
 and the eigenvalues $\lambda_j(\hat{P})$ and $\lambda_i(H)$ are both of order $\Theta(n)$, we have
 \[
-	\| W^* \hat{S}^{-1/2} - S^{-1/2} W^* \|_F = O(n^{-3/2} \log n).
+	\| W^* \hat{S}^{-1/2} - S^{-1/2} W^* \|_F = O(m^{-1/2} n^{-3/2} \log n).
 \]
 \end{proof}
 
@@ -736,7 +738,7 @@ and the eigenvalues $\lambda_j(\hat{P})$ and $\lambda_i(H)$ are both of order $\
 \label{lemma:XhatDiffXWexpressionL1}
 There exists a rotation matrix $W$ such that for sufficiently large $n$,
 \[
-	\|\hat{Z} - Z W\|_F = \| (\hat{P} - H) U S^{-1/2} \|_F + O(n^{-1/2} (\log n)^{3/2})
+	\|\hat{Z} - Z W\|_F = \| (\hat{P} - H) U S^{-1/2} \|_F + O(m^{-1/2} n^{-1/2} (\log n)^{3/2})
 \]
 with high probability.
 \end{lemma}
@@ -752,36 +754,36 @@ Let $Q_1 = U U^T \hat{U} - U W^*$, $Q_2 = W^* \hat{S}^{1/2} - S^{1/2} W^*$ and $
 \end{align*}
 By Lemma \ref{lemma:AlmostOrthogonalL1},
 \[
-	\|Q_1\|_F \le \| U\|_F \| U^T \hat{U} - W^* \|_F = O(n^{-1} \log n).
+	\|Q_1\|_F \le \| U\|_F \| U^T \hat{U} - W^* \|_F = O(m^{-1} n^{-1} \log n).
 \]
 By Lemma \ref{lemma:exchangeL1},
 \[
-	\|Q_2\|_F = O(n^{-1/2} \log n).
+	\|Q_2\|_F = O(m^{-1/2} n^{-1/2} \log n).
 \]
 By Equation (\ref{eqn:QFnormL1}),
 \[
-	\|Q_3\|_F \le \|Q\|_F + \|Q_1\|_F = O(n^{-1/2} (\log n)^{1/2}).
+	\|Q_3\|_F \le \|Q\|_F + \|Q_1\|_F = O(m^{-1/2} n^{-1/2} (\log n)^{1/2}).
 \]
 By Equation (\ref{eqn:uPhatdiffHuL1}),
 \[
 	\| U U^T(\hat{P} - H)U W^*\hat{S}^{-1/2} \|_F
     \le \| U^T(\hat{P} - H)U \|_F \| \hat{S}^{-1/2} \|_2
-    = O(n^{-1/2} \log n).
+    = O(m^{-1} n^{-1/2} \log n).
 \]
 By Lemma \ref{lemma:exchangeL1},
 \[
-	\| W^* \hat{S}^{-1/2} - S^{-1/2} W^* \|_F = O(n^{-3/2} \log n).
+	\| W^* \hat{S}^{-1/2} - S^{-1/2} W^* \|_F = O(m^{-1/2} n^{-3/2} \log n).
 \]
 Therefore,
 \begin{align*}
 	& \| \hat{Z} - U S^{1/2} W^* \|_F \\
-    = & \| (\hat{P} - H) U W^* \hat{S}^{-1/2} \|_F + O(n^{-1/2} \log n)
-    + \|I - U U^T \|_2 \| \hat{P} - H \|_2 O(n^{-1} (\log n)^{1/2}) \\
-    & + O(n^{-1/2} \log n) + O(n^{-1/2} \log n)\\
-    = & \| (\hat{P} - H) U W^* \hat{S}^{-1/2} \|_F + O(n^{-1/2} \log n) \\
-    \le & \| (\hat{P} - H) U S^{-1/2} W^* \|_F + \|(\hat{P} - H) U (W^* \hat{S}^{-1/2} - S^{-1/2} W^*) \|_F + O(n^{-1/2} \log n) \\
-    = & \| (\hat{P} - H) U S^{-1/2}\|_F + O(n^{-1} (\log n)^{3/2}) + O(n^{-1/2} (\log n)^{3/2}) \\
-    = & \| (\hat{P} - H) U S^{-1/2}\|_F + O(n^{-1/2} (\log n)^{3/2}).
+    = & \| (\hat{P} - H) U W^* \hat{S}^{-1/2} \|_F + O(m^{-1} n^{-1/2} \log n)
+    + \|I - U U^T \|_2 \| \hat{P} - H \|_2 O(m^{-1/2} n^{-1} (\log n)^{1/2}) \\
+    & + O(m^{-1} n^{-1/2} \log n) + O(m^{-1/2} n^{-1/2} \log n)\\
+    = & \| (\hat{P} - H) U W^* \hat{S}^{-1/2} \|_F + O(m^{-1/2} n^{-1/2} \log n) \\
+    \le & \| (\hat{P} - H) U S^{-1/2} W^* \|_F + \|(\hat{P} - H) U (W^* \hat{S}^{-1/2} - S^{-1/2} W^*) \|_F + O(m^{-1/2} n^{-1/2} \log n) \\
+    = & \| (\hat{P} - H) U S^{-1/2}\|_F + O(m^{-1} n^{-1} (\log n)^{3/2}) + O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
+    = & \| (\hat{P} - H) U S^{-1/2}\|_F + O(m^{-1/2} n^{-1/2} (\log n)^{3/2}).
 \end{align*}
 \RT{$\|I - U U^T\|_2 = O(1)$}
 Note that $Z = U S^{1/2} W$ for some orthogonal matrix $W$. As $W^*$ is also orthogonal, therefore $Z \tilde{W} = U S^{1/2} W^*$ for some orthogonal $\tilde{W}$, which completes the proof.
@@ -794,20 +796,20 @@ Note that $Z = U S^{1/2} W$ for some orthogonal matrix $W$. As $W^*$ is also ort
 \label{thm:XhatDiffXWL1}
 There exists a rotation matrix $W$ such that for sufficiently large $n$,
 \[
-	\max_i \| \hat{Z}_i - W Z_i \|_2 = O(n^{-1/2} (\log n)^{3/2})
+	\max_i \| \hat{Z}_i - W Z_i \|_2 = O(m^{-1/2} n^{-1/2} (\log n)^{3/2})
 \]
 with high probability.
 \end{theorem}
 \begin{proof}
 By Lemma \ref{lemma:XhatDiffXWexpressionL1}, we have
 \[
-	\|\hat{Z} - Z W\|_F = \| (\hat{P} - H) U S^{-1/2} \|_F + O(n^{-1/2} (\log n)^{3/2})
+	\|\hat{Z} - Z W\|_F = \| (\hat{P} - H) U S^{-1/2} \|_F + O(m^{-1/2} n^{-1/2} (\log n)^{3/2})
 \]
 and similarly we could have the bound for each column vector
 \begin{align*}
 	\max_i \| \hat{Z}_i - W Z_i \|_2
-    \le & \frac{1}{\lambda_k^{1/2}(H)} \max_i \| ((\hat{P} - H) U)_i \|_2 + O(n^{-1/2} (\log n)^{3/2}) \\
-    \le & \frac{k^{1/2}}{\lambda_k^{1/2}(H)} \max_j \| (\hat{P} - H) u_j \|_{\infty} + O(n^{-1/2} (\log n)^{3/2})
+    \le & \frac{1}{\lambda_k^{1/2}(H)} \max_i \| ((\hat{P} - H) U)_i \|_2 + O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
+    \le & \frac{k^{1/2}}{\lambda_k^{1/2}(H)} \max_j \| (\hat{P} - H) u_j \|_{\infty} + O(m^{-1/2} n^{-1/2} (\log n)^{3/2})
 \end{align*}
 where $((\hat{P} - H) U)_i$ represents the $i$-th row of $(\hat{P} - H) U$ and $u_j$ denotes the $j$-th column of $U$. Now given $i$ and $j$, the $i$-th element of the vector $(\hat{P} - H) u_j$ is of the form
 \[
@@ -816,25 +818,25 @@ where $((\hat{P} - H) U)_i$ represents the $i$-th row of $(\hat{P} - H) U$ and $
 Thus, conditioned on $H$, the $i$-th element of the vector $(\hat{P} - H) u_j$ is a sum of independent mean 0 random variables.
 By Equation (\ref{eqn:expectpdiffqpowerkL1}), we have
 \begin{align*}
-	& E\left[\left((\hat{P}_{is} - H_{is}) u_{js}\right)^k\right] \\ 
+	& E\left[\left((A^{(t)}_{is} - H_{is}) u_{js}\right)^k\right] \\ 
     \le & k! R^k u_{js}^k \\
     \le & \frac{k!}{2} R^{k-2} (\sqrt{2} R u_{js})^2.
 \end{align*}
 Also we have
 \[
-	\sigma^2 := |\sum_{s \ne i} 2 R^2 u_{js}^2| \le 2 R^2,
+	\sigma^2 := |\sum_{t, s \ne i} 2 R^2 u_{js}^2| \le 2 R^2 m,
 \]
 then by Theorem \ref{thm:BernsteinMatrix}, we have
 \[
 	P \left( \left| \sum_{s \ne i} (\hat{P}_{is} - H_{is}) u_{js} \right| \ge t \right)
-    \le \exp \left( \frac{-t^2/2}{2 R^2 + R t} \right),
+    \le \exp \left( \frac{-m t^2/2}{2 R^2 + R t} \right),
 \]
-i.e. it is of order $O(\log n)$ with high probability.
-Taking the union bound over all $i$ and $j$, with high probability we have
+i.e. it is of order $O(m^{-1} \log n)$ with high probability.
+Taking the union bound over all $i$ and $j$, with high probability we have,
 \begin{align*}
 	\max_i \| \hat{Z}_i - W Z_i \|_2
-    & \le \frac{C k^{1/2}}{\lambda_k^{1/2}(H)} (\log n)^{3/2} + O(n^{-1/2} (\log n)^{3/2}) \\
-    & = O(n^{-1/2} (\log n)^{3/2}).
+    & \le \frac{C k^{1/2}}{\lambda_k^{1/2}(H)} m^{-1} (\log n)^{3/2} + O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
+    & = O(m^{-1/2} n^{-1/2} (\log n)^{3/2}).
 \end{align*}
 \end{proof}
 
@@ -843,7 +845,7 @@ Taking the union bound over all $i$ and $j$, with high probability we have
 
 \begin{lemma}
 \label{lemma:1stMomentPhatDiffL1}
-$\left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right| = O(n^{-1} (\log n)^{3})$ with high probability.
+$\left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right| = O(m^{-1/2} n^{-1} (\log n)^{3})$ with high probability.
 \end{lemma}
 \begin{proof}
 Let $W$ be the rotation matrix in Theorem \ref{thm:XhatDiffXWL1}, then
@@ -858,8 +860,8 @@ Combined with Theorem \ref{thm:XhatDiffXWL1},
 \begin{align*}
     \left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right|
     = & (\|\hat{Z}_i\|_2 + \|Z_j\|_2) O(n^{-1/2} (\log n)^{3/2}) \\
-    \le & (\|\hat{Z}_i - W Z_i\|_2 + \|W Z_i\|_2 + \|Z_j\|_2) O(n^{-1/2} (\log n)^{3/2}) \\
-    = & O(n^{-1} (\log n)^{3})
+    \le & (\|\hat{Z}_i - W Z_i\|_2 + \|W Z_i\|_2 + \|Z_j\|_2) O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
+    = & O(m^{-1/2} n^{-1} (\log n)^{3})
 \end{align*}
 with high probability.
 \end{proof}
@@ -887,7 +889,7 @@ Define $(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}$, our estimator for $P_{ij}$, to b
 
 \begin{theorem}
 \label{thm:VarASEL1}
-$\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) = O(n^{-2(1-\epsilon)})$.
+Assuming that $m = o(n^{2\epsilon})$, then $\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) = O(m^{-1} n^{-2(1-\epsilon)})$.
 \end{theorem}
 \begin{proof}
 By Lemma \ref{lemma:1stMomentPhatDiffL1},
@@ -912,31 +914,32 @@ For the first term, we have
 	& E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
 	\le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.11 holds}\}] (1 - \frac{1}{n^2}) \\
 	& + E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.11 does not hold}\}] \frac{1}{n^2} \\
-	\le & O(n^{-2} (\log n)^6) (1 - \frac{1}{n^2}) + \frac{1}{n^2} 2 E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}_{ij})^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
+	\le & O(m^{-1} n^{-2(1-\epsilon)}) (1 - \frac{1}{n^2}) + \frac{1}{n^2} 2 E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}_{ij})^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
 	& + \frac{1}{n^2} 2 E[(\hat{P}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
-	\le & O(n^{-2} (\log n)^6) + \frac{2}{n^2} E[\hat{P}_{ij}^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] + \frac{2}{n^2} E[(\hat{P}_{ij} + M)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
-	\le & O(n^{-2} (\log n)^6) + \frac{2 a^2}{n^2} + \frac{2 (a+R)^2}{n^2} \\
-	\le & O(n^{-2} (\log n)^6) + \frac{4}{n^2} (a + R)^2
+	\le & O(m^{-1} n^{-2(1-\epsilon)}) + \frac{2}{n^2} E[\hat{P}_{ij}^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] + \frac{2}{n^2} E[(\hat{P}_{ij} + M)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
+	\le & O(m^{-1} n^{-2(1-\epsilon)}) + \frac{2 a^2}{n^2} + \frac{2 (a+R)^2}{n^2} \\
+	\le & O(m^{-1} n^{-2(1-\epsilon)}) + \frac{4}{n^2} (a + R)^2
 \end{align*}
 For the second term, we have
 \begin{align*}
 	& E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} > a\}] \\
 	\le & 2 E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}_{ij})^2 \mathbb{I}\{\hat{P}_{ij} > a\}] + 2 E[(\hat{P}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} > a\}] \\
 	\le & 2 E[\hat{P}_{ij}^2 \mathbb{I}\{\hat{P}_{ij} > a\}] + 2 E[(\hat{P}_{ij} + M)^2 \mathbb{I}\{\hat{P}_{ij} > a\}] \\
+	\le & 2 E[A^{(t)2}_{ij} \mathbb{I}\{A^{(t)}_{ij} > a\}] + 2 E[(A^{(t)}_{ij} + M)^2 \mathbb{I}\{A^{(t)}_{ij} > a\}] \\
 	\le & 2 e^{-a/R} \left( 2a^2 + 7R^2 + 6a R \right) \\
 	\le & 4 e^{-a/R} (a + 3R)^2
 \end{align*}
 Thus,
 \[
 	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) \le
-	O(n^{-2} (\log n)^6) + 16 (a+3R)^2 (\frac{1}{n^2} + e^{-a/R}).
+	O(m^{-1} n^{-2(1-\epsilon)}) + 16 (a+3R)^2 (\frac{1}{n^2} + e^{-a/R}).
 \]
-Let $a = n^{\epsilon}$ for any $\epsilon > 0$, then
+Let $a = m^{-1/2} n^{\epsilon}$ for any $\epsilon > 0$, combined with the assumption $m = o(n^{2\epsilon})$, we have
 \begin{align*}
 	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}})
-	\le & 	O(n^{-2} (\log n)^6) + 16 n^{2\epsilon} (\frac{1}{n^2} + e^{-a/R}) \\
-	= & O(n^{-2} (\log n)^6) + O(n^{-2(1-\epsilon)}) \\
-	= & O(n^{-2(1-\epsilon)}).
+	\le & 	O(m^{-1} n^{-2} (\log n)^6) + 16 m^{-1} n^{2\epsilon} (\frac{1}{n^2} + e^{-a/R}) \\
+	= & O(m^{-1} n^{-2} (\log n)^6) + O(m^{-1} n^{-2(1-\epsilon)}) \\
+	= & O(m^{-1} n^{-2(1-\epsilon)}).
 \end{align*}
 
 \RT{Assuming $m$ graphs average is larger than 1 graph}
@@ -960,13 +963,13 @@ Direct result from central limit theorem.
 For fixed $m$, $1 \le i, j \le n$ and $i \ne j$,
 \[
 	\frac{\mathrm{Var}(\widetilde{P}_{ij}^{(1)})}{\mathrm{Var}(\hat{P}_{ij}^{(1)})}
-    = O(m n^{-2} (\log n)^6).
+    = O(n^{-2(1-\epsilon)}).
 \]
 Thus
 \[
 	\mathrm{ARE}(\hat{P}_{ij}^{(1)}, \widetilde{P}_{ij}^{(1)}) = 0.
 \]
-Furthermore, as long as $m$ goes to infinity of order $o(n(\log n)^{-3})$,
+Furthermore, as long as $m$ goes to infinity of order $o(n^{2\epsilon})$,
 \[
 	\mathrm{ARE}(\hat{P}_{ij}^{(1)}, \widetilde{P}_{ij}^{(1)}) = 0.
 \]
@@ -1401,19 +1404,61 @@ Direct result from Lemma \ref{lemma:1stMomentPhatDiffLq} by noticing
 $\mathrm{Var}(\hat{Z}_i^T \hat{Z}_j) = O(n^{-2} (\log n)^6)$ with high probability.
 \end{theorem}
 \begin{proof}
+By Lemma \ref{lemma:1stMomentPhatDiffL1},
 \begin{align*}
-	\mathrm{Var}(\hat{Z}_i^T \hat{Z}_j)
-    = & E[(\hat{Z}_i^T \hat{Z}_j - E[\hat{Z}_i^T \hat{Z}_j])^2] \\
-    = & E[(\hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j + Z_i^T Z_j - E[\hat{Z}_i^T \hat{Z}_j])^2] \\
-    = & E[(\hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j)^2] + E[(Z_i^T Z_j - E[\hat{Z}_i^T \hat{Z}_j])^2] \\ 
-    & - 2E[(\hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j)(Z_i^T Z_j - E[\hat{Z}_i^T \hat{Z}_j])] \\
-    \le & E[(\hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j)^2] + E[(Z_i^T Z_j - E[\hat{Z}_i^T \hat{Z}_j])^2] \\ 
-    & + 2\sqrt{E[(\hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j)^2] E[(Z_i^T Z_j - E[\hat{Z}_i^T \hat{Z}_j])^2]} \\
-    \le & 4 E[(\hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j)^2] \\
-    = & O(n^{-2} (\log n)^6)
+	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}})
+    = & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - E[(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}])^2] \\
+    = & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j + Z_i^T Z_j - E[(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}])^2] \\
+    = & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2] + E[(Z_i^T Z_j - E[(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}])^2] \\ 
+    & + 2E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)(Z_i^T Z_j - E[(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}])] \\
+    \le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2] + E[(Z_i^T Z_j - E[(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}])^2] \\ 
+    & + 2\sqrt{E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2] E[(Z_i^T Z_j - E[(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}])^2]} \\
+    \le & 4 E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2]
 \end{align*}
-with high probability.
+Fix some $a > 0$, we have
+\begin{align*}
+	& E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2] \\
+	= & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}]
+	+ E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}]
+\end{align*}
+Note that we are thresholding according to $\hat{P}^{(1)}$ instead of $\hat{P}^{(q)}$. By Lemma \ref{lemma:LqlMLE}, we know $\hat{P}^{(q)} < \hat{P}^{(1)}$ given any data.
+For the first term, we have
+\begin{align*}
+	& E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
+	\le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.11 holds}\}] (1 - \frac{1}{n^2}) \\
+	& + E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.11 does not hold}\}] \frac{1}{n^2} \\
+	\le & O(m^{-1} n^{-2(1-\epsilon)}) (1 - \frac{1}{n^2}) + \frac{1}{n^2} 2 E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}^{(q)}_{ij})^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
+	& + \frac{1}{n^2} 2 E[(\hat{P}^{(q)}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
+	\le & O(m^{-1} n^{-2(1-\epsilon)}) + \frac{2}{n^2} E[\hat{P}^{(q)2}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] + \frac{2}{n^2} E[(\hat{P}^{(q)}_{ij} + M)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
+	\le & O(m^{-1} n^{-2(1-\epsilon)}) + \frac{2 a^2}{n^2} + \frac{2 (a+R)^2}{n^2} \\
+	\le & O(m^{-1} n^{-2(1-\epsilon)}) + \frac{4}{n^2} (a + R)^2
+\end{align*}
+For the second term, we have
+\begin{align*}
+	& E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] \\
+	\le & 2 E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}^{(q)}_{ij})^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] + 2 E[(\hat{P}^{(q)}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] \\
+	\le & 2 E[\hat{P}^{(q)2}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] + 2 E[(\hat{P}^{(q)}_{ij} + M)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] \\
+	\le & 2 E[\hat{P}^{(1)2}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] + 2 E[(\hat{P}^{(1)}_{ij} + M)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] \\
+	\le & 2 E[A^{(t)2}_{ij} \mathbb{I}\{A^{(t)}_{ij} > a\}] + 2 E[(A^{(t)}_{ij} + M)^2 \mathbb{I}\{A^{(t)}_{ij} > a\}] \\
+	\le & 2 e^{-a/R} \left( 2a^2 + 7R^2 + 6a R \right) \\
+	\le & 4 e^{-a/R} (a + 3R)^2
+\end{align*}
+Thus,
+\[
+	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) \le
+	O(m^{-1} n^{-2(1-\epsilon)}) + 16 (a+3R)^2 (\frac{1}{n^2} + e^{-a/R}).
+\]
+Let $a = m^{-1/2} n^{\epsilon}$ for any $\epsilon > 0$, combined with the assumption $m = o(n^{2\epsilon})$, we have
+\begin{align*}
+	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}})
+	\le & 	O(m^{-1} n^{-2} (\log n)^6) + 16 m^{-1} n^{2\epsilon} (\frac{1}{n^2} + e^{-a/R}) \\
+	= & O(m^{-1} n^{-2} (\log n)^6) + O(m^{-1} n^{-2(1-\epsilon)}) \\
+	= & O(m^{-1} n^{-2(1-\epsilon)}).
+\end{align*}
+
+\RT{Assuming $m$ graphs average is larger than 1 graph}
 \end{proof}
+
 
 
 \begin{theorem}
