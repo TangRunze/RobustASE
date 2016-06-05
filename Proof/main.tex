@@ -142,144 +142,142 @@ Similarly, we also expect a better performance after applying a rank-reduction p
 
 
 
-\section{Compare Estimators}
-
-\subsection{$\hat{P}^{(q)}$ is better than $\hat{P}^{(1)}$}
-
-\begin{lemma}
-\label{lemma:ELqlEMLE}
-For any $0 < q, \epsilon < 1$, there exists $C_0(P_{ij}, \epsilon, q) > 0$ such that under the contaminated model with $C > C_0(P_{ij}, \epsilon, q)$,
-\[
-	\lim_{m \to \infty} \left| E[\hat{P}^{(q)}_{ij}] - P_{ij} \right| < 
-    \lim_{m \to \infty} \left| E[\hat{P}^{(1)}_{ij}] - P_{ij} \right|,
-\]
-for $1 \le i, j, \le n$ and $i \ne j$.
-\end{lemma}
-
-\begin{lemma}
-\label{lemma:VarMLEandLq0}
-For $1 \le i, j \le n$, we have
-\[
-	\lim_{m \to \infty} \mathrm{Var}(\hat{P}^{(1)}_{ij})
-    = \lim_{m \to \infty} \mathrm{Var}(\hat{P}^{(q)}_{ij}) = 0,
-\]
-\end{lemma}
-Thus,
-\begin{itemize}
-\item By Lemma \ref{lemma:ELqlEMLE}, when $C$ is large enough, for every $1 \le i, j, \le n$ and $i \ne j$, $\hat{P}_{ij}^{(q)}$ has smaller asymptotic bias in absolute value than $\hat{P}_{ij}^{(1)}$ as $m \to \infty$;
-\item By Lemma \ref{lemma:VarMLEandLq0}, all entry-wise variances go to 0 for estimating $P$ as $m \to \infty$;
-\item In terms of MSE, $\hat{P}^{(q)}$ is better than $\hat{P}^{(1)}$ when $m$ and $C$ are large enough.
-\end{itemize}
-
-
-
-
-
-
-\subsection{$\widetilde{P}^{(1)}$ is better than $\hat{P}^{(1)}$}
-\begin{theorem}
-\label{thm:AREL1}
-For fixed $m$, $1 \le i, j \le n$,
-\[
-	\frac{\mathrm{Var}(\widetilde{P}_{ij}^{(1)})}{\mathrm{Var}(\hat{P}_{ij}^{(1)}}
-    = O(m n^{-1} (\log n)^3).
-\]
-Thus
-\[
-	\mathrm{ARE}(\hat{P}_{ij}^{(1)}, \widetilde{P}_{ij}^{(1)}) = 0.
-\]
-\end{theorem}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Then
-\begin{itemize}
-	\item For each $1 \le i, j \le n$, both $\hat{P}_{ij}^{(1)}$ and $\widetilde{P}_{ij}^{(1)}$ have the same asymptotic bias as $n \to \infty$;
-    \item Fix $m$, for every $1 \le i,j \le n$, $\mathrm{ARE}(\hat{P}_{ij}^{(1)}, \widetilde{P}_{ij}^{(1)}) = \lim_{n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)}) = 0$, which means $\widetilde{P}^{(1)}$ is better than $\hat{P}^{(1)}$;
-    \item Actually when fixing $m$, for every $1 \le i,j \le n$, $\mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$ is of order $O(n^{-1} (\log n)^3)$ as $n \to \infty$.
-\end{itemize}
-
-
-
-
-
-
-\subsection{$\widetilde{P}^{(q)}$ is better than $\hat{P}^{(q)}$}
-Define $H^{(q)} = E[\hat{P}^{(q)}]$.
-Let $d^{(q)} = \mathrm{rank}(H^{(q)})$ be the dimension in which we are going to embed $\hat{P}^{(q)}$.
-Then
-\begin{itemize}
-	\item For each $1 \le i, j \le n$, both $\hat{P}_{ij}^{(q)}$ and $\widetilde{P}_{ij}^{(q)}$ have the same asymptotic bias as $n \to \infty$;
-    \item Fix $m$, for every $1 \le i,j \le n$, $\mathrm{ARE}(\hat{P}_{ij}^{(q)}, \widetilde{P}_{ij}^{(q)}) = \lim_{n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(q)})/\mathrm{Var}(\hat{P}_{ij}^{(q)}) = 0$, which means $\widetilde{P}^{(q)}$ is better than $\hat{P}^{(q)}$;
-    \item Actually, even if $m$ is not fixed, as long as $m$ is growing with order $o(n^{1/2}(\log n)^{-3/2})$, we still have $\mathrm{ARE}(\hat{P}_{ij}^{(q)}, \widetilde{P}_{ij}^{(q)}) = 0$, 
-\end{itemize}
-
-
-
-
-
-
-\subsection{$\widetilde{P}^{(q)}$ is better than $\widetilde{P}^{(1)}$}
-\begin{itemize}
-	\item When $n$ is large enough, for every $1 \le i,j \le n$, $E[\widetilde{P}_{ij}^{(1)}]$ will be close to $E[\hat{P}_{ij}^{(1)}]$ and $E[\widetilde{P}_{ij}^{(q)}]$ will be close to $E[\hat{P}_{ij}^{(q)}]$. Combined with $\hat{P}_{ij}^{(q)}$ has smaller asymptotic bias (as $m \to \infty$) than $\hat{P}_{ij}^{(1)}$ when $C$ is large enough, we have for sufficiently large $m$ and $n$, $C$ large enough, $\underset{m \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)})$;
-    \item Fix $m$, for any $1 \le i,j \le n$, when $n$ is large enough, $\mathrm{Var}(\widetilde{P}_{ij}^{(1)})$ is less than $\mathrm{Var}(\hat{P}_{ij}^{(1)})$ times $O(n^{-1})$ and $\mathrm{Var}(\widetilde{P}_{ij}^{(q)})$ is less than $\mathrm{Var}(\hat{P}_{ij}^{(q)})$ times $O(n^{-1/2} (\log n)^{3/2})$. Thus $\underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(1)}) = \underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0$;
-    \item In terms of MSE, $\widetilde{P}^{(q)}$ is better than $\widetilde{P}^{(1)}$ when $m$, $n$ and $C$ are large enough.
-\end{itemize}
-
-
-
-
-\subsection{Summary}
-Thus, we should choose the estimator $\widetilde{P}^{(q)}$.
-
-\begin{figure}
-\begin{center}
-\hspace*{-0.2in}
-\begin{tikzpicture}[
-  font=\sffamily,
-  every matrix/.style={ampersand replacement=\&,column sep=2cm,row sep=2cm},
-  block/.style={draw,thick,rounded corners,fill=blue!20,inner sep=.3cm},
-  process/.style={draw,thick,circle,fill=blue!20},
-  sink/.style={source,fill=green!20},
-  datastore/.style={draw,very thick,shape=datastore,inner sep=.3cm},
-  dots/.style={gray,scale=2},
-  to/.style={->,>=stealth',shorten >=1pt,semithick,font=\sffamily\footnotesize},
-  tofrom/.style={<->,>=stealth',shorten >=1pt,semithick,font=\sffamily\footnotesize},
-  every node/.style={align=center}]
-
-  % Position the nodes using a matrix layout
-  \matrix{
-    \node[block] (MLE) {$\hat{P}^{(1)}$};
-      \& \& \& \& \node[block] (MLqE) {$\hat{P}^{(q)}$};\\
-	\\
-    \node[block] (XMLE) {$\widetilde{P}^{(1)}$};
-      \& \& \& \& \node[block] (XMLqE) {$\widetilde{P}^{(q)}$}; \\
-  };
-
-  % Draw the arrows between the nodes and label them.
-  \draw[tofrom] (MLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $n$, $C$ $\mathrm{large}$ $\mathrm{enough}$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(q)})$}
-      node[midway,below] {$\underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(1)}) = \underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(q)}) = 0$} (MLqE);
-  \draw[tofrom] (MLE) -- node[midway,left] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(1)}) =$\\$ \underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$\\$ = O(m n^{-2} (\log n)^6)$} (XMLE);
-  \draw[tofrom] (MLqE) -- node[midway,right] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(q)}) = $\\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(q)})/\mathrm{Var}(\hat{P}_{ij}^{(q)})$\\$= O(m n^{-2} (\log n)^{6})$} (XMLqE);
-  \draw[tofrom] (XMLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{sufficiently}$ $\mathrm{ large}$ $m$, $n$ $\mathrm{and}$ $C$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(q)})$}
-      node[midway,below] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(1)}) = \underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0$} (XMLqE);
-\end{tikzpicture}
-\end{center}
-\caption{\label{fig:summary}Relationship between four estimators.}
-\end{figure}
-
-\RT{The figure of relationship is NOT right.}
+%\section{Compare Estimators}
+%
+%\subsection{$\hat{P}^{(q)}$ is better than $\hat{P}^{(1)}$}
+%
+%\begin{lemma}
+%\label{lemma:ELqlEMLE}
+%For any $0 < q, \epsilon < 1$, there exists $C_0(P_{ij}, \epsilon, q) > 0$ such that under the contaminated model with $C > C_0(P_{ij}, \epsilon, q)$,
+%\[
+%	\lim_{m \to \infty} \left| E[\hat{P}^{(q)}_{ij}] - P_{ij} \right| < 
+%    \lim_{m \to \infty} \left| E[\hat{P}^{(1)}_{ij}] - P_{ij} \right|,
+%\]
+%for $1 \le i, j, \le n$ and $i \ne j$.
+%\end{lemma}
+%
+%\begin{lemma}
+%\label{lemma:VarMLEandLq0}
+%For $1 \le i, j \le n$, we have
+%\[
+%	\lim_{m \to \infty} \mathrm{Var}(\hat{P}^{(1)}_{ij})
+%    = \lim_{m \to \infty} \mathrm{Var}(\hat{P}^{(q)}_{ij}) = 0,
+%\]
+%\end{lemma}
+%Thus,
+%\begin{itemize}
+%\item By Lemma \ref{lemma:ELqlEMLE}, when $C$ is large enough, for every $1 \le i, j, \le n$ and $i \ne j$, $\hat{P}_{ij}^{(q)}$ has smaller asymptotic bias in absolute value than $\hat{P}_{ij}^{(1)}$ as $m \to \infty$;
+%\item By Lemma \ref{lemma:VarMLEandLq0}, all entry-wise variances go to 0 for estimating $P$ as $m \to \infty$;
+%\item In terms of MSE, $\hat{P}^{(q)}$ is better than $\hat{P}^{(1)}$ when $m$ and $C$ are large enough.
+%\end{itemize}
+%
+%
+%
+%
+%
+%
+%\subsection{$\widetilde{P}^{(1)}$ is better than $\hat{P}^{(1)}$}
+%\begin{theorem}
+%\label{thm:AREL1}
+%For fixed $m$, $1 \le i, j \le n$,
+%\[
+%	\frac{\mathrm{Var}(\widetilde{P}_{ij}^{(1)})}{\mathrm{Var}(\hat{P}_{ij}^{(1)}}
+%    = O(m n^{-1} (\log n)^3).
+%\]
+%Thus
+%\[
+%	\mathrm{ARE}(\hat{P}_{ij}^{(1)}, \widetilde{P}_{ij}^{(1)}) = 0.
+%\]
+%\end{theorem}
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%Then
+%\begin{itemize}
+%	\item For each $1 \le i, j \le n$, both $\hat{P}_{ij}^{(1)}$ and $\widetilde{P}_{ij}^{(1)}$ have the same asymptotic bias as $n \to \infty$;
+%    \item Fix $m$, for every $1 \le i,j \le n$, $\mathrm{ARE}(\hat{P}_{ij}^{(1)}, \widetilde{P}_{ij}^{(1)}) = \lim_{n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)}) = 0$, which means $\widetilde{P}^{(1)}$ is better than $\hat{P}^{(1)}$;
+%    \item Actually when fixing $m$, for every $1 \le i,j \le n$, $\mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$ is of order $O(n^{-1} (\log n)^3)$ as $n \to \infty$.
+%\end{itemize}
+%
+%
+%
+%
+%
+%
+%\subsection{$\widetilde{P}^{(q)}$ is better than $\hat{P}^{(q)}$}
+%Define $H^{(q)} = E[\hat{P}^{(q)}]$.
+%Let $d^{(q)} = \mathrm{rank}(H^{(q)})$ be the dimension in which we are going to embed $\hat{P}^{(q)}$.
+%Then
+%\begin{itemize}
+%	\item For each $1 \le i, j \le n$, both $\hat{P}_{ij}^{(q)}$ and $\widetilde{P}_{ij}^{(q)}$ have the same asymptotic bias as $n \to \infty$;
+%    \item Fix $m$, for every $1 \le i,j \le n$, $\mathrm{ARE}(\hat{P}_{ij}^{(q)}, \widetilde{P}_{ij}^{(q)}) = \lim_{n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(q)})/\mathrm{Var}(\hat{P}_{ij}^{(q)}) = 0$, which means $\widetilde{P}^{(q)}$ is better than $\hat{P}^{(q)}$;
+%    \item Actually, even if $m$ is not fixed, as long as $m$ is growing with order $o(n^{1/2}(\log n)^{-3/2})$, we still have $\mathrm{ARE}(\hat{P}_{ij}^{(q)}, \widetilde{P}_{ij}^{(q)}) = 0$, 
+%\end{itemize}
+%
+%
+%
+%
+%
+%
+%\subsection{$\widetilde{P}^{(q)}$ is better than $\widetilde{P}^{(1)}$}
+%\begin{itemize}
+%	\item When $n$ is large enough, for every $1 \le i,j \le n$, $E[\widetilde{P}_{ij}^{(1)}]$ will be close to $E[\hat{P}_{ij}^{(1)}]$ and $E[\widetilde{P}_{ij}^{(q)}]$ will be close to $E[\hat{P}_{ij}^{(q)}]$. Combined with $\hat{P}_{ij}^{(q)}$ has smaller asymptotic bias (as $m \to \infty$) than $\hat{P}_{ij}^{(1)}$ when $C$ is large enough, we have for sufficiently large $m$ and $n$, $C$ large enough, $\underset{m \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)})$;
+%    \item Fix $m$, for any $1 \le i,j \le n$, when $n$ is large enough, $\mathrm{Var}(\widetilde{P}_{ij}^{(1)})$ is less than $\mathrm{Var}(\hat{P}_{ij}^{(1)})$ times $O(n^{-1})$ and $\mathrm{Var}(\widetilde{P}_{ij}^{(q)})$ is less than $\mathrm{Var}(\hat{P}_{ij}^{(q)})$ times $O(n^{-1/2} (\log n)^{3/2})$. Thus $\underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(1)}) = \underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0$;
+%    \item In terms of MSE, $\widetilde{P}^{(q)}$ is better than $\widetilde{P}^{(1)}$ when $m$, $n$ and $C$ are large enough.
+%\end{itemize}
+%
+%
+%
+%
+%\subsection{Summary}
+%Thus, we should choose the estimator $\widetilde{P}^{(q)}$.
+%
+%\begin{figure}
+%\begin{center}
+%\hspace*{-0.2in}
+%\begin{tikzpicture}[
+%  font=\sffamily,
+%  every matrix/.style={ampersand replacement=\&,column sep=2cm,row sep=2cm},
+%  block/.style={draw,thick,rounded corners,fill=blue!20,inner sep=.3cm},
+%  process/.style={draw,thick,circle,fill=blue!20},
+%  sink/.style={source,fill=green!20},
+%  datastore/.style={draw,very thick,shape=datastore,inner sep=.3cm},
+%  dots/.style={gray,scale=2},
+%  to/.style={->,>=stealth',shorten >=1pt,semithick,font=\sffamily\footnotesize},
+%  tofrom/.style={<->,>=stealth',shorten >=1pt,semithick,font=\sffamily\footnotesize},
+%  every node/.style={align=center}]
+%
+%  % Position the nodes using a matrix layout
+%  \matrix{
+%    \node[block] (MLE) {$\hat{P}^{(1)}$};
+%      \& \& \& \& \node[block] (MLqE) {$\hat{P}^{(q)}$};\\
+%	\\
+%    \node[block] (XMLE) {$\widetilde{P}^{(1)}$};
+%      \& \& \& \& \node[block] (XMLqE) {$\widetilde{P}^{(q)}$}; \\
+%  };
+%
+%  % Draw the arrows between the nodes and label them.
+%  \draw[tofrom] (MLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $n$, $C$ $\mathrm{large}$ $\mathrm{enough}$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(q)})$}
+%      node[midway,below] {$\underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(1)}) = \underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(q)}) = 0$} (MLqE);
+%  \draw[tofrom] (MLE) -- node[midway,left] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(1)}) =$\\$ \underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$\\$ = O(m n^{-2(1-\epsilon)})$} (XMLE);
+%  \draw[tofrom] (MLqE) -- node[midway,right] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(q)}) = $\\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(q)})/\mathrm{Var}(\hat{P}_{ij}^{(q)})$\\$= O(m n^{-2(1-\epsilon)})$} (XMLqE);
+%  \draw[tofrom] (XMLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{sufficiently}$ $\mathrm{ large}$ $m$, $n$ $\mathrm{and}$ $C$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(q)})$}
+%      node[midway,below] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(1)}) = \underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0$} (XMLqE);
+%\end{tikzpicture}
+%\end{center}
+%\caption{\label{fig:summary}Relationship between four estimators.}
+%\end{figure}
 
 
 
@@ -929,6 +927,9 @@ For the second term, we have
 	\le & 2 e^{-a/R} \left( 2a^2 + 7R^2 + 6a R \right) \\
 	\le & 4 e^{-a/R} (a + 3R)^2
 \end{align*}
+
+Assuming the expectation based on $\hat{P}_{ij}$ is less than the expectation based on $A_{ij}^{(t)}$ above.
+
 Thus,
 \[
 	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) \le
@@ -937,12 +938,10 @@ Thus,
 Let $a = m^{-1/2} n^{\epsilon}$ for any $\epsilon > 0$, combined with the assumption $m = o(n^{2\epsilon})$, we have
 \begin{align*}
 	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}})
-	\le & 	O(m^{-1} n^{-2} (\log n)^6) + 16 m^{-1} n^{2\epsilon} (\frac{1}{n^2} + e^{-a/R}) \\
-	= & O(m^{-1} n^{-2} (\log n)^6) + O(m^{-1} n^{-2(1-\epsilon)}) \\
+	\le & 	O(m^{-1} n^{-2(1-\epsilon)}) + 16 m^{-1} n^{2\epsilon} (\frac{1}{n^2} + e^{-a/R}) \\
+	= & O(m^{-1} n^{-2(1-\epsilon)}) + O(m^{-1} n^{-2(1-\epsilon)}) \\
 	= & O(m^{-1} n^{-2(1-\epsilon)}).
 \end{align*}
-
-\RT{Assuming $m$ graphs average is larger than 1 graph}
 \end{proof}
 
 
@@ -1401,10 +1400,10 @@ Direct result from Lemma \ref{lemma:1stMomentPhatDiffLq} by noticing
 
 \begin{theorem}
 \label{thm:VarASELq}
-$\mathrm{Var}(\hat{Z}_i^T \hat{Z}_j) = O(n^{-2} (\log n)^6)$ with high probability.
+$\mathrm{Var}(\hat{Z}_i^T \hat{Z}_j) = O(n^{-2(1-\epsilon)})$.
 \end{theorem}
 \begin{proof}
-By Lemma \ref{lemma:1stMomentPhatDiffL1},
+By Lemma \ref{lemma:1stMomentPhatDiffLq},
 \begin{align*}
 	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}})
     = & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - E[(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}])^2] \\
@@ -1425,13 +1424,13 @@ Note that we are thresholding according to $\hat{P}^{(1)}$ instead of $\hat{P}^{
 For the first term, we have
 \begin{align*}
 	& E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
-	\le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.11 holds}\}] (1 - \frac{1}{n^2}) \\
-	& + E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.11 does not hold}\}] \frac{1}{n^2} \\
-	\le & O(m^{-1} n^{-2(1-\epsilon)}) (1 - \frac{1}{n^2}) + \frac{1}{n^2} 2 E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}^{(q)}_{ij})^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
+	\le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.22 holds}\}] (1 - \frac{1}{n^2}) \\
+	& + E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.22 does not hold}\}] \frac{1}{n^2} \\
+	\le & O(n^{-2(1-\epsilon)}) (1 - \frac{1}{n^2}) + \frac{1}{n^2} 2 E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}^{(q)}_{ij})^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
 	& + \frac{1}{n^2} 2 E[(\hat{P}^{(q)}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
-	\le & O(m^{-1} n^{-2(1-\epsilon)}) + \frac{2}{n^2} E[\hat{P}^{(q)2}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] + \frac{2}{n^2} E[(\hat{P}^{(q)}_{ij} + M)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
-	\le & O(m^{-1} n^{-2(1-\epsilon)}) + \frac{2 a^2}{n^2} + \frac{2 (a+R)^2}{n^2} \\
-	\le & O(m^{-1} n^{-2(1-\epsilon)}) + \frac{4}{n^2} (a + R)^2
+	\le & O(n^{-2(1-\epsilon)}) + \frac{2}{n^2} E[\hat{P}^{(q)2}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] + \frac{2}{n^2} E[(\hat{P}^{(q)}_{ij} + M)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
+	\le & O(n^{-2(1-\epsilon)}) + \frac{2 a^2}{n^2} + \frac{2 (a+R)^2}{n^2} \\
+	\le & O(n^{-2(1-\epsilon)}) + \frac{4}{n^2} (a + R)^2
 \end{align*}
 For the second term, we have
 \begin{align*}
@@ -1446,14 +1445,14 @@ For the second term, we have
 Thus,
 \[
 	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) \le
-	O(m^{-1} n^{-2(1-\epsilon)}) + 16 (a+3R)^2 (\frac{1}{n^2} + e^{-a/R}).
+	O(n^{-2(1-\epsilon)}) + 16 (a+3R)^2 (\frac{1}{n^2} + e^{-a/R}).
 \]
-Let $a = m^{-1/2} n^{\epsilon}$ for any $\epsilon > 0$, combined with the assumption $m = o(n^{2\epsilon})$, we have
+Let $a = n^{\epsilon}$ for any $\epsilon > 0$, combined with the assumption $m = o(n^{2\epsilon})$, we have
 \begin{align*}
 	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}})
-	\le & 	O(m^{-1} n^{-2} (\log n)^6) + 16 m^{-1} n^{2\epsilon} (\frac{1}{n^2} + e^{-a/R}) \\
-	= & O(m^{-1} n^{-2} (\log n)^6) + O(m^{-1} n^{-2(1-\epsilon)}) \\
-	= & O(m^{-1} n^{-2(1-\epsilon)}).
+	\le & 	O(n^{-2} (\log n)^6) + 16 n^{2\epsilon} (\frac{1}{n^2} + e^{-a/R}) \\
+	= & O(n^{-2} (\log n)^6) + O(n^{-2(1-\epsilon)}) \\
+	= & O(n^{-2(1-\epsilon)}).
 \end{align*}
 
 \RT{Assuming $m$ graphs average is larger than 1 graph}
@@ -1481,13 +1480,13 @@ Direct result from Theorem \ref{thm:VarLq}.
 For fixed $m$, $1 \le i, j \le n$,
 \[
 	\frac{\mathrm{Var}(\widetilde{P}_{ij}^{(q)})}{\mathrm{Var}(\hat{P}_{ij}^{(q)})}
-    = O(m n^{-2} (\log n)^6).
+    = O(m n^{-2(1-\epsilon)}).
 \]
 Thus
 \[
 	\mathrm{ARE}(\hat{P}_{ij}^{(q)}, \widetilde{P}_{ij}^{(q)}) = 0.
 \]
-Furthermore, as long as $m$ goes to infinity of order $o(n (\log n)^{-3})$,
+Furthermore, as long as $m$ goes to infinity of order $o(n^{2(1-\epsilon)})$,
 \[
 	\mathrm{ARE}(\hat{P}_{ij}^{(q)}, \widetilde{P}_{ij}^{(q)}) = 0.
 \]
