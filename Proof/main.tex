@@ -646,9 +646,9 @@ with high probability.
 \begin{proof}
 By Proposition 2.1 in \cite{rohe2011spectral} and Equation (\ref{eqn:uhat2u2diffL1}), we have for some orthogonal matrix $W$,
 \[
-\|\hat{U} - U W\|_F^2 \le \frac{2 \|\hat{U} \hat{U}^T - U U^T\|_F^2}{\delta^2} = O(m^{-1/2} n^{-1/2} \sqrt{\log n}).
+\|\hat{U} - U W\|_F^2 \le \frac{2 \|\hat{U} \hat{U}^T - U U^T\|_F^2}{\delta^2}
+\le \frac{8 k^2 \|\hat{U} \hat{U}^T - U U^T\|_2^2}{\delta^2} = O(m^{-1/2} n^{-1/2} \sqrt{\log n}).
 \]
-\RT{Not right here, I am using the result for spectral norm as frobenius norm.}
 Let $Q = \hat{U} - U U^T \hat{U}$. And $Q$ is the residual after projecting $\hat{U}$ orthogonally onto the column space of $U$, we have
 \begin{equation}
 \label{eqn:QFnormL1}
@@ -912,28 +912,51 @@ For the first term, we have
 	& E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
 	\le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.11 holds}\}] (1 - \frac{1}{n^2}) \\
 	& + E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.11 does not hold}\}] \frac{1}{n^2} \\
-	\le & O(m^{-1} n^{-2(1-\epsilon)}) (1 - \frac{1}{n^2}) + \frac{1}{n^2} 2 E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}_{ij})^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
+	\le & O(m^{-1} n^{-2} (\log n)^6) (1 - \frac{1}{n^2}) + \frac{1}{n^2} 2 E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}_{ij})^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
 	& + \frac{1}{n^2} 2 E[(\hat{P}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
-	\le & O(m^{-1} n^{-2(1-\epsilon)}) + \frac{2}{n^2} E[\hat{P}_{ij}^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] + \frac{2}{n^2} E[(\hat{P}_{ij} + M)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
-	\le & O(m^{-1} n^{-2(1-\epsilon)}) + \frac{2 a^2}{n^2} + \frac{2 (a+R)^2}{n^2} \\
-	\le & O(m^{-1} n^{-2(1-\epsilon)}) + \frac{4}{n^2} (a + R)^2
+	\le & O(m^{-1} n^{-2} (\log n)^6) + \frac{2}{n^2} E[\hat{P}_{ij}^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] + \frac{2}{n^2} E[(\hat{P}_{ij} + R)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
+	\le & O(m^{-1} n^{-2} (\log n)^6) + \frac{2 a^2}{n^2} + \frac{2 (a+R)^2}{n^2} \\
+	\le & O(m^{-1} n^{-2} (\log n)^6) + \frac{4}{n^2} (a + R)^2
 \end{align*}
-For the second term, we have
+Notice that
+\begin{align*}
+	& E[\hat{P}_{ij}^2 \mathbb{I} \{ \hat{P}_{ij} > a \}]
+	= E[(\frac{1}{m} \sum_{1 \le t \le m} A_{ij}^{(t)})^2 \mathbb{I} \{ \hat{P}_{ij} > a \}] \\
+	\le & \frac{1}{m} E[\sum_{1 \le t \le m} A_{ij}^{(t)2} \mathbb{I} \{ \hat{P}_{ij} > a \}]
+	\le \frac{1}{m} E[\sum_{1 \le t \le m} A_{ij}^{(t)2} \mathbb{I} \{ \max_{1 \le s \le m} A_{ij}^{(s)} > a \}] \\
+	\le & \frac{1}{m} E[\sum_{1 \le t \le m} A_{ij}^{(t)2} (\sum_{1 \le s \le m}\mathbb{I} \{ A_{ij}^{(s)} > a \})]
+	= E[A_{ij}^{(1)2} (\sum_{1 \le s \le m}\mathbb{I} \{ A_{ij}^{(s)} > a \})] \\
+	= & E[A_{ij}^{(1)2} \mathbb{I} \{ A_{ij}^{(1)} > a \})] + (m-1) E[A_{ij}^{(1)2} \mathbb{I} \{ A_{ij}^{(2)} > a \})] \\
+	= & E[A_{ij}^{(1)2} \mathbb{I} \{ A_{ij}^{(1)} > a \})] + (m-1) E[A_{ij}^{(1)2}] P(A_{ij}^{(1)} > a),
+\end{align*}
+and similarly
+\begin{align*}
+	& E[(\hat{P}_{ij} + R)^2 \mathbb{I} \{ \hat{P}_{ij} > a \}] \\
+	= & E[\hat{P}_{ij}^2 \mathbb{I} \{ \hat{P}_{ij} > a \}] + 2R \cdot E[\hat{P}_{ij} \mathbb{I} \{ \hat{P}_{ij} > a \}] + R^2 P(\hat{P}_{ij} > a) \\
+	\le & E[A_{ij}^{(1)2} \mathbb{I} \{ A_{ij}^{(1)} > a \})] + (m-1) E[A_{ij}^{(1)2}] P(A_{ij}^{(1)} > a) \\
+	& + 2R \left( E[A_{ij}^{(1)} \mathbb{I} \{ A_{ij}^{(1)} > a \})] + (m-1) E[A_{ij}^{(1)}] P(A_{ij}^{(1)} > a) \right) \\
+	& + R^2 \cdot m \cdot P(A_{ij}^{(1)} > a).
+\end{align*}
+Thus for the second term,
 \begin{align*}
 	& E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} > a\}] \\
 	\le & 2 E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}_{ij})^2 \mathbb{I}\{\hat{P}_{ij} > a\}] + 2 E[(\hat{P}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} > a\}] \\
-	\le & 2 E[\hat{P}_{ij}^2 \mathbb{I}\{\hat{P}_{ij} > a\}] + 2 E[(\hat{P}_{ij} + M)^2 \mathbb{I}\{\hat{P}_{ij} > a\}] \\
-	\le & 2 E[A^{(t)2}_{ij} \mathbb{I}\{A^{(t)}_{ij} > a\}] + 2 E[(A^{(t)}_{ij} + M)^2 \mathbb{I}\{A^{(t)}_{ij} > a\}] \\
-	\le & 2 e^{-a/R} \left( 2a^2 + 7R^2 + 6a R \right) \\
-	\le & 4 e^{-a/R} (a + 3R)^2
+	\le & 2 E[\hat{P}_{ij}^2 \mathbb{I}\{\hat{P}_{ij} > a\}] + 2 E[(\hat{P}_{ij} + R)^2 \mathbb{I}\{\hat{P}_{ij} > a\}] \\
+	\le & 4 E[A_{ij}^{(1)2} \mathbb{I} \{ A_{ij}^{(1)} > a \})] + 4(m-1) E[A_{ij}^{(1)2}] P(A_{ij}^{(1)} > a) \\
+	& + 4R \cdot E[A_{ij}^{(1)} \mathbb{I} \{ A_{ij}^{(1)} > a \})] + 2R(m-1) E[A_{ij}^{(1)}] P(A_{ij}^{(1)} > a) \\
+	& + 2R^2 \cdot m \cdot P(A_{ij}^{(1)} > a) \\
+	\le & 4 e^{-a/R} \left( a^2 + 3R a + 3(m+1)R^2 \right) \\
+	\le & 4 e^{-a/R} (a + 2 m R)^2
 \end{align*}
 
-Assuming the expectation based on $\hat{P}_{ij}$ is less than the expectation based on $A_{ij}^{(t)}$ above.
-
 Thus,
+%\[
+%	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) \le
+%	O(m^{-1} n^{-2} (\log n)^6) + 16 (a+3R)^2 (\frac{1}{n^2} + e^{-a/R}).
+%\]
 \[
 	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) \le
-	O(m^{-1} n^{-2(1-\epsilon)}) + 16 (a+3R)^2 (\frac{1}{n^2} + e^{-a/R}).
+	O(m^{-1} n^{-2} (\log n)^6) + 16 (a+R)^2 \frac{1}{n^2} + 16 (a+2 m R)^2 e^{-a/R}.
 \]
 Let $a = m^{-1/2} n^{\epsilon}$ for any $\epsilon > 0$, combined with the assumption $m = o(n^{2\epsilon})$, we have
 \begin{align*}
@@ -1166,9 +1189,9 @@ with high probability.
 
 By Proposition 2.1 in \cite{rohe2011spectral} and Equation (\ref{eqn:uhat2u2diffL1}), we have for some orthogonal matrix $W$,
 \[
-\|\hat{U} - U W\|_F^2 \le \frac{2 \|\hat{U} \hat{U}^T - U U^T\|_F^2}{\delta^2} = O(n^{-1/2} \sqrt{\log n}).
+\|\hat{U} - U W\|_F^2 \le \frac{2 \|\hat{U} \hat{U}^T - U U^T\|_F^2}{\delta^2}
+\le \frac{8 k^2 \|\hat{U} \hat{U}^T - U U^T\|_2^2}{\delta^2} = O(n^{-1/2} \sqrt{\log n}).
 \]
-\RT{Not right here, I am using the result for spectral norm as frobenius norm.}
 Let $Q = \hat{U} - U U^T \hat{U}$. And $Q$ is the residual after projecting $\hat{U}$ orthogonally onto the column space of $U$, we have
 \begin{equation}
 \label{eqn:QFnorm}
