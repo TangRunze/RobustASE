@@ -910,13 +910,13 @@ Fix some $a > 0$, we have
 For the first term, we have
 \begin{align*}
 	& E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
-	\le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.11 holds}\}] (1 - \frac{1}{n^2}) \\
-	& + E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.11 does not hold}\}] \frac{1}{n^2} \\
-	\le & O(m^{-1} n^{-2} (\log n)^6) (1 - \frac{1}{n^2}) + \frac{1}{n^2} 2 E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}_{ij})^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
-	& + \frac{1}{n^2} 2 E[(\hat{P}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
-	\le & O(m^{-1} n^{-2} (\log n)^6) + \frac{2}{n^2} E[\hat{P}_{ij}^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] + \frac{2}{n^2} E[(\hat{P}_{ij} + R)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
-	\le & O(m^{-1} n^{-2} (\log n)^6) + \frac{2 a^2}{n^2} + \frac{2 (a+R)^2}{n^2} \\
-	\le & O(m^{-1} n^{-2} (\log n)^6) + \frac{4}{n^2} (a + R)^2
+	\le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.11 holds}\}] (1 - n^{-c}) \\
+	& + E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.11 does not hold}\}] n^{-c} \\
+	\le & O(m^{-1} n^{-2} (\log n)^6) (1 - n^{-c}) + 2 n^{-c} E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}_{ij})^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
+	& + 2 n^{-c} E[(\hat{P}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
+	\le & O(m^{-1} n^{-2} (\log n)^6) + 2 n^{-c} E[\hat{P}_{ij}^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] + 2 n^{-c} E[(\hat{P}_{ij} + R)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
+	\le & O(m^{-1} n^{-2} (\log n)^6) + 2 a^2 n^{-c} + 2 (a+R)^2 n^{-c} \\
+	\le & O(m^{-1} n^{-2} (\log n)^6) + 4 n^{-c} (a + R)^2
 \end{align*}
 Notice that
 \begin{align*}
@@ -946,7 +946,7 @@ Thus for the second term,
 	& + 4R \cdot E[A_{ij}^{(1)} \mathbb{I} \{ A_{ij}^{(1)} > a \})] + 2R(m-1) E[A_{ij}^{(1)}] P(A_{ij}^{(1)} > a) \\
 	& + 2R^2 \cdot m \cdot P(A_{ij}^{(1)} > a) \\
 	\le & 4 e^{-a/R} \left( a^2 + 3R a + 3(m+1)R^2 \right) \\
-	\le & 4 e^{-a/R} (a + 2 m R)^2
+	\le & 4 e^{-a/R} (a + 2 m^{1/2} R)^2
 \end{align*}
 
 Thus,
@@ -956,14 +956,16 @@ Thus,
 %\]
 \[
 	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) \le
-	O(m^{-1} n^{-2} (\log n)^6) + 16 (a+R)^2 \frac{1}{n^2} + 16 (a+2 m R)^2 e^{-a/R}.
+	O(m^{-1} n^{-2} (\log n)^6) + 16 (a+R)^2 n^{-c} + 16 (a+2 m^{1/2} R)^2 e^{-a/R}.
 \]
-Let $a = m^{-1/2} n^{\epsilon}$ for any $\epsilon > 0$, combined with the assumption $m = o(n^{2\epsilon})$, we have
+Let $a = m^{-1/2} n^{b}$ for any $b > 0$, and $c = 2b + 3$, combined with the assumption $m = O(n^{b})$, we have
 \begin{align*}
 	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}})
-	\le & 	O(m^{-1} n^{-2(1-\epsilon)}) + 16 m^{-1} n^{2\epsilon} (\frac{1}{n^2} + e^{-a/R}) \\
-	= & O(m^{-1} n^{-2(1-\epsilon)}) + O(m^{-1} n^{-2(1-\epsilon)}) \\
-	= & O(m^{-1} n^{-2(1-\epsilon)}).
+	= & O(m^{-1} n^{-2} (\log n)^6) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(e^{-m^{-1/2} n^{b}}) \\
+	= & O(m^{-1} n^{-2} (\log n)^6) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(e^{- n^{b/2}}) \\
+	= & O(m^{-1} n^{-2} (\log n)^6) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(n^{-2b-3}) \\
+	= & O(m^{-1} n^{-2} (\log n)^6) + O(m^{-1} n^{-3}) \\
+	= & O(m^{-1} n^{-2} (\log n)^6).
 \end{align*}
 \end{proof}
 
