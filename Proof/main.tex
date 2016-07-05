@@ -582,6 +582,23 @@ By the union bound, we have
 \[
 P(\|(Z^T Z - n E[Z_1 Z_1^T])_{ij}\|_F \ge k R \sqrt{n\log{n}}) \le \frac{2 k^2}{n^2}.
 \]
+
+\noindent \textbf{Changes here:}
+
+By Hoeffding's inequality,
+\[
+P(|(Z^T Z - n E[Z_1 Z_1^T])_{ij}| \ge t) \le 2 \exp(-\frac{2t^2}{n R^2}).
+\]
+Now let $c > 0$ be given and assume $n^{-c} \le \eta \le 1/2$. Let
+\[
+	t =  R \sqrt{n \ln(\sqrt{2/\eta})},
+\]
+we have
+\[
+P(|(Z^T Z - n E[Z_1 Z_1^T])_{ij}| \ge R \sqrt{n \ln(\sqrt{2/\eta})}) \le \eta.
+\]
+\noindent \textbf{Changes end}
+
 Then by Weyl's Theorem \cite{horn2012matrix}, we have
 \[
 |\lambda_i(H) - n \lambda_i(Z_1 Z_1^T)| \le \|Z^T Z - n E[Z_1 Z_1^T]\|_2 \le k R \sqrt{n\log{n}}
