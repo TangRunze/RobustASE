@@ -574,22 +574,12 @@ Under the above assumptions, $\lambda_i(H) = \Theta(n)$ with high probability wh
 
 \noindent
 \begin{proof}
-Note that $\lambda_i(H) = \lambda_i(Z Z^T) = \lambda_i(Z^T Z)$ when $i \le k$. Since each entry of $Z^T Z$ is a sum of $n$ independent random variables each in $[0, R]$, i.e. $(Z^T Z)_{ij} = \sum_{l = 1}^n Z_{li} Z_{lj}$. By Hoeffding's inequality, for each entry we have
-\[
-P(|(Z^T Z - n E[Z_1 Z_1^T])_{ij}| \ge R \sqrt{n\log{n}}) \le \frac{2}{n^2}.
-\]
-By the union bound, we have
-\[
-P(\|(Z^T Z - n E[Z_1 Z_1^T])_{ij}\|_F \ge k R \sqrt{n\log{n}}) \le \frac{2 k^2}{n^2}.
-\]
-
-\noindent \textbf{Changes here:}
-
+Note that $\lambda_i(H) = \lambda_i(Z Z^T) = \lambda_i(Z^T Z)$ when $i \le k$. Since each entry of $Z^T Z$ is a sum of $n$ independent random variables each in $[0, R]$, i.e. $(Z^T Z)_{ij} = \sum_{l = 1}^n Z_{li} Z_{lj}$.
 By Hoeffding's inequality,
 \[
 P(|(Z^T Z - n E[Z_1 Z_1^T])_{ij}| \ge t) \le 2 \exp(-\frac{2t^2}{n R^2}).
 \]
-Now let $c > 0$ be given and assume $n^{-c} \le \eta \le 1/2$. Let
+Now let $c > 0$ and assume $n^{-c} \le \eta \le 1/2$. Let
 \[
 	t =  R \sqrt{n \ln(\sqrt{2/\eta})},
 \]
@@ -597,13 +587,16 @@ we have
 \[
 P(|(Z^T Z - n E[Z_1 Z_1^T])_{ij}| \ge R \sqrt{n \ln(\sqrt{2/\eta})}) \le \eta.
 \]
-\noindent \textbf{Changes end}
+By the union bound, we have
+\[
+P(\|Z^T Z - n E[Z_1 Z_1^T]\|_F \ge k R \sqrt{n \ln(\sqrt{2/\eta})}) \le k^2 \eta.
+\]
 
 Then by Weyl's Theorem \cite{horn2012matrix}, we have
 \[
-|\lambda_i(H) - n \lambda_i(Z_1 Z_1^T)| \le \|Z^T Z - n E[Z_1 Z_1^T]\|_2 \le k R \sqrt{n\log{n}}
+|\lambda_i(H) - n \lambda_i(Z_1 Z_1^T)| \le \|Z^T Z - n E[Z_1 Z_1^T]\|_2 = O(\sqrt{n\log{n}})
 \]
-with probability at least $1 - \frac{2 k^2}{n^2}$.
+with probability at least $1 - k^2 \eta$.
 Thus $\lambda_i(H) = S_{ii} = \Theta(n)$ with probability at least $1 - \frac{2 k^2}{n^2}$ when $i \le k$.
 
 Moreover,
@@ -712,12 +705,11 @@ then by Theorem \ref{thm:BernsteinMatrix}, we have
 	P \left( \left| 2 \sum_{s<t} (\hat{P}_{st} - H_{st}) u_{is} u_{jt} \right| \ge t \right)
     \le \exp \left( \frac{-m t^2/8}{R^2 + R t /2} \right).
 \]
-Let $t = m^{-1/2} \log n$, we have
+Let $t = c R m^{-1/2} \log n$ for any $c > 0$, we have
 \[
-P \left( \left| 2 \sum_{s<t} (\hat{P}_{st} - H_{st}) u_{is} u_{jt} \right| \ge m^{-1} \log n \right)
-    \le n^{-c},
+P \left( \left| 2 \sum_{s<t} (\hat{P}_{st} - H_{st}) u_{is} u_{jt} \right| \ge C m^{-1/2} \log n \right)
+    \le n^{-c}.
 \]
-where $c = 1/(8R)$.
 Thus each entry of $U^T(\hat{P} - H)U$ is of order $O(m^{-1} \log n)$ with high probability and
 \begin{equation}
 \label{eqn:uPhatdiffHuL1}
@@ -844,13 +836,18 @@ Also we have
 then by Theorem \ref{thm:BernsteinMatrix}, we have
 \[
 	P \left( \left| \sum_{s \ne i} (\hat{P}_{is} - H_{is}) u_{js} \right| \ge t \right)
-    \le \exp \left( \frac{-m t^2/2}{2 R^2 + R t} \right),
+    \le \exp \left( \frac{-m t^2/2}{2 R^2 + R t} \right).
 \]
-i.e. it is of order $O(m^{-1} \log n)$ with high probability.
+Let $t = 3 c R m^{-1/2} \log n$, we have
+\[
+	P \left( \left| \sum_{s \ne i} (\hat{P}_{is} - H_{is}) u_{js} \right| \ge 3 c R m^{-1/2} \log n \right)
+    \le n^{-c},
+\]
+i.e. it is of order $O(m^{-1/2} \log n)$ with high probability.
 Taking the union bound over all $i$ and $j$, with high probability we have,
 \begin{align*}
 	\max_i \| \hat{Z}_i - W Z_i \|_2
-    & \le \frac{C k^{1/2}}{\lambda_k^{1/2}(H)} m^{-1} (\log n)^{3/2} + O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
+    & \le \frac{C k^{1/2}}{\lambda_k^{1/2}(H)} m^{-1/2} (\log n)^{3/2} + O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
     & = O(m^{-1/2} n^{-1/2} (\log n)^{3/2}).
 \end{align*}
 \end{proof}
@@ -904,7 +901,7 @@ Define $(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}$, our estimator for $P_{ij}$, to b
 
 \begin{theorem}
 \label{thm:VarASEL1}
-Assuming that $m = o(n^{2\epsilon})$, then $\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) = O(m^{-1} n^{-2(1-\epsilon)})$.
+Assuming that $m = O(n^b)$ for any $b > 0$, then $\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) = O(m^{-1} n^{-2} (\log n)^6)$.
 \end{theorem}
 \begin{proof}
 By Lemma \ref{lemma:1stMomentPhatDiffL1},
@@ -1004,13 +1001,13 @@ Direct result from central limit theorem.
 For fixed $m$, $1 \le i, j \le n$ and $i \ne j$,
 \[
 	\frac{\mathrm{Var}(\widetilde{P}_{ij}^{(1)})}{\mathrm{Var}(\hat{P}_{ij}^{(1)})}
-    = O(n^{-2(1-\epsilon)}).
+    = O(n^{-2} (\log n)^6).
 \]
 Thus
 \[
 	\mathrm{ARE}(\hat{P}_{ij}^{(1)}, \widetilde{P}_{ij}^{(1)}) = 0.
 \]
-Furthermore, as long as $m$ goes to infinity of order $o(n^{2\epsilon})$,
+Furthermore, as long as $m$ goes to infinity of order $O(n^b)$ for any $b > 0$,
 \[
 	\mathrm{ARE}(\hat{P}_{ij}^{(1)}, \widetilde{P}_{ij}^{(1)}) = 0.
 \]
@@ -1380,13 +1377,18 @@ Also we have
 	\sigma^2 := |\sum_{s \ne i} 32 R^2 u_{js}^2|
     \le 32 R^2,
 \]
-then by Theorem \ref{thm:BernsteinMatrix}, we have
+then by Theorem \ref{thm:BernsteinMatrix}, we have with high probability,
 \[
 	P \left( \left| \sum_{s \ne i} (\hat{P}_{is} - H_{is}) u_{js} \right| \ge t \right)
-    \le \exp \left( \frac{-t^2/2}{32 R^2 + R t} \right),
+    \le \exp \left( \frac{-t^2/2}{32 R^2 + R t} \right).
 \]
-i.e. it can be bounded by a constant with high probability.
-Taking the union bound over all $i$ and $j$, we have
+Let $t = 2 c R \log n$, we have
+\[
+	P \left( \left| \sum_{s \ne i} (\hat{P}_{is} - H_{is}) u_{js} \right| \ge 2 c R \log n \right)
+    \le n^{-c},
+\]
+i.e. it can be bounded by $O(\log n)$ with high probability.
+Taking the union bound over all $i$ and $j$, with high probability, we have
 \[
 	\max_i \| \hat{Z}_i - W Z_i \|_2
     \le \frac{C d^{1/2}}{\lambda_d^{1/2}(H)} (\log n)^{3/2} + O(n^{-1/2} (\log n)^{3/2})
@@ -1442,7 +1444,7 @@ Direct result from Lemma \ref{lemma:1stMomentPhatDiffLq} by noticing
 
 \begin{theorem}
 \label{thm:VarASELq}
-$\mathrm{Var}(\hat{Z}_i^T \hat{Z}_j) = O(n^{-2(1-\epsilon)})$.
+Assuming that $m = O(n^b)$ for any $b > 0$, then $\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) = O(n^{-2} (\log n)^6)$.
 \end{theorem}
 \begin{proof}
 By Lemma \ref{lemma:1stMomentPhatDiffLq},
@@ -1466,38 +1468,28 @@ Note that we are thresholding according to $\hat{P}^{(1)}$ instead of $\hat{P}^{
 For the first term, we have
 \begin{align*}
 	& E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
-	\le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.22 holds}\}] (1 - \frac{1}{n^2}) \\
-	& + E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.22 does not hold}\}] \frac{1}{n^2} \\
-	\le & O(n^{-2(1-\epsilon)}) (1 - \frac{1}{n^2}) + \frac{1}{n^2} 2 E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}^{(q)}_{ij})^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
-	& + \frac{1}{n^2} 2 E[(\hat{P}^{(q)}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
-	\le & O(n^{-2(1-\epsilon)}) + \frac{2}{n^2} E[\hat{P}^{(q)2}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] + \frac{2}{n^2} E[(\hat{P}^{(q)}_{ij} + M)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
-	\le & O(n^{-2(1-\epsilon)}) + \frac{2 a^2}{n^2} + \frac{2 (a+R)^2}{n^2} \\
-	\le & O(n^{-2(1-\epsilon)}) + \frac{4}{n^2} (a + R)^2
+	\le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.22 holds}\}] (1 - n^{-c}) \\
+	& + E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.22 does not hold}\}] n^{-c} \\
+	\le & O(n^{-2} (\log n)^6) (1 - n^{-c}) + 2 n^{-c} E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}^{(q)}_{ij})^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
+	& + 2 n^{-c} E[(\hat{P}^{(q)}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
+	\le & O(n^{-2} (\log n)^6) + 2 n^{-c} E[\hat{P}^{(q)2}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] + 2 n^{-c} E[(\hat{P}^{(q)}_{ij} + R)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
+	\le & O(n^{-2} (\log n)^6) + 2 n^{-c} E[\hat{P}^{(1)2}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] + 2 n^{-c} E[(\hat{P}^{(1)}_{ij} + R)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
+	\le & O(n^{-2} (\log n)^6) + 2 a^2 n^{-c} + 2 (a+R)^2 n^{-c} \\
+	\le & O(n^{-2} (\log n)^6) + 4 n^{-c} (a + R)^2
 \end{align*}
 For the second term, we have
 \begin{align*}
 	& E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] \\
 	\le & 2 E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}^{(q)}_{ij})^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] + 2 E[(\hat{P}^{(q)}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] \\
-	\le & 2 E[\hat{P}^{(q)2}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] + 2 E[(\hat{P}^{(q)}_{ij} + M)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] \\
-	\le & 2 E[\hat{P}^{(1)2}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] + 2 E[(\hat{P}^{(1)}_{ij} + M)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] \\
-	\le & 2 E[A^{(t)2}_{ij} \mathbb{I}\{A^{(t)}_{ij} > a\}] + 2 E[(A^{(t)}_{ij} + M)^2 \mathbb{I}\{A^{(t)}_{ij} > a\}] \\
-	\le & 2 e^{-a/R} \left( 2a^2 + 7R^2 + 6a R \right) \\
-	\le & 4 e^{-a/R} (a + 3R)^2
+	\le & 2 E[\hat{P}^{(q)2}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] + 2 E[(\hat{P}^{(q)}_{ij} + R)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] \\
+	\le & 2 E[\hat{P}^{(1)2}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] + 2 E[(\hat{P}^{(1)}_{ij} + R)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] \\
+	\le & 4 e^{-a/R} (a + 2 m^{1/2} R)^2
 \end{align*}
-Thus,
+Similarly, assuming $m = O(n^b)$ for any $b > 0$, we have
 \[
-	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) \le
-	O(n^{-2(1-\epsilon)}) + 16 (a+3R)^2 (\frac{1}{n^2} + e^{-a/R}).
-\]
-Let $a = n^{\epsilon}$ for any $\epsilon > 0$, combined with the assumption $m = o(n^{2\epsilon})$, we have
-\begin{align*}
 	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}})
-	\le & 	O(n^{-2} (\log n)^6) + 16 n^{2\epsilon} (\frac{1}{n^2} + e^{-a/R}) \\
-	= & O(n^{-2} (\log n)^6) + O(n^{-2(1-\epsilon)}) \\
-	= & O(n^{-2(1-\epsilon)}).
-\end{align*}
-
-\RT{Assuming $m$ graphs average is larger than 1 graph}
+	= O(n^{-2} (\log n)^6).
+\]
 \end{proof}
 
 
@@ -1522,13 +1514,13 @@ Direct result from Theorem \ref{thm:VarLq}.
 For fixed $m$, $1 \le i, j \le n$,
 \[
 	\frac{\mathrm{Var}(\widetilde{P}_{ij}^{(q)})}{\mathrm{Var}(\hat{P}_{ij}^{(q)})}
-    = O(m n^{-2(1-\epsilon)}).
+    = O(m n^{-2} (\log n)^6).
 \]
 Thus
 \[
 	\mathrm{ARE}(\hat{P}_{ij}^{(q)}, \widetilde{P}_{ij}^{(q)}) = 0.
 \]
-Furthermore, as long as $m$ goes to infinity of order $o(n^{2(1-\epsilon)})$,
+Furthermore, as long as $m$ goes to infinity of order $o(n^2 (\log n)^{-6})$,
 \[
 	\mathrm{ARE}(\hat{P}_{ij}^{(q)}, \widetilde{P}_{ij}^{(q)}) = 0.
 \]
