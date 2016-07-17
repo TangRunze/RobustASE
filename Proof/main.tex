@@ -87,9 +87,13 @@
 \subsection{Uncontaminated Model}
 Let $F$ be a distribution on $\mathcal{X} \in \mathbb{R}^d$, satisfying $x^T y \ge 0$ for all $x, y \in \mathcal{X}$. We now generate $m$ i.i.d.~graphs under the RDPG($F$) model. First sample $X_1, \cdots, X_n$ independently from distribution $F$,  and define $X = [X_1, \cdots, X_n]^T \in \mathbb{R}^{n \times d}$, $P = X X^T \in [0, R]^{n \times n}$, where $R$ is a constant. Then we can sample $m$ conditionally i.i.d. symmetric and hollow graphs $G^{(1)}, \cdots, G^{(m)}$, such that conditioned on $X$, $G^{(t)}_{ij} \stackrel{ind}{\sim} \mathrm{Exp}(P_{ij})$ for each $1 \le t \le m$, $1 \le i < j \le n$.
 
+Note: We are now considering the SBM model as a RDPG.
+
 %Under the stochastic block model with parameters $(B, \rho)$, we have $X_i \stackrel{iid}{\sim} \sum_{k=1}^K \rho_k \delta_{\nu_k}$, where $\nu = [\nu_1, \cdots, \nu_K]^T \in \mathbb{R}^{K \times d}$ satisfies $B = \nu^T \nu$. Define the block assignment $\tau$ such that $\tau_i = k$ if and only if $X_i = \nu_k$. Let $P = X X^T$ where $X = [X_1, \cdots, X_n]^T$.
 %
 %First sample $\tau$ from the multinomial distribution with parameter $\rho$. Then we are going to sample $m$ conditionally i.i.d.~symmetric and hollow graphs $G^{(1)}, \cdots, G^{(m)}$ such that conditioning on $\tau$, $G^{(k)}_{ij} \stackrel{ind}{\sim} \mathrm{Exp}(P_{ij})$ for each $1 \le k \le m$, $1 \le i < j \le n$.
+
+
 
 
 \subsection{Contaminated Observations}
@@ -128,12 +132,12 @@ Since the observations are contaminated, robust estimators are preferred. A modi
 
 
 \subsection{$\widetilde{P}^{(1)}$ based on ASE of entry-wise MLE}
-By taking advantages of the graph structure, we expect a better performance after applying a rank-reduction procedure to the entry-wise MLE $\hat{P}^{(1)}$ under the SBM. So we first apply ASE to $\hat{P}^{(1)}$ to get the latent positions $\hat{X}^{(1)}$ in dimension $d^{(1)}$, and then define $\widetilde{P}^{(1)} = \hat{X}^{(1)} \hat{X}^{{(1)}T}$.
+By taking advantages of the graph structure, we expect a better performance after applying a rank-reduction procedure to the entry-wise MLE $\hat{P}^{(1)}$ under the SBM. So we first apply ASE to $\hat{P}^{(1)}$ to get the latent positions $\hat{X}^{(1)}$ in dimension $d^{(1)}$, and then define $\widetilde{P}^{(1)} = (\hat{X}^{(1)} \hat{X}^{{(1)}T})_{\mathrm{tr}}$, where each element is a projection of $\hat{X}^{(1)}_i \hat{X}^{{(1)}T}_j$ onto $[0, \max(\hat{P}^{(1)}_{ij}, R)]$.
 
 
 
 \subsection{$\widetilde{P}^{(q)}$ based on ASE of entry-wise ML$q$E}
-Similarly, we also expect a better performance after applying a rank-reduction procedure to the entry-wise ML$q$E $\hat{P}^{(q)}$ under the SBM. So we first apply ASE to $\hat{P}^{(q)}$ to get the latent positions $\hat{X}^{(q)}$ in dimension $d^{(q)}$, and then define $\widetilde{P}^{(q)} = \hat{X}^{(q)} \hat{X}^{{(q)}T}$.
+Similarly, we also expect a better performance after applying a rank-reduction procedure to the entry-wise ML$q$E $\hat{P}^{(q)}$ under the SBM. So we first apply ASE to $\hat{P}^{(q)}$ to get the latent positions $\hat{X}^{(q)}$ in dimension $d^{(q)}$, and then define $\widetilde{P}^{(q)} = (\hat{X}^{(q)} \hat{X}^{{(q)}T})_{\mathrm{tr}}$, where each element is a projection of $\hat{X}^{(q)}_i \hat{X}^{{(q)}T}_j$ onto $[0, \max(\hat{P}^{(q)}_{ij}, R)]$.
 
 
 
@@ -240,44 +244,48 @@ Similarly, we also expect a better performance after applying a rank-reduction p
 %
 %
 %
-%\subsection{Summary}
-%Thus, we should choose the estimator $\widetilde{P}^{(q)}$.
-%
-%\begin{figure}
-%\begin{center}
-%\hspace*{-0.2in}
-%\begin{tikzpicture}[
-%  font=\sffamily,
-%  every matrix/.style={ampersand replacement=\&,column sep=2cm,row sep=2cm},
-%  block/.style={draw,thick,rounded corners,fill=blue!20,inner sep=.3cm},
-%  process/.style={draw,thick,circle,fill=blue!20},
-%  sink/.style={source,fill=green!20},
-%  datastore/.style={draw,very thick,shape=datastore,inner sep=.3cm},
-%  dots/.style={gray,scale=2},
-%  to/.style={->,>=stealth',shorten >=1pt,semithick,font=\sffamily\footnotesize},
-%  tofrom/.style={<->,>=stealth',shorten >=1pt,semithick,font=\sffamily\footnotesize},
-%  every node/.style={align=center}]
-%
-%  % Position the nodes using a matrix layout
-%  \matrix{
-%    \node[block] (MLE) {$\hat{P}^{(1)}$};
-%      \& \& \& \& \node[block] (MLqE) {$\hat{P}^{(q)}$};\\
-%	\\
-%    \node[block] (XMLE) {$\widetilde{P}^{(1)}$};
-%      \& \& \& \& \node[block] (XMLqE) {$\widetilde{P}^{(q)}$}; \\
-%  };
-%
-%  % Draw the arrows between the nodes and label them.
-%  \draw[tofrom] (MLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $n$, $C$ $\mathrm{large}$ $\mathrm{enough}$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(q)})$}
-%      node[midway,below] {$\underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(1)}) = \underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(q)}) = 0$} (MLqE);
-%  \draw[tofrom] (MLE) -- node[midway,left] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(1)}) =$\\$ \underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$\\$ = O(m n^{-2(1-\epsilon)})$} (XMLE);
-%  \draw[tofrom] (MLqE) -- node[midway,right] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(q)}) = $\\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(q)})/\mathrm{Var}(\hat{P}_{ij}^{(q)})$\\$= O(m n^{-2(1-\epsilon)})$} (XMLqE);
-%  \draw[tofrom] (XMLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{sufficiently}$ $\mathrm{ large}$ $m$, $n$ $\mathrm{and}$ $C$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(q)})$}
-%      node[midway,below] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(1)}) = \underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0$} (XMLqE);
-%\end{tikzpicture}
-%\end{center}
-%\caption{\label{fig:summary}Relationship between four estimators.}
-%\end{figure}
+
+
+
+
+\subsection{Summary}
+Thus, we should choose the estimator $\widetilde{P}^{(q)}$.
+
+\begin{figure}
+\begin{center}
+\hspace*{-0.2in}
+\begin{tikzpicture}[
+  font=\sffamily,
+  every matrix/.style={ampersand replacement=\&,column sep=2cm,row sep=2cm},
+  block/.style={draw,thick,rounded corners,fill=blue!20,inner sep=.3cm},
+  process/.style={draw,thick,circle,fill=blue!20},
+  sink/.style={source,fill=green!20},
+  datastore/.style={draw,very thick,shape=datastore,inner sep=.3cm},
+  dots/.style={gray,scale=2},
+  to/.style={->,>=stealth',shorten >=1pt,semithick,font=\sffamily\footnotesize},
+  tofrom/.style={<->,>=stealth',shorten >=1pt,semithick,font=\sffamily\footnotesize},
+  every node/.style={align=center}]
+
+  % Position the nodes using a matrix layout
+  \matrix{
+    \node[block] (MLE) {$\hat{P}^{(1)}$};
+      \& \& \& \& \node[block] (MLqE) {$\hat{P}^{(q)}$};\\
+	\\
+    \node[block] (XMLE) {$\widetilde{P}^{(1)}$};
+      \& \& \& \& \node[block] (XMLqE) {$\widetilde{P}^{(q)}$}; \\
+  };
+
+  % Draw the arrows between the nodes and label them.
+  \draw[tofrom] (MLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $n$, $C$ $\mathrm{large}$ $\mathrm{enough}$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(q)})$}
+      node[midway,below] {$\underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(1)}) = \underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(q)}) = 0$} (MLqE);
+  \draw[tofrom] (MLE) -- node[midway,left] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ \\ $m = O(n^b)$ $\mathrm{for}$ $b>0$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(1)}) =$\\$ \underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$\\$ = O(n^{-2} (\log n)^6)$} (XMLE);
+  \draw[tofrom] (MLqE) -- node[midway,right] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ \\ $m = O(n^b)$ $\mathrm{for}$ $b>0$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(q)}) = $\\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(q)})/\mathrm{Var}(\hat{P}_{ij}^{(q)})$\\$= O(m n^{-2} (\log n)^6)$} (XMLqE);
+  \draw[tofrom] (XMLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{sufficiently}$ $\mathrm{ large}$ $m$, $n$ $\mathrm{and}$ $C$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(q)})$}
+      node[midway,below] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ $m = o(n^2 (\log n)^{-6})$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(1)}) = \underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0$} (XMLqE);
+\end{tikzpicture}
+\end{center}
+\caption{\label{fig:summary}Relationship between four estimators.}
+\end{figure}
 
 
 
@@ -285,7 +293,7 @@ Similarly, we also expect a better performance after applying a rank-reduction p
 
 
 
-
+\newpage
 
 \section{Proof}
 
@@ -334,7 +342,7 @@ Combined with $g(\hat{\theta}_1(x), x) < 0$, we have $\hat{\theta}_q(x) < \hat{\
 
 
 
-\begin{lemma} [Lemma \ref{lemma:ELqlEMLE}]
+\begin{lemma}% [Lemma \ref{lemma:ELqlEMLE}]
 For any $0 < q < 1$, there exists $C_0(P_{ij}, \epsilon, q) > 0$ such that under the contaminated model with $C > C_0(P_{ij}, \epsilon, q)$,
 \[
 	\lim_{m \to \infty} \left| E[\hat{P}^{(q)}_{ij}] - P_{ij} \right| < 
@@ -342,6 +350,7 @@ For any $0 < q < 1$, there exists $C_0(P_{ij}, \epsilon, q) > 0$ such that under
 \]
 for $1 \le i, j, \le n$ and $i \ne j$.
 \end{lemma}
+\label{lemma:ELqlEMLE}
 \begin{proof}
 For the MLE $\hat{P}^{(1)}_{ij} = \bar{A}_{ij}$,
 \[
@@ -381,7 +390,7 @@ C_{ij} > P_{ij} + \frac{(1-q) P_{ij}}{\epsilon} = C_0(P_{ij}, \epsilon, q).
 
 
 
-\begin{lemma} [Lemma \ref{lemma:VarMLEandLq0}]
+\begin{lemma}% [Lemma \ref{lemma:VarMLEandLq0}]
 \[
 	\lim_{m \to \infty} \mathrm{Var}(\hat{P}^{(1)}_{ij})
     = \lim_{m \to \infty} \mathrm{Var}(\hat{P}^{(q)}_{ij}) = 0,
@@ -429,7 +438,7 @@ Then the following chain of inequalities holds for all $t \ge 0$.
 
 
 
-\begin{theorem}[Theorem 3.3]
+\begin{theorem}%[Theorem 3.3]
 \label{thm:P1Diff}
 Let $P$ and $C$ be two $n$-by-$n$ symmetric matrices satisfying element-wise conditions $0 < P_{ij} \le C_{ij} \le R$ for some constant $R > 0$. For $0 < \epsilon < 1$, we define $m$ symmetric and hollow matrices as
 \[
@@ -792,7 +801,6 @@ Therefore,
     = & \| (\hat{P} - H) U S^{-1/2}\|_F + O(m^{-1} n^{-1} (\log n)^{3/2}) + O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
     = & \| (\hat{P} - H) U S^{-1/2}\|_F + O(m^{-1/2} n^{-1/2} (\log n)^{3/2}).
 \end{align*}
-\RT{$\|I - U U^T\|_2 = O(1)$}
 Note that $Z = U S^{1/2} W$ for some orthogonal matrix $W$. As $W^*$ is also orthogonal, therefore $Z \tilde{W} = U S^{1/2} W^*$ for some orthogonal $\tilde{W}$, which completes the proof.
 \end{proof}
 
@@ -1154,8 +1162,8 @@ Plugging this $t$ into the equation above, we get
 \end{proof}
 
 
-As we define $H^{(q)} = E[\hat{P}^{(q)}]$, let $d^{(q)} = \mathrm{rank}(H^{(q)})$ be the dimension in which we are going to embed $\hat{P}^{(q)}$. Then we can define $H^{(q)} = Z Z^T$ where $Z \in \mathbb{R}^{n \times d^{(q)}}$.
-\RT{We don't have any bound on $d^{(q)}$?}
+As we define $H^{(q)} = E[\hat{P}^{(q)}]$, let $d^{(q)} = \mathrm{rank}(H^{(q)})$ be the dimension in which we are going to embed $\hat{P}^{(q)}$. Notice that it is less than or equal to $K$ since the SBM assumption. Then we can define $H^{(q)} = Z Z^T$ where $Z \in \mathbb{R}^{n \times d^{(q)}}$.
+
 
 
 For simplicity, from now on, we will use $\hat{P}$ to represent $\hat{P}^{(q)}$, use $H$ to represent $H^{(q)}$ and use $k$ to represent the dimension $d^{(q)}$ we are going to embed. Assume $H = U S U^T = Z Z^T$, where $Z$ is a $n$-by-$k$ matrix. Then our estimate for $Z$ up to rotation is $\hat{Z} = \hat{U} \hat{S}^{1/2}$, where $\hat{U} \hat{S} \hat{U}^T$ is the rank-$d$ spectral decomposition of $|\hat{P}| = (\hat{P}^T \hat{P})^{1/2}$.
@@ -1468,8 +1476,8 @@ Note that we are thresholding according to $\hat{P}^{(1)}$ instead of $\hat{P}^{
 For the first term, we have
 \begin{align*}
 	& E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
-	\le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.22 holds}\}] (1 - n^{-c}) \\
-	& + E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.22 does not hold}\}] n^{-c} \\
+	\le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 3.22 holds}\}] (1 - n^{-c}) \\
+	& + E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 3.22 does not hold}\}] n^{-c} \\
 	\le & O(n^{-2} (\log n)^6) (1 - n^{-c}) + 2 n^{-c} E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}^{(q)}_{ij})^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
 	& + 2 n^{-c} E[(\hat{P}^{(q)}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
 	\le & O(n^{-2} (\log n)^6) + 2 n^{-c} E[\hat{P}^{(q)2}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] + 2 n^{-c} E[(\hat{P}^{(q)}_{ij} + R)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
@@ -1551,6 +1559,11 @@ Direct result from Lemma \ref{lemma:ELqlEMLE}, Corollary \ref{cor:L1Consistent} 
 For any fixed $m$, any $1 \le i,j \le n$,
 \[
 	\lim_{n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(1)})
+    = \lim_{n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0.
+\]
+Furthermore, as long as $m$ goes to infinity of order $o(n^2 (\log n)^{-6})$, any $1 \le i,j \le n$,
+\[
+	\lim_{n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(1)})
     = \lim_{n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0
 \]
 \end{theorem}
@@ -1561,61 +1574,61 @@ Direct result from Theorem \ref{thm:VarASEL1} and Theorem \ref{thm:VarASELq}.
 
 
 
-\newpage
-
-\section{Generalization}
-
-We can generalize the exponential distribution to $F$ and generalize ML$q$E to $\hat{P}$ with the following assumptions:
-\begin{itemize}
-\item There exists $C_0(P_{ij}, \epsilon) > 0$ such that under the contaminated model with $C > C_0(P_{ij}, \epsilon)$,
-\[
-	\lim_{m \to \infty} \left| E[\hat{P}_{ij}] - P_{ij} \right| < 
-    \lim_{m \to \infty} \left| E[\hat{P}^{(1)}_{ij}] - P_{ij} \right|,
-\]
-for $1 \le i, j \le n$.
-\item Let $A^{(t)} \stackrel{iid}{\sim} (1-\epsilon) F(P) + \epsilon F(C) $ and $H_{ij}^{(1)} = E[\hat{P}_{ij}^{(1)}] = (1-\epsilon) E_F(P_{ij}) + \epsilon E_F(C_{ij})$, then $E[(A_{ij}^{(t)} - H_{ij}^{(1)})^k] \le \mathrm{const} \cdot k!$.
-\item $\hat{P}_{ij} \le \mathrm{const} \cdot \hat{P}_{ij}^{(1)}$. This might be generalized to with high probability later.
-\item $\lim_{m \rightarrow \infty} \mathrm{Var}(\hat{P}_{ij}) = 0$
-\end{itemize}
-
-
-
-\newpage
-
-\section{Analysis of ML$q$E under Exponential Model}
-
-Let $f(x, \theta) = \sum_{i=1}^m e^{-\frac{(1-q) x_i}{\theta}} (x - \theta)$, then $\frac{\partial f}{\partial x_i}(x, \theta) = e^{-\frac{(1-q) x_i}{\theta}} \left( - \frac{(1-q) x_i}{\theta} + 2 - q \right)$.
-Define $c_q = 1 + \frac{1}{1-q}$, then
-\[
-	\frac{\partial f}{\partial x_i}(x, \theta) = 0 \Leftrightarrow
-    x_i \to \infty \text{ or } x_i = (1 + \frac{1}{1-q}) \theta
-\]
-
-Define $x = (x_1, \cdots, x_m)$ and $x^- = (x_1, \cdots, x_m) \backslash x_i$, then
-\begin{enumerate}
-\item $\theta_{\mathrm{max}}$,
-$x_i = c_q \theta \le c_q \bar{x}$ \\
-$\frac{1}{m} \left( c_q \bar{x} + (m-1) \bar{x}^- \right) = \bar{x}$ \\
-Thus $\theta_{\mathrm{max}} \le \frac{m-1}{m-c_q} \bar{x}^-$
-\item $\theta_{\mathrm{min}}$ \\
-2 candidates: $x_i = 0$ or $x_i = \infty$.\\
-When $x_i = 0$, It's like $m-1$ points $x^-$; \\
-When $x_i = \infty$, $f(x,\theta) = f(x^-, \theta) - \theta$. \\
-Thus $\theta_{\mathrm{min}}$ solves $f(x,\theta)|_{x_i = 0} = 0$.
-\end{enumerate}
-
-
-
-\section{Appendix}
-\begin{definition}
-\label{def:CentralMomentBounded}
-A random variable $Z$ is called central moment bounded with real parameter $L > 0$,
-if for any integer $i \ge 1$ we have
-\[
-	E\left[ \left| Z - E[Z] \right|^i \right] \le
-    i \cdot L \cdot E\left[ \left| Z - E[Z] \right|^{i-1} \right].
-\]
-\end{definition}
+%\newpage
+%
+%\section{Generalization}
+%
+%We can generalize the exponential distribution to $F$ and generalize ML$q$E to $\hat{P}$ with the following assumptions:
+%\begin{itemize}
+%\item There exists $C_0(P_{ij}, \epsilon) > 0$ such that under the contaminated model with $C > C_0(P_{ij}, \epsilon)$,
+%\[
+%	\lim_{m \to \infty} \left| E[\hat{P}_{ij}] - P_{ij} \right| < 
+%    \lim_{m \to \infty} \left| E[\hat{P}^{(1)}_{ij}] - P_{ij} \right|,
+%\]
+%for $1 \le i, j \le n$.
+%\item Let $A^{(t)} \stackrel{iid}{\sim} (1-\epsilon) F(P) + \epsilon F(C) $ and $H_{ij}^{(1)} = E[\hat{P}_{ij}^{(1)}] = (1-\epsilon) E_F(P_{ij}) + \epsilon E_F(C_{ij})$, then $E[(A_{ij}^{(t)} - H_{ij}^{(1)})^k] \le \mathrm{const} \cdot k!$.
+%\item $\hat{P}_{ij} \le \mathrm{const} \cdot \hat{P}_{ij}^{(1)}$. This might be generalized to with high probability later.
+%\item $\lim_{m \rightarrow \infty} \mathrm{Var}(\hat{P}_{ij}) = 0$
+%\end{itemize}
+%
+%
+%
+%\newpage
+%
+%\section{Analysis of ML$q$E under Exponential Model}
+%
+%Let $f(x, \theta) = \sum_{i=1}^m e^{-\frac{(1-q) x_i}{\theta}} (x - \theta)$, then $\frac{\partial f}{\partial x_i}(x, \theta) = e^{-\frac{(1-q) x_i}{\theta}} \left( - \frac{(1-q) x_i}{\theta} + 2 - q \right)$.
+%Define $c_q = 1 + \frac{1}{1-q}$, then
+%\[
+%	\frac{\partial f}{\partial x_i}(x, \theta) = 0 \Leftrightarrow
+%    x_i \to \infty \text{ or } x_i = (1 + \frac{1}{1-q}) \theta
+%\]
+%
+%Define $x = (x_1, \cdots, x_m)$ and $x^- = (x_1, \cdots, x_m) \backslash x_i$, then
+%\begin{enumerate}
+%\item $\theta_{\mathrm{max}}$,
+%$x_i = c_q \theta \le c_q \bar{x}$ \\
+%$\frac{1}{m} \left( c_q \bar{x} + (m-1) \bar{x}^- \right) = \bar{x}$ \\
+%Thus $\theta_{\mathrm{max}} \le \frac{m-1}{m-c_q} \bar{x}^-$
+%\item $\theta_{\mathrm{min}}$ \\
+%2 candidates: $x_i = 0$ or $x_i = \infty$.\\
+%When $x_i = 0$, It's like $m-1$ points $x^-$; \\
+%When $x_i = \infty$, $f(x,\theta) = f(x^-, \theta) - \theta$. \\
+%Thus $\theta_{\mathrm{min}}$ solves $f(x,\theta)|_{x_i = 0} = 0$.
+%\end{enumerate}
+%
+%
+%
+%\section{Appendix}
+%\begin{definition}
+%\label{def:CentralMomentBounded}
+%A random variable $Z$ is called central moment bounded with real parameter $L > 0$,
+%if for any integer $i \ge 1$ we have
+%\[
+%	E\left[ \left| Z - E[Z] \right|^i \right] \le
+%    i \cdot L \cdot E\left[ \left| Z - E[Z] \right|^{i-1} \right].
+%\]
+%\end{definition}
 
 
 
