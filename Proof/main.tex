@@ -301,17 +301,17 @@ Thus, we should choose the estimator $\widetilde{P}^{(q)}$.
 
 \begin{lemma}
 \label{lemma:LqlMLE}
-Consider the model $X_1, \cdots, X_m \stackrel{iid}{\sim} \mathrm{Exp}(\theta)$ with $m \ge 2$ and $E[X_1] = \theta$. Given any data $x = (x_1, \cdots, x_m)$ such that $x_{(1)} > 0$ and not all $x_i$'s are the same, then no matter how the data is sampled, we have
+Consider the model $X_1, \cdots, X_m \stackrel{iid}{\sim} \mathrm{Exp}(P)$ with $m \ge 2$ and $E[X_1] = P$. Given any data $x = (x_1, \cdots, x_m)$ such that $x_{(1)} > 0$ and not all $x_i$'s are the same, then no matter how the data is sampled, we have
 \begin{itemize}
 \item There exists at least one solution to the ML$q$ equation;
 \item All the solutions to the ML$q$ equation are less than the MLE.
 \end{itemize}
-Thus the ML$q$E $\hat{P}_q$ is well defined.
+Thus the ML$q$E $\hat{P}^{(q)}$ is well defined.
 \end{lemma}
 \begin{proof}
 The MLE is
 \[
-	\hat{\theta}_1(x) = \bar{x}.
+	\hat{P}^{(1)}(x) = \bar{x}.
 \]
 
 Consider the continuous function $g(\theta, x) = \sum_{i=1}^m e^{-\frac{(1-q)x_i}{\theta}}(x_i - \theta)$. Then the ML$q$ equation is $g(\theta, x) = 0$.
@@ -336,15 +336,76 @@ g(\theta, x) & = \sum_{i=1}^m e^{-\frac{(1-q)x_{(i)}}{\theta}}(x_{(i)} - \theta)
 and equality holds if and only if all $x_i$'s are the same, which is excluded by the assumption.
 Thus $g(\theta, x) < 0$ for any $\theta \ge \bar{x}$.
 
-Denote any solution to the ML$q$ equation to be $\hat{\theta}_q(x)$, then we also know:
+Denote any solution to the ML$q$ equation to be $\hat{P}^{(q)}(x)$, then we also know:
 \begin{itemize}
-\item $g(\hat{\theta}_q(x), x) = 0$;
+\item $g(\hat{P}^{(q)}(x), x) = 0$;
 \item $\lim_{\theta \rightarrow 0^+}g(\theta, x) = 0$;
 \item $g(\theta, x) > 0$ when $\theta < x_{(1)}$;
 \end{itemize}
 
 Thus there exists at least one solution to the ML$q$ equation. And all solutions to the ML$q$ equation are between $x_{(1)}$ and $\bar{x}$, i.e. less than the MLE.
 \end{proof}
+
+
+
+\begin{lemma}
+Consider the exponential distribution model as in Lemma \ref{lemma:LqlMLE} while the data is actually sampled under the contaminated model $X, X_1, \cdots, X_m \stackrel{iid}{\sim} (1-\epsilon) \mathrm{Exp}(P) + \epsilon \mathrm{Exp}(C)$. Denote such contaminated distribution as $F$.
+Then there exists at least one solution $\theta(F)$ of the population version of ML$q$ equation,
+i.e. $E_F[e^{-\frac{(1-q)X}{\theta(F)}}(X - \theta(F))] = 0$, such that $\theta(F) < E_F[\bar{X}] = (1-\epsilon) P + \epsilon C$.
+\end{lemma}
+\begin{proof}
+For the MLE, i.e. $\bar{X}$, we have $E[\bar{X}] = (1-\epsilon) P + \epsilon C$.
+According to Equation (3.2) in \cite{ferrari2010}, $\theta(F)$ satisfies
+\[
+\frac{\epsilon C}{(C(1-q) + \theta)^2} - \frac{\epsilon}{C(1-q) + \theta}
++\frac{(1-\epsilon) P}{(P(1-q) + \theta)^2} - \frac{(1-\epsilon)}{P(1-q) + \theta}
+= 0,
+\]
+i.e.
+\[
+\frac{\epsilon (\theta - Cq)}{(C(1-q) + \theta)^2} =
+\frac{(1-\epsilon) (P q - \theta)}{(P(1-q) + \theta)^2}.
+\]
+Define $h(\theta) = (C(1-q) + \theta)^2 (1-\epsilon) (P q - \theta) - (P(1-q) + \epsilon)^2 \epsilon (\theta - Cq)$.
+Then $\lim_{\theta \to \infty}h(\theta) = -\infty$, $h(0) > 0$, and $h(Cq) < 0$.
+Consider $q$ as the variable and solve the equation $h(E[\bar{X}]) = 0$, we have three roots and one of them is $q = 1$ obviously.
+The other two roots are
+\[
+\frac{(P + C)\left( (P-C)^2 \epsilon(1-\epsilon) + 2PC \right)}{2PC(P \epsilon + C(1-\epsilon))}
+\pm \frac{1}{2} \sqrt{\frac{\epsilon(1-\epsilon)(C-P)^4 - 4P^2C^2}{P^2 C^2 (P\epsilon + C(1-\epsilon))^2}}.
+\]
+For the first part,
+\[
+\frac{(P + C)\left( (P-C)^2 \epsilon(1-\epsilon) + 2PC \right)}{2PC(P \epsilon + C(1-\epsilon))}\\
+> 1 + \frac{(P-C)^2 \epsilon (1-\epsilon) (P+C)}{2PC(P \epsilon + C(1-\epsilon))}.
+\]
+To prove the roots are greater or equal to 1, we just need to show
+\[
+(P-C)^2 \epsilon (1-\epsilon) (P+C)^2
+\ge \epsilon(1-\epsilon)(C-P)^4 - 4P^2C^2.
+\]
+Then it is sufficient to show that
+\[
+(P+C)^2 \ge (C-P)^2,
+\]
+which is true.
+Combined with the fact that when $q = 0$, $h(E[\bar{X}]) < 0$, we have for any $0 < q < 1$, $h(E[\bar{X}]) < 0$.
+
+The equation $h(\theta) = 0$ is a cubic polynomial, so it has at most three real roots. Combined with the fact that $h(0) > 0$, we have for any $0 < q < 1$, there exists at least one root of the population version of ML$q$ equation which is less than $E[\bar{X}] = (1-\epsilon)P + \epsilon C$.
+\end{proof}
+
+
+
+
+\begin{lemma}
+$\hat{P}_{ij}^{(q)} \stackrel{P}{\to} \theta(F_{ij})$, where $F_{ij}$ is the contaminated distribution $(1-\epsilon) \mathrm{Exp}(P_{ij}) + \epsilon \mathrm{Exp}(C_{ij})$. That is, $\hat{P}_{ij}^{(q)}$ is an consistent estimator of $\theta(F_{ij})$.
+\end{lemma}
+\begin{proof}
+
+\end{proof}
+
+
+
 
 
 
