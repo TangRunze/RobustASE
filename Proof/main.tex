@@ -126,7 +126,7 @@ Under the independent edge setting, we can simplify the problem to finding an en
 
 
 \subsection{$\hat{P}^{(q)}$ based on entry-wise ML$q$E}
-Since the observations are contaminated, robust estimators are preferred. A modified MLE estimator, the maximum likelihood L-$q$ estimator, is considered in this case. Define $\hat{P}^{(q)}$ as the entry-wise ML$q$E.
+Since the observations are contaminated, robust estimators are preferred. A modified MLE estimator, the maximum likelihood L-$q$ estimator \cite{ferrari2010, qin2013maximum}, is considered in this case. Note that there might be multiple solution to the ML$q$ equation, we define the ML$q$E to be the largest solution (which is still less than MLE when the model is exponential distribution). Denote $\hat{P}^{(q)}$ as the entry-wise ML$q$E.
 
 \noindent \textbf{Remark:} MLE is a special case of ML$q$E when $q = 1$. So we notate the entry-wise MLE to be $\hat{P}^{(1)}$ in consistent with entry-wise ML$q$E $\hat{P}^{(q)}$.
 
@@ -278,8 +278,8 @@ Thus, we should choose the estimator $\widetilde{P}^{(q)}$.
   % Draw the arrows between the nodes and label them.
   \draw[tofrom] (MLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $n$, $C$ $\mathrm{large}$ $\mathrm{enough}$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(q)})$}
       node[midway,below] {$\underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(1)}) = \underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(q)}) = 0$} (MLqE);
-  \draw[tofrom] (MLE) -- node[midway,left] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ \\ $m = O(n^b)$ $\mathrm{for}$ $b>0$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(1)}) =$\\$ \underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$\\$ = O(n^{-2} (\log n)^6)$} (XMLE);
-  \draw[tofrom] (MLqE) -- node[midway,right] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ \\ $m = O(n^b)$ $\mathrm{for}$ $b>0$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(q)}) = $\\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(q)})/\mathrm{Var}(\hat{P}_{ij}^{(q)})$\\$= O(m n^{-2} (\log n)^6)$} (XMLqE);
+  \draw[tofrom] (MLE) -- node[midway,left] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ \\ $m = O(n^b)$ $\mathrm{for}$ $b>0$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(1)}) =$\\$ \underset{n \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(1)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$\\$ = O(n^{-2} (\log n)^6)$} (XMLE);
+  \draw[tofrom] (MLqE) -- node[midway,right] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ \\ $m = O(n^b)$ $\mathrm{for}$ $b>0$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(q)}) = $\\$\underset{n \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(q)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(q)})/\mathrm{Var}(\hat{P}_{ij}^{(q)})$\\$= O(m n^{-2} (\log n)^6)$} (XMLqE);
   \draw[tofrom] (XMLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{sufficiently}$ $\mathrm{ large}$ $m$, $n$ $\mathrm{and}$ $C$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(q)})$}
       node[midway,below] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ $m = o(n^2 (\log n)^{-6})$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(1)}) = \underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0$} (XMLqE);
 \end{tikzpicture}
@@ -301,43 +301,49 @@ Thus, we should choose the estimator $\widetilde{P}^{(q)}$.
 
 \begin{lemma}
 \label{lemma:LqlMLE}
-Consider the model $X_1, \cdots, X_m \stackrel{iid}{\sim} \mathrm{Exp}(\theta)$ with $E[X_1] = \theta$. Given any data $x = (x_1, \cdots, x_m)$ such that $x_{(1)} > 0$ and not all $x_i$'s are the same, then $\hat{\theta}_q(x) < \hat{\theta}_1(x)$ for $0 < q < 1$, i.e. ML$q$E \cite{ferrari2010, qin2013maximum} is always less than MLE under exponential distribution no matter how the data is sampled.
+Consider the model $X_1, \cdots, X_m \stackrel{iid}{\sim} \mathrm{Exp}(\theta)$ with $m \ge 2$ and $E[X_1] = \theta$. Given any data $x = (x_1, \cdots, x_m)$ such that $x_{(1)} > 0$ and not all $x_i$'s are the same, then no matter how the data is sampled, we have
+\begin{itemize}
+\item There exists at least one solution to the ML$q$ equation;
+\item All the solutions to the ML$q$ equation are less than the MLE.
+\end{itemize}
+Thus the ML$q$E $\hat{P}_q$ is well defined.
 \end{lemma}
 \begin{proof}
 The MLE is
 \[
 	\hat{\theta}_1(x) = \bar{x}.
 \]
-And the ML$q$E $\hat{\theta}_q(x)$ solves the equation
-\[
-	\sum_{i=1}^m e^{-\frac{(1-q)x_i}{\hat{\theta}_q(x)}}(x_i - \hat{\theta}_q(x)) = 0.
-\]
-Consider the continuous function $g(\theta, x) = \sum_{i=1}^m e^{-\frac{(1-q)x_i}{\theta}}(x_i - \theta)$. 
 
-Let $x_{(1)} \le \cdots \le x_{(l)} \le \bar{x} \le x_{(l+1)} \le \cdots \le x_{(m)}$. Define $s_i = \bar{x} - x_{(i)}$ for $1 \le i \le l$, and $t_{i} = x_{(l+i)} - \bar{x}$ for $1 \le i \le m - l$. Note that $\sum_{i=1}^l s_i = \sum_{i=1}^{m-l} t_i$. Then we have
+Consider the continuous function $g(\theta, x) = \sum_{i=1}^m e^{-\frac{(1-q)x_i}{\theta}}(x_i - \theta)$. Then the ML$q$ equation is $g(\theta, x) = 0$.
+
+Let $x_{(1)} \le \cdots \le x_{(l)} \le \bar{x} \le x_{(l+1)} \le \cdots \le x_{(m)}$. Define $s_i = \bar{x} - x_{(i)}$ for $1 \le i \le l$, and $t_{i} = x_{(l+i)} - \bar{x}$ for $1 \le i \le m - l$. Note that $\sum_{i=1}^l s_i = \sum_{i=1}^{m-l} t_i$. Then for any $\theta \ge \bar{x}$, we have
 \begin{align*}
-g(\hat{\theta}_1(x), x) & = g(\bar{x}, x) \\
-& = \sum_{i=1}^m e^{-\frac{(1-q)x_{(i)}}{\bar{x}}}(x_{(i)} - \bar{x}) \\
-& = - \sum_{i=1}^l e^{-\frac{(1-q)x_{(i)}}{\bar{x}}}s_i
-+ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\bar{x}}}t_i\\
-& \le - e^{-(1-q)} \sum_{i=1}^l s_i
-+ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\bar{x}}}t_i\\
-& \le - e^{-(1-q)} \sum_{i=1}^{m-l} t_i
-+ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\bar{x}}}t_i\\
+g(\theta, x) & = \sum_{i=1}^m e^{-\frac{(1-q)x_{(i)}}{\theta}}(x_{(i)} - \theta)
+= \sum_{i=1}^m e^{-\frac{(1-q)x_{(i)}}{\theta}}(x_{(i)} - \bar{x} + \bar{x} - \theta) \\
+& = - \sum_{i=1}^l e^{-\frac{(1-q)x_{(i)}}{\theta}}s_i
++ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\theta}}t_i
++ \sum_{i=1}^m e^{-\frac{(1-q)x_{(i)}}{\theta}}(\bar{x} - \theta)\\
+& \le - \sum_{i=1}^l e^{-\frac{(1-q)x_{(i)}}{\theta}}s_i
++ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\theta}}t_i \\
+& \le - e^{-\frac{(1-q)x_{(l+1)}}{\theta}} \sum_{i=1}^l s_i
++ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\theta}}t_i \\
+& \le - e^{-\frac{(1-q)x_{(l+1)}}{\theta}} \sum_{i=1}^{m-l} t_i
++ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\theta}}t_i \\
 & \le - \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\bar{x}}}t_i
 + \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\bar{x}}}t_i\\
-= 0,
+& = 0,
 \end{align*}
 and equality holds if and only if all $x_i$'s are the same, which is excluded by the assumption.
-Thus $g(\hat{\theta}_1(x), x) < 0$.
+Thus $g(\theta, x) < 0$ for any $\theta \ge \bar{x}$.
 
-Also we know:
+Denote any solution to the ML$q$ equation to be $\hat{\theta}_q(x)$, then we also know:
 \begin{itemize}
 \item $g(\hat{\theta}_q(x), x) = 0$;
 \item $\lim_{\theta \rightarrow 0^+}g(\theta, x) = 0$;
 \item $g(\theta, x) > 0$ when $\theta < x_{(1)}$;
 \end{itemize}
-Combined with $g(\hat{\theta}_1(x), x) < 0$, we have $\hat{\theta}_q(x) < \hat{\theta}_1(x)$ for $0 < q < 1$.
+
+Thus there exists at least one solution to the ML$q$ equation. And all solutions to the ML$q$ equation are between $x_{(1)}$ and $\bar{x}$, i.e. less than the MLE.
 \end{proof}
 
 
@@ -390,6 +396,29 @@ C_{ij} > P_{ij} + \frac{(1-q) P_{ij}}{\epsilon} = C_0(P_{ij}, \epsilon, q).
 
 
 
+
+\begin{lemma}
+
+\end{lemma}
+\begin{proof}
+According to Lemma \ref{lemma:ELqlEMLE}, the expectation $E[\hat{P}^{(q)}_{ij}]$, denoted as $\theta$ for simplicity, satisfies
+\[
+\frac{\epsilon (\theta - C_{ij}q)}{(C_{ij}(1-q) + \theta)^2} =
+\frac{(1-\epsilon) (P_{ij} q - \theta)}{(P_{ij}(1-q) + \theta)^2},
+\]
+i.e.
+\[
+\epsilon (\theta - C_{ij}q) (P_{ij}(1-q) + \theta)^2 =
+(1-\epsilon) (P_{ij} q - \theta) (C_{ij}(1-q) + \theta)^2.
+\]
+Define
+\[
+	g(\theta) = (1-\epsilon) (P_{ij} q - \theta) (C_{ij}(1-q) + \theta)^2 - \epsilon (\theta - C_{ij}q) (P_{ij}(1-q) + \theta)^2,
+\]
+then $g(0) = (1-\epsilon) P_{ij} q (C_{ij}(1-q))^2 + \epsilon ( C_{ij}q) (P_{ij}(1-q))^2$.
+\end{proof}
+
+
 \begin{lemma}% [Lemma \ref{lemma:VarMLEandLq0}]
 \[
 	\lim_{m \to \infty} \mathrm{Var}(\hat{P}^{(1)}_{ij})
@@ -398,7 +427,8 @@ C_{ij} > P_{ij} + \frac{(1-q) P_{ij}}{\epsilon} = C_0(P_{ij}, \epsilon, q).
 for $1 \le i, j \le n$.
 \end{lemma}
 \begin{proof}
-Both MLE and ML$q$E follows a central limit theorem, which means their variances goes to 0 as $m \to \infty$.
+MLE simply follows a central limit theorem, which means the variance goes to 0 as $m \to \infty$.
+For ML$q$E, 
 \end{proof}
 
 
