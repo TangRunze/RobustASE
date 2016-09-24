@@ -306,7 +306,7 @@ Consider the model $X_1, \cdots, X_m \stackrel{iid}{\sim} \mathrm{Exp}(P)$ with 
 \item There exists at least one solution to the ML$q$ equation;
 \item All the solutions to the ML$q$ equation are less than the MLE.
 \end{itemize}
-Thus the ML$q$E $\hat{P}^{(q)}$ is well defined.
+Thus the ML$q$E $\hat{P}^{(q)}$, the root closest to the MLE, is well defined.
 \end{lemma}
 \begin{proof}
 The MLE is
@@ -352,6 +352,7 @@ Thus there exists at least one solution to the ML$q$ equation. And all solutions
 Consider the exponential distribution model as in Lemma \ref{lemma:LqlMLE} while the data is actually sampled under the contaminated model $X, X_1, \cdots, X_m \stackrel{iid}{\sim} (1-\epsilon) \mathrm{Exp}(P) + \epsilon \mathrm{Exp}(C)$. Denote such contaminated distribution as $F$.
 Then there exists at least one solution $\theta(F)$ of the population version of ML$q$ equation,
 i.e. $E_F[e^{-\frac{(1-q)X}{\theta(F)}}(X - \theta(F))] = 0$, such that $\theta(F) < E_F[\bar{X}] = (1-\epsilon) P + \epsilon C$.
+So we can define $\theta(F_{ij})$ to be the largest root which is less than $E_F[\bar{X}]$.
 \end{lemma}
 \begin{proof}
 For the MLE, i.e. $\bar{X}$, we have $E[\bar{X}] = (1-\epsilon) P + \epsilon C$.
@@ -393,6 +394,21 @@ Combined with the fact that when $q = 0$, $h(E[\bar{X}]) < 0$, we have for any $
 
 The equation $h(\theta) = 0$ is a cubic polynomial, so it has at most three real roots. Combined with the fact that $h(0) > 0$, we have for any $0 < q < 1$, there exists at least one root of the population version of ML$q$ equation which is less than $E[\bar{X}] = (1-\epsilon)P + \epsilon C$.
 \end{proof}
+
+
+
+
+\begin{lemma}
+For any $a > 0$, we have
+\[
+	\sup_{\theta \in [a, R]} \left| \frac{1}{m} \sum_{i=1}^m e^{-\frac{(1-q) X_i}{\theta}}(X_i - \theta) - E_F[e^{-\frac{(1-q) X}{\theta}}(X - \theta)] \right| \stackrel{a.s.}{\to} 0.
+\]
+\end{lemma}
+\begin{proof}
+Define $g(x,\theta) = e^{-\frac{(1-q) x}{\theta}}(x - \theta)$ and $d(x) = e^{-\frac{(1-q)x}{R}}(x + R)$. Then $E_F[d(X)] < \infty$ and $g(x,\theta) \le d(x)$ for all $\theta \in [a, R]$.
+Combined with the fact that $[a, R]$ is compact and the function $g(x,\theta)$ is continuous at each $\theta$ for all $x > 0$ and measurable function of $x$ at each $\theta$, we have the uniform convergence by Lemma 2.4 in \cite{newey1994large}.
+\end{proof}
+
 
 
 

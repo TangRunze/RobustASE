@@ -15,6 +15,11 @@ Roger~A Horn and Charles~R Johnson.
 \newblock {\em Matrix analysis}.
 \newblock Cambridge university press, 2012.
 
+\bibitem{newey1994large}
+Whitney~K Newey and Daniel McFadden.
+\newblock Large sample estimation and hypothesis testing.
+\newblock {\em Handbook of econometrics}, 4:2111--2245, 1994.
+
 \bibitem{oliveira2009concentration}
 Roberto~Imbuzeiro Oliveira.
 \newblock Concentration of the adjacency matrix and of the laplacian in random
