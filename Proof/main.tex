@@ -349,6 +349,7 @@ Thus there exists at least one solution to the ML$q$ equation. And all solutions
 
 
 \begin{lemma}
+\label{lemma:PopulationLqExist}
 Consider the exponential distribution model as in Lemma \ref{lemma:LqlMLE} while the data is actually sampled under the contaminated model $X, X_1, \cdots, X_m \stackrel{iid}{\sim} (1-\epsilon) \mathrm{Exp}(P) + \epsilon \mathrm{Exp}(C)$. Denote such contaminated distribution as $F$.
 Then there exists at least one solution $\theta(F)$ of the population version of ML$q$ equation,
 i.e. $E_F[e^{-\frac{(1-q)X}{\theta(F)}}(X - \theta(F))] = 0$, such that $\theta(F) < E_F[\bar{X}] = (1-\epsilon) P + \epsilon C$.
@@ -424,8 +425,21 @@ $\hat{P}_{ij}^{(q)} \stackrel{P}{\to} \theta(F_{ij})$, where $F_{ij}$ is the con
 
 
 
+\begin{lemma}
+\label{lemma:ELqConverge}
+$E[\hat{P}_{ij}^{(q)}] \to \theta(F_{ij})$ as $m \to \infty$.
+\end{lemma}
+\begin{proof}
+
+\end{proof}
+
+
+
+
+
 
 \begin{lemma}% [Lemma \ref{lemma:ELqlEMLE}]
+\label{lemma:ELqlEMLE}
 For any $0 < q < 1$, there exists $C_0(P_{ij}, \epsilon, q) > 0$ such that under the contaminated model with $C > C_0(P_{ij}, \epsilon, q)$,
 \[
 	\lim_{m \to \infty} \left| E[\hat{P}^{(q)}_{ij}] - P_{ij} \right| < 
@@ -433,7 +447,6 @@ For any $0 < q < 1$, there exists $C_0(P_{ij}, \epsilon, q) > 0$ such that under
 \]
 for $1 \le i, j, \le n$ and $i \ne j$.
 \end{lemma}
-\label{lemma:ELqlEMLE}
 \begin{proof}
 For the MLE $\hat{P}^{(1)}_{ij} = \bar{A}_{ij}$,
 \[
@@ -442,26 +455,20 @@ For the MLE $\hat{P}^{(1)}_{ij} = \bar{A}_{ij}$,
     = E[A_{ij}^{(1)}]
     = (1-\epsilon) P_{ij} + \epsilon C_{ij}.
 \]
-For the ML$q$E $\hat{P}^{(q)}_{ij}$, according to Equation (3.2) in \cite{ferrari2010}, the expectation $E[\hat{P}^{(q)}_{ij}]$, denoted as $\theta$ for simplicity, satisfies
+As shown in Lemma \ref{lemma:PopulationLqExist}, $\theta(F)$ satisfies
 \[
-\frac{\epsilon C_{ij}}{(C_{ij}(1-q) + \theta)^2} - \frac{\epsilon}{C_{ij}(1-q) + \theta}
-+\frac{(1-\epsilon) P_{ij}}{(P_{ij}(1-q) + \theta)^2} - \frac{(1-\epsilon)}{P_{ij}(1-q) + \theta}
-= 0,
+\frac{\epsilon (\theta(F) - C_{ij}q)}{(C_{ij}(1-q) + \theta(F))^2} =
+\frac{(1-\epsilon) (P_{ij} q - \theta(F))}{(P_{ij}(1-q) + \theta(F))^2}.
 \]
-i.e.
+Thus $\theta(F) - C_{ij} q$ and $\theta(F) - P_{ij} q$ should have different signs. Combined with $C_{ij} > P_{ij}$, we have
 \[
-\frac{\epsilon (\theta - C_{ij}q)}{(C_{ij}(1-q) + \theta)^2} =
-\frac{(1-\epsilon) (P_{ij} q - \theta)}{(P_{ij}(1-q) + \theta)^2}.
+q P_{ij} < \theta(F).
 \]
-Thus $\theta - C_{ij} q$ and $\theta - P_{ij} q$ should have different signs. Combined with $C_{ij} > P_{ij}$, we have
+To have a smaller asymptotic bias in absolute value, combined with Lemma \ref{lemma:ELqConverge}, we need
 \[
-q P_{ij} < \theta.
+|\theta(F) - P_{ij}| < \epsilon (C_{ij} - P_{ij}).
 \]
-To have a smaller bias in absolute value, we need
-\[
-|\theta - P_{ij}| < \epsilon (C_{ij} - P_{ij}).
-\]
-Thus combined with Lemma \ref{lemma:LqlMLE}, we need
+Based on Lemma \ref{lemma:LqlMLE}, we need
 \[
 q P_{ij} > P_{ij} - \epsilon(C_{ij} - P_{ij}),
 \]
@@ -473,29 +480,6 @@ C_{ij} > P_{ij} + \frac{(1-q) P_{ij}}{\epsilon} = C_0(P_{ij}, \epsilon, q).
 
 
 
-
-\begin{lemma}
-
-\end{lemma}
-\begin{proof}
-According to Lemma \ref{lemma:ELqlEMLE}, the expectation $E[\hat{P}^{(q)}_{ij}]$, denoted as $\theta$ for simplicity, satisfies
-\[
-\frac{\epsilon (\theta - C_{ij}q)}{(C_{ij}(1-q) + \theta)^2} =
-\frac{(1-\epsilon) (P_{ij} q - \theta)}{(P_{ij}(1-q) + \theta)^2},
-\]
-i.e.
-\[
-\epsilon (\theta - C_{ij}q) (P_{ij}(1-q) + \theta)^2 =
-(1-\epsilon) (P_{ij} q - \theta) (C_{ij}(1-q) + \theta)^2.
-\]
-Define
-\[
-	g(\theta) = (1-\epsilon) (P_{ij} q - \theta) (C_{ij}(1-q) + \theta)^2 - \epsilon (\theta - C_{ij}q) (P_{ij}(1-q) + \theta)^2,
-\]
-then $g(0) = (1-\epsilon) P_{ij} q (C_{ij}(1-q))^2 + \epsilon ( C_{ij}q) (P_{ij}(1-q))^2$.
-\end{proof}
-
-
 \begin{lemma}% [Lemma \ref{lemma:VarMLEandLq0}]
 \[
 	\lim_{m \to \infty} \mathrm{Var}(\hat{P}^{(1)}_{ij})
@@ -505,7 +489,7 @@ for $1 \le i, j \le n$.
 \end{lemma}
 \begin{proof}
 MLE simply follows a central limit theorem, which means the variance goes to 0 as $m \to \infty$.
-For ML$q$E, 
+For ML$q$E, \color{red}{STILL NEED PROOF HERE}
 \end{proof}
 
 
