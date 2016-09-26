@@ -468,7 +468,7 @@ Thus $\theta(F) - C_{ij} q$ and $\theta(F) - P_{ij} q$ should have different sig
 \[
 q P_{ij} < \theta(F).
 \]
-To have a smaller asymptotic bias in absolute value, combined with {\color{red}Lemma \ref{lemma:ELqConverge}}, we need
+To have a smaller asymptotic bias in absolute value, combined with Lemma \ref{lemma:ELqConverge}, we need
 \[
 |\theta(F) - P_{ij}| < \epsilon (C_{ij} - P_{ij}).
 \]
@@ -1044,11 +1044,15 @@ Fix some $a > 0$, we have
 For the first term, we have
 \begin{align*}
 	& E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
-	\le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.11 holds}\}] (1 - n^{-c}) \\
-	& + E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma 4.11 does not hold}\}] n^{-c} \\
-	\le & O(m^{-1} n^{-2} (\log n)^6) (1 - n^{-c}) + 2 n^{-c} E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}_{ij})^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
-	& + 2 n^{-c} E[(\hat{P}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
-	\le & O(m^{-1} n^{-2} (\log n)^6) + 2 n^{-c} E[\hat{P}_{ij}^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] + 2 n^{-c} E[(\hat{P}_{ij} + R)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
+	\le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ holds}\}] \\
+	& + E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}\}] \\
+	\le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ holds}] \\
+	& + n^{-c} E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
+	\le & O(m^{-1} n^{-2} (\log n)^6) \\
+	& + 2 n^{-c} E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}_{ij})^2 \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
+	& + 2 n^{-c} E[(\hat{P}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
+	\le & O(m^{-1} n^{-2} (\log n)^6) + 2 n^{-c} E[\hat{P}_{ij}^2 \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
+	& + 2 n^{-c} E[(\hat{P}_{ij} + R)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
 	\le & O(m^{-1} n^{-2} (\log n)^6) + 2 a^2 n^{-c} + 2 (a+R)^2 n^{-c} \\
 	\le & O(m^{-1} n^{-2} (\log n)^6) + 4 n^{-c} (a + R)^2
 \end{align*}
