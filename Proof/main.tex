@@ -278,8 +278,8 @@ Thus, we should choose the estimator $\widetilde{P}^{(q)}$.
   % Draw the arrows between the nodes and label them.
   \draw[tofrom] (MLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $n$, $C$ $\mathrm{large}$ $\mathrm{enough}$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(q)})$}
       node[midway,below] {$\underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(1)}) = \underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(q)}) = 0$} (MLqE);
-  \draw[tofrom] (MLE) -- node[midway,left] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ \\ $m = O(n^b)$ $\mathrm{for}$ $b>0$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(1)}) =$\\$ \underset{n \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(1)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$\\$ = O(n^{-2} (\log n)^6)$} (XMLE);
-  \draw[tofrom] (MLqE) -- node[midway,right] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ \\ $m = O(n^b)$ $\mathrm{for}$ $b>0$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(q)}) = $\\$\underset{n \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(q)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(q)})/\mathrm{Var}(\hat{P}_{ij}^{(q)})$\\$= O(m n^{-2} (\log n)^6)$} (XMLqE);
+  \draw[tofrom] (MLE) -- node[midway,left] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ \\ $m = O(n^b)$ $\mathrm{for}$ $b>0$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(1)}) =$\\$ \underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$\\$ = O(n^{-2} (\log n)^6)$} (XMLE);
+  \draw[tofrom] (MLqE) -- node[midway,right] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ \\ $m = O(n^b)$ $\mathrm{for}$ $b>0$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(q)}) = $\\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(q)})/\mathrm{Var}(\hat{P}_{ij}^{(q)})$\\$= O(m n^{-2} (\log n)^6)$} (XMLqE);
   \draw[tofrom] (XMLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{sufficiently}$ $\mathrm{ large}$ $m$, $n$ $\mathrm{and}$ $C$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(q)})$}
       node[midway,below] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ $m = o(n^2 (\log n)^{-6})$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(1)}) = \underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0$} (XMLqE);
 \end{tikzpicture}
@@ -308,6 +308,7 @@ Consider the model $X_1, \cdots, X_m \stackrel{iid}{\sim} \mathrm{Exp}(P)$ with 
 \end{itemize}
 Thus the ML$q$E $\hat{P}^{(q)}$, the root closest to the MLE, is well defined.
 \end{lemma}
+\noindent \textbf{Require:} Exponential distribution, ML$q$E \\
 \begin{proof}
 The MLE is
 \[
@@ -355,6 +356,7 @@ Then there exists at least one solution $\theta(F)$ of the population version of
 i.e. $E_F[e^{-\frac{(1-q)X}{\theta(F)}}(X - \theta(F))] = 0$, such that $\theta(F) < E_F[\bar{X}] = (1-\epsilon) P + \epsilon C$.
 So we can define $\theta(F_{ij})$ to be the largest root which is less than $E_F[\bar{X}]$.
 \end{lemma}
+\noindent \textbf{Require:} Exponential distribution, ML$q$E \\
 \begin{proof}
 For the MLE, i.e. $\bar{X}$, we have $E[\bar{X}] = (1-\epsilon) P + \epsilon C$.
 According to Equation (3.2) in \cite{ferrari2010}, $\theta(F)$ satisfies
@@ -405,6 +407,7 @@ For any $a > 0$, we have
 	\sup_{\theta \in [a, R]} \left| \frac{1}{m} \sum_{i=1}^m e^{-\frac{(1-q) X_i}{\theta}}(X_i - \theta) - E_F[e^{-\frac{(1-q) X}{\theta}}(X - \theta)] \right| \stackrel{a.s.}{\to} 0.
 \]
 \end{lemma}
+\noindent \textbf{Require:} Exponential distribution, ML$q$E. Should be easy to extend \\
 \begin{proof}
 Define $g(x,\theta) = e^{-\frac{(1-q) x}{\theta}}(x - \theta)$ and $d(x) = e^{-\frac{(1-q)x}{R}}(x + R)$. Then $E_F[d(X)] < \infty$ and $g(x,\theta) \le d(x)$ for all $\theta \in [a, R]$.
 Combined with the fact that $[a, R]$ is compact and the function $g(x,\theta)$ is continuous at each $\theta$ for all $x > 0$ and measurable function of $x$ at each $\theta$, we have the uniform convergence by Lemma 2.4 in \cite{newey1994large}.
@@ -427,10 +430,10 @@ $\hat{P}_{ij}^{(q)} \stackrel{P}{\to} \theta(F_{ij})$, where $F_{ij}$ is the con
 
 \begin{lemma}
 \label{lemma:ELqConverge}
-$E[\hat{P}_{ij}^{(q)}] \to \theta(F_{ij})$ as $m \to \infty$.
+$E[\hat{P}_{ij}^{(q)}] \to \theta(F_{ij})$ as $m \to \infty$, where $F_{ij}$ is the contaminated distribution $(1-\epsilon) \mathrm{Exp}(P_{ij}) + \epsilon \mathrm{Exp}(C_{ij})$. 
 \end{lemma}
 \begin{proof}
-
+{\color{red}NEED PROOF HERE}
 \end{proof}
 
 
@@ -447,6 +450,7 @@ For any $0 < q < 1$, there exists $C_0(P_{ij}, \epsilon, q) > 0$ such that under
 \]
 for $1 \le i, j, \le n$ and $i \ne j$.
 \end{lemma}
+\noindent \textbf{Require:} Exponential distribution, ML$q$E \\
 \begin{proof}
 For the MLE $\hat{P}^{(1)}_{ij} = \bar{A}_{ij}$,
 \[
@@ -464,7 +468,7 @@ Thus $\theta(F) - C_{ij} q$ and $\theta(F) - P_{ij} q$ should have different sig
 \[
 q P_{ij} < \theta(F).
 \]
-To have a smaller asymptotic bias in absolute value, combined with Lemma \ref{lemma:ELqConverge}, we need
+To have a smaller asymptotic bias in absolute value, combined with {\color{red}Lemma \ref{lemma:ELqConverge}}, we need
 \[
 |\theta(F) - P_{ij}| < \epsilon (C_{ij} - P_{ij}).
 \]
@@ -489,7 +493,7 @@ for $1 \le i, j \le n$.
 \end{lemma}
 \begin{proof}
 MLE simply follows a central limit theorem, which means the variance goes to 0 as $m \to \infty$.
-For ML$q$E, \color{red}{STILL NEED PROOF HERE}
+For ML$q$E, {\color{red}NEED PROOF HERE}
 \end{proof}
 
 
@@ -543,8 +547,8 @@ then for any constant $c > 0$, there exists another constant $n_0(c)$, independe
 	P \left( \| \hat{P}^{(1)} - H^{(1)} \|_2 \le 4 R \sqrt{n \ln(n/\eta)/m}\right) \ge 1 - \eta.
 \]
 \end{theorem}
-\textbf{Remark:} This is the extended version of Theorem 3.1 in \cite{oliveira2009concentration}.
-
+\textbf{Remark:} This is the extended version of Theorem 3.1 in \cite{oliveira2009concentration}. \\
+\noindent \textbf{Require:} Exponential distribution \\
 \noindent
 \begin{proof}
 Let $\{e_i\}_{i=1}^n$ be the canonical basis for $\mathbb{R}^n$. For each $1 \le i, j \le n$, define a corresponding matrix $G_{ij}$:
@@ -564,7 +568,7 @@ and
 \[
 H^{(1)} = \sum_{1 \le i < j \le n} H^{(1)}_{ij} G_{ij}.
 \]
-Then we have $\hat{P}^{(1)} - H^{(1)} = \frac{1}{m} \sum_{1 \le t \le m, 1 \le i < j \le n} X_{ij}^{(t)}$, where $X_{ij}^{(t)} \equiv \left( A^{(t)}_{ij} - H^{(1)}_{ij} \right) G_{ij}$ for $1 \le t \le m$ and $1 \le i < j \le n$.
+Then we have $\hat{P}^{(1)} - H^{(1)} = \frac{1}{m} \sum_{1 \le t \le m, 1 \le i < j \le n} X_{ij}^{(t)}$, where $X_{ij}^{(t)} = \left( A^{(t)}_{ij} - H^{(1)}_{ij} \right) G_{ij}$ for $1 \le t \le m$ and $1 \le i < j \le n$.
 
 First bound the $k$-th moment of $X_{ij}$ for $1 \le i < j \le n$ as following:
 \begin{align*}
@@ -608,8 +612,8 @@ Let
 Notice that random matrices $X_{ij}^{(t)}$ are independent, self-adjoint and have mean zero, apply Theorem \ref{thm:BernsteinMatrix} we have
 \begin{align*}
 	P \left( \lambda_{\max}(\hat{P}^{(1)} - H^{(1)}) \ge t \right)
-	& = P \left( \lambda_{\max}(\frac{1}{m} \sum_{1 \le t \le m, 1 \le i < j \le n} X_{ij}^{(t)}) \ge t \right) \\
-	& = P \left( \lambda_{\max}(\sum_{1 \le t \le m, 1 \le i < j \le n} X_{ij}^{(t)}) \ge m t \right) \\
+	& = P \left( \lambda_{\max}\left(\frac{1}{m} \sum_{1 \le t \le m, 1 \le i < j \le n} X_{ij}^{(t)}\right) \ge t \right) \\
+	& = P \left( \lambda_{\max}\left(\sum_{1 \le t \le m, 1 \le i < j \le n} X_{ij}^{(t)}\right) \ge m t \right) \\
 	& \le n \exp \left( - \frac{(m t)^2/2}{\sigma^2 + R m t} \right) \\
 	& \le n \exp \left( - \frac{m t^2/2}{2 R^2 n + R t} \right).
 \end{align*}
@@ -670,9 +674,8 @@ Furthermore, we assume that the second moment matrix $E[Z_1 Z_1^T]$ is rank $k$ 
 \label{lemma:eigSShatL1}
 Under the above assumptions, $\lambda_i(H) = \Theta(n)$ with high probability when $i \le k$, i.e. the largest $k$ eigenvalues of $H$ is of order $n$. Moreover, we have $\| S \|_2 = \Theta(n)$ and $\| \hat{S} \|_2 = \Theta(n)$ with high probability.
 \end{lemma}
-\textbf{Remark:} This is a extended version of Proposition 4.3 in \cite{sussman2014consistent}.
-
-\noindent
+\textbf{Remark:} This is a extended version of Proposition 4.3 in \cite{sussman2014consistent}. \\
+\noindent \textbf{Require:} Theorem \ref{thm:P1Diff} and assumptions above\\
 \begin{proof}
 Note that $\lambda_i(H) = \lambda_i(Z Z^T) = \lambda_i(Z^T Z)$ when $i \le k$. Since each entry of $Z^T Z$ is a sum of $n$ independent random variables each in $[0, R]$, i.e. $(Z^T Z)_{ij} = \sum_{l = 1}^n Z_{li} Z_{lj}$.
 By Hoeffding's inequality,
@@ -685,11 +688,11 @@ Now let $c > 0$ and assume $n^{-c} \le \eta \le 1/2$. Let
 \]
 we have
 \[
-P(|(Z^T Z - n E[Z_1 Z_1^T])_{ij}| \ge R \sqrt{n \ln(\sqrt{2/\eta})}) \le \eta.
+P\left(|(Z^T Z - n E[Z_1 Z_1^T])_{ij}| \ge R \sqrt{n \ln(\sqrt{2/\eta})}\right) \le \eta.
 \]
 By the union bound, we have
 \[
-P(\|Z^T Z - n E[Z_1 Z_1^T]\|_F \ge k R \sqrt{n \ln(\sqrt{2/\eta})}) \le k^2 \eta.
+P\left(\|Z^T Z - n E[Z_1 Z_1^T]\|_F \ge k R \sqrt{n \ln(\sqrt{2/\eta})}\right) \le k^2 \eta.
 \]
 
 Then by Weyl's Theorem \cite{horn2012matrix}, we have
@@ -715,16 +718,20 @@ Let $W_1 \Sigma W_2^T$ be the singular value decomposition of $U^T \hat{U}$. The
 \]
 with high probability.
 \end{lemma}
+\noindent \textbf{Require:} Theorem \ref{thm:P1Diff} and Lemma \ref{lemma:eigSShatL1} \\
 \begin{proof}
-Let $\sigma_1, \cdots, \sigma_d$ denote the singular values of $U^T \hat{U}$. Then $\sigma_i = \cos(\theta_i)$ where the $\theta_i$ are the principal angles between the subspaces spanned by $\hat{U}$ and $U$. Furthermore, by the Davis-Kahan $\sin(\Theta)$ theorem \cite{davis1970rotation}, combined with Theorem \ref{thm:P1Diff} and Lemma \ref{lemma:eigSShatL1},
+Let $\sigma_1, \cdots, \sigma_k$ denote the singular values of $U^T \hat{U}$. Then $\sigma_i = \cos(\theta_i)$ where the $\theta_i$ are the principal angles between the subspaces spanned by $\hat{U}$ and $U$. Furthermore, by the Davis-Kahan $\sin(\Theta)$ theorem \cite{davis1970rotation}, combined with Theorem \ref{thm:P1Diff} and Lemma \ref{lemma:eigSShatL1},
 \begin{equation}
 \label{eqn:uhat2u2diffL1}
-	\|\hat{U} \hat{U}^T - U U^T\|_2 = \max_i |\sin(\theta_i)|
-    \le \frac{\|\hat{P} - H\|_2}{\lambda_k(H)}
-    \le \frac{C \sqrt{n \log n/m}}{n} = O(m^{-1/2} n^{-1/2} \sqrt{\log n})
+\begin{split}
+	& \|\hat{U} \hat{U}^T - U U^T\|_2 = \max_i |\sin(\theta_i)| \\
+    \le & \frac{\|\hat{P} - H\|_2}{\lambda_k(H)}
+    \le \frac{C \sqrt{n \log n/m}}{n} \\
+    = & O(m^{-1/2} n^{-1/2} \sqrt{\log n})
+\end{split}
 \end{equation}
-for sufficiently large $n$. Here $\lambda_k(H)$ denotes the $k$-th largest eigenvalue of $H$.\\
-We thus have
+for sufficiently large $n$ with high probability. Here $\lambda_k(H)$ denotes the $k$-th largest eigenvalue of $H$.
+Thus with high probability, 
 \begin{align*}
 	\| U^T \hat{U} - W_1 W_2^T \|_F
     & = \| \Sigma - I \|_F
@@ -753,19 +760,21 @@ and
 \]
 with high probability.
 \end{lemma}
+\noindent \textbf{Require:} Theorem \ref{thm:P1Diff}, Lemma \ref{lemma:eigSShatL1}, Lemma \ref{lemma:AlmostOrthogonalL1}, Exponential distribution \\
 \begin{proof}
-By Proposition 2.1 in \cite{rohe2011spectral} and Equation (\ref{eqn:uhat2u2diffL1}), we have for some orthogonal matrix $W$,
-\[
-\|\hat{U} - U W\|_F^2 \le \frac{2 \|\hat{U} \hat{U}^T - U U^T\|_F^2}{\delta^2}
-\le \frac{8 k^2 \|\hat{U} \hat{U}^T - U U^T\|_2^2}{\delta^2} = O(m^{-1/2} n^{-1/2} \sqrt{\log n}).
-\]
+By Proposition 2.1 in \cite{rohe2011spectral} and Equation (\ref{eqn:uhat2u2diffL1}), we have for some orthogonal matrix $W$, 
+\begin{align*}
+& \|\hat{U} - U W\|_F^2 \le \frac{2 \|\hat{U} \hat{U}^T - U U^T\|_F^2}{\delta^2}
+\le \frac{8 k^2 \|\hat{U} \hat{U}^T - U U^T\|_2^2}{\delta^2} \\
+= & O(m^{-1/2} n^{-1/2} \sqrt{\log n}),
+\end{align*}
+with high probability.
 Let $Q = \hat{U} - U U^T \hat{U}$. And $Q$ is the residual after projecting $\hat{U}$ orthogonally onto the column space of $U$, we have
 \begin{equation}
 \label{eqn:QFnormL1}
 \| Q \|_F = \| \hat{U} - U U^T \hat{U} \|_F \le \| \hat{U} - U T \|_F = O(m^{-1/2} n^{-1/2} \sqrt{\log n}).
 \end{equation}
-for all $k \times k$ matrices $T$. 
-
+for all $k \times k$ matrices $T$ with high probability. 
 Then
 \begin{align*}
 	W^* \hat{S} = & (W^* - U^T \hat{U}) \hat{S} + U^T \hat{U} \hat{S}
@@ -798,7 +807,7 @@ By Equation (\ref{eqn:expectpdiffqpowerkL1}), we have
 \end{align*}
 Also we have
 \[
-	\sigma^2 := |\sum_{t', s<t} 2 R^2 u_{is}^2 u_{jt}^2| \le m R^2,
+	\sigma^2 := \left|\sum_{t', s<t} 2 R^2 u_{is}^2 u_{jt}^2\right| \le m R^2,
 \]
 then by Theorem \ref{thm:BernsteinMatrix}, we have
 \[
@@ -849,6 +858,7 @@ There exists a rotation matrix $W$ such that for sufficiently large $n$,
 \]
 with high probability.
 \end{lemma}
+\noindent \textbf{Require:} Lemma \ref{lemma:AlmostOrthogonalL1}, Lemma \ref{lemma:exchangeL1} \\
 \begin{proof}
 Let $Q_1 = U U^T \hat{U} - U W^*$, $Q_2 = W^* \hat{S}^{1/2} - S^{1/2} W^*$ and $Q_3 = \hat{U} - U W^* = \hat{U} - U U^T \hat{U} + Q_1 = Q + Q_1$. Then since $U U^T P = P$ and $\hat{U} \hat{S}^{1/2} = \hat{P} \hat{U} \hat{S}^{-1/2}$,
 \begin{align*}
@@ -859,29 +869,29 @@ Let $Q_1 = U U^T \hat{U} - U W^*$, $Q_2 = W^* \hat{S}^{1/2} - S^{1/2} W^*$ and $
     = & (\hat{P} - H) U W^* \hat{S}^{-1/2} - U U^T(\hat{P} - H)U W^*\hat{S}^{-1/2} \\
     & + (I - U U^T)(\hat{P} - H) Q_3 \hat{S}^{-1/2} + Q_1 \hat{S}^{1/2} + U Q_2.
 \end{align*}
-By Lemma \ref{lemma:AlmostOrthogonalL1},
+By Lemma \ref{lemma:AlmostOrthogonalL1}, with high probability, 
 \[
 	\|Q_1\|_F \le \| U\|_F \| U^T \hat{U} - W^* \|_F = O(m^{-1} n^{-1} \log n).
 \]
-By Lemma \ref{lemma:exchangeL1},
+By Lemma \ref{lemma:exchangeL1}, with high probability, 
 \[
 	\|Q_2\|_F = O(m^{-1/2} n^{-1/2} \log n).
 \]
-By Equation (\ref{eqn:QFnormL1}),
+By Equation (\ref{eqn:QFnormL1}), with high probability, 
 \[
 	\|Q_3\|_F \le \|Q\|_F + \|Q_1\|_F = O(m^{-1/2} n^{-1/2} (\log n)^{1/2}).
 \]
-By Equation (\ref{eqn:uPhatdiffHuL1}),
+By Equation (\ref{eqn:uPhatdiffHuL1}), with high probability, 
 \[
 	\| U U^T(\hat{P} - H)U W^*\hat{S}^{-1/2} \|_F
     \le \| U^T(\hat{P} - H)U \|_F \| \hat{S}^{-1/2} \|_2
     = O(m^{-1} n^{-1/2} \log n).
 \]
-By Lemma \ref{lemma:exchangeL1},
+By Lemma \ref{lemma:exchangeL1}, with high probability, 
 \[
 	\| W^* \hat{S}^{-1/2} - S^{-1/2} W^* \|_F = O(m^{-1/2} n^{-3/2} \log n).
 \]
-Therefore,
+Therefore, with high probability, 
 \begin{align*}
 	& \| \hat{Z} - U S^{1/2} W^* \|_F \\
     = & \| (\hat{P} - H) U W^* \hat{S}^{-1/2} \|_F + O(m^{-1} n^{-1/2} \log n)
@@ -906,12 +916,13 @@ There exists a rotation matrix $W$ such that for sufficiently large $n$,
 \]
 with high probability.
 \end{theorem}
+\noindent \textbf{Require:} Lemma \ref{lemma:XhatDiffXWexpressionL1}, Exponential distribution \\
 \begin{proof}
 By Lemma \ref{lemma:XhatDiffXWexpressionL1}, we have
 \[
 	\|\hat{Z} - Z W\|_F = \| (\hat{P} - H) U S^{-1/2} \|_F + O(m^{-1/2} n^{-1/2} (\log n)^{3/2})
 \]
-and similarly we could have the bound for each column vector
+ with high probability and similarly we could have the bound for each column vector with high probability that
 \begin{align*}
 	\max_i \| \hat{Z}_i - W Z_i \|_2
     \le & \frac{1}{\lambda_k^{1/2}(H)} \max_i \| ((\hat{P} - H) U)_i \|_2 + O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
@@ -958,6 +969,7 @@ Taking the union bound over all $i$ and $j$, with high probability we have,
 \label{lemma:1stMomentPhatDiffL1}
 $\left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right| = O(m^{-1/2} n^{-1} (\log n)^{3})$ with high probability.
 \end{lemma}
+\noindent \textbf{Require:} Theorem \ref{thm:XhatDiffXWL1} \\
 \begin{proof}
 Let $W$ be the rotation matrix in Theorem \ref{thm:XhatDiffXWL1}, then
 \begin{align*}
@@ -979,6 +991,10 @@ with high probability.
 
 
 
+\begin{definition}
+Define $\widetilde{P}_{ij}^{(1)} = (\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}$, our estimator for $P_{ij}$, to be a projection of $\hat{Z}_i^T \hat{Z}_j$ onto $[0, \min(\hat{P}_{ij}^{(1)}, R)]$.
+\end{definition}
+
 
 \begin{corollary}
 \label{cor:L1Consistent}
@@ -989,14 +1005,19 @@ For fixed $m$, the estimator based on ASE of MLE has the same entry-wise asympto
 \]
 \end{corollary}
 \begin{proof}
-Direct result from Lemma \ref{lemma:1stMomentPhatDiffL1} by noticing
+From Lemma \ref{lemma:1stMomentPhatDiffL1}, we have
+\[
+	\lim_{n \to \infty} E[\hat{Z}_i^T \hat{Z}_j] = \lim_{n \to \infty} E[Z_i^T Z_j]
+	= \lim_{n \to \infty} E[\hat{P}^{(1)}_{ij}].
+\]
+
+And
 \[
 	\lim_{n \to \infty} E[\widetilde{P}_{ij}^{(1)}] = \lim_{n \to \infty} E[\hat{P}^{(1)}_{ij}].
 \]
 \end{proof}
 
 
-Define $(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}$, our estimator for $P_{ij}$, to be a projection of $\hat{Z}_i^T \hat{Z}_j$ onto $[0, \max(\hat{P}_{ij}, R)]$.
 
 \begin{theorem}
 \label{thm:VarASEL1}
