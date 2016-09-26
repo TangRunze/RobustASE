@@ -998,23 +998,75 @@ Define $\widetilde{P}_{ij}^{(1)} = (\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}$, our e
 
 \begin{corollary}
 \label{cor:L1Consistent}
-For fixed $m$, the estimator based on ASE of MLE has the same entry-wise asymptotic bias as MLE, i.e.
+Assuming that $m = O(n^b)$ for any $b > 0$, then the estimator based on ASE of MLE has the same entry-wise asymptotic bias as MLE, i.e.
 \[
 	\lim_{n \to \infty} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)}) = \lim_{n \to \infty} E[\widetilde{P}_{ij}^{(1)}] - P_{ij} = \lim_{n \to \infty} E[\hat{P}^{(1)}_{ij}] - P_{ij}
     = \lim_{n \to \infty} \mathrm{Bias}(\hat{P}_{ij}^{(1)}).
 \]
 \end{corollary}
 \begin{proof}
-From Lemma \ref{lemma:1stMomentPhatDiffL1}, we have
-\[
-	\lim_{n \to \infty} E[\hat{Z}_i^T \hat{Z}_j] = \lim_{n \to \infty} E[Z_i^T Z_j]
-	= \lim_{n \to \infty} E[\hat{P}^{(1)}_{ij}].
-\]
-
-And
-\[
-	\lim_{n \to \infty} E[\widetilde{P}_{ij}^{(1)}] = \lim_{n \to \infty} E[\hat{P}^{(1)}_{ij}].
-\]
+Fix some $a > 0$, we have
+\begin{align*}
+	& E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j|] \\
+	= & E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} \le a\}]
+	+ E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} > a\}]
+\end{align*}
+For the first term, we have
+\begin{align*}
+	& E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
+	\le & E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ holds}\}] \\
+	& + E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}\}] \\
+	\le & E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ holds}] \\
+	& + n^{-c} E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
+	\le & O(m^{-1/2} n^{-1} (\log n)^3) \\
+	& + 2 n^{-c} E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}_{ij}| \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
+	& + 2 n^{-c} E[|\hat{P}_{ij} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
+	\le & O(m^{-1/2} n^{-1} (\log n)^3) + 2 n^{-c} E[\hat{P}_{ij} \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
+	& + 2 n^{-c} E[(\hat{P}_{ij} + R) \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
+	\le & O(m^{-1/2} n^{-1} (\log n)^3) + 2 a n^{-c} + 2 (a+R) n^{-c} \\
+	\le & O(m^{-1/2} n^{-1} (\log n)^3) + 4 n^{-c} (a + R)
+\end{align*}
+Notice that
+\begin{align*}
+	& E[\hat{P}_{ij} \mathbb{I} \{ \hat{P}_{ij} > a \}]
+	= E[\left(\frac{1}{m} \sum_{1 \le t \le m} A_{ij}^{(t)}\right) \mathbb{I} \{ \hat{P}_{ij} > a \}] \\
+	= & \frac{1}{m} E[\sum_{1 \le t \le m} A_{ij}^{(t)} \mathbb{I} \{ \hat{P}_{ij} > a \}]
+	\le \frac{1}{m} E[\sum_{1 \le t \le m} A_{ij}^{(t)} \mathbb{I} \{ \max_{1 \le s \le m} A_{ij}^{(s)} > a \}] \\
+	\le & \frac{1}{m} E[\sum_{1 \le t \le m} A_{ij}^{(t)} \left(\sum_{1 \le s \le m}\mathbb{I} \{ A_{ij}^{(s)} > a \}\right)]
+	= E[A_{ij}^{(1)} \left(\sum_{1 \le s \le m}\mathbb{I} \{ A_{ij}^{(s)} > a \}\right)] \\
+	= & E[A_{ij}^{(1)} \mathbb{I} \{ A_{ij}^{(1)} > a \})] + (m-1) E[A_{ij}^{(1)} \mathbb{I} \{ A_{ij}^{(2)} > a \})] \\
+	= & E[A_{ij}^{(1)} \mathbb{I} \{ A_{ij}^{(1)} > a \})] + (m-1) E[A_{ij}^{(1)}] P(A_{ij}^{(1)} > a),
+\end{align*}
+and similarly
+\begin{align*}
+	& E[(\hat{P}_{ij} + R) \mathbb{I} \{ \hat{P}_{ij} > a \}] \\
+	= & E[\hat{P}_{ij} \mathbb{I} \{ \hat{P}_{ij} > a \}] + R \cdot P(\hat{P}_{ij} > a) \\
+	\le & E[A_{ij}^{(1)} \mathbb{I} \{ A_{ij}^{(1)} > a \})] + (m-1) E[A_{ij}^{(1)}] P(A_{ij}^{(1)} > a)
+	+ R \cdot m \cdot P(A_{ij}^{(1)} > a).
+\end{align*}
+Thus for the second term,
+\begin{align*}
+	& E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} > a\}] \\
+	\le & E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}_{ij}| \mathbb{I}\{\hat{P}_{ij} > a\}] + E[|\hat{P}_{ij} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} > a\}] \\
+	\le & E[\hat{P}_{ij} \mathbb{I}\{\hat{P}_{ij} > a\}] + E[(\hat{P}_{ij} + R) \mathbb{I}\{\hat{P}_{ij} > a\}] \\
+	\le & 2 E[A_{ij}^{(1)} \mathbb{I} \{ A_{ij}^{(1)} > a \})] + 2(m-1) E[A_{ij}^{(1)}] P(A_{ij}^{(1)} > a) \\
+	& + R \cdot m \cdot P(A_{ij}^{(1)} > a) \\
+	\le & 2 e^{-a/R} (a + 2 m R)
+\end{align*}
+Thus
+\begin{align*}
+	& E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j|] \\
+	\le & O(m^{-1/2} n^{-1} (\log n)^3) + 4 n^{-c} (a + R) + 2 e^{-a/R} (a + 2 m R)
+\end{align*}
+Let $a = m^{-1} n^{2b}$ for any $b > 0$, and $c = 2b + 3$, combined with the assumption $m = O(n^{b})$, we have
+\begin{align*}
+	& E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j|] \\
+	= & O(m^{-1/2} n^{-1} (\log n)^3) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(e^{-m^{-1} n^{2b}}) \\
+	= & O(m^{-1/2} n^{-1} (\log n)^3) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(e^{- n^{b}}) \\
+	= & O(m^{-1/2} n^{-1} (\log n)^3) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(n^{-2b-3}) \\
+	= & O(m^{-1/2} n^{-1} (\log n)^3) + O(m^{-1} n^{-3}) \\
+	= & O(m^{-1/2} n^{-1} (\log n)^3).
+\end{align*}
 \end{proof}
 
 
