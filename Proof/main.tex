@@ -85,9 +85,9 @@
 \section{Problem Description}
 
 \subsection{Uncontaminated Model}
-Let $F$ be a distribution on $\mathcal{X} \in \mathbb{R}^d$, satisfying $x^T y \ge 0$ for all $x, y \in \mathcal{X}$. We now generate $m$ i.i.d.~graphs under the RDPG($F$) model. First sample $X_1, \cdots, X_n$ independently from distribution $F$,  and define $X = [X_1, \cdots, X_n]^T \in \mathbb{R}^{n \times d}$, $P = X X^T \in [0, R]^{n \times n}$, where $R$ is a constant. Then we can sample $m$ conditionally i.i.d. symmetric and hollow graphs $G^{(1)}, \cdots, G^{(m)}$, such that conditioned on $X$, $G^{(t)}_{ij} \stackrel{ind}{\sim} \mathrm{Exp}(P_{ij})$ for each $1 \le t \le m$, $1 \le i < j \le n$.
+Consider a positive semi-definite stochastic blockmodel parameterized by $B \in [0,R]^{K\times K}$, and $\rho \in (0, 1)^{n}$ with $\sum_{i = 1}^n \rho_i = 1$. Note that $K$ is the number of blocks, and $R > 0$ is an upper bound for the parameter. Assuming that $\mathrm{rank}(B) = d$, then there exists $\nu \in \mathbb{R}^{K\times d}$ such that $B = \nu \nu^T$. Let $\tau$ represent the block membership of each vertex, i.e. $\tau(i) = k$ means vertex $i$ belongs to block $k$. Then the probability matrix $P \in [0, R]^{n\times n}$ can be written as $X X^T$, where $X = [X_1, \cdots, X_n]^T \in \mathbb{R}^{n\times d}$ and $X_i = \nu_{\tau_i}$.
 
-Note: We are now considering the SBM model as a RDPG.
+Then we can sample $m$ conditionally i.i.d. symmetric and hollow graphs $G^{(1)}, \cdots, G^{(m)}$, such that conditioned on $X$, $G^{(t)}_{ij} \stackrel{ind}{\sim} \mathrm{Exp}(P_{ij})$ for each $1 \le t \le m$, $1 \le i < j \le n$.
 
 %Under the stochastic block model with parameters $(B, \rho)$, we have $X_i \stackrel{iid}{\sim} \sum_{k=1}^K \rho_k \delta_{\nu_k}$, where $\nu = [\nu_1, \cdots, \nu_K]^T \in \mathbb{R}^{K \times d}$ satisfies $B = \nu^T \nu$. Define the block assignment $\tau$ such that $\tau_i = k$ if and only if $X_i = \nu_k$. Let $P = X X^T$ where $X = [X_1, \cdots, X_n]^T$.
 %
@@ -99,8 +99,9 @@ Note: We are now considering the SBM model as a RDPG.
 \subsection{Contaminated Observations}
 Now we assume the observed edges are contaminated with probability $\epsilon$.
 
-Let $G$ be a distribution on $\mathcal{Y} \in \mathbb{R}^{d'}$, satisfying $x^T y \ge 0$ for all $x, y \in \mathcal{Y}$. First sample $X$ from $F$ and $Y$ from $G$.
-Then we sample $m$ conditionally i.i.d.~symmetric and hollow graphs $A^{(1)}, \cdots, A^{(m)}$ such that conditioning on $X$ and $Y$, $A^{(t)}_{ij} \stackrel{ind}{\sim} (1-\epsilon) \mathrm{Exp}(P_{ij}) + \epsilon \mathrm{Exp}(C_{ij})$ for each $1 \le t \le m$, $1 \le i < j \le n$,  where the contamination is a rank-$d'$ matrix $C = Y Y^T \in [0, R]^{n \times n}$, $Y \in \mathbb{R}^{n \times d'}$. 
+Similarly, consider another positive semi-definite stochastic blockmodel parameterized by $B' \in [0, R]^{K' \times K'}$, and $\rho' \in (0, 1)^{n}$ with $\sum_{i = 1}^n \rho_i' = 1$. Note that $K'$ is the number of blocks which is not necessarily equal to $K$, but $R$ is the same upper bound for the parameter. Assuming that $\mathrm{rank}(B') = d'$, then there exists $\nu' \in \mathbb{R}^{K'\times d'}$ such that $B' = \nu' \nu'^{T}$. Let $\tau'$ represent the block membership of each vertex, i.e. $\tau'(i) = k$ means vertex $i$ belongs to block $k$. Then the probability matrix $C \in [0, R]^{n\times n}$ can be written as $Y Y^T$, where $Y = [Y_1, \cdots, Y_n]^T \in \mathbb{R}^{n\times d'}$ and $Y_i = \nu'_{\tau'_i}$.
+
+Then we can sample $m$ conditionally i.i.d.~symmetric and hollow graphs $A^{(1)}, \cdots, A^{(m)}$ such that conditioning on $X$ and $Y$, $A^{(t)}_{ij} \stackrel{ind}{\sim} (1-\epsilon) \mathrm{Exp}(P_{ij}) + \epsilon \mathrm{Exp}(C_{ij})$ for each $1 \le t \le m$, $1 \le i < j \le n$. 
 
 %First sample $\tau$ from the multinomial distribution with parameter $\rho$. Then we are going to sample $m$ conditionally i.i.d. symmetric and hollow graphs $A^{(1)}, \cdots, A^{(m)}$ such that conditioning on $\tau$, $A^{(t)}_{ij} \stackrel{ind}{\sim} (1-\epsilon) \mathrm{Exp}(P_{ij}) + \epsilon \mathrm{Exp}(C_{ij})$ for each $1 \le t \le m$, $1 \le i < j \le n$,  where the contamination is a rank-1 matrix $C = Y Y^T$, $Y \in \mathbb{R}^n$. 
 
@@ -132,12 +133,12 @@ Since the observations are contaminated, robust estimators are preferred. A modi
 
 
 \subsection{$\widetilde{P}^{(1)}$ based on ASE of entry-wise MLE}
-By taking advantages of the graph structure, we expect a better performance after applying a rank-reduction procedure to the entry-wise MLE $\hat{P}^{(1)}$ under the SBM. So we first apply ASE to $\hat{P}^{(1)}$ to get the latent positions $\hat{X}^{(1)}$ in dimension $d^{(1)}$, and then define $\widetilde{P}^{(1)} = (\hat{X}^{(1)} \hat{X}^{{(1)}T})_{\mathrm{tr}}$, where each element is a projection of $\hat{X}^{(1)}_i \hat{X}^{{(1)}T}_j$ onto $[0, \max(\hat{P}^{(1)}_{ij}, R)]$.
+By taking advantages of the graph structure, we expect a better performance after applying a rank-reduction procedure to the entry-wise MLE $\hat{P}^{(1)}$ under the SBM. So we first apply ASE to $\hat{P}^{(1)}$ to get the latent positions $\hat{X}^{(1)}$ in dimension $d^{(1)}$, and then define $\widetilde{P}^{(1)} = (\hat{X}^{(1)} \hat{X}^{{(1)}T})_{\mathrm{tr}}$, where each element is a projection of $\hat{X}^{(1)}_i \hat{X}^{{(1)}T}_j$ onto $[0, \min(\hat{P}^{(1)}_{ij}, R)]$.
 
 
 
 \subsection{$\widetilde{P}^{(q)}$ based on ASE of entry-wise ML$q$E}
-Similarly, we also expect a better performance after applying a rank-reduction procedure to the entry-wise ML$q$E $\hat{P}^{(q)}$ under the SBM. So we first apply ASE to $\hat{P}^{(q)}$ to get the latent positions $\hat{X}^{(q)}$ in dimension $d^{(q)}$, and then define $\widetilde{P}^{(q)} = (\hat{X}^{(q)} \hat{X}^{{(q)}T})_{\mathrm{tr}}$, where each element is a projection of $\hat{X}^{(q)}_i \hat{X}^{{(q)}T}_j$ onto $[0, \max(\hat{P}^{(q)}_{ij}, R)]$.
+Similarly, we also expect a better performance after applying a rank-reduction procedure to the entry-wise ML$q$E $\hat{P}^{(q)}$ under the SBM. So we first apply ASE to $\hat{P}^{(q)}$ to get the latent positions $\hat{X}^{(q)}$ in dimension $d^{(q)}$, and then define $\widetilde{P}^{(q)} = (\hat{X}^{(q)} \hat{X}^{{(q)}T})_{\mathrm{tr}}$, where each element is a projection of $\hat{X}^{(q)}_i \hat{X}^{{(q)}T}_j$ onto $[0, \min(\hat{P}^{(q)}_{ij}, R)]$.
 
 
 
@@ -417,12 +418,12 @@ Combined with the fact that $[a, R]$ is compact and the function $g(x,\theta)$ i
 
 
 
-\begin{lemma}
-$\hat{P}_{ij}^{(q)} \stackrel{P}{\to} \theta(F_{ij})$, where $F_{ij}$ is the contaminated distribution $(1-\epsilon) \mathrm{Exp}(P_{ij}) + \epsilon \mathrm{Exp}(C_{ij})$. That is, $\hat{P}_{ij}^{(q)}$ is an consistent estimator of $\theta(F_{ij})$.
-\end{lemma}
-\begin{proof}
-{\color{red}NOT USED}
-\end{proof}
+%\begin{lemma}
+%$\hat{P}_{ij}^{(q)} \stackrel{P}{\to} \theta(F_{ij})$, where $F_{ij}$ is the contaminated distribution $(1-\epsilon) \mathrm{Exp}(P_{ij}) + \epsilon \mathrm{Exp}(C_{ij})$. That is, $\hat{P}_{ij}^{(q)}$ is an consistent estimator of $\theta(F_{ij})$.
+%\end{lemma}
+%\begin{proof}
+%{\color{red}NOT USED}
+%\end{proof}
 
 
 
@@ -1331,7 +1332,7 @@ Plugging this $t$ into the equation above, we get
 \end{proof}
 
 
-As we define $H^{(q)} = E[\hat{P}^{(q)}]$, let $d^{(q)} = \mathrm{rank}(H^{(q)})$ be the dimension in which we are going to embed $\hat{P}^{(q)}$. Notice that it is less than or equal to $K$ since the SBM assumption. Then we can define $H^{(q)} = Z Z^T$ where $Z \in \mathbb{R}^{n \times d^{(q)}}$.
+As we define $H^{(q)} = E[\hat{P}^{(q)}]$, let $d^{(q)} = \mathrm{rank}(H^{(q)})$ be the dimension in which we are going to embed $\hat{P}^{(q)}$. Notice that it is less than or equal to $K\times K'$ based on the SBM assumption. Then we can define $H^{(q)} = Z Z^T$ where $Z \in \mathbb{R}^{n \times d^{(q)}}$.
 
 
 
