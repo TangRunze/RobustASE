@@ -73,9 +73,9 @@
 
 \newcommand{\RT}[1]{\marginpar{\footnotesize\color{red}RT: #1}}
 
-\title{ASE o ML$q$E Story Latest}
+\title{Robust LLG Proof}
 
-\author{Runze}
+\author{Runze, Minh, Carey, Jovo, ...}
 
 \date{\today}
 
@@ -377,7 +377,12 @@ Consider $q$ as the variable and solve the equation $h(E[\bar{X}]) = 0$, we have
 The other two roots are
 \[
 \frac{(P + C)\left( (P-C)^2 \epsilon(1-\epsilon) + 2PC \right)}{2PC(P \epsilon + C(1-\epsilon))}
-\pm \frac{1}{2} \sqrt{\frac{\epsilon(1-\epsilon)(C-P)^4 - 4P^2C^2}{P^2 C^2 (P\epsilon + C(1-\epsilon))^2}}.
+\pm \sqrt{\frac{\epsilon(1-\epsilon)(C-P)^2\left(\epsilon(1-\epsilon)(C-P)^4 - 4P^2C^2\right)}{4 P^2 C^2 (P\epsilon + C(1-\epsilon))^2}}.
+\]
+To prove the roots are greater or equal to 1, we need to show
+\[
+\frac{(P + C)\left( (P-C)^2 \epsilon(1-\epsilon) + 2PC \right)}{2PC(P \epsilon + C(1-\epsilon))}
+- \sqrt{\frac{\epsilon(1-\epsilon)(C-P)^2\left(\epsilon(1-\epsilon)(C-P)^4 - 4P^2C^2\right)}{4 P^2 C^2 (P\epsilon + C(1-\epsilon))^2}} > 1.
 \]
 For the first part,
 \[
@@ -386,8 +391,7 @@ For the first part,
 \]
 To prove the roots are greater or equal to 1, we just need to show
 \[
-(P-C)^2 \epsilon (1-\epsilon) (P+C)^2
-\ge \epsilon(1-\epsilon)(C-P)^4 - 4P^2C^2.
+(P-C)^4 \epsilon^2 (1-\epsilon)^2 (P+C)^2 \ge \epsilon^2(1-\epsilon)^2(C-P)^6.
 \]
 Then it is sufficient to show that
 \[
