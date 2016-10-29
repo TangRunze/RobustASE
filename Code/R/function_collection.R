@@ -57,7 +57,7 @@ read_data <- function(dataName, DA=T) {
 }
 
 
-read_data_weight <- function(dataName, DA=T) {
+ReadDataWeighted <- function(dataName, DA=T) {
   if (DA) {
     fileName = paste("../../Data/data_", dataName, "_DA.RData", sep="")
   } else {
@@ -129,7 +129,7 @@ diag_aug <- function(A, d=0) {
 # Regularize probability matrix
 regularize <- function(A) {
   diag(A) = 0
-#   A[A > 1] = 1
+  #   A[A > 1] = 1
   A[A < 0] = 0
   return(A)
 }
@@ -251,35 +251,33 @@ dim_brute2_all <- function(M, m, dVec, A_all, A_sum, q, isSVD=1) {
   
   nD = length(dVec)
   dMax = max(dVec)
-  result = list()
-  result[[2]] = rep(NaN, nD)
-  result[[4]] = rep(NaN, nD)
+  result = rep(NaN, 2*nD+6)
   
   sampleVec = sample.int(M, m)
   A_bar = add(A_all[sampleVec])
-    P_bar = (A_sum - A_bar)/(M - m)
-#   P_bar = A_sum/M
+  P_bar = (A_sum - A_bar)/(M - m)
+  #   P_bar = A_sum/M
   A_bar = A_bar/m
-  result[[1]] = norm(P_bar - A_bar, "F")/n/(n-1)
+  result[1] = norm(P_bar - A_bar, "F")/n/(n-1)
   
   n = dim(A_bar)[[1]]
-  A_all = array(unlist(A_all[sampleVec]), dim=c(n, n, m))
+  A_all_unlist = array(unlist(A_all[sampleVec]), dim=c(n, n, m))
   time0 = proc.time()
-  A_mlqe = apply(A_all, c(1, 2), mlqe_exp_solver, q)
+  A_mlqe = apply(A_all_unlist, c(1, 2), mlqe_exp_solver, q)
   time1 = proc.time() - time0
-  result[[3]] = norm(P_bar - A_mlqe, "F")/n/(n-1)
+  result[nD+2] = norm(P_bar - A_mlqe, "F")/n/(n-1)
   
   A_bar_diag_aug = diag_aug(A_bar)
-  
   # ZG
   nElbow = 3
   evalVec = ase(A_bar_diag_aug, ceiling(n*3/5), isSVD)[[1]]
   dZG = getElbows(evalVec, n=nElbow, plot=F)[[nElbow]]
-  
   # USVT
   dUSVT = length(usvt(A_bar_diag_aug, 1, m)$d)
+  result[nD*2+3] = dZG
+  result[nD*2+4] = dUSVT
   
-  A.ase = ase(diag_aug(A_bar), dMax, isSVD)
+  A.ase = ase(A_bar_diag_aug, dMax, isSVD)
   for (iD in 1:nD) {
     d = dVec[iD]
     if (d == 1)
@@ -287,15 +285,21 @@ dim_brute2_all <- function(M, m, dVec, A_all, A_sum, q, isSVD=1) {
     else
       Ahat <- A.ase[[3]][,1:d] %*% diag(A.ase[[1]][1:d]) %*% t(A.ase[[2]][,1:d])
     P_hat = regularize(Ahat)
-    result[[2]][iD] = norm(P_bar - P_hat, "F")/n/(n-1)
+    result[1+iD] = norm(P_bar - P_hat, "F")/n/(n-1)
   }
-  plot(result[[2]])
+  #   plot(result[[2]])
   
+  A_mlqe_diag_aug = diag_aug(A_mlqe)
+  # ZG
+  nElbow = 3
+  evalVec = ase(A_mlqe_diag_aug, ceiling(n*3/5), isSVD)[[1]]
+  dZG = getElbows(evalVec, n=nElbow, plot=F)[[nElbow]]
+  # USVT
+  dUSVT = length(usvt(A_mlqe_diag_aug, 1, m)$d)
+  result[nD*2+5] = dZG
+  result[nD*2+6] = dUSVT
   
-#   result[[5]] = dZG
-#   result[[6]] = dUSVT
-  
-  A.ase = ase(diag_aug(A_mlqe), dMax, isSVD)
+  A.ase = ase(A_mlqe_diag_aug, dMax, isSVD)
   for (iD in 1:nD) {
     d = dVec[iD]
     if (d == 1)
@@ -303,49 +307,9 @@ dim_brute2_all <- function(M, m, dVec, A_all, A_sum, q, isSVD=1) {
     else
       Ahat <- A.ase[[3]][,1:d] %*% diag(A.ase[[1]][1:d]) %*% t(A.ase[[2]][,1:d])
     P_hat_ase = regularize(Ahat)
-    result[[4]][iD] = norm(P_bar - P_hat_ase, "F")/n/(n-1)
+    result[nD+2+iD] = norm(P_bar - P_hat_ase, "F")/n/(n-1)
   }
-  plot(result[[4]])
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  A_bar = apply(A_all, MARGIN=c(2, 3), sum)/m
-  A.ase = ase(diag_aug(A_bar, d), d, isSVD)
-  if (d == 1) {
-    A_bar_ase = A.ase[[1]][1] * A.ase[[3]][,1:d] %*% t(A.ase[[2]][,1:d])
-  } else {
-    A_bar_ase = A.ase[[3]][,1:d] %*% diag(A.ase[[1]][1:d]) %*% t(A.ase[[2]][,1:d])
-  }
-  A_bar_ase = regularize(A_bar_ase)
-  
-  
-  
-  A.ase = ase(diag_aug(A_mlqe, d), d, isSVD)
-  if (d == 1) {
-    A_mlqe_ase = A.ase[[1]][1] * A.ase[[3]][,1:d] %*% t(A.ase[[2]][,1:d])
-  } else {
-    A_mlqe_ase = A.ase[[3]][,1:d] %*% diag(A.ase[[1]][1:d]) %*% t(A.ase[[2]][,1:d])
-  }
-  A_mlqe_ase = regularize(A_mlqe_ase)
-  
-  result[1] = norm(A_bar - P, "F")/n/(n-1)
-  result[2] = norm(A_bar_ase - P, "F")/n/(n-1)
-  result[3] = norm(A_mlqe - P, "F")/n/(n-1)
-  result[4] = norm(A_mlqe_ase - P, "F")/n/(n-1)
-  
-  
-  
-  
-  
-  
-
-  
+  #   plot(result[[4]])
   return(result)
 }
 
@@ -508,11 +472,16 @@ mlqe_exp_fun <- function(x, theta, q) {
 }
 
 mlqe_exp_solver <- function(xVec, q, tol=1e-6) {
-  if (q == 1) {return(mean(xVec))}
+  if (q == 1) {
+    return(mean(xVec))
+  }
   thetaMin = min(xVec)
-  thetaMax = max(xVec)
-  if (thetaMin == thetaMax) {return(thetaMin)}
-  theta = mean(xVec)
+#   thetaMax = max(xVec)
+  thetaMax = mean(xVec)
+  if (thetaMin == thetaMax) {
+    return(thetaMin)
+  }
+  theta = (thetaMin + thetaMax)/2
   sumTmp = sum(sapply(xVec, mlqe_exp_fun, theta, q))
   sumTmp0 = sumTmp
   sumBase = abs(sumTmp)
@@ -527,24 +496,30 @@ mlqe_exp_solver <- function(xVec, q, tol=1e-6) {
     }
     theta = (thetaMin + thetaMax)/2
     sumTmp = sum(sapply(xVec, mlqe_exp_fun, theta, q))
-    if (is.nan(sumTmp)) {return(mean(xVec))}
-    if ((iter >= maxIter) && (abs(sumTmp) > sumTmp0)) {return(mean(xVec))}
-    if (iter >= maxIter) {return(theta)}
-#     sumTmp1 = sum(sapply(xVec, mlqe_exp_fun, (thetaMin + theta)/2, q))
-#     sumTmp2 = sum(sapply(xVec, mlqe_exp_fun, (thetaMax + theta)/2, q))
-#     if ((abs(sumTmp1) < abs(sumTmp)) && (abs(sumTmp2) < abs(sumTmp))) {
-#       if (sumTmp > 0) {
-#         thetaMin = theta
-#       } else {
-#         thetaMax = theta
-#       }
-#     } else if (abs(sumTmp1) < abs(sumTmp)) {
-#       thetaMax = theta
-#     } else {
-#       thetaMin = theta
-#     }
-#     theta = (thetaMin + thetaMax)/2
-#     sumTmp = sum(sapply(xVec, mlqe_exp_fun, theta, q))
+    if (is.nan(sumTmp)) {
+      return(mean(xVec))
+    }
+    if ((iter >= maxIter) && (abs(sumTmp) > sumTmp0)) {
+      return(mean(xVec))
+    }
+    if (iter >= maxIter) {
+      return(theta)
+    }
+    #     sumTmp1 = sum(sapply(xVec, mlqe_exp_fun, (thetaMin + theta)/2, q))
+    #     sumTmp2 = sum(sapply(xVec, mlqe_exp_fun, (thetaMax + theta)/2, q))
+    #     if ((abs(sumTmp1) < abs(sumTmp)) && (abs(sumTmp2) < abs(sumTmp))) {
+    #       if (sumTmp > 0) {
+    #         thetaMin = theta
+    #       } else {
+    #         thetaMax = theta
+    #       }
+    #     } else if (abs(sumTmp1) < abs(sumTmp)) {
+    #       thetaMax = theta
+    #     } else {
+    #       thetaMin = theta
+    #     }
+    #     theta = (thetaMin + thetaMax)/2
+    #     sumTmp = sum(sapply(xVec, mlqe_exp_fun, theta, q))
   }
   return(theta)
 }
@@ -630,7 +605,7 @@ dim_brute_fullrank <- function(m, dVec, P, isSVD=1) {
   
   for (iD in 1:nD) {
     d = dVec[iD]
-#     A.ase = ase(diag_aug(A_bar, d), d, isSVD)
+    #     A.ase = ase(diag_aug(A_bar, d), d, isSVD)
     if (d == 1)
       Ahat = A.ase[[1]][1] * A.ase[[3]] %*% t(A.ase[[2]])
     else
@@ -672,3 +647,367 @@ test_rank1 <- function(m, dVec, P, isSVD=1) {
   
   return(result)
 }
+
+
+
+
+
+MLqEObjLognormal <- function(theta, data, q) {
+  mu <- theta[1]
+  sigma <- theta[2]^2
+  fVal <- 1/sigma/sqrt(2*pi)/data*exp(-(log(data) - mu)^2/2/(sigma^2))
+  fqVal <- fVal^(1 - q)
+  val <- sum(fqVal*(log(data) - mu))^2 +
+    sum(fqVal*(sigma - (log(data) - mu)^2/(sigma)))^2
+  return(val)
+}
+
+MLqEObjLognormal1 <- function(theta, data, q) {
+  mu <- theta[1]
+  sigma <- theta[2]^2
+  fVal <- 1/sigma/sqrt(2*pi)/data*exp(-(log(data) - mu)^2/2/(sigma^2))
+  if (q == 1) {
+    val <- sum(log(fVal))
+  } else {
+    val <- sum((fVal^(1 - q) - 1)/(1 - q))
+  }
+  return(-val)
+}
+
+
+MLqESolverLognormal <- function(data, q) {
+  muHat <- mean(log(data))
+  sigmaHat <- sqrt(mean((log(data) - muHat)^2))
+  # To avoid the constraint that sigma > 0, we optimize over sqrt(sigma)
+  thetaInit <- c(muHat, sqrt(sigmaHat))
+  if (sigmaHat > 0) {
+    resultOpti <- optim(par = thetaInit, fn = MLqEObjLognormal1, data = data, q = q,
+                        method = "BFGS")
+    muHat <- resultOpti$par[1]
+    sigmaHat <- resultOpti$par[2]^2
+  }
+  val <- exp(muHat + sigmaHat^2/2)
+  return(val)
+}
+
+
+
+LognormalAllDim <- function(M, m, dVec, AList, ASum, q, isSVD=1) {
+  source("getElbows.R")
+  source("USVT.R")
+  
+  nD <- length(dVec)
+  dMax <- max(dVec)
+  result <- rep(NaN, 2*nD+6)
+  
+  sampleVec <- sample.int(M, m)
+  ABar <- add(AList[sampleVec])
+  PBar <- (ASum - ABar)/(M - m)
+  #   PBar <- ASum/M
+  ABar <- ABar/m
+  result[1] <- (norm(PBar - ABar, "F"))^2/n/(n-1)
+  
+  n <- dim(ABar)[[1]]
+  ATensor <- array(unlist(AList[sampleVec]), dim = c(n, n, m))
+  AMLqE <- apply(ATensor, c(1, 2), MLqESolverLognormal, q)
+  result[nD + 2] <- (norm(PBar - AMLqE, "F"))^2/n/(n-1)
+  
+  A_bar_diag_aug = diag_aug(ABar)
+  # ZG
+  nElbow = 3
+  evalVec = ase(A_bar_diag_aug, ceiling(n*3/5), isSVD)[[1]]
+  dZG = getElbows(evalVec, n=nElbow, plot=F)[[nElbow]]
+  # USVT
+  dUSVT = length(usvt(A_bar_diag_aug, 1, m)$d)
+  result[nD*2+3] = dZG
+  result[nD*2+4] = dUSVT
+  
+  A.ase = ase(A_bar_diag_aug, dMax, isSVD)
+  for (iD in 1:nD) {
+    d = dVec[iD]
+    if (d == 1)
+      Ahat = A.ase[[1]] * A.ase[[3]] %*% t(A.ase[[2]])
+    else
+      Ahat <- A.ase[[3]][,1:d] %*% diag(A.ase[[1]][1:d]) %*% t(A.ase[[2]][,1:d])
+    P_hat = regularize(Ahat)
+    result[1+iD] = norm(PBar - P_hat, "F")/n/(n-1)
+  }
+  #   plot(result[[2]])
+  
+  A_mlqe_diag_aug = diag_aug(AMLqE)
+  # ZG
+  nElbow = 3
+  evalVec = ase(A_mlqe_diag_aug, ceiling(n*3/5), isSVD)[[1]]
+  dZG = getElbows(evalVec, n=nElbow, plot=F)[[nElbow]]
+  # USVT
+  dUSVT = length(usvt(A_mlqe_diag_aug, 1, m)$d)
+  result[nD*2+5] = dZG
+  result[nD*2+6] = dUSVT
+  
+  A.ase = ase(A_mlqe_diag_aug, dMax, isSVD)
+  for (iD in 1:nD) {
+    d = dVec[iD]
+    if (d == 1)
+      Ahat = A.ase[[1]] * A.ase[[3]] %*% t(A.ase[[2]])
+    else
+      Ahat <- A.ase[[3]][,1:d] %*% diag(A.ase[[1]][1:d]) %*% t(A.ase[[2]][,1:d])
+    P_hat_ase = regularize(Ahat)
+    result[nD+2+iD] = norm(PBar - P_hat_ase, "F")/n/(n-1)
+  }
+  #   plot(result[[4]])
+  return(result)
+}
+
+
+
+MLqEObjExp <- function(theta, data, q) {
+  fVal <- 1/theta*exp(-data/theta)
+  if (q == 1) {
+    val <- sum(log(fVal))
+  } else {
+    val <- sum((fVal^(1 - q) - 1)/(1 - q))
+  }
+  return(-val)
+}
+
+MLqEGradExp <- function(theta, data, q) {
+  if (q == 1) {
+    val <- sum(-1/theta + data/(theta^2))
+  } else {
+    fVal <- 1/theta*exp(-data/theta)
+    val <- sum((fVal^(1 - q)*(-1/theta + data/(theta^2))))
+  }
+  return(val)
+}
+
+
+MLqESolverExp <- function(data, q) {
+  thetaHat <- mean(data)
+  thetaInit <- thetaHat
+  if (var(data) > 0) {
+#     resultOpti <- optim(par = thetaInit, fn = MLqEObjExp, data = data, q = q,
+#                         gr = MLqEGradExp, method = "BFGS")
+#     resultOpti <- optim(par = thetaInit, fn = MLqEObjExp, data = data, q = q,
+#                         method = "BFGS")
+    resultOpti <- optim(par = thetaInit, fn = MLqEObjExp, data = data, q = q)
+    thetaHat <- resultOpti$par
+  }
+  return(thetaHat)
+}
+
+
+ExpAllDim <- function(M, m, dVec, AList, ASum, q, isSVD=1) {
+  source("getElbows.R")
+  source("USVT.R")
+  
+  nD <- length(dVec)
+  dMax <- max(dVec)
+  result <- rep(NaN, 2*nD+6)
+  
+  sampleVec <- sample.int(M, m)
+  ABar <- add(AList[sampleVec])
+  PBar <- (ASum - ABar)/(M - m)
+  #   PBar <- ASum/M
+  ABar <- ABar/m
+  result[1] <- (norm(PBar - ABar, "F"))^2/n/(n-1)
+  
+  n <- dim(ABar)[[1]]
+  ATensor <- array(unlist(AList[sampleVec]), dim = c(n, n, m))
+#   AMLqE <- apply(ATensor, c(1, 2), MLqESolverExp, q)  
+  AMLqE <- apply(ATensor, c(1, 2), mlqe_exp_solver, q)
+  result[nD + 2] <- (norm(PBar - AMLqE, "F"))^2/n/(n-1)
+  
+#   ABarDiagAug <- diag_aug(ABar)
+  ABarDiagAug <- ABar
+  # ZG
+  nElbow <- 3
+  evalVec <- ase(ABarDiagAug, ceiling(n*3/5), isSVD)[[1]]
+  dZG <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
+  # USVT
+  dUSVT <- length(usvt(ABarDiagAug, 1, m)$d)
+  result[nD*2 + 3] <- dZG
+  result[nD*2 + 4] <- dUSVT
+  
+  AASE = ase(ABarDiagAug, dMax, isSVD)
+  for (iD in 1:nD) {
+    d <- dVec[iD]
+    if (d == 1) {
+      AHat <- AASE[[1]]*AASE[[3]]%*%t(AASE[[2]])
+    } else {
+      AHat <- AASE[[3]][, 1:d]%*%diag(AASE[[1]][1:d])%*%t(AASE[[2]][ ,1:d])
+    }
+    PHat <- regularize(AHat)
+    result[1 + iD] <- (norm(PBar - PHat, "F"))^2/n/(n-1)
+  }
+  
+#   AMLqEDiagAug <- diag_aug(AMLqE)
+  AMLqEDiagAug <- AMLqE
+  # ZG
+  nElbow <- 3
+  evalVec <- ase(AMLqEDiagAug, ceiling(n*3/5), isSVD)[[1]]
+  dZG <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
+  # USVT
+  dUSVT <- length(usvt(AMLqEDiagAug, 1, m)$d)
+  result[nD*2 + 5] <- dZG
+  result[nD*2 + 6] <- dUSVT
+  
+  AASE <- ase(AMLqEDiagAug, dMax, isSVD)
+  for (iD in 1:nD) {
+    d <- dVec[iD]
+    if (d == 1) {
+      AHat <- AASE[[1]]*AASE[[3]]%*%t(AASE[[2]])
+    } else {
+      AHat <- AASE[[3]][ ,1:d]%*%diag(AASE[[1]][1:d])%*%t(AASE[[2]][ ,1:d])
+    }
+    PHatASE <- regularize(AHat)
+    result[nD + 2 + iD] <- (norm(PBar - PHatASE, "F"))^2/n/(n-1)
+  }
+  return(result)
+}
+
+
+
+
+
+
+ExpAllDimAug <- function(M, m, dVec, AList, ASum, q, isSVD=1) {
+  source("getElbows.R")
+  source("USVT.R")
+  
+  nD <- length(dVec)
+  dMax <- max(dVec)
+  result <- rep(NaN, 2*nD+6)
+  
+  sampleVec <- sample.int(M, m)
+  ABar <- add(AList[sampleVec])
+  PBar <- (ASum - ABar)/(M - m)
+  #   PBar <- ASum/M
+  ABar <- ABar/m
+  tmpDiff <- PBar - ABar
+  diag(tmpDiff) <- 0
+  result[1] <- (norm(tmpDiff, "F"))^2/n/(n-1)
+  
+  n <- dim(ABar)[[1]]
+  ATensor <- array(unlist(AList[sampleVec]), dim = c(n, n, m))
+  #   AMLqE <- apply(ATensor, c(1, 2), MLqESolverExp, q)  
+  AMLqE <- apply(ATensor, c(1, 2), mlqe_exp_solver, q)
+  tmpDiff <- PBar - AMLqE
+  diag(tmpDiff) <- 0
+  result[nD + 2] <- (norm(tmpDiff, "F"))^2/n/(n-1)
+  
+  #   ABarDiagAug <- diag_aug(ABar)
+  ABarDiagAug <- ABar
+  # ZG
+  nElbow <- 3
+  evalVec <- ase(ABarDiagAug, ceiling(n*3/5), isSVD)[[1]]
+  dZG <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
+  # USVT
+  dUSVT <- length(usvt(ABarDiagAug, 1, m)$d)
+  result[nD*2 + 3] <- dZG
+  result[nD*2 + 4] <- dUSVT
+  
+  AASE = ase(ABarDiagAug, dMax, isSVD)
+  for (iD in 1:nD) {
+    d <- dVec[iD]
+    if (d == 1) {
+      AHat <- AASE[[1]]*AASE[[3]]%*%t(AASE[[2]])
+    } else {
+      AHat <- AASE[[3]][, 1:d]%*%diag(AASE[[1]][1:d])%*%t(AASE[[2]][ ,1:d])
+    }
+    PHat <- regularize(AHat)
+    tmpDiff <- PBar - PHat
+    diag(tmpDiff) <- 0
+    result[1 + iD] <- (norm(tmpDiff, "F"))^2/n/(n-1)
+  }
+  
+  #   AMLqEDiagAug <- diag_aug(AMLqE)
+  AMLqEDiagAug <- AMLqE
+  # ZG
+  nElbow <- 3
+  evalVec <- ase(AMLqEDiagAug, ceiling(n*3/5), isSVD)[[1]]
+  dZG <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
+  # USVT
+  dUSVT <- length(usvt(AMLqEDiagAug, 1, m)$d)
+  result[nD*2 + 5] <- dZG
+  result[nD*2 + 6] <- dUSVT
+  
+  AASE <- ase(AMLqEDiagAug, dMax, isSVD)
+  for (iD in 1:nD) {
+    d <- dVec[iD]
+    if (d == 1) {
+      AHat <- AASE[[1]]*AASE[[3]]%*%t(AASE[[2]])
+    } else {
+      AHat <- AASE[[3]][ ,1:d]%*%diag(AASE[[1]][1:d])%*%t(AASE[[2]][ ,1:d])
+    }
+    PHatASE <- regularize(AHat)
+    tmpDiff <- PBar - PHatASE
+    diag(tmpDiff) <- 0
+    result[nD + 2 + iD] <- (norm(tmpDiff, "F"))^2/n/(n-1)
+  }
+  return(result)
+}
+
+
+
+
+
+
+
+
+ExpAllDimRatio <- function(M, m, d = 0, AList, ASum, q, isSVD = 1) {
+  source("getElbows.R")
+  
+  dMax <- max(dVec)
+  result <- rep(NaN, 2*nD+6)
+  
+  sampleVec <- sample.int(M, m)
+  sampleVecComplement <- (1:M)[is.na(pmatch(1:M, sampleVec))]
+  ABar <- add(AList[sampleVec])/m
+  
+  n <- dim(ABar)[[1]]
+  ATensor <- array(unlist(AList[sampleVec]), dim = c(n, n, m))
+  #   AMLqE <- apply(ATensor, c(1, 2), MLqESolverExp, q)  
+  AMLqE <- apply(ATensor, c(1, 2), mlqe_exp_solver, q)
+  
+  ABarDiagAug <- diag_aug(ABar)
+  if (d == 0) {
+    # ZG
+    nElbow <- 3
+    evalVec <- ase(ABarDiagAug, ceiling(n*3/5), isSVD)[[1]]
+    d <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
+  }
+  
+  AASE <- ase(ABarDiagAug, d, isSVD)
+  if (d == 1) {
+    AHat <- AASE[[1]]*AASE[[3]]%*%t(AASE[[2]])
+  } else {
+    AHat <- AASE[[3]][, 1:d]%*%diag(AASE[[1]][1:d])%*%t(AASE[[2]][, 1:d])
+  }
+  ABarASE <- regularize(AHat)
+  
+  AMLqEDiagAug <- diag_aug(AMLqE)
+  if (d == 0) {
+    # ZG
+    nElbow <- 3
+    evalVec <- ase(AMLqEDiagAug, ceiling(n*3/5), isSVD)[[1]]
+    d <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
+  }
+  
+  AASE <- ase(AMLqEDiagAug, d, isSVD)
+  if (d == 1) {
+    AHat <- AASE[[1]]*AASE[[3]]%*%t(AASE[[2]])
+  } else {
+    AHat <- AASE[[3]][, 1:d]%*%diag(AASE[[1]][1:d])%*%t(AASE[[2]][, 1:d])
+  }
+  PHatASE <- regularize(AHat)
+  
+  ratioList <- lapply(sampleVecComplement, function(i) {
+    return(abs(AList[[i]] - ABar) == abs(AList[[i]] - AMLqE))})
+  ratioAMLqEABar <- add(ratioList)/(M - m)
+  image(Matrix(ratioAMLqEABar))
+  sum(ratioAMLqEABar)/n/(n-1)
+  
+  return(result)
+}
+
+

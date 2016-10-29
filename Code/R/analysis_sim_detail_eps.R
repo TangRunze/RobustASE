@@ -49,6 +49,12 @@ for (iEps in 1:length(epsVec)) {
   
   if (file.exists(fileName) == T) {
     load(fileName)
+    
+    error_A_bar = error_A_bar^2*n*(n-1)
+    error_A_bar_ase = error_A_bar_ase^2*n*(n-1)
+    error_P_hat = error_P_hat^2*n*(n-1)
+    error_P_hat_ase = error_P_hat_ase^2*n*(n-1)
+    
     errorAbarVec[iEps] = mean(error_A_bar)
     errorAbarLBVec[iEps] = errorAbarVec[iEps] -
       sqrt(var(error_A_bar))/sqrt(length(error_A_bar))*1.96
@@ -91,6 +97,7 @@ dfError <- rbind(
   data.frame(mse=c(errorPhatASEVec),lci=c(errorPhatASELBVec),uci=c(errorPhatASEUBVec),
              which="MLqE_ASE",eps=epsVec))
 
+dfError = dfError[dfError$eps<=0.2,]
 
 require(ggplot2)
 

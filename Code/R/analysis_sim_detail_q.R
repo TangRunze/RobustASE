@@ -48,6 +48,12 @@ for (iQ in 1:length(qVec)) {
   
   if (file.exists(fileName) == T) {
     load(fileName)
+    
+    error_A_bar = error_A_bar^2*n*(n-1)
+    error_A_bar_ase = error_A_bar_ase^2*n*(n-1)
+    error_P_hat = error_P_hat^2*n*(n-1)
+    error_P_hat_ase = error_P_hat_ase^2*n*(n-1)
+    
     errorAbarVec[iQ] = mean(error_A_bar)
     errorAbarLBVec[iQ] = errorAbarVec[iQ] -
       sqrt(var(error_A_bar))/sqrt(length(error_A_bar))*1.96
