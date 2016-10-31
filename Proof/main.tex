@@ -702,11 +702,11 @@ P\left(\|Z^T Z - n E[Z_1 Z_1^T]\|_F \ge k R \sqrt{n \ln(\sqrt{2/\eta})}\right) \
 
 Then by Weyl's Theorem \cite{horn2012matrix}, we have
 \[
-|\lambda_i(H) - n \lambda_i(Z_1 Z_1^T)| \le \|Z^T Z - n E[Z_1 Z_1^T]\|_2 = O(\sqrt{n\log{n}})
+|\lambda_i(H) - n \lambda_i(Z_1 Z_1^T)| \le \|Z^T Z - n E[Z_1 Z_1^T]\|_2 = O(\sqrt{n\log{(1/\eta)}})
 \]
 with probability at least $1 - k^2 \eta$.
 Thus $\lambda_i(H) = S_{ii} = \Theta(n)$ with probability at least $1 - \frac{2 k^2}{n^2}$ when $i \le k$.
-
+\RT{Check $1/m$}
 Moreover,
 \[
 \| H \|_2 - \|H - \hat{P}\|_2 \le \|\hat{S}\|_2 \le \|\hat{P} - H\|_2 + \|H\|_2.
