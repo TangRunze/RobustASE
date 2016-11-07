@@ -85,7 +85,7 @@
 \section{Problem Description}
 
 \subsection{Uncontaminated Model}
-Consider a positive semi-definite stochastic blockmodel parameterized by $B \in [0,R]^{K\times K}$, and $\rho \in (0, 1)^{n}$ with $\sum_{i = 1}^n \rho_i = 1$. Note that $K$ is the number of blocks, and $R > 0$ is an upper bound for the parameter. Assuming that $\mathrm{rank}(B) = d$, then there exists $\nu \in \mathbb{R}^{K\times d}$ such that $B = \nu \nu^T$. Let $\tau$ represent the block membership of each vertex, i.e. $\tau(i) = k$ means vertex $i$ belongs to block $k$. Then the probability matrix $P \in [0, R]^{n\times n}$ can be written as $X X^T$, where $X = [X_1, \cdots, X_n]^T \in \mathbb{R}^{n\times d}$ and $X_i = \nu_{\tau_i}$.
+Consider a positive semi-definite stochastic blockmodel parameterized by $B \in [0,R]^{K\times K}$, and $\rho \in (0, 1)^{K}$ with $\sum_{i = 1}^K \rho_i = 1$. Note that $K$ is the number of blocks, and $R > 0$ is an upper bound for the parameter. Assuming that $\mathrm{rank}(B) = d$, then there exists $\nu \in \mathbb{R}^{K\times d}$ such that $B = \nu \nu^T$. Let $\tau$ represent the block membership of each vertex, i.e. $\tau(i) = k$ means vertex $i$ belongs to block $k$. Then the probability matrix $P \in [0, R]^{n\times n}$ can be written as $X X^T$, where $X = [X_1, \cdots, X_n]^T \in \mathbb{R}^{n\times d}$ and $X_i = \nu_{\tau_i}$.
 
 Then we can sample $m$ conditionally i.i.d. symmetric and hollow graphs $G^{(1)}, \cdots, G^{(m)}$, such that conditioned on $X$, $G^{(t)}_{ij} \stackrel{ind}{\sim} \mathrm{Exp}(P_{ij})$ for each $1 \le t \le m$, $1 \le i < j \le n$.
 
@@ -99,7 +99,7 @@ Then we can sample $m$ conditionally i.i.d. symmetric and hollow graphs $G^{(1)}
 \subsection{Contaminated Observations}
 Now we assume the observed edges are contaminated with probability $\epsilon$.
 
-Similarly, consider another positive semi-definite stochastic blockmodel parameterized by $B' \in [0, R]^{K' \times K'}$, and $\rho' \in (0, 1)^{n}$ with $\sum_{i = 1}^n \rho_i' = 1$. Note that $K'$ is the number of blocks which is not necessarily equal to $K$, but $R$ is the same upper bound for the parameter. Assuming that $\mathrm{rank}(B') = d'$, then there exists $\nu' \in \mathbb{R}^{K'\times d'}$ such that $B' = \nu' \nu'^{T}$. Let $\tau'$ represent the block membership of each vertex, i.e. $\tau'(i) = k$ means vertex $i$ belongs to block $k$. Then the probability matrix $C \in [0, R]^{n\times n}$ can be written as $Y Y^T$, where $Y = [Y_1, \cdots, Y_n]^T \in \mathbb{R}^{n\times d'}$ and $Y_i = \nu'_{\tau'_i}$.
+That is to say, consider another positive semi-definite stochastic blockmodel parameterized by $B' \in [0, R]^{K' \times K'}$, and $\rho' \in (0, 1)^{n}$ with $\sum_{i = 1}^n \rho_i' = 1$. Note that $K'$ is the number of blocks which is not necessarily equal to $K$, but $R$ is the same upper bound for the parameter. Assuming that $\mathrm{rank}(B') = d'$, then there exists $\nu' \in \mathbb{R}^{K'\times d'}$ such that $B' = \nu' \nu'^{T}$. Let $\tau'$ represent the block membership of each vertex, i.e. $\tau'(i) = k$ means vertex $i$ belongs to block $k$. Then the probability matrix $C \in [0, R]^{n\times n}$ can be written as $Y Y^T$, where $Y = [Y_1, \cdots, Y_n]^T \in \mathbb{R}^{n\times d'}$ and $Y_i = \nu'_{\tau'_i}$.
 
 Then we can sample $m$ conditionally i.i.d.~symmetric and hollow graphs $A^{(1)}, \cdots, A^{(m)}$ such that conditioning on $X$ and $Y$, $A^{(t)}_{ij} \stackrel{ind}{\sim} (1-\epsilon) \mathrm{Exp}(P_{ij}) + \epsilon \mathrm{Exp}(C_{ij})$ for each $1 \le t \le m$, $1 \le i < j \le n$. 
 
@@ -331,8 +331,8 @@ g(\theta, x) & = \sum_{i=1}^m e^{-\frac{(1-q)x_{(i)}}{\theta}}(x_{(i)} - \theta)
 + \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\theta}}t_i \\
 & \le - e^{-\frac{(1-q)x_{(l+1)}}{\theta}} \sum_{i=1}^{m-l} t_i
 + \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\theta}}t_i \\
-& \le - \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\bar{x}}}t_i
-+ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\bar{x}}}t_i\\
+& \le - \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\theta}}t_i
++ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\theta}}t_i\\
 & = 0,
 \end{align*}
 and equality holds if and only if all $x_i$'s are the same, which is excluded by the assumption.
@@ -371,7 +371,7 @@ i.e.
 \frac{\epsilon (\theta - Cq)}{(C(1-q) + \theta)^2} =
 \frac{(1-\epsilon) (P q - \theta)}{(P(1-q) + \theta)^2}.
 \]
-Define $h(\theta) = (C(1-q) + \theta)^2 (1-\epsilon) (P q - \theta) - (P(1-q) + \epsilon)^2 \epsilon (\theta - Cq)$.
+Define $h(\theta) = (C(1-q) + \theta)^2 (1-\epsilon) (P q - \theta) - (P(1-q) + \theta)^2 \epsilon (\theta - Cq)$.
 Then $\lim_{\theta \to \infty}h(\theta) = -\infty$, $h(0) > 0$, and $h(Cq) < 0$.
 Consider $q$ as the variable and solve the equation $h(E[\bar{X}]) = 0$, we have three roots and one of them is $q = 1$ obviously.
 The other two roots are
@@ -400,7 +400,7 @@ Then it is sufficient to show that
 which is true.
 Combined with the fact that when $q = 0$, $h(E[\bar{X}]) < 0$, we have for any $0 < q < 1$, $h(E[\bar{X}]) < 0$.
 
-The equation $h(\theta) = 0$ is a cubic polynomial, so it has at most three real roots. Combined with the fact that $h(0) > 0$, we have for any $0 < q < 1$, there exists at least one root of the population version of ML$q$ equation which is less than $E[\bar{X}] = (1-\epsilon)P + \epsilon C$.
+The equation $h(\theta) = 0$ is a cubic polynomial, so it has at most three real roots. Combined with the fact that $h(0) > 0$ and $h(P q) = 0$, we have for any $0 < q < 1$, there exists at least one root of the population version of ML$q$ equation which is less than $E[\bar{X}] = (1-\epsilon)P + \epsilon C$.
 \end{proof}
 
 
@@ -409,13 +409,13 @@ The equation $h(\theta) = 0$ is a cubic polynomial, so it has at most three real
 \begin{lemma}
 For any $a > 0$, we have
 \[
-	\sup_{\theta \in [a, R]} \left| \frac{1}{m} \sum_{i=1}^m e^{-\frac{(1-q) X_i}{\theta}}(X_i - \theta) - E_F[e^{-\frac{(1-q) X}{\theta}}(X - \theta)] \right| \stackrel{a.s.}{\to} 0.
+	\sup_{\theta \in [0, R]} \left| \frac{1}{m} \sum_{i=1}^m e^{-\frac{(1-q) X_i}{\theta}}(X_i - \theta) - E_F[e^{-\frac{(1-q) X}{\theta}}(X - \theta)] \right| \stackrel{a.s.}{\to} 0.
 \]
 \end{lemma}
 \noindent \textbf{Require:} Exponential distribution, ML$q$E. Should be easy to extend \\
 \begin{proof}
-Define $g(x,\theta) = e^{-\frac{(1-q) x}{\theta}}(x - \theta)$ and $d(x) = e^{-\frac{(1-q)x}{R}}(x + R)$. Then $E_F[d(X)] < \infty$ and $g(x,\theta) \le d(x)$ for all $\theta \in [a, R]$.
-Combined with the fact that $[a, R]$ is compact and the function $g(x,\theta)$ is continuous at each $\theta$ for all $x > 0$ and measurable function of $x$ at each $\theta$, we have the uniform convergence by Lemma 2.4 in \cite{newey1994large}.
+Define $g(x,\theta) = e^{-\frac{(1-q) x}{\theta}}(x - \theta)$ and $d(x) = e^{-\frac{(1-q)x}{R}}(x + R)$. Then $E_F[d(X)] < \infty$ and $g(x,\theta) \le d(x)$ for all $\theta \in [0, R]$.
+Combined with the fact that $[0, R]$ is compact and the function $g(x,\theta)$ is continuous at each $\theta$ for all $x > 0$ and measurable function of $x$ at each $\theta$, we have the uniform convergence by Lemma 2.4 in \cite{newey1994large}.
 \end{proof}
 
 
@@ -672,7 +672,7 @@ For simplicity, from now on, we will use $\hat{P}$ to represent $\hat{P}^{(1)}$,
 
 Furthermore, we assume that the second moment matrix $E[Z_1 Z_1^T]$ is rank $k$ and has distinct eigenvalues $\lambda_i(E[Z_1 Z_1^T])$. In particular, we assume that there exists $\delta > 0$ such that
 \[
-	\delta < \min \left( \min_{i \ne j} |\lambda_i(E[Z_1 Z_1^T]) - \lambda_j(E[Z_1 Z_1^T])|, \lambda_k(E[Z_1 Z_1^T]) \right)
+	\delta < \lambda_k(E[Z_1 Z_1^T])
 \]
 
 \begin{lemma}
@@ -771,7 +771,7 @@ By Proposition 2.1 in \cite{rohe2011spectral} and Equation (\ref{eqn:uhat2u2diff
 \begin{align*}
 & \|\hat{U} - U W\|_F^2 \le \frac{2 \|\hat{U} \hat{U}^T - U U^T\|_F^2}{\delta^2}
 \le \frac{8 k^2 \|\hat{U} \hat{U}^T - U U^T\|_2^2}{\delta^2} \\
-= & O(m^{-1/2} n^{-1/2} \sqrt{\log n}),
+= & O(m^{-1} n^{-1} \log n),
 \end{align*}
 with high probability.
 Let $Q = \hat{U} - U U^T \hat{U}$. And $Q$ is the residual after projecting $\hat{U}$ orthogonally onto the column space of $U$, we have
@@ -866,7 +866,7 @@ with high probability.
 \end{lemma}
 \noindent \textbf{Require:} Lemma \ref{lemma:AlmostOrthogonalL1}, Lemma \ref{lemma:exchangeL1} \\
 \begin{proof}
-Let $Q_1 = U U^T \hat{U} - U W^*$, $Q_2 = W^* \hat{S}^{1/2} - S^{1/2} W^*$ and $Q_3 = \hat{U} - U W^* = \hat{U} - U U^T \hat{U} + Q_1 = Q + Q_1$. Then since $U U^T P = P$ and $\hat{U} \hat{S}^{1/2} = \hat{P} \hat{U} \hat{S}^{-1/2}$,
+Let $Q_1 = U U^T \hat{U} - U W^*$, $Q_2 = W^* \hat{S}^{1/2} - S^{1/2} W^*$ and $Q_3 = \hat{U} - U W^* = \hat{U} - U U^T \hat{U} + Q_1 = Q + Q_1$. Then since $U U^T H = H$ and $\hat{U} \hat{S}^{1/2} = \hat{P} \hat{U} \hat{S}^{-1/2}$,
 \begin{align*}
 	\hat{Z} - U S^{1/2} W^*
     = & \hat{U} \hat{S}^{1/2} - U W^* \hat{S}^{1/2} + U(W^* \hat{S}^{1/2} - S^{1/2} W^*) \\
@@ -1344,7 +1344,7 @@ For simplicity, from now on, we will use $\hat{P}$ to represent $\hat{P}^{(q)}$,
 
 Furthermore, we assume that the second moment matrix $E[Z_1 Z_1^T]$ is rank $k$ and has distinct eigenvalues $\lambda_i(E[Z_1 Z_1^T])$. In particular, we assume that there exists $\delta > 0$ such that
 \[
-	\delta < \min \left( \min_{i \ne j} |\lambda_i(E[Z_1 Z_1^T]) - \lambda_j(E[Z_1 Z_1^T])|, \lambda_k(E[Z_1 Z_1^T]) \right)
+	\delta < \lambda_k(E[Z_1 Z_1^T])
 \]
 
 \begin{lemma}
@@ -1393,7 +1393,7 @@ with high probability.
 By Proposition 2.1 in \cite{rohe2011spectral} and Equation (\ref{eqn:uhat2u2diffL1}), we have for some orthogonal matrix $W$, with high probability, 
 \[
 \|\hat{U} - U W\|_F^2 \le \frac{2 \|\hat{U} \hat{U}^T - U U^T\|_F^2}{\delta^2}
-\le \frac{8 k^2 \|\hat{U} \hat{U}^T - U U^T\|_2^2}{\delta^2} = O(n^{-1/2} \sqrt{\log n}).
+\le \frac{8 k^2 \|\hat{U} \hat{U}^T - U U^T\|_2^2}{\delta^2} = O(n^{-1} \log n).
 \]
 Let $Q = \hat{U} - U U^T \hat{U}$. And $Q$ is the residual after projecting $\hat{U}$ orthogonally onto the column space of $U$, we have
 \begin{equation}
