@@ -1223,18 +1223,9 @@ then for any constant $c > 0$ there exists another constant $n_0(c)$, independen
 \noindent \textbf{Require:} Lemma \ref{lemma:LqlMLE}, Theorem \ref{thm:P1Diff}\\
 \noindent
 \begin{proof}
-Let $\{e_i\}_{i=1}^n$ be the canonical basis for $\mathbb{R}^n$. For each $1 \le i, j \le n$, define a corresponding matrix $G_{ij}$:
-\[
-    G_{ij} \equiv \left\{
-    \begin{array}{l l}
-        e_i e_j^T + e_j e_i^T, \quad & i \ne j;\\
-        e_i e_i^T, \quad & i = j.
-    \end{array}
-    \right.
-\]
-Thus $\hat{P}^{(q)} = \sum_{1 \le i < j \le n} \hat{P}^{(q)}_{ij} G_{ij}$ and $H^{(q)} = \sum_{1 \le i < j \le n} H^{(q)}_{ij} G_{ij}$. Then we have $\hat{P}^{(q)} - H^{(q)} = \sum_{1 \le i < j \le n} X_{ij}$, where $X_{ij} \equiv \left( \hat{P}^{(q)}_{ij} - H^{(q)}_{ij} \right) G_{ij}$, $1 \le i < j \le n$.
+Similar to the proof of Theorem \ref{thm:P1Diff}.
 
-First consider the $k$-th moment of $X_{ij}$ for $1 \le i < j \le n$. By Lemma \ref{lemma:LqlMLE} we have
+By Lemma \ref{lemma:LqlMLE} we have
 \begin{align*}
 	\left| \hat{P}^{(q)}_{ij} - H^{(q)}_{ij} \right|
     = & \left| \hat{P}^{(q)}_{ij} - \hat{P}^{(1)}_{ij} + \hat{P}^{(1)}_{ij} - H^{(1)}_{ij} + H^{(1)}_{ij} - H^{(q)}_{ij} \right| \\
@@ -1242,13 +1233,7 @@ First consider the $k$-th moment of $X_{ij}$ for $1 \le i < j \le n$. By Lemma \
     \le & \hat{P}^{(1)}_{ij} + \left| \hat{P}^{(1)}_{ij} - H^{(1)}_{ij} \right| +  H^{(1)}_{ij} \\
     \le & 2 \left( \left| \hat{P}^{(1)}_{ij} - H^{(1)}_{ij} \right| + H^{(1)}_{ij} \right).
 \end{align*}
-Based on Equation (\ref{eqn:expectpdiffqpowerkL1}), we have
-\[
-	E[(\hat{P}^{(1)}_{ij} - H^{(1)}_{ij})^k]
-    \le E[(A^{(t)}_{ij} - H^{(1)}_{ij})^k]
-    \le R^k k!,
-\]
-Then
+Also,
 \begin{align*}
 	E[(\hat{P}^{(q)}_{ij} - H^{(q)}_{ij})^k]
     \le & E\left[\left|\hat{P}^{(q)}_{ij} - H^{(q)}_{ij}\right|^k\right] \\
@@ -1259,63 +1244,6 @@ Then
     = & 2^k k! \left( R + H^{(1)}_{ij} \right)^k \\
     \le & 2^{2k} k! R^k.
     \stepcounter{equation}\tag{\theequation}\label{eqn:expectpdiffqpowerk}
-\end{align*}
-Combined with for $i \ne j$,
-\[
-    G_{ij}^k \equiv \left\{
-    \begin{array}{l l}
-        e_i e_i^T + e_j e_j^T, \quad & $k$ \text{ is even};\\
-        e_i e_j^T + e_j e_i^T, \quad & $k$ \text{ is odd},
-    \end{array}
-    \right.
-\]
-thus we have
-\begin{enumerate}
-\item When $k$ is even,
-\[
-E[X_{ij}^k] = E[(\hat{P}^{(q)}_{ij} - H^{(q)}_{ij})^k] G_{ij}^2 \preceq 2^{2k} k! R^k G_{ij}^2;
-\]
-\item When $k$ is odd,
-\[
-E[X_{ij}^k] = E[(\hat{P}^{(q)}_{ij} - H^{(q)}_{ij})^k] G_{ij} \preceq 2^{2k} k! R^k G_{ij}^2.
-\]
-\end{enumerate}
-So
-\[
-E[X_{ij}^k] \preceq 2^{2k} k! R^k G_{ij}^2.
-\]
-Let
-\[
-	\sigma^2 := \left\| \sum_{1 \le i < j \le n} (4 \sqrt{2} R G_{ij})^2 \right\| = 32 R^2 \| (n-1) I \| = 32 R^2 (n-1),
-\]
-notice that random matrices $X_{ij}$ are independent, self-adjoint and have mean zero, apply Theorem \ref{thm:BernsteinMatrix} we have
-\begin{align*}
-	P \left( \lambda_{\max}(\hat{P}^{(q)} - H^{(q)}) \ge t \right) &
-    \le n \exp \left( - \frac{t^2/2}{\sigma^2 + 4 R t} \right) \\
-    & \le n \exp \left( - \frac{t^2/2}{32 R^2 n + R t} \right).
-\end{align*}
-
-Now consider $Y_{ij} \equiv \left( H^{(q)} - \hat{P}^{(q)} \right) G_{ij}$, $1 \le i < j \le n$. Then we have $H^{(q)} - \hat{P}^{(q)} = \sum_{1 \le i < j \le n} Y_{ij}$.
-Since
-\[
-	E[(H^{(q)} - \hat{P}^{(q)})^k]
-    = (-1)^k E[(\hat{P}^{(q)} - H^{(q)})^k],
-\]
-\begin{enumerate}
-\item When $k$ is even,
-\[
-E[Y_{ij}^k] = E[(\hat{P}^{(q)} - H^{(q)})^k] G_{ij}^2 \preceq 2^{2k} k! R^k G_{ij}^2;
-\]
-\item When $k$ is odd,
-\[
-E[Y_{ij}^k] = - E[(\hat{P}^{(q)} - H^{(q)})^k] G_{ij} \preceq 2^{2k} k! R^k G_{ij}^2.
-\]
-\end{enumerate}
-Thus
-\begin{align*}
-	P \left( \lambda_{\min}(\hat{P}^{(q)} - H^{(q)}) \le -t \right) &
-    = P \left( \lambda_{\max}(H^{(q)} - \hat{P}^{(q)}) \ge t \right) \\
-    & \le n \exp \left( - \frac{t^2/2}{32 R^2 n + R t} \right).
 \end{align*}
 Therefore we have
 \[
@@ -1357,6 +1285,141 @@ Under the above assumptions, $\lambda_i(H) = \Theta(n)$ with high probability wh
 \begin{proof}
 Exactly the same as proof for Lemma \ref{lemma:eigSShatL1}.
 \end{proof}
+%\begin{proof}
+%Let $\{e_i\}_{i=1}^n$ be the canonical basis for $\mathbb{R}^n$. For each $1 \le i, j \le n$, define a corresponding matrix $G_{ij}$:
+%\[
+%    G_{ij} \equiv \left\{
+%    \begin{array}{l l}
+%        e_i e_j^T + e_j e_i^T, \quad & i \ne j;\\
+%        e_i e_i^T, \quad & i = j.
+%    \end{array}
+%    \right.
+%\]
+%Thus $\hat{P}^{(q)} = \sum_{1 \le i < j \le n} \hat{P}^{(q)}_{ij} G_{ij}$ and $H^{(q)} = \sum_{1 \le i < j \le n} H^{(q)}_{ij} G_{ij}$. Then we have $\hat{P}^{(q)} - H^{(q)} = \sum_{1 \le i < j \le n} X_{ij}$, where $X_{ij} \equiv \left( \hat{P}^{(q)}_{ij} - H^{(q)}_{ij} \right) G_{ij}$, $1 \le i < j \le n$.
+%
+%First consider the $k$-th moment of $X_{ij}$ for $1 \le i < j \le n$. By Lemma \ref{lemma:LqlMLE} we have
+%\begin{align*}
+%	\left| \hat{P}^{(q)}_{ij} - H^{(q)}_{ij} \right|
+%    = & \left| \hat{P}^{(q)}_{ij} - \hat{P}^{(1)}_{ij} + \hat{P}^{(1)}_{ij} - H^{(1)}_{ij} + H^{(1)}_{ij} - H^{(q)}_{ij} \right| \\
+%    \le & \left| \hat{P}^{(q)}_{ij} - \hat{P}^{(1)}_{ij} \right| + \left| \hat{P}^{(1)}_{ij} - H^{(1)}_{ij} \right| + \left| H^{(1)}_{ij} - H^{(q)}_{ij} \right| \\
+%    \le & \hat{P}^{(1)}_{ij} + \left| \hat{P}^{(1)}_{ij} - H^{(1)}_{ij} \right| +  H^{(1)}_{ij} \\
+%    \le & 2 \left( \left| \hat{P}^{(1)}_{ij} - H^{(1)}_{ij} \right| + H^{(1)}_{ij} \right).
+%\end{align*}
+%Based on Equation (\ref{eqn:expectpdiffqpowerkL1}), we have
+%\[
+%	E[(\hat{P}^{(1)}_{ij} - H^{(1)}_{ij})^k]
+%    \le E[(A^{(t)}_{ij} - H^{(1)}_{ij})^k]
+%    \le R^k k!,
+%\]
+%Then
+%\begin{align*}
+%	E[(\hat{P}^{(q)}_{ij} - H^{(q)}_{ij})^k]
+%    \le & E\left[\left|\hat{P}^{(q)}_{ij} - H^{(q)}_{ij}\right|^k\right] \\
+%    \le & 2^k E \left[ \left( \left| \hat{P}^{(1)}_{ij} - H^{(1)}_{ij} \right| + H^{(1)}_{ij} \right)^k \right] \\
+%    \le & 2^k \sum_{s = 0}^k \binom{k}{s} E \left[ \left| \hat{P}^{(1)}_{ij} - H^{(1)}_{ij} \right|^s \right] \left( H^{(1)}_{ij} \right)^{k-s} \\
+%    \le & 2^k \sum_{s = 0}^k \binom{k}{s} R^s s! \left( H^{(1)}_{ij} \right)^{k-s} \\
+%    \le & 2^k k! \sum_{s = 0}^k \binom{k}{s} R^s \left( H^{(1)}_{ij} \right)^{k-s} \\
+%    = & 2^k k! \left( R + H^{(1)}_{ij} \right)^k \\
+%    \le & 2^{2k} k! R^k.
+%    \stepcounter{equation}\tag{\theequation}\label{eqn:expectpdiffqpowerk}
+%\end{align*}
+%Combined with for $i \ne j$,
+%\[
+%    G_{ij}^k \equiv \left\{
+%    \begin{array}{l l}
+%        e_i e_i^T + e_j e_j^T, \quad & $k$ \text{ is even};\\
+%        e_i e_j^T + e_j e_i^T, \quad & $k$ \text{ is odd},
+%    \end{array}
+%    \right.
+%\]
+%thus we have
+%\begin{enumerate}
+%\item When $k$ is even,
+%\[
+%E[X_{ij}^k] = E[(\hat{P}^{(q)}_{ij} - H^{(q)}_{ij})^k] G_{ij}^2 \preceq 2^{2k} k! R^k G_{ij}^2;
+%\]
+%\item When $k$ is odd,
+%\[
+%E[X_{ij}^k] = E[(\hat{P}^{(q)}_{ij} - H^{(q)}_{ij})^k] G_{ij} \preceq 2^{2k} k! R^k G_{ij}^2.
+%\]
+%\end{enumerate}
+%So
+%\[
+%E[X_{ij}^k] \preceq 2^{2k} k! R^k G_{ij}^2.
+%\]
+%Let
+%\[
+%	\sigma^2 := \left\| \sum_{1 \le i < j \le n} (4 \sqrt{2} R G_{ij})^2 \right\| = 32 R^2 \| (n-1) I \| = 32 R^2 (n-1),
+%\]
+%notice that random matrices $X_{ij}$ are independent, self-adjoint and have mean zero, apply Theorem \ref{thm:BernsteinMatrix} we have
+%\begin{align*}
+%	P \left( \lambda_{\max}(\hat{P}^{(q)} - H^{(q)}) \ge t \right) &
+%    \le n \exp \left( - \frac{t^2/2}{\sigma^2 + 4 R t} \right) \\
+%    & \le n \exp \left( - \frac{t^2/2}{32 R^2 n + R t} \right).
+%\end{align*}
+%
+%Now consider $Y_{ij} \equiv \left( H^{(q)} - \hat{P}^{(q)} \right) G_{ij}$, $1 \le i < j \le n$. Then we have $H^{(q)} - \hat{P}^{(q)} = \sum_{1 \le i < j \le n} Y_{ij}$.
+%Since
+%\[
+%	E[(H^{(q)} - \hat{P}^{(q)})^k]
+%    = (-1)^k E[(\hat{P}^{(q)} - H^{(q)})^k],
+%\]
+%\begin{enumerate}
+%\item When $k$ is even,
+%\[
+%E[Y_{ij}^k] = E[(\hat{P}^{(q)} - H^{(q)})^k] G_{ij}^2 \preceq 2^{2k} k! R^k G_{ij}^2;
+%\]
+%\item When $k$ is odd,
+%\[
+%E[Y_{ij}^k] = - E[(\hat{P}^{(q)} - H^{(q)})^k] G_{ij} \preceq 2^{2k} k! R^k G_{ij}^2.
+%\]
+%\end{enumerate}
+%Thus
+%\begin{align*}
+%	P \left( \lambda_{\min}(\hat{P}^{(q)} - H^{(q)}) \le -t \right) &
+%    = P \left( \lambda_{\max}(H^{(q)} - \hat{P}^{(q)}) \ge t \right) \\
+%    & \le n \exp \left( - \frac{t^2/2}{32 R^2 n + R t} \right).
+%\end{align*}
+%Therefore we have
+%\[
+%	P \left( \| \hat{P}^{(q)} - H^{(q)} \| \ge t \right)
+%    \le n \exp \left( - \frac{t^2/2}{32 R^2 n + R t} \right).
+%\]
+%
+%Now let $c > 0$ be given and assume $n^{-c} \le \eta \le 1/2$. Then there exists a $n_0(c)$ independent of $n$, $P$, $C$ and $\epsilon$ such that whenever $n > n_0(c)$,
+%\[
+%	t = 8 R \sqrt{2 n \ln(n/\eta)} \le 32 R n.
+%\]
+%
+%Plugging this $t$ into the equation above, we get
+%\[
+%	P(\| \hat{P}^{(q)} - H^{(q)} \| \ge 8 R \sqrt{2 n \ln(n/\eta)})
+%    \le n \exp\left(-\frac{t^2}{64 R^2 n}\right) = \eta.
+%\]
+%\end{proof}
+%
+%
+%As we define $H^{(q)} = E[\hat{P}^{(q)}]$, let $d^{(q)} = \mathrm{rank}(H^{(q)})$ be the dimension in which we are going to embed $\hat{P}^{(q)}$. Notice that it is less than or equal to $K\times K'$ based on the SBM assumption. Then we can define $H^{(q)} = Z Z^T$ where $Z \in \mathbb{R}^{n \times d^{(q)}}$.
+%
+%
+%
+%For simplicity, from now on, we will use $\hat{P}$ to represent $\hat{P}^{(q)}$, use $H$ to represent $H^{(q)}$ and use $k$ to represent the dimension $d^{(q)}$ we are going to embed. Assume $H = U S U^T = Z Z^T$, where $Z = [Z_1, \cdots, Z_n]^T$ is a $n$-by-$k$ matrix. Then our estimate for $Z$ up to rotation is $\hat{Z} = \hat{U} \hat{S}^{1/2}$, where $\hat{U} \hat{S} \hat{U}^T$ is the rank-$d$ spectral decomposition of $|\hat{P}| = (\hat{P}^T \hat{P})^{1/2}$.
+%
+%Furthermore, we assume that the second moment matrix $E[Z_1 Z_1^T]$ is rank $k$ and has distinct eigenvalues $\lambda_i(E[Z_1 Z_1^T])$. In particular, we assume that there exists $\delta > 0$ such that
+%\[
+%	\delta < \lambda_k(E[Z_1 Z_1^T])
+%\]
+%
+%\begin{lemma}
+%\label{lemma:eigSShat}
+%Under the above assumptions, $\lambda_i(H) = \Theta(n)$ with high probability when $i \le k$, i.e. the largest $k$ eigenvalues of $H$ is of order $n$. Moreover, we have $\| S \|_2 = \Theta(n)$ and $\| \hat{S} \|_2 = \Theta(n)$ with high probability.
+%\end{lemma}
+%\textbf{Remark:} This is a extended version of Proposition 4.3 in \cite{sussman2014consistent}. \\
+%\noindent \textbf{Require:} Theorem \ref{thm:PqDiff} and assumptions above\\
+%\noindent
+%\begin{proof}
+%Exactly the same as proof for Lemma \ref{lemma:eigSShatL1}.
+%\end{proof}
 
 
 \begin{lemma}
@@ -1390,86 +1453,89 @@ with high probability.
 \end{lemma}
 \noindent \textbf{Require:} Theorem \ref{thm:PqDiff}, Lemma \ref{lemma:eigSShat}, Lemma \ref{lemma:AlmostOrthogonal}, Exponential distribution \\
 \begin{proof}
-By Proposition 2.1 in \cite{rohe2011spectral} and Equation (\ref{eqn:uhat2u2diffL1}), we have for some orthogonal matrix $W$, with high probability, 
-\[
-\|\hat{U} - U W\|_F^2 \le \frac{2 \|\hat{U} \hat{U}^T - U U^T\|_F^2}{\delta^2}
-\le \frac{8 k^2 \|\hat{U} \hat{U}^T - U U^T\|_2^2}{\delta^2} = O(n^{-1} \log n).
-\]
-Let $Q = \hat{U} - U U^T \hat{U}$. And $Q$ is the residual after projecting $\hat{U}$ orthogonally onto the column space of $U$, we have
-\begin{equation}
-\label{eqn:QFnorm}
-\| Q \|_F = \| \hat{U} - U U^T \hat{U} \|_F \le \| \hat{U} - U T \|_F = O(n^{-1/2} \sqrt{\log n}).
-\end{equation}
-for all $k \times k$ matrices $T$ with high probability. 
-Then
-\begin{align*}
-	W^* \hat{S} = & (W^* - U^T \hat{U}) \hat{S} + U^T \hat{U} \hat{S}
-    = (W^* - U^T \hat{U}) \hat{S} + U^T \hat{P} \hat{U} \\
-    = & (W^* - U^T \hat{U}) \hat{S} + U^T (\hat{P} - H) \hat{U} + U^T H \hat{U} \\
-    = & (W^* - U^T \hat{U}) \hat{S} + U^T (\hat{P} - H) Q + U^T (\hat{P} - H) U U^T \hat{U} + U^T H \hat{U} \\
-    = & (W^* - U^T \hat{U}) \hat{S} + U^T (\hat{P} - H) Q + U^T (\hat{P} - H) U U^T \hat{U} + S U^T \hat{U}.
-\end{align*}
-Combined with Theorem \ref{thm:PqDiff}, Lemma \ref{lemma:eigSShat}, Lemma \ref{lemma:AlmostOrthogonal}, we have
-\begin{align*}
-	& \| W^* \hat{S} - S W^* \|_F \\
-    = & \| (W^* - U^T \hat{U}) \hat{S} + U^T (\hat{P} - H) Q + U^T (\hat{P} - H) U U^T \hat{U} + S (U^T \hat{U} - W^*)\|_F \\
-    \le & \| W^* - U^T \hat{U} \|_F (\| \hat{S} \|_2 + \| S \|_2) + \| U^T \|_F \| \hat{P} - H\|_2 \| Q \|_F + \| U^T (\hat{P} - H) U \|_F \\
-    \le & O(\log n) + O(\log n) + \| U^T (\hat{P} - H) U \|_F
-\end{align*}
-with high probability. And we know $U^T (\hat{P} - H) U$ is a $k \times k$ matrix with $ij$-th entry to be
-\[
-	u_i^T (\hat{P} - H) u_j
-    = \sum_{s=1}^n \sum_{t=1}^n (\hat{P}_{st} - H_{st}) u_{is} u_{jt}
-    = 2 \sum_{s<t} (\hat{P}_{st} - H_{st}) u_{is} u_{jt}
-\]
-where $u_i$ and $u_j$ are the $i$-th and $j$-th columns of $U$. Thus, conditioned on $H$, $u_i^T (\hat{P} - H) u_j$ is a sum of independent mean 0 random variables.
-
-
-By Equation (\ref{eqn:expectpdiffqpowerk}), we have
-\begin{align*}
-	& E\left[\left((\hat{P}_{st} - H_{st}) u_{is} u_{jt}\right)^k\right] \\ 
-    \le & 2^k k! (C_{st} + H_{st}^{(1)})^k u_{is}^k u_{jt}^k \\
-    \le & \frac{k!}{2} (4 R)^{k-2} (4\sqrt{2} R u_{is} u_{jt})^2.
-\end{align*}
-Also we have
-\[
-	\sigma^2 := |\sum_{s<t} 32 R^2 u_{is}^2 u_{jt}^2|
-    \le 32 R^2,
-\]
-then by Theorem \ref{thm:BernsteinMatrix}, we have
-\[
-	P \left( \left| 2 \sum_{s<t} (\hat{P}_{st} - H_{st}) u_{is} u_{jt} \right| \ge t \right)
-    \le \exp \left( \frac{-t^2/8}{32 R^2 + 2 R t} \right),
-\]
-thus each entry of $U^T(\hat{P} - H)U$ is of order $O(\log n)$ with high probability and thus 
-\begin{equation}
-\label{eqn:uPhatdiffHu}
-	\|U^T(\hat{P} - H)U\|_F = O(\log n)
-\end{equation}
-with high probability.
-Hence
-\[
-	\| W^* \hat{S} - S W^* \|_F = O(\log n)
-\]
-with high probability.
-Also, since
-\[
-	W_{ij}^* (\lambda_j^{1/2}(\hat{P}) - \lambda_i^{1/2}(H)) = W_{ij}^* \frac{\lambda_j(\hat{P}) - \lambda_i(H)}{\lambda_j^{1/2}(\hat{P}) + \lambda_i^{1/2}(H)}
-\]
-and the eigenvalues $\lambda_j^{1/2}(\hat{P})$ and $\lambda_i^{1/2}(H)$ are both of order $\Theta(\sqrt{n})$, we have
-\[
-	\| W^* \hat{S}^{1/2} - S^{1/2} W^* \|_F = O(n^{-1/2} \log n)
-\]
-with high probability.
-Similarly, since
-\[
-	W_{ij}^* (\lambda_j^{-1/2}(\hat{P}) - \lambda_i^{-1/2}(H)) = W_{ij}^* \frac{\lambda_i(H) - \lambda_j(\hat{P})}{(\lambda_j^{-1/2}(\hat{P}) + \lambda_i^{-1/2}(H))\lambda_j(\hat{P}) \lambda_i(H)}
-\]
-and the eigenvalues $\lambda_j(\hat{P})$ and $\lambda_i(H)$ are both of order $\Theta(n)$, with high probability we have
-\[
-	\| W^* \hat{S}^{-1/2} - S^{-1/2} W^* \|_F = O(n^{-3/2} \log n).
-\]
+Similar to the proof of Lemma \ref{lemma:exchangeL1}.
 \end{proof}
+%\begin{proof}
+%By Proposition 2.1 in \cite{rohe2011spectral} and Equation (\ref{eqn:uhat2u2diffL1}), we have for some orthogonal matrix $W$, with high probability, 
+%\[
+%\|\hat{U} - U W\|_F^2 \le \frac{2 \|\hat{U} \hat{U}^T - U U^T\|_F^2}{\delta^2}
+%\le \frac{8 k^2 \|\hat{U} \hat{U}^T - U U^T\|_2^2}{\delta^2} = O(n^{-1} \log n).
+%\]
+%Let $Q = \hat{U} - U U^T \hat{U}$. And $Q$ is the residual after projecting $\hat{U}$ orthogonally onto the column space of $U$, we have
+%\begin{equation}
+%\label{eqn:QFnorm}
+%\| Q \|_F = \| \hat{U} - U U^T \hat{U} \|_F \le \| \hat{U} - U T \|_F = O(n^{-1/2} \sqrt{\log n}).
+%\end{equation}
+%for all $k \times k$ matrices $T$ with high probability. 
+%Then
+%\begin{align*}
+%	W^* \hat{S} = & (W^* - U^T \hat{U}) \hat{S} + U^T \hat{U} \hat{S}
+%    = (W^* - U^T \hat{U}) \hat{S} + U^T \hat{P} \hat{U} \\
+%    = & (W^* - U^T \hat{U}) \hat{S} + U^T (\hat{P} - H) \hat{U} + U^T H \hat{U} \\
+%    = & (W^* - U^T \hat{U}) \hat{S} + U^T (\hat{P} - H) Q + U^T (\hat{P} - H) U U^T \hat{U} + U^T H \hat{U} \\
+%    = & (W^* - U^T \hat{U}) \hat{S} + U^T (\hat{P} - H) Q + U^T (\hat{P} - H) U U^T \hat{U} + S U^T \hat{U}.
+%\end{align*}
+%Combined with Theorem \ref{thm:PqDiff}, Lemma \ref{lemma:eigSShat}, Lemma \ref{lemma:AlmostOrthogonal}, we have
+%\begin{align*}
+%	& \| W^* \hat{S} - S W^* \|_F \\
+%    = & \| (W^* - U^T \hat{U}) \hat{S} + U^T (\hat{P} - H) Q + U^T (\hat{P} - H) U U^T \hat{U} + S (U^T \hat{U} - W^*)\|_F \\
+%    \le & \| W^* - U^T \hat{U} \|_F (\| \hat{S} \|_2 + \| S \|_2) + \| U^T \|_F \| \hat{P} - H\|_2 \| Q \|_F + \| U^T (\hat{P} - H) U \|_F \\
+%    \le & O(\log n) + O(\log n) + \| U^T (\hat{P} - H) U \|_F
+%\end{align*}
+%with high probability. And we know $U^T (\hat{P} - H) U$ is a $k \times k$ matrix with $ij$-th entry to be
+%\[
+%	u_i^T (\hat{P} - H) u_j
+%    = \sum_{s=1}^n \sum_{t=1}^n (\hat{P}_{st} - H_{st}) u_{is} u_{jt}
+%    = 2 \sum_{s<t} (\hat{P}_{st} - H_{st}) u_{is} u_{jt}
+%\]
+%where $u_i$ and $u_j$ are the $i$-th and $j$-th columns of $U$. Thus, conditioned on $H$, $u_i^T (\hat{P} - H) u_j$ is a sum of independent mean 0 random variables.
+%
+%
+%By Equation (\ref{eqn:expectpdiffqpowerk}), we have
+%\begin{align*}
+%	& E\left[\left((\hat{P}_{st} - H_{st}) u_{is} u_{jt}\right)^k\right] \\ 
+%    \le & 2^k k! (C_{st} + H_{st}^{(1)})^k u_{is}^k u_{jt}^k \\
+%    \le & \frac{k!}{2} (4 R)^{k-2} (4\sqrt{2} R u_{is} u_{jt})^2.
+%\end{align*}
+%Also we have
+%\[
+%	\sigma^2 := |\sum_{s<t} 32 R^2 u_{is}^2 u_{jt}^2|
+%    \le 32 R^2,
+%\]
+%then by Theorem \ref{thm:BernsteinMatrix}, we have
+%\[
+%	P \left( \left| 2 \sum_{s<t} (\hat{P}_{st} - H_{st}) u_{is} u_{jt} \right| \ge t \right)
+%    \le \exp \left( \frac{-t^2/8}{32 R^2 + 2 R t} \right),
+%\]
+%thus each entry of $U^T(\hat{P} - H)U$ is of order $O(\log n)$ with high probability and thus 
+%\begin{equation}
+%\label{eqn:uPhatdiffHu}
+%	\|U^T(\hat{P} - H)U\|_F = O(\log n)
+%\end{equation}
+%with high probability.
+%Hence
+%\[
+%	\| W^* \hat{S} - S W^* \|_F = O(\log n)
+%\]
+%with high probability.
+%Also, since
+%\[
+%	W_{ij}^* (\lambda_j^{1/2}(\hat{P}) - \lambda_i^{1/2}(H)) = W_{ij}^* \frac{\lambda_j(\hat{P}) - \lambda_i(H)}{\lambda_j^{1/2}(\hat{P}) + \lambda_i^{1/2}(H)}
+%\]
+%and the eigenvalues $\lambda_j^{1/2}(\hat{P})$ and $\lambda_i^{1/2}(H)$ are both of order $\Theta(\sqrt{n})$, we have
+%\[
+%	\| W^* \hat{S}^{1/2} - S^{1/2} W^* \|_F = O(n^{-1/2} \log n)
+%\]
+%with high probability.
+%Similarly, since
+%\[
+%	W_{ij}^* (\lambda_j^{-1/2}(\hat{P}) - \lambda_i^{-1/2}(H)) = W_{ij}^* \frac{\lambda_i(H) - \lambda_j(\hat{P})}{(\lambda_j^{-1/2}(\hat{P}) + \lambda_i^{-1/2}(H))\lambda_j(\hat{P}) \lambda_i(H)}
+%\]
+%and the eigenvalues $\lambda_j(\hat{P})$ and $\lambda_i(H)$ are both of order $\Theta(n)$, with high probability we have
+%\[
+%	\| W^* \hat{S}^{-1/2} - S^{-1/2} W^* \|_F = O(n^{-3/2} \log n).
+%\]
+%\end{proof}
 
 
 
@@ -1541,50 +1607,53 @@ with high probability.
 \end{theorem}
 \noindent \textbf{Require:} Lemma \ref{lemma:XhatDiffXWexpression}, Exponential distribution \\
 \begin{proof}
-By Lemma \ref{lemma:XhatDiffXWexpression}, we have
-\[
-	\|\hat{Z} - Z W\|_F = \| (\hat{P} - H) U S^{-1/2} \|_F + O(n^{-1/2} (\log n)^{3/2})
-\]
-with high probability and similarly we could have the bound for each row vector
-\begin{align*}
-	\max_i \| \hat{Z}_i - W Z_i \|_2
-    \le & \frac{1}{\lambda_k^{1/2}(H)} \max_i \| ((\hat{P} - H) U)_i \|_2 + O(n^{-1/2} (\log n)^{3/2}) \\
-    \le & \frac{k^{1/2}}{\lambda_k^{1/2}(H)} \max_j \| (\hat{P} - H) u_j \|_{\infty} + O(n^{-1/2} (\log n)^{3/2})
-\end{align*}
-where $u_j$ denotes the $j$-th column of $U$. Now given $i$ and $j$, the $i$-th element of the vector $(\hat{P} - H) u_j$ is of the form
-\[
-	\sum_{s=1}^n (\hat{P}_{is} - H_{is}) u_{js} = \sum_{s \ne i} (\hat{P}_{is} - H_{is}) u_{js}.
-\]
-Thus, conditioned on $H$, the $i$-th element of the vector $(\hat{P} - H) u_j$ is a sum of independent mean 0 random variables.
-By Equation (\ref{eqn:expectpdiffqpowerk}), we have
-\begin{align*}
-	& E\left[\left((\hat{P}_{is} - H_{is}) u_{js}\right)^k\right] \\ 
-    \le & 2^k k! (C_{is} + H_{is}^{(1)})^k u_{js}^k \\
-    \le & \frac{k!}{2} (4 R)^{k-2} (4\sqrt{2} R u_{js})^2.
-\end{align*}
-Also we have
-\[
-	\sigma^2 := |\sum_{s \ne i} 32 R^2 u_{js}^2|
-    \le 32 R^2,
-\]
-then by Theorem \ref{thm:BernsteinMatrix}, we have with high probability,
-\[
-	P \left( \left| \sum_{s \ne i} (\hat{P}_{is} - H_{is}) u_{js} \right| \ge t \right)
-    \le \exp \left( \frac{-t^2/2}{32 R^2 + R t} \right).
-\]
-Let $t = 2 c R \log n$, we have
-\[
-	P \left( \left| \sum_{s \ne i} (\hat{P}_{is} - H_{is}) u_{js} \right| \ge 2 c R \log n \right)
-    \le n^{-c},
-\]
-i.e. it can be bounded by $O(\log n)$ with high probability.
-Taking the union bound over all $i$ and $j$, with high probability, we have
-\[
-	\max_i \| \hat{Z}_i - W Z_i \|_2
-    \le \frac{C d^{1/2}}{\lambda_d^{1/2}(H)} (\log n)^{3/2} + O(n^{-1/2} (\log n)^{3/2})
-    = O(n^{-1/2} (\log n)^{3/2}).
-\]
+Similar to the proof of Theorem \ref{thm:XhatDiffXWL1}.
 \end{proof}
+%\begin{proof}
+%By Lemma \ref{lemma:XhatDiffXWexpression}, we have
+%\[
+%	\|\hat{Z} - Z W\|_F = \| (\hat{P} - H) U S^{-1/2} \|_F + O(n^{-1/2} (\log n)^{3/2})
+%\]
+%with high probability and similarly we could have the bound for each row vector
+%\begin{align*}
+%	\max_i \| \hat{Z}_i - W Z_i \|_2
+%    \le & \frac{1}{\lambda_k^{1/2}(H)} \max_i \| ((\hat{P} - H) U)_i \|_2 + O(n^{-1/2} (\log n)^{3/2}) \\
+%    \le & \frac{k^{1/2}}{\lambda_k^{1/2}(H)} \max_j \| (\hat{P} - H) u_j \|_{\infty} + O(n^{-1/2} (\log n)^{3/2})
+%\end{align*}
+%where $u_j$ denotes the $j$-th column of $U$. Now given $i$ and $j$, the $i$-th element of the vector $(\hat{P} - H) u_j$ is of the form
+%\[
+%	\sum_{s=1}^n (\hat{P}_{is} - H_{is}) u_{js} = \sum_{s \ne i} (\hat{P}_{is} - H_{is}) u_{js}.
+%\]
+%Thus, conditioned on $H$, the $i$-th element of the vector $(\hat{P} - H) u_j$ is a sum of independent mean 0 random variables.
+%By Equation (\ref{eqn:expectpdiffqpowerk}), we have
+%\begin{align*}
+%	& E\left[\left((\hat{P}_{is} - H_{is}) u_{js}\right)^k\right] \\ 
+%    \le & 2^k k! (C_{is} + H_{is}^{(1)})^k u_{js}^k \\
+%    \le & \frac{k!}{2} (4 R)^{k-2} (4\sqrt{2} R u_{js})^2.
+%\end{align*}
+%Also we have
+%\[
+%	\sigma^2 := |\sum_{s \ne i} 32 R^2 u_{js}^2|
+%    \le 32 R^2,
+%\]
+%then by Theorem \ref{thm:BernsteinMatrix}, we have with high probability,
+%\[
+%	P \left( \left| \sum_{s \ne i} (\hat{P}_{is} - H_{is}) u_{js} \right| \ge t \right)
+%    \le \exp \left( \frac{-t^2/2}{32 R^2 + R t} \right).
+%\]
+%Let $t = 2 c R \log n$, we have
+%\[
+%	P \left( \left| \sum_{s \ne i} (\hat{P}_{is} - H_{is}) u_{js} \right| \ge 2 c R \log n \right)
+%    \le n^{-c},
+%\]
+%i.e. it can be bounded by $O(\log n)$ with high probability.
+%Taking the union bound over all $i$ and $j$, with high probability, we have
+%\[
+%	\max_i \| \hat{Z}_i - W Z_i \|_2
+%    \le \frac{C d^{1/2}}{\lambda_d^{1/2}(H)} (\log n)^{3/2} + O(n^{-1/2} (\log n)^{3/2})
+%    = O(n^{-1/2} (\log n)^{3/2}).
+%\]
+%\end{proof}
 
 
 
@@ -1595,23 +1664,26 @@ $\left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right| = O(n^{-1} (\log n)^{3})$ wit
 \end{lemma}
 \noindent \textbf{Require:} Theorem \ref{thm:XhatDiffXW} \\
 \begin{proof}
-Let $W$ be the rotation matrix in Theorem \ref{thm:XhatDiffXW}, then
-\begin{align*}
-	\left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right|
-    = & \left| \hat{Z}_i^T \hat{Z}_j - \hat{Z}_i^T W Z_j + \hat{Z}_i^T W Z_j - (W Z_i)^T W Z_j \right| \\
-    \le & \left| \hat{Z}_i^T (\hat{Z}_j - W Z_j) + (\hat{Z}_i^T - (W Z_i)^T) W Z_j \right| \\
-    \le & \|\hat{Z}_i\|_2 \|\hat{Z}_j - W Z_j\|_2 + \|Z_j\|_2 \|\hat{Z}_i^T - (W Z_i)^T\|_2.
-\end{align*}
-Since $\|Z_i\|_2^2 = Z_i^T Z_i = H^{q}_{ii} = E[\hat{P}^{(q)}_{ii}] \le E[\hat{P}^{(1)}_{ii}] = (1-\epsilon) P_{ij} + \epsilon C_{ij} \le R$, we have $\|Z_i\|_2 = O(1)$.
-Combined with Theorem \ref{thm:XhatDiffXW},
-\begin{align*}
-    \left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right|
-    = & (\|\hat{Z}_i\|_2 + \|Z_j\|_2) O(n^{-1/2} (\log n)^{3/2}) \\
-    \le & (\|\hat{Z}_i - W Z_i\|_2 + \|W Z_i\|_2 + \|Z_j\|_2) O(n^{-1/2} (\log n)^{3/2}) \\
-    = & O(n^{-1} (\log n)^{3})
-\end{align*}
-with high probability.
+Similar to the proof of Lemma \ref{lemma:1stMomentPhatDiffL1}.
 \end{proof}
+%\begin{proof}
+%Let $W$ be the rotation matrix in Theorem \ref{thm:XhatDiffXW}, then
+%\begin{align*}
+%	\left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right|
+%    = & \left| \hat{Z}_i^T \hat{Z}_j - \hat{Z}_i^T W Z_j + \hat{Z}_i^T W Z_j - (W Z_i)^T W Z_j \right| \\
+%    \le & \left| \hat{Z}_i^T (\hat{Z}_j - W Z_j) + (\hat{Z}_i^T - (W Z_i)^T) W Z_j \right| \\
+%    \le & \|\hat{Z}_i\|_2 \|\hat{Z}_j - W Z_j\|_2 + \|Z_j\|_2 \|\hat{Z}_i^T - (W Z_i)^T\|_2.
+%\end{align*}
+%Since $\|Z_i\|_2^2 = Z_i^T Z_i = H^{q}_{ii} = E[\hat{P}^{(q)}_{ii}] \le E[\hat{P}^{(1)}_{ii}] = (1-\epsilon) P_{ij} + \epsilon C_{ij} \le R$, we have $\|Z_i\|_2 = O(1)$.
+%Combined with Theorem \ref{thm:XhatDiffXW},
+%\begin{align*}
+%    \left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right|
+%    = & (\|\hat{Z}_i\|_2 + \|Z_j\|_2) O(n^{-1/2} (\log n)^{3/2}) \\
+%    \le & (\|\hat{Z}_i - W Z_i\|_2 + \|W Z_i\|_2 + \|Z_j\|_2) O(n^{-1/2} (\log n)^{3/2}) \\
+%    = & O(n^{-1} (\log n)^{3})
+%\end{align*}
+%with high probability.
+%\end{proof}
 
 
 
