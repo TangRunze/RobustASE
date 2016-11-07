@@ -57,11 +57,19 @@ read_data <- function(dataName, DA=T) {
 }
 
 
-ReadDataWeighted <- function(dataName, DA=T) {
+ReadDataWeighted <- function(dataName, DA=T, newGraph=T) {
   if (DA) {
-    fileName = paste("../../Data/data_", dataName, "_DA.RData", sep="")
+    if (newGraph == F) {
+      fileName = paste("../../Data/data_", dataName, "_DA.RData", sep="")
+    } else {
+      fileName = paste("../../Data/data_", dataName, "_new_DA.RData", sep="")
+    }
   } else {
-    fileName = paste("../../Data/data_", dataName, ".RData", sep="")
+    if (newGraph == F) {
+      fileName = paste("../../Data/data_", dataName, ".RData", sep="")
+    } else {
+      fileName = paste("../../Data/data_", dataName, "_new.RData", sep="")
+    }
   }
   if (file.exists(fileName)) {
     load(fileName)
@@ -71,10 +79,15 @@ ReadDataWeighted <- function(dataName, DA=T) {
     subjectsID = readLines("../../Data/subnames.txt")
     if (dataName == "DS01876") {
       g = read_graph(paste("../../Data/", dataName, "/SWU4_", subjectsID[1], 
-                           "_1_DTI_", dataName, ".graphml", sep =""), format="graphml")      
+                           "_1_DTI_", dataName, ".graphml", sep =""), format="graphml")
     } else {
-      g = read_graph(paste("../../Data/", dataName, "/SWU4_", subjectsID[1], 
-                           "_1_", dataName, "_sg.graphml", sep =""), format="graphml")
+      if (newGraph == F) {
+        g = read_graph(paste("../../Data/", dataName, "/SWU4_", subjectsID[1], 
+                             "_1_", dataName, "_sg.graphml", sep =""), format="graphml")
+      } else {
+        g = read_graph(paste("../../Data/", dataName, "_new/SWU4_", subjectsID[1], 
+                             "_1_DTI_", dataName, ".graphml", sep =""), format="graphml")      
+      }
     }
     n = vcount(g)
     
@@ -83,13 +96,25 @@ ReadDataWeighted <- function(dataName, DA=T) {
     for (sub in 1:227) {
       for (session in 1:2) {
         if (dataName == "DS01876") {
-          g = read_graph(paste("../../Data/", dataName, "/SWU4_", subjectsID[sub], 
-                               "_", session, "_DTI_", dataName, ".graphml",sep=""),
-                         format = "graphml")          
+          if (newGraph == F) {
+            g = read_graph(paste("../../Data/", dataName, "/SWU4_", subjectsID[sub], 
+                                 "_", session, "_DTI_", dataName, ".graphml",sep=""),
+                           format = "graphml")
+          } else {
+            g = read_graph(paste("../../Data/", dataName, "_new/SWU4_", subjectsID[sub], 
+                                 "_", session, "_DTI_", dataName, ".graphml",sep=""),
+                           format = "graphml")
+          }
         } else {
-          g = read_graph(paste("../../Data/", dataName, "/SWU4_", subjectsID[sub], 
-                               "_", session, "_", dataName, "_sg.graphml",sep=""),
-                         format = "graphml")
+          if (newGraph == F) {
+            g = read_graph(paste("../../Data/", dataName, "/SWU4_", subjectsID[sub], 
+                                 "_", session, "_", dataName, "_sg.graphml",sep=""),
+                           format = "graphml")
+          } else {
+            g = read_graph(paste("../../Data/", dataName, "_new/SWU4_", subjectsID[sub], 
+                                 "_", session, "_DTI_", dataName, ".graphml",sep=""),
+                           format = "graphml")
+          }
         }
         A = as_adj(g, attr="weight", type="both", sparse=FALSE)
         if (DA) {
@@ -796,7 +821,7 @@ MLqESolverExp <- function(data, q) {
 }
 
 
-ExpAllDim <- function(M, m, dVec, AList, ASum, q, isSVD=1) {
+ExpAllDim <- function(M, m, dVec, AList, ASum, q, isSVD=1, PBar=NA) {
   source("getElbows.R")
   source("USVT.R")
   
@@ -806,7 +831,9 @@ ExpAllDim <- function(M, m, dVec, AList, ASum, q, isSVD=1) {
   
   sampleVec <- sample.int(M, m)
   ABar <- add(AList[sampleVec])
-  PBar <- (ASum - ABar)/(M - m)
+  if (any(is.na(PBar))) {
+    PBar <- (ASum - ABar)/(M - m)
+  }
   #   PBar <- ASum/M
   ABar <- ABar/m
   result[1] <- (norm(PBar - ABar, "F"))^2/n/(n-1)
@@ -840,6 +867,16 @@ ExpAllDim <- function(M, m, dVec, AList, ASum, q, isSVD=1) {
     result[1 + iD] <- (norm(PBar - PHat, "F"))^2/n/(n-1)
   }
   
+  # (norm(PBar, "F"))^2/n/(n-1)
+  # (norm(ABar, "F"))^2/n/(n-1)
+  # (norm(AHat, "F"))^2/n/(n-1)
+  # AHat1 <- AHat
+  # diag(AHat1) <- 0
+  # (norm(AHat, "F"))^2/n/(n-1)
+  # (norm(PHat, "F"))^2/n/(n-1)
+  
+  
+  
 #   AMLqEDiagAug <- diag_aug(AMLqE)
   AMLqEDiagAug <- AMLqE
   # ZG
@@ -864,7 +901,6 @@ ExpAllDim <- function(M, m, dVec, AList, ASum, q, isSVD=1) {
   }
   return(result)
 }
-
 
 
 

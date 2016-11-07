@@ -2,7 +2,7 @@ rm(list = ls())
 setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
 
 mVec <- c(1, 2, 5)
-# mVec <- 2
+# mVec <- 1
 q <- 0.9
 nIter <- 100
 nCores <- 2
@@ -22,7 +22,9 @@ for (iM in 1:length(mVec)) {
   m <- mVec[iM]
   
   # Eigen-decomposition
-  fileName <- paste("../../Result/result_", dataName, "_brute_", "m_", m, "_q_", q, "_eig.RData", sep="")
+  fileName <- paste("../../Result/result_", dataName, "_combine_brute_",
+                    "m_", m, "_q_", q, "_eig.RData", sep="")
+  
   load(fileName)
   
   if (iM == 1) {
@@ -164,18 +166,18 @@ errorByDimDf <- rbind(
              which = "PHat", m = mVec, d = n),
   data.frame(mse = c(errorPHatASEMean), lci = c(errorPHatASEMean), uci = c(errorPHatASEMean),
              which = "PHatASE", m = rep(mVec,n), d = rep(1:n, each = length(mVec)))) %>%
-  mutate(m = factor(paste0("m=", m), c("m=2", "m=5")))
+  mutate(m = factor(paste0("m=", m), c("m=1", "m=2", "m=5")))
 
 dimSelectionDf <- rbind(
   data.frame(mse = errorABarZG, lci = errorABarZG, uci = errorABarZG,
              which = "ABar ZG 3rd", m = mVec, d = dZGABarMean),
-  data.frame(mse = errorABarUSVT, lci = errorABarUSVT, uci = errorABarUSVT,
-             which = "ABar USVT c=0.7", m = mVec, d = dUSVTABarMean),
+  #   data.frame(mse = errorABarUSVT, lci = errorABarUSVT, uci = errorABarUSVT,
+  #              which = "ABar USVT c=0.7", m = mVec, d = dUSVTABarMean),
   data.frame(mse = errorPHatZG, lci = errorPHatZG, uci = errorPHatZG,
-             which = "PHat ZG 3rd", m = mVec, d = dZGPHatMean),
-  data.frame(mse = errorPHatUSVT, lci = errorPHatUSVT, uci = errorPHatUSVT,
-             which = "PHat USVT c=0.7", m = mVec, d = dUSVTPHatMean)) %>%
-  mutate(m = factor(paste0("m=", m), c("m=2", "m=5")))
+             which = "PHat ZG 3rd", m = mVec, d = dZGPHatMean)) %>%
+  #   data.frame(mse = errorPHatUSVT, lci = errorPHatUSVT, uci = errorPHatUSVT,
+  # which = "PHat USVT c=0.7", m = mVec, d = dUSVTPHatMean))
+  mutate(m = factor(paste0("m=", m), c("m=1", "m=2", "m=5")))
 
 
 
@@ -189,8 +191,8 @@ gg <- ggplot(errorByDimDf, aes(x = d, y = mse, linetype = factor(which), shape =
   #   geom_point(data=subset(dimSelectionDf,which=="ZG 3rd"),size=2,colour="red")+
   #   geom_point(data=subset(dimSelectionDf,which=="USVT c=0.7"),size=2,colour="blue")+
   geom_point(data = dimSelectionDf, size = 3) +
-  scale_linetype_manual(name = "", values = c(1, 0, 0, 2, 3, 0, 0, 4)) +
-  scale_shape_manual(name = "", values = c(-1, 0, 0, -1, -1, 0, 0, -1)) +
+  scale_linetype_manual(name = "", values = c(1, 0, 2, 3, 0, 4)) +
+  scale_shape_manual(name = "", values = c(-1, 15, -1, -1, 17, -1)) +
   #   geom_point(dimSelectionDf,aes(shape=which))+
   geom_line(alpha = 1, size = lSize) +
   geom_linerange(aes(ymin = lci, ymax = uci), alpha = .5, size = 1) +

@@ -14,7 +14,22 @@ isSVD <- 0
 source("function_collection.R")
 require(parallel)
 
-tmpList <- ReadDataWeighted(dataName, DA = F, newGraph = T)
+tmpList <- ReadDataWeighted(dataName, DA=F, newGraph=T)
+AList <- tmpList[[1]]
+n <- tmpList[[2]]
+M <- tmpList[[3]]
+P <- add(AList)/M
+
+require(Matrix)
+pdf("../../Result/MeanGraphNew.pdf", width=4, height=4.4)
+image(Matrix(P), main=list(label=paste0("Mean Graph for New ", dataName)), sub="",
+      xlab=list(cex=0), ylab=list(cex=0), scales=list(x=list(draw=FALSE),y=list(draw=FALSE)),
+      lwd=0)
+dev.off()
+
+nonZeroVecNew <- sapply(1:M, function(i) {sum(AList[[i]]>0)})
+
+tmpList <- ReadDataWeighted(dataName, DA=F, newGraph=F)
 AList <- tmpList[[1]]
 n <- tmpList[[2]]
 M <- tmpList[[3]]
@@ -24,6 +39,20 @@ dVec <- 1:n
 nD <- length(dVec)
 ASum <- add(AList)
 
+require(Matrix)
+pdf("../../Result/MeanGraphOld.pdf", width=4, height=4.4)
+image(Matrix(ASum/M), main=list(label=paste0("Mean Graph for Old ", dataName)), sub="",
+      xlab=list(cex=0), ylab=list(cex=0), scales=list(x=list(draw=FALSE),y=list(draw=FALSE)),
+      lwd=0)
+dev.off()
+
+nonZeroVecOld <- sapply(1:M, function(i) {sum(AList[[i]]>0)})
+pdf("../../Result/HistNonzeroCompare.pdf", width=8, height=4)
+par(mfrow=c(1, 2))
+hist(nonZeroVecNew)
+hist(nonZeroVecOld)
+dev.off()
+
 for (m in mVec) {
   print(c(m, isSVD))
   
@@ -32,7 +61,7 @@ for (m in mVec) {
   errorABarASE <- matrix(0, nD, nIter)
   errorPHatASE <- matrix(0, nD, nIter)
   
-  out <- mclapply(1:nIter, function(x) ExpAllDim(M, m, dVec, AList, ASum, q, isSVD), 
+  out <- mclapply(1:nIter, function(x) ExpAllDim(M, m, dVec, AList, ASum, q, isSVD, PBar=P), 
                   mc.cores=nCores)
   out = array(unlist(out), dim = c(2*nD+6, nIter))
   
@@ -57,9 +86,9 @@ for (m in mVec) {
   }
   
   if (isSVD) {
-    fileName = paste("../../Result/result_", dataName, "_new_brute_", "m_", m, "_q_", q, "_svd.RData", sep="")
+    fileName = paste("../../Result/result_", dataName, "_combine_brute_", "m_", m, "_q_", q, "_svd.RData", sep="")
   } else {
-    fileName = paste("../../Result/result_", dataName, "_new_brute_", "m_", m, "_q_", q, "_eig.RData", sep="")
+    fileName = paste("../../Result/result_", dataName, "_combine_brute_", "m_", m, "_q_", q, "_eig.RData", sep="")
   }
   
   save(errorABar, errorABarASE, errorPHat, errorPHatASE,
