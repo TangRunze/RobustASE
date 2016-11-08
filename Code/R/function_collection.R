@@ -844,8 +844,8 @@ ExpAllDim <- function(M, m, dVec, AList, ASum, q, isSVD=1, PBar=NA) {
   AMLqE <- apply(ATensor, c(1, 2), mlqe_exp_solver, q)
   result[nD + 2] <- (norm(PBar - AMLqE, "F"))^2/n/(n-1)
   
-#   ABarDiagAug <- diag_aug(ABar)
-  ABarDiagAug <- ABar
+  ABarDiagAug <- diag_aug(ABar)
+  # ABarDiagAug <- ABar
   # ZG
   nElbow <- 3
   evalVec <- ase(ABarDiagAug, ceiling(n*3/5), isSVD)[[1]]
@@ -866,7 +866,35 @@ ExpAllDim <- function(M, m, dVec, AList, ASum, q, isSVD=1, PBar=NA) {
     PHat <- regularize(AHat)
     result[1 + iD] <- (norm(PBar - PHat, "F"))^2/n/(n-1)
   }
+
+  # AASE1 = ase(ABarDiagAug, dMax, 1)
+  # AASE0 = ase(ABarDiagAug, dMax, 0)
+  # for (iD in 1:nD) {
+  #   d <- dVec[iD]
+  #   if (d == 1) {
+  #     AHat1 <- AASE1[[1]]*AASE1[[3]]%*%t(AASE1[[2]])
+  #     AHat0 <- AASE0[[1]]*AASE0[[3]]%*%t(AASE0[[2]])
+  #   } else {
+  #     AHat1 <- AASE1[[3]][, 1:d]%*%diag(AASE1[[1]][1:d])%*%t(AASE1[[2]][ ,1:d])
+  #     AHat0 <- AASE0[[3]][, 1:d]%*%diag(AASE0[[1]][1:d])%*%t(AASE0[[2]][ ,1:d])
+  #   }
+  #   
+  #   (norm(ABarDiagAug - AHat1, "F"))^2/n/(n-1)
+  #   (norm(ABarDiagAug - AHat0, "F"))^2/n/(n-1)
+  #   
+  #   PHat1 <- regularize(AHat1)
+  #   PHat0 <- regularize(AHat0)
+  #   
+  #   (norm(ABarDiagAug - PHat1, "F"))^2/n/(n-1)
+  #   (norm(ABarDiagAug - PHat0, "F"))^2/n/(n-1)
+  #   
+  #   (norm(PBar - PHat1, "F"))^2/n/(n-1)
+  #   (norm(PBar - PHat0, "F"))^2/n/(n-1)
+  #   (norm(PBar, "F"))^2/n/(n-1)
+  #   (norm(ABarDiagAug, "F"))^2/n/(n-1)
+  # }
   
+    
   # (norm(PBar, "F"))^2/n/(n-1)
   # (norm(ABar, "F"))^2/n/(n-1)
   # (norm(AHat, "F"))^2/n/(n-1)
@@ -877,8 +905,8 @@ ExpAllDim <- function(M, m, dVec, AList, ASum, q, isSVD=1, PBar=NA) {
   
   
   
-#   AMLqEDiagAug <- diag_aug(AMLqE)
-  AMLqEDiagAug <- AMLqE
+  AMLqEDiagAug <- diag_aug(AMLqE)
+  # AMLqEDiagAug <- AMLqE
   # ZG
   nElbow <- 3
   evalVec <- ase(AMLqEDiagAug, ceiling(n*3/5), isSVD)[[1]]
