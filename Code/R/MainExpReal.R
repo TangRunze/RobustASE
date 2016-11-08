@@ -4,10 +4,11 @@ setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
 mVec <- c(1, 2, 5)
 # mVec <- 1
 q <- 0.9
-nIter <- 100
+nIter <- 2
 nCores <- 2
-dataName <- "desikan"
+# dataName <- "desikan"
 # dataName <- "CPAC200"
+dataName <- "Talairach"
 
 isSVD <- 0
 

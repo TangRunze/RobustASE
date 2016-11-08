@@ -21,9 +21,15 @@ library(reshape2)
 for (iM in 1:length(mVec)) {
   m <- mVec[iM]
   
-  # Eigen-decomposition
-  fileName <- paste("../../Result/result_", dataName, "_new_brute_",
-                    "m_", m, "_q_", q, "_eig.RData", sep="")
+  if (isSVD == 0) {
+    # Eigen-decomposition
+    fileName <- paste("../../Result/result_", dataName, "_new_brute_",
+                      "m_", m, "_q_", q, "_eig.RData", sep="")
+  } else {
+    # SVD
+    fileName <- paste("../../Result/result_", dataName, "_new_brute_",
+                      "m_", m, "_q_", q, "_svd.RData", sep="")
+  }
   
   load(fileName)
   
@@ -151,7 +157,7 @@ for (iM in 1:length(mVec)) {
 #              which = "PHat", m = mVec, d = n),
 #   data.frame(mse = c(errorPHatASEMean), lci = c(errorPHatASELower), uci = c(errorPHatASEUpper),
 #              which = "PHatASE", m = rep(mVec,n), d = rep(1:n, each = length(mVec)))) %>%
-#   mutate(m = factor(paste0("m=", m), c("m=2", "m=5")))
+#   mutate(m = factor(paste0("m=", m), c("m=1", "m=2", "m=5")))
 
 errorByDimDf <- rbind(
   data.frame(mse = errorABarMean, lci = errorABarMean, uci = errorABarMean,
@@ -196,8 +202,8 @@ gg <- ggplot(errorByDimDf, aes(x = d, y = mse, linetype = factor(which), shape =
   #   geom_point(dimSelectionDf,aes(shape=which))+
   geom_line(alpha = 1, size = lSize) +
   geom_linerange(aes(ymin = lci, ymax = uci), alpha = .5, size = 1) +
-  #   geom_vline(data=dimSelectionDf,
-  #              aes(xintercept=value,color=which,linetype=variable))+
+    # geom_vline(data=dimSelectionDf,
+    #            aes(xintercept=value,color=which,linetype=variable))+
   #   scale_linetype_manual(name="",values=c(1,2,3,4))+
   #   geom_text(data=dimSelectionDf %>% filter(variable=="mean"),
   #             aes(x=value+n/30,y=label_y,linetype=variable,label=which,color=which),angle=90)+
