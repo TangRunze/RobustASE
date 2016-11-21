@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2014)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: Main.aux
+The style file: plain.bst
+Database file #1: Bib.bib
+Warning--to sort, need author or key in neurodata
+Warning--empty journal in kiar2016graph
+You've used 2 entries,
+            2118 wiz_defined-function locations,
+            506 strings with 4216 characters,
+and the built_in function-call counts, 391 in all, are:
+= -- 36
+> -- 8
+< -- 0
++ -- 4
+- -- 2
+* -- 15
+:= -- 66
+add.period$ -- 6
+call.type$ -- 2
+change.case$ -- 7
+chr.to.int$ -- 0
+cite$ -- 4
+duplicate$ -- 17
+empty$ -- 41
+format.name$ -- 2
+if$ -- 83
+int.to.chr$ -- 0
+int.to.str$ -- 2
+missing$ -- 1
+newline$ -- 13
+num.names$ -- 2
+pop$ -- 16
+preamble$ -- 1
+purify$ -- 5
+quote$ -- 0
+skip$ -- 12
+stack$ -- 0
+substring$ -- 10
+swap$ -- 1
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 8
+warning$ -- 2
+while$ -- 2
+width$ -- 3
+write$ -- 20
+(There were 2 warnings)

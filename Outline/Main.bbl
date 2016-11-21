@@ -1,0 +1,14 @@
+\begin{thebibliography}{1}
+
+\bibitem{neurodata}
+Neurodata’s mri to graphs pipeline.
+\newblock \url{http://m2g.io}.
+\newblock Accessed: 2016-05-23.
+
+\bibitem{kiar2016graph}
+Gregory Kiar.
+\newblock Gremlin: Graph estimation from mr images leading to inference in
+  neuroscience.
+\newblock 2016.
+
+\end{thebibliography}
