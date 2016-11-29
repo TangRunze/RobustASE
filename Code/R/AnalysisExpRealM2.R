@@ -1,7 +1,7 @@
 rm(list = ls())
 setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
 
-mVec <- c(1, 2, 5)
+mVec <- c(2)
 # mVec <- 1
 q <- 0.9
 nIter <- 200
@@ -173,7 +173,7 @@ errorByDimDf <- rbind(
              which = "PHat", m = mVec, d = n),
   data.frame(mse = c(errorPHatASEMean), lci = c(errorPHatASEMean), uci = c(errorPHatASEMean),
              which = "PHatASE", m = rep(mVec,n), d = rep(1:n, each = length(mVec)))) %>%
-  mutate(m = factor(paste0("m=", m), c("m=1", "m=2", "m=5")))
+  mutate(m = factor(paste0("m=", m), c("m=2")))
 
 dimSelectionDf <- rbind(
   data.frame(mse = errorABarZG, lci = errorABarZG, uci = errorABarZG,
@@ -184,7 +184,7 @@ dimSelectionDf <- rbind(
              which = "PHat ZG 3rd", m = mVec, d = dZGPHatMean)) %>%
   #   data.frame(mse = errorPHatUSVT, lci = errorPHatUSVT, uci = errorPHatUSVT,
   # which = "PHat USVT c=0.7", m = mVec, d = dUSVTPHatMean))
-  mutate(m = factor(paste0("m=", m), c("m=1", "m=2", "m=5")))
+  mutate(m = factor(paste0("m=", m), c("m=2")))
 
 
 
@@ -203,8 +203,8 @@ gg <- ggplot(errorByDimDf, aes(x = d, y = mse, linetype = factor(which), shape =
   #   geom_point(dimSelectionDf,aes(shape=which))+
   geom_line(alpha = 1, size = lSize) +
   geom_linerange(aes(ymin = lci, ymax = uci), alpha = .5, size = 1) +
-    # geom_vline(data=dimSelectionDf,
-    #            aes(xintercept=value,color=which,linetype=variable))+
+  # geom_vline(data=dimSelectionDf,
+  #            aes(xintercept=value,color=which,linetype=variable))+
   #   scale_linetype_manual(name="",values=c(1,2,3,4))+
   #   geom_text(data=dimSelectionDf %>% filter(variable=="mean"),
   #             aes(x=value+n/30,y=label_y,linetype=variable,label=which,color=which),angle=90)+

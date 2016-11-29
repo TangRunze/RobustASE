@@ -7,8 +7,8 @@ q <- 0.9
 nIter <- 2
 nCores <- 2
 # dataName <- "desikan"
-# dataName <- "CPAC200"
-dataName <- "Talairach"
+dataName <- "CPAC200"
+# dataName <- "Talairach"
 
 isSVD <- 0
 

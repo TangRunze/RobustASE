@@ -609,7 +609,7 @@ sim_all <- function(m, n, tau, B, CB, eps, q, d, isSVD=1) {
 
 
 
-dim_brute_fullrank <- function(m, dVec, P, isSVD=1) {
+dim_brute_fullrank <- function(m, dVec, P, isSVD=1, contamVec=1) {
   
   dMax = max(dVec)
   nD = length(dVec)
@@ -618,8 +618,11 @@ dim_brute_fullrank <- function(m, dVec, P, isSVD=1) {
   require(igraph)
   A_all = list()
   for (i in 1:m) {
-    g = sample_sbm(n, P, rep(1,n), directed=F, loops=F)
-    A = as_adj(g, type="both", sparse=FALSE)
+    A = contamVec*matrix(rexp(n^2, 1/P), ncol=n) +
+      (1-contamVec)*matrix(rexp(n^2, 1/P/10), ncol=n)
+    ind = lower.tri(A, 1)
+    A[ind] = 0
+    A = A + t(A)
     A_all[[i]] = A
   }
   
@@ -1075,3 +1078,83 @@ ExpAllDimRatio <- function(M, m, d = 0, AList, ASum, q, isSVD = 1) {
 }
 
 
+
+
+
+
+ExpAllDimSingleAug <- function(M, m, dVec, AList, ASum, AList0, ASum0, q, isSVD=1, PBar=NA) {
+  source("getElbows.R")
+  source("USVT.R")
+  
+  nD <- length(dVec)
+  dMax <- max(dVec)
+  result <- rep(NaN, 4*nD+8)
+  
+  sampleVec <- sample.int(M, m)
+  ABar <- add(AList[sampleVec])
+  ABar0 <- add(AList0[sampleVec])
+  if (any(is.na(PBar))) {
+    PBar <- (ASum - ABar)/(M - m)
+    PBar0 <- (ASum0 - ABar0)/(M - m)
+  }
+  #   PBar <- ASum/M
+  ABar <- ABar/m
+  result[1] <- (norm(PBar - ABar, "F"))^2/n/(n-1)
+  result[2*nD+7] <- (norm(PBar0 - ABar, "F"))^2/n/(n-1)
+  
+  n <- dim(ABar)[[1]]
+  ATensor <- array(unlist(AList[sampleVec]), dim = c(n, n, m))
+  #   AMLqE <- apply(ATensor, c(1, 2), MLqESolverExp, q)  
+  AMLqE <- apply(ATensor, c(1, 2), mlqe_exp_solver, q)
+  result[nD + 2] <- (norm(PBar - AMLqE, "F"))^2/n/(n-1)
+  result[3*nD+8] <- (norm(PBar0 - AMLqE, "F"))^2/n/(n-1)
+  
+  ABarDiagAug <- diag_aug(ABar)
+  # ABarDiagAug <- ABar
+  # ZG
+  nElbow <- 3
+  evalVec <- ase(ABarDiagAug, ceiling(n*3/5), isSVD)[[1]]
+  dZG <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
+  # USVT
+  dUSVT <- length(usvt(ABarDiagAug, 1, m)$d)
+  result[nD*2 + 3] <- dZG
+  result[nD*2 + 4] <- dUSVT
+  
+  AASE = ase(ABarDiagAug, dMax, isSVD)
+  for (iD in 1:nD) {
+    d <- dVec[iD]
+    if (d == 1) {
+      AHat <- AASE[[1]]*AASE[[3]]%*%t(AASE[[2]])
+    } else {
+      AHat <- AASE[[3]][, 1:d]%*%diag(AASE[[1]][1:d])%*%t(AASE[[2]][ ,1:d])
+    }
+    PHat <- regularize(AHat)
+    result[1 + iD] <- (norm(PBar - PHat, "F"))^2/n/(n-1)
+    result[2*nD + 7 + iD] <- (norm(PBar0 - PHat, "F"))^2/n/(n-1)
+  }
+  
+  AMLqEDiagAug <- diag_aug(AMLqE)
+  # AMLqEDiagAug <- AMLqE
+  # ZG
+  nElbow <- 3
+  evalVec <- ase(AMLqEDiagAug, ceiling(n*3/5), isSVD)[[1]]
+  dZG <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
+  # USVT
+  dUSVT <- length(usvt(AMLqEDiagAug, 1, m)$d)
+  result[nD*2 + 5] <- dZG
+  result[nD*2 + 6] <- dUSVT
+  
+  AASE <- ase(AMLqEDiagAug, dMax, isSVD)
+  for (iD in 1:nD) {
+    d <- dVec[iD]
+    if (d == 1) {
+      AHat <- AASE[[1]]*AASE[[3]]%*%t(AASE[[2]])
+    } else {
+      AHat <- AASE[[3]][ ,1:d]%*%diag(AASE[[1]][1:d])%*%t(AASE[[2]][ ,1:d])
+    }
+    PHatASE <- regularize(AHat)
+    result[nD + 2 + iD] <- (norm(PBar - PHatASE, "F"))^2/n/(n-1)
+    result[3*nD + 8 + iD] <- (norm(PBar0 - PHatASE, "F"))^2/n/(n-1)
+  }
+  return(result)
+}
