@@ -69,34 +69,88 @@
 \begin{document}
 \maketitle
 
-\section{Introduction}
+\section{Background and Overview}
 
 \begin{itemize}
 
-\item Network analysis is becoming more and more widely used recently. And estimating the mean of a population based on the sample is one of the most important tasks. Motivated by the law of large numbers, sample mean is always considered to be the best estimate of the population mean. As a result, nowadays we take averages almost everywhere, from the fundamental elements in Euclidean space to more general objects, like shapes, documents and graphs.
+\item Network analysis is becoming more and more widely used recently. In a general parametric framework, $G \sim F \in \mathcal{F} = \{F_{\theta} : \theta \in \Theta \}$, selecting a reasonable estimator $\hat{\theta}(G)$ for the unknown $\theta$ given a finite graph sample $G$ is one of the most important tasks.
 
-\item However, contradict to the general intuition, arithmetic average should not be our first choice all the time. In 1955, Stein's paradox shows the inadmissibility of the sample mean when there are more than three normal distributions. The fact that James-Stein estimator dominates the sample mean makes it less preferable to take the average in that situation. 27 years later, Gutmann proved that this cannot occur when the sample spaces are finite. But even when sample mean is admissible, it doesn't close the door of other estimators to be better in some cases. So in a specific situation, for instance in this paper a collection of graphs is considered, there is always a chance to have a better estimator compared to the sample mean.
+\item In the most basic setting, i.e. undirected graphs with each edge distributed Bernoulli independently, the parameters are the probabilities of the existence of edges between all pair of vertices.
+Then the element-wise maximum likelihood estimate, which happens to be the sample mean in this situation, is the uniformly minimum-variance unbiased estimator if we only consider the independent edge graph model without taking any graph structure into account. However, it does not perform very well especially when we only have a few observations, which is likely the case in real world.
 
-\item The mean of a collection of graphs can be defined in various ways. One natural definition is the expected value of the edge weight between any pair of vertices when graphs are sampled i.i.d. from some random graph distribution.
+\item One of the most important structures about the networks is the community structure in which vertices are clustered into different communities such that vertices of the same community behave similarly. The stochastic blockmodel (SBM) captures such structural property and is widely used in modeling networks.
+Meanwhile, the latent positions model (LPM), a much more general model compared to SBM, proposes a way to parameterize the graph structure by latent positions associated with each vertex. However, the random dot product graph (RDPG) which is a special case of LPM stays in between and motivates our estimator.
 
-\item Element-wise maximum likelihood estimate, which happens to be the sample mean in many situations, is a reasonable estimator if we only consider the independent edge graph model without taking any graph structure into account. However, it does not perform very well especially when we have a few observations, which is likely the case in real world.
+\item The Law of Large Graphs \cite{tang2016law} considers a low-rank approximation of the sample mean graph as an estimator motivated by the RDPG model and proves that in the basic Bernoulli setting under SBM, the new estimator outperforms the element-wise MLE since it decreases the overall variance dramatically compare to the naive entry-wise sample mean by biasing towards the low rank structure. 
 
-\item One of the most important structures is the community structure in which vertices are clustered into different communities such that vertices of the same community behave similarly. The stochastic blockmodel (SBM) captures such structural property and is widely used in modeling networks.
+\item While the Law of Large Graphs considers an estimator which captures the low-rank structure and demonstrates its improvement over the entry-wise MLE for the unweighted graphs with Bernoulli distribution, a more generalized setting is always preferred.
 
-\item Meanwhile, the latent positions model (LPM), a much more general model compared to SBM, proposes a way to parameterize the graph structure by latent positions associated with each vertex. However, the random dot product graph (RDPG) which is a special case of LPM stays in between and motivates our estimator.
+\item Firstly, we extend the unweighted graphs with Bernoulli distribution to weighted graphs with a general distribution $F$. Then all the models we mentioned above could be modified naturally and are discussed in details in Section \ref{section:WIEM}, \ref{section:WRDPG} and \ref{section:WSBM}.
 
-\item Using the estimates of the latent positions in an RDPG setting based on a truncated eigen-decomposition of the adjacency matrix, LLG consider a new estimator for the mean of the collection of graphs which captures the low-rank structure. And they prove that when the graphs follow a Bernoulli distribution, the estimator is better than element-wise MLE.
+\item Also in the Law of Large Graphs paper, it is assumed that the adjacency matrix is observed without contamination, however in practice there will be noise in the observed graph. In this case, a contamination model, e.g. gross error model considered in this work, is always preferred. In a gross error model, we observe good measurement $G = G^* \sim F \in \mathcal{F}$ most of the time, while there are a few wild values $G = G^{**} \sim H \in \mathcal{H}$ when the gross errors occur.
+As to the graphs, one way to generalize from the gross error model is to contaminate the entire graph with some small probability $\epsilon$, that is $G \sim (1-\epsilon) F + \epsilon H$. However, since we are under the independent edge model, it is more natural to consider the contaminations on each edge, i.e. for $1 \le i, j \le n$ with $i \ne j$, $G_{ij} \sim (1-\epsilon) F_{ij} + \epsilon H_{ij}$.
 
-\item In LLG, it is assumed that the adjacency matrix is observed without contamination, however in practice there will be noise in the observed graph.
+\item Under the contamination model, although we observe $G$ instead of $G^*$, estimating the parameter of $F$ in $\mathcal{F}$ is still our goal. We first proved that the estimator based on ASE ($\widetilde{P}^{(1)}$ in Figure \ref{fig:roadmap}) proposed in LLG is still better than entry-wise MLE ($\hat{P}^{(1)}$ in Figure \ref{fig:roadmap}) in MSE when the observations are contaminated under proper conditions.
 
-\item We first proved that the estimator based on ASE proposed in LLG is still better than entry-wise MLE when the observations are contaminated under proper conditions. 
+\item Furthermore, with contaminations, it is more preferable to use robust methods, like ML$q$E considered in this paper. We proved that entry-wise ML$q$E ($\hat{P}^{(q)}$ in Figure \ref{fig:roadmap}) improves the performance compared to entry-wise MLE ($\hat{P}^{(1)}$ in Figure \ref{fig:roadmap}) whenever contamination is relatively large.
 
-\item Also, with contaminations, it is natural to use more robust methods, like ML$q$E considered in this paper. And we proved that robust estimators improve the performance with relative large noise.
+\item Similarly, in order to take advantage of the low rank structure, we enforce a low rank approximation on the entry-wise ML$q$E. We prove that, under proper assumptions, the new estimator ($\widetilde{P}^{(q)}$ in Figure \ref{fig:roadmap}) not only inherits the robust property from ML$q$E ($\hat{P}^{(q)}$ in Figure \ref{fig:roadmap}), but also wins the bias-variance trade-off by taking advantage of the low rank structure.
 
-\item Similarly, in order to take advantage of the low rank structure, we enforce a low rank approximation on the entry-wise ML$q$E. And we prove that, under proper assumptions, the new estimator inherits the robust property from ML$q$E and wins the bias-variance tradeoff by considering the low rank structure.
-
-\item The estimation of the mean graph is considered in this paper but not restricted to, since the method can be applied to estimate the parameters of any one-parameter exponential family.
 \end{itemize}
+
+
+
+\begin{figure}
+\begin{center}
+\hspace*{-0.2in}
+\begin{tikzpicture}[
+  font=\sffamily,
+  every matrix/.style={ampersand replacement=\&,column sep=2cm,row sep=2cm},
+  block/.style={draw,thick,rounded corners,fill=blue!20,inner sep=.3cm},
+  process/.style={draw,thick,circle,fill=blue!20},
+  sink/.style={source,fill=green!20},
+  datastore/.style={draw,very thick,shape=datastore,inner sep=.3cm},
+  dots/.style={gray,scale=2},
+  to/.style={->,>=stealth',shorten >=1pt,semithick,font=\sffamily\footnotesize},
+  tofrom/.style={<->,>=stealth',shorten >=1pt,semithick,font=\sffamily\footnotesize},
+  every node/.style={align=center}]
+
+  % Position the nodes using a matrix layout
+  \matrix{
+  	\& \node[block] (Data) {Data $G^{(1)}, \cdots, G^{(m)}$};\\
+    \node[block] (MLE) {$\hat{P}^{(1)}$};
+      \& \& \node[block] (MLqE) {$\hat{P}^{(q)}$};\\
+	\\
+    \node[block] (XMLE) {$\widetilde{P}^{(1)}$};
+      \& \& \node[block] (XMLqE) {$\widetilde{P}^{(q)}$}; \\
+  };
+
+  % Draw the arrows between the nodes and label them.
+  % \draw[to, blue] (Data) -- node[midway, sloped, below] {UMVUE w/o contamination} (MLE);
+  \draw[to] (Data) -- node[midway, sloped, above] {Calculate MLE} (MLE);
+  \draw[to] (Data) -- node[midway, sloped, above] {Calculate ML$q$E} (MLqE);
+  \draw[to, blue] (MLE) -- node[midway,above] {More robust} (MLqE);
+  \draw[to] (MLE) -- (MLqE);
+  \draw[to, blue] (MLE) -- node[midway, sloped, below] {Smaller variance} (XMLE);
+  \draw[to] (MLE) -- node[midway, sloped, above] {Apply ASE to get a \\ low-rank approximation} (XMLE);
+  \draw[to, blue] (MLqE) -- node[midway, sloped, below] {Smaller variance} (XMLqE);
+  \draw[to] (MLqE) -- node[midway, sloped, above] {Apply ASE to get a \\ low-rank approximation} (XMLqE);
+  \draw[to, blue] (XMLE) -- node[midway,above] {More robust} (XMLqE);
+  \draw[to] (XMLE) -- (XMLqE);
+  \draw[to, blue] (MLE) -- node[midway, sloped, above] {More robust and smaller variance} (XMLqE);
+  \draw[to] (MLE) -- (XMLqE);
+\end{tikzpicture}
+\end{center}
+\caption{\label{fig:roadmap}Roadmap among the data and four estimators.}
+\end{figure}
+
+
+
+
+
+
+
+
 
 
 \section{Models}
@@ -107,17 +161,23 @@
 \end{itemize}
 
 \subsection{Weighted Independent Edge Model}
+\label{section:WIEM}
 \begin{itemize}
-\item We first consider the weighted independent edge model (WIEM).
+\item We first consider the weighted independent edge model (WIEM) corresponding to an one-parameter family $\mathcal{F} = \{ F_{\theta} : \theta \in \Theta \in \mathbb{R} \}$. Denote the graph parameter as $P \in \Theta^{n \times n} \subset \mathbb{R}^{n \times n}$, then each edge between vertex $i$ and vertex $j$ is distributed from $F_{P_{ij}}$ independently from all other edges.
 \end{itemize}
 
 \subsection{Weighted Random Dot Product Graph}
+\label{section:WRDPG}
 \begin{itemize}
 \item The latent positions model proposed by Hoff et. al. (2002) captures the unobserved properties of each vertex. And here we generalize the idea and define the weighted latent positions model as following.
 \item A specific instance of this model is the weighted random dot product graph model (WRDPG) in which the link function is the dot product.
 \end{itemize}
+\begin{definition}
+Consider a collection of distributions $\mathcal{F} = \{ f_{\theta}, \theta \in \Theta \subset \mathbb{R} \}$. Then the weighted random dot product graph model (WRDPG) based on $\mathcal{F}$ is defined as following: Let $\boldsymbol{X}, \boldsymbol{Y} \in \mathbb{R}^{n \times d}$ be such that $\boldsymbol{X} = [X_1, X_2, \cdots, X_n]^T$ and $\boldsymbol{Y} = [Y_1, Y_2, \cdots, Y_n]^T$, where $X_u, Y_u \in \mathbb{R}^d$ for all $u \in [n]$. The matrices $\boldsymbol{X}$ and $\boldsymbol{Y}$ are random and satisfy $\mathbb{P}\left[ \langle X_u, Y_v \rangle \in \Theta \right] = 1$ for all $u, v \in [n]$. Conditioned on $\boldsymbol{X}$ and $\boldsymbol{Y}$, the entries of the adjacency matrix $\boldsymbol{A}$ are independent and $\boldsymbol{A}_{uv}$ is a random variable with distribution $f \in \mathcal{F}$ with parameter $\langle X_u, Y_v \rangle$ for all $u \ne v \in [n]$.
+\end{definition}
 
 \subsection{Stochastic Block Model as a Weighted Random Dot Product Graph}
+\label{section:WSBM}
 \begin{itemize}
 \item One of the most important structures is the community structure in which vertices are clustered into different communities such that vertices of the same community behave similarly. Such structural property is captured by the SBM, where each vertex is assigned to a block and the probability that an edge exists between two vertices depends only on their respective block memberships.
 \item Formally, the SBM is determined by the number of blocks K (generally way less than the number of vertices N), block proportion vector $\rho$, and block probability matrix B.
@@ -135,6 +195,7 @@
 
 
 \section{Estimators}
+Estimator pointing to the previous figure
 
 \subsection{Entry-wise Maximum Likelihood Estimator $\hat{P}^{(1)}$}
 \begin{itemize}
@@ -330,10 +391,10 @@ In summary, we plot the relationship among four estimators in Figure \ref{fig:su
   % Position the nodes using a matrix layout
   \matrix{
     \node[block] (MLE) {$\hat{P}^{(1)}$};
-      \& \& \& \& \node[block] (MLqE) {$\hat{P}^{(q)}$};\\
+      \& \& \& \node[block] (MLqE) {$\hat{P}^{(q)}$};\\
 	\\
     \node[block] (XMLE) {$\widetilde{P}^{(1)}$};
-      \& \& \& \& \node[block] (XMLqE) {$\widetilde{P}^{(q)}$}; \\
+      \& \& \& \node[block] (XMLqE) {$\widetilde{P}^{(q)}$}; \\
   };
 
   % Draw the arrows between the nodes and label them.
@@ -345,7 +406,7 @@ In summary, we plot the relationship among four estimators in Figure \ref{fig:su
       node[midway,below] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ $m = o(n^2 (\log n)^{-6})$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(1)}) = \underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0$} (XMLqE);
 \end{tikzpicture}
 \end{center}
-\caption{\label{fig:summary}Relationship between four estimators.}
+\caption{\label{fig:summary}Relationship among four estimators.}
 \end{figure}
 
 
