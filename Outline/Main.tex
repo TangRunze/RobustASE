@@ -76,10 +76,10 @@
 \item Network analysis is becoming more and more widely used recently. In a general parametric framework, $G \sim F \in \mathcal{F} = \{F_{\theta} : \theta \in \Theta \}$, selecting a reasonable estimator $\hat{\theta}(G)$ for the unknown $\theta$ given a finite graph sample $G$ is one of the most important tasks.
 
 \item In the most basic setting, i.e. undirected graphs with each edge distributed Bernoulli independently, the parameters are the probabilities of the existence of edges between all pair of vertices.
-Then the element-wise maximum likelihood estimate, which happens to be the sample mean in this situation, is the uniformly minimum-variance unbiased estimator if we only consider the independent edge graph model without taking any graph structure into account. However, it does not perform very well especially when we only have a few observations, which is likely the case in real world.
+Then the element-wise maximum likelihood estimate, which happens to be the sample mean in this situation, is the uniformly minimum-variance unbiased estimator if we only consider the independent edge graph model \cite{bollobas2007phase} without taking any graph structure into account. However, it does not perform very well especially when we only have a few observations, which is likely the case in real world.
 
-\item One of the most important structures about the networks is the community structure in which vertices are clustered into different communities such that vertices of the same community behave similarly. The stochastic blockmodel (SBM) captures such structural property and is widely used in modeling networks.
-Meanwhile, the latent positions model (LPM), a much more general model compared to SBM, proposes a way to parameterize the graph structure by latent positions associated with each vertex. However, the random dot product graph (RDPG) which is a special case of LPM stays in between and motivates our estimator.
+\item One of the most important structures about the networks is the community structure in which vertices are clustered into different communities such that vertices of the same community behave similarly. The stochastic blockmodel (SBM) \cite{holland1983stochastic} captures such structural property and is widely used in modeling networks.
+Meanwhile, the latent positions model (LPM) \cite{hoff2002latent}, a much more general model compared to SBM, proposes a way to parameterize the graph structure by latent positions associated with each vertex. However, the random dot product graph (RDPG) \cite{young2007random, nickel2007random} which is a special case of LPM stays in between and motivates our estimator.
 
 \item The Law of Large Graphs \cite{tang2016law} considers a low-rank approximation of the sample mean graph as an estimator motivated by the RDPG model and proves that in the basic Bernoulli setting under SBM, the new estimator outperforms the element-wise MLE since it decreases the overall variance dramatically compare to the naive entry-wise sample mean by biasing towards the low rank structure. 
 
@@ -92,7 +92,7 @@ As to the graphs, one way to generalize from the gross error model is to contami
 
 \item Under the contamination model, although we observe $G$ instead of $G^*$, estimating the parameter of $F$ in $\mathcal{F}$ is still our goal. We first proved that the estimator based on ASE ($\widetilde{P}^{(1)}$ in Figure \ref{fig:roadmap}) proposed in LLG is still better than entry-wise MLE ($\hat{P}^{(1)}$ in Figure \ref{fig:roadmap}) in MSE when the observations are contaminated under proper conditions.
 
-\item Furthermore, with contaminations, it is more preferable to use robust methods, like ML$q$E considered in this paper. We proved that entry-wise ML$q$E ($\hat{P}^{(q)}$ in Figure \ref{fig:roadmap}) improves the performance compared to entry-wise MLE ($\hat{P}^{(1)}$ in Figure \ref{fig:roadmap}) whenever contamination is relatively large.
+\item Furthermore, with contaminations, it is more preferable to use robust methods, like ML$q$E \cite{ferrari2010, qin2013maximum} considered in this paper. We proved that entry-wise ML$q$E ($\hat{P}^{(q)}$ in Figure \ref{fig:roadmap}) improves the performance compared to entry-wise MLE ($\hat{P}^{(1)}$ in Figure \ref{fig:roadmap}) whenever contamination is relatively large.
 
 \item Similarly, in order to take advantage of the low rank structure, we enforce a low rank approximation on the entry-wise ML$q$E. We prove that, under proper assumptions, the new estimator ($\widetilde{P}^{(q)}$ in Figure \ref{fig:roadmap}) not only inherits the robust property from ML$q$E ($\hat{P}^{(q)}$ in Figure \ref{fig:roadmap}), but also wins the bias-variance trade-off by taking advantage of the low rank structure.
 
@@ -156,24 +156,24 @@ As to the graphs, one way to generalize from the gross error model is to contami
 \section{Models}
 
 \begin{itemize}
-\item For this work, we are in the scenario that $m$ graphs are given in the adjacency matrices form.
-\item In this section, we present three nested models, the weighted independent edge model, the weighted random dot product model, and the stochastic blockmodel. Moreover, we introduce a contaminated model based on them.
+\item For this work, we are in the scenario that $m$ graphs with $n$ vertices are given in the adjacency matrices form $\{ A^{(t)} \} (t = 1, \cdots, m)$, with known vertex correspondence. The graphs we consider in this work are undirected and hollow, i.e. each $A^{(t)}$ is symmetric with zeros along the diagonal.
+\item In this section, we present three nested models, the weighted independent edge model \ref{section:WIEM}, the weighted random dot product graph model \ref{section:WRDPG}, and the stochastic blockmodel \ref{section:WSBM}. Moreover, we introduce a contaminated model based on them.
 \end{itemize}
 
 \subsection{Weighted Independent Edge Model}
 \label{section:WIEM}
 \begin{itemize}
-\item We first consider the weighted independent edge model (WIEM) corresponding to an one-parameter family $\mathcal{F} = \{ F_{\theta} : \theta \in \Theta \in \mathbb{R} \}$. Denote the graph parameter as $P \in \Theta^{n \times n} \subset \mathbb{R}^{n \times n}$, then each edge between vertex $i$ and vertex $j$ is distributed from $F_{P_{ij}}$ independently from all other edges.
+\item We first extend the definition of independent edge model (IEM) \cite{bollobas2007phase} to the weighted independent edge model (WIEM) corresponding to an one-parameter family $\mathcal{F} = \{ F_{\theta} : \theta \in \Theta \in \mathbb{R} \}$. Denote the graph parameter as $P \in \Theta^{n \times n} \subset \mathbb{R}^{n \times n}$, then in a WIEM, each edge between vertex $i$ and vertex $j$ is distributed from $F_{P_{ij}}$ independently from all other edges.
 \end{itemize}
 
 \subsection{Weighted Random Dot Product Graph}
 \label{section:WRDPG}
 \begin{itemize}
-\item The latent positions model proposed by Hoff et. al. (2002) captures the unobserved properties of each vertex. And here we generalize the idea and define the weighted latent positions model as following.
+\item The latent positions model proposed by Hoff et. al. \cite{hoff2002latent} captures the unobserved properties of each vertex. And here we generalize the idea and define the weighted latent positions model as following.
 \item A specific instance of this model is the weighted random dot product graph model (WRDPG) in which the link function is the dot product.
 \end{itemize}
 \begin{definition}
-Consider a collection of distributions $\mathcal{F} = \{ f_{\theta}, \theta \in \Theta \subset \mathbb{R} \}$. Then the weighted random dot product graph model (WRDPG) based on $\mathcal{F}$ is defined as following: Let $\boldsymbol{X}, \boldsymbol{Y} \in \mathbb{R}^{n \times d}$ be such that $\boldsymbol{X} = [X_1, X_2, \cdots, X_n]^T$ and $\boldsymbol{Y} = [Y_1, Y_2, \cdots, Y_n]^T$, where $X_u, Y_u \in \mathbb{R}^d$ for all $u \in [n]$. The matrices $\boldsymbol{X}$ and $\boldsymbol{Y}$ are random and satisfy $\mathbb{P}\left[ \langle X_u, Y_v \rangle \in \Theta \right] = 1$ for all $u, v \in [n]$. Conditioned on $\boldsymbol{X}$ and $\boldsymbol{Y}$, the entries of the adjacency matrix $\boldsymbol{A}$ are independent and $\boldsymbol{A}_{uv}$ is a random variable with distribution $f \in \mathcal{F}$ with parameter $\langle X_u, Y_v \rangle$ for all $u \ne v \in [n]$.
+Consider a collection of one-parameter distributions $\mathcal{F} = \{ f_{\theta}, \theta \in \Theta \subset \mathbb{R} \}$. Then the weighted random dot product graph model (WRDPG) based on $\mathcal{F}$ is defined as following: Let $\boldsymbol{X}, \boldsymbol{Y} \in \mathbb{R}^{n \times d}$ be such that $\boldsymbol{X} = [X_1, X_2, \cdots, X_n]^T$ and $\boldsymbol{Y} = [Y_1, Y_2, \cdots, Y_n]^T$, where $X_u, Y_u \in \mathbb{R}^d$ for all $u \in [n]$. The matrices $\boldsymbol{X}$ and $\boldsymbol{Y}$ are random and satisfy $\mathbb{P}\left[ \langle X_u, Y_v \rangle \in \Theta \right] = 1$ for all $u, v \in [n]$. Conditioned on $\boldsymbol{X}$ and $\boldsymbol{Y}$, the entries of the adjacency matrix $\boldsymbol{A}$ are independent and $\boldsymbol{A}_{uv}$ is a random variable with distribution $f \in \mathcal{F}$ with parameter $\langle X_u, Y_v \rangle$ for all $u \ne v \in [n]$.
 \end{definition}
 
 \subsection{Stochastic Block Model as a Weighted Random Dot Product Graph}
