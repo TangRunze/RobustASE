@@ -10,3 +10,5 @@ Data/JHU
 Data/DS01876
 *.graphml
 .Rhistory
+*.bbl
+*.blg
