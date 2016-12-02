@@ -81,20 +81,20 @@ Then the element-wise maximum likelihood estimate, which happens to be the sampl
 \item One of the most important structures about the networks is the community structure in which vertices are clustered into different communities such that vertices of the same community behave similarly. The stochastic blockmodel (SBM) \cite{holland1983stochastic} captures such structural property and is widely used in modeling networks.
 Meanwhile, the latent positions model (LPM) \cite{hoff2002latent}, a much more general model compared to SBM, proposes a way to parameterize the graph structure by latent positions associated with each vertex. However, the random dot product graph (RDPG) \cite{young2007random, nickel2007random} which is a special case of LPM stays in between and motivates our estimator.
 
-\item The Law of Large Graphs \cite{tang2016law} considers a low-rank approximation of the sample mean graph as an estimator motivated by the RDPG model and proves that in the basic Bernoulli setting under SBM, the new estimator outperforms the element-wise MLE since it decreases the overall variance dramatically compare to the naive entry-wise sample mean by biasing towards the low rank structure. 
+\item The Law of Large Graphs \cite{tang2016law} considers a low-rank approximation of the sample mean graph as an estimator motivated by the RDPG model and proves that in the basic Bernoulli setting under SBM, the new estimator outperforms the element-wise MLE since it decreases the overall variance dramatically compare to the naive entry-wise sample mean by biasing towards the low-rank structure. 
 
 \item While the Law of Large Graphs considers an estimator which captures the low-rank structure and demonstrates its improvement over the entry-wise MLE for the unweighted graphs with Bernoulli distribution, a more generalized setting is always preferred.
 
 \item Firstly, we extend the unweighted graphs with Bernoulli distribution to weighted graphs with a general distribution $F$. Then all the models we mentioned above could be modified naturally and are discussed in details in Section \ref{section:WIEM}, \ref{section:WRDPG} and \ref{section:WSBM}.
 
-\item Also in the Law of Large Graphs paper, it is assumed that the adjacency matrix is observed without contamination, however in practice there will be noise in the observed graph. In this case, a contamination model, e.g. gross error model considered in this work, is always preferred. In a gross error model, we observe good measurement $G = G^* \sim F \in \mathcal{F}$ most of the time, while there are a few wild values $G = G^{**} \sim H \in \mathcal{H}$ when the gross errors occur.
-As to the graphs, one way to generalize from the gross error model is to contaminate the entire graph with some small probability $\epsilon$, that is $G \sim (1-\epsilon) F + \epsilon H$. However, since we are under the independent edge model, it is more natural to consider the contaminations on each edge, i.e. for $1 \le i, j \le n$ with $i \ne j$, $G_{ij} \sim (1-\epsilon) F_{ij} + \epsilon H_{ij}$.
+\item Also in the Law of Large Graphs paper, it is assumed that the adjacency matrix is observed without contamination, however in practice there will be noise in the observed graph. In this case, a contamination model, e.g. gross error model considered in this work \cite{AIC:AIC690280519, bickel2001mathematical}, is always preferred. In a gross error model, we observe good measurement $G^* \sim F_P \in \mathcal{F}$ most of the time, while there are a few wild values $G^{**} \sim H_C \in \mathcal{H}$ when the gross errors occur.
+As to the graphs, one way to generalize from the gross error model is to contaminate the entire graph with some small probability $\epsilon$, that is $G \sim (1-\epsilon) F_P + \epsilon H_C$. However, since we are under the independent edge model, it is more natural to consider the contaminations on each edge, i.e. for $1 \le i < j \le n$, $G_{ij} \sim (1-\epsilon) F_{P_{ij}} + \epsilon H_{C_{ij}}$ with $F \in \mathcal{F}$ and $G \in \mathcal{G}$, where both $\mathcal{F}$ and $\mathcal{G}$ are one-parameter distribution families.
 
-\item Under the contamination model, although we observe $G$ instead of $G^*$, estimating the parameter of $F$ in $\mathcal{F}$ is still our goal. We first proved that the estimator based on ASE ($\widetilde{P}^{(1)}$ in Figure \ref{fig:roadmap}) proposed in LLG is still better than entry-wise MLE ($\hat{P}^{(1)}$ in Figure \ref{fig:roadmap}) in MSE when the observations are contaminated under proper conditions.
+\item Under the contamination model, although we observe $G$ instead of $G^*$, estimating the parameters $P_{ij}$ ($1 \le i < j \le n$) of $F_{P_{ij}}$ in $\mathcal{F}$ is still our goal. We first proved that the estimator based on ASE ($\widetilde{P}^{(1)}$ in Figure \ref{fig:roadmap}) proposed in LLG is still better than entry-wise MLE ($\hat{P}^{(1)}$ in Figure \ref{fig:roadmap}) in MSE when the observations are contaminated under proper conditions.
 
 \item Furthermore, with contaminations, it is more preferable to use robust methods, like ML$q$E \cite{ferrari2010, qin2013maximum} considered in this paper. We proved that entry-wise ML$q$E ($\hat{P}^{(q)}$ in Figure \ref{fig:roadmap}) improves the performance compared to entry-wise MLE ($\hat{P}^{(1)}$ in Figure \ref{fig:roadmap}) whenever contamination is relatively large.
 
-\item Similarly, in order to take advantage of the low rank structure, we enforce a low rank approximation on the entry-wise ML$q$E. We prove that, under proper assumptions, the new estimator ($\widetilde{P}^{(q)}$ in Figure \ref{fig:roadmap}) not only inherits the robust property from ML$q$E ($\hat{P}^{(q)}$ in Figure \ref{fig:roadmap}), but also wins the bias-variance trade-off by taking advantage of the low rank structure.
+\item Similarly, in order to take advantage of the low-rank structure, we enforce a low-rank approximation on the entry-wise ML$q$E. We prove that, under proper assumptions, the new estimator ($\widetilde{P}^{(q)}$ in Figure \ref{fig:roadmap}) not only inherits the robust property from ML$q$E ($\hat{P}^{(q)}$ in Figure \ref{fig:roadmap}), but also wins the bias-variance trade-off by taking advantage of the low-rank structure.
 
 \end{itemize}
 
@@ -145,69 +145,75 @@ As to the graphs, one way to generalize from the gross error model is to contami
 \end{figure}
 
 
-
-
-
-
-
-
-
-
 \section{Models}
-
+\label{section:model}
 \begin{itemize}
-\item For this work, we are in the scenario that $m$ graphs with $n$ vertices are given in the adjacency matrices form $\{ A^{(t)} \} (t = 1, \cdots, m)$, with known vertex correspondence. The graphs we consider in this work are undirected and hollow, i.e. each $A^{(t)}$ is symmetric with zeros along the diagonal.
-\item In this section, we present three nested models, the weighted independent edge model \ref{section:WIEM}, the weighted random dot product graph model \ref{section:WRDPG}, and the stochastic blockmodel \ref{section:WSBM}. Moreover, we introduce a contaminated model based on them.
+\item For this work, we are in the scenario where $m$ weighted graphs each with $n$ vertices are given in the adjacency matrices form $\{ A^{(t)} \} (t = 1, \cdots, m)$. The graphs we consider in this work are undirected without self-loop, i.e. each $A^{(t)}$ is symmetric with zeros along the diagonal. Moreover, we assume the vertex correspondence is known throughout different graphs, so that vertex $i$ of graph $t_1$ corresponds to vertex $i$ of graph $t_2$ for any $i$, $t_1$, $t_2$.
+\item In this section, we present three nested models, the weighted independent edge model in Section \ref{section:WIEM}, the weighted random dot product graph model in Section \ref{section:WRDPG}, and the weighted stochastic blockmodel (WSBM) as a WRDPG in Section \ref{section:WSBM}. Moreover, we introduce a contaminated model based on Section \ref{section:WSBM} in Section \ref{section:Contamination}.
 \end{itemize}
 
 \subsection{Weighted Independent Edge Model}
 \label{section:WIEM}
 \begin{itemize}
-\item We first extend the definition of independent edge model (IEM) \cite{bollobas2007phase} to the weighted independent edge model (WIEM) corresponding to an one-parameter family $\mathcal{F} = \{ F_{\theta} : \theta \in \Theta \in \mathbb{R} \}$. Denote the graph parameter as $P \in \Theta^{n \times n} \subset \mathbb{R}^{n \times n}$, then in a WIEM, each edge between vertex $i$ and vertex $j$ is distributed from $F_{P_{ij}}$ independently from all other edges.
+\item We first extend the definition of independent edge model (IEM) \cite{bollobas2007phase} to the weighted independent edge model (WIEM) corresponding to a one-parameter family $\mathcal{F} = \{ F_{\theta} : \theta \in \Theta \subset \mathbb{R} \}$. Denote the graph parameter as a matrix $P \in \Theta^{n \times n} \subset \mathbb{R}^{n \times n}$, then under a WIEM, each edge between vertex $i$ and vertex $j$ ($i < j$ because of symmetry) is distributed from $F_{P_{ij}}$ independently.
+\item A simple example here is a WIEM for binary graphs with respect to $\mathcal{F}$ to be Bernoulli with a symmetric and hollow parameter matrix $P \in [0, 1]^{n \times n}$.
+\item Note that the graphs considered in this paper are undirected without self-loop, thus the parameter matrix $P$ needs to be symmetric and hollow. However, for convenience, we still define the parameters to be an $n$-by-$n$ matrix while only $n \choose 2$ of them are effective.
 \end{itemize}
 
 \subsection{Weighted Random Dot Product Graph}
 \label{section:WRDPG}
 \begin{itemize}
-\item The latent positions model proposed by Hoff et. al. \cite{hoff2002latent} captures the unobserved properties of each vertex. And here we generalize the idea and define the weighted latent positions model as following.
-\item A specific instance of this model is the weighted random dot product graph model (WRDPG) in which the link function is the dot product.
-\end{itemize}
+\item The connectivity between two vertices in a graph generally depends on some hidden properties of the corresponding vertices. The latent positions model proposed by Hoff et al. \cite{hoff2002latent} captures such properties by assigning each vertex $i$ with a corresponding latent vector $X_i \in \mathbb{R}^d$. Conditioned on the latent vectors $X_i$ and $X_j$, the edge between vertex $i$ and vertex $j$ is independent of all other edges and depends only on $X_i$ and $X_j$ through a link function. This can easily be generalized to the weighted version easily.
+\item A special case of the latent position model is the random dot product graph model (RDPG) in which the link function is the inner product \cite{young2007random, nickel2007random}. In the following, we give a definition of the weighted random dot product graph (WRDPG) as a generalization of the weighted latent positions model.
 \begin{definition}
-Consider a collection of one-parameter distributions $\mathcal{F} = \{ f_{\theta}, \theta \in \Theta \subset \mathbb{R} \}$. Then the weighted random dot product graph model (WRDPG) based on $\mathcal{F}$ is defined as following: Let $\boldsymbol{X}, \boldsymbol{Y} \in \mathbb{R}^{n \times d}$ be such that $\boldsymbol{X} = [X_1, X_2, \cdots, X_n]^T$ and $\boldsymbol{Y} = [Y_1, Y_2, \cdots, Y_n]^T$, where $X_u, Y_u \in \mathbb{R}^d$ for all $u \in [n]$. The matrices $\boldsymbol{X}$ and $\boldsymbol{Y}$ are random and satisfy $\mathbb{P}\left[ \langle X_u, Y_v \rangle \in \Theta \right] = 1$ for all $u, v \in [n]$. Conditioned on $\boldsymbol{X}$ and $\boldsymbol{Y}$, the entries of the adjacency matrix $\boldsymbol{A}$ are independent and $\boldsymbol{A}_{uv}$ is a random variable with distribution $f \in \mathcal{F}$ with parameter $\langle X_u, Y_v \rangle$ for all $u \ne v \in [n]$.
+Consider a collection of one-parameter distributions $\mathcal{F} = \{ F_{\theta}, \theta \in \Theta \subset \mathbb{R} \}$. Then the weighted random dot product graph model (WRDPG) with respect to $\mathcal{F}$ is defined as following: Let $\boldsymbol{X} \in \mathbb{R}^{n \times d}$ be such that $\boldsymbol{X} = [X_1, X_2, \cdots, X_n]^T$, where $X_i \in \mathbb{R}^d$ for all $i \in [n]$. The matrix $\boldsymbol{X}$ is random and satisfies $\mathbb{P}\left[ \langle X_i, X_j \rangle \in \Theta \right] = 1$ for all $i, j \in [n]$. Conditioned on $\boldsymbol{X}$, the entries of the adjacency matrix $\boldsymbol{A}$ are independent and $\boldsymbol{A}_{ij}$ is a random variable with distribution $F \in \mathcal{F}$ with parameter $\langle X_i, X_j \rangle$ for all $i \ne j \in [n]$.
 \end{definition}
+Under the WRDPG defined above, the parameter matrix $P = X X^T \in \mathbb{R}^{n \times n}$ is automatically symmetric because the link function is inner product. Moreover, to have symmetric graphs without self-loop, only $A_{ij}$ ($i < j$) are sampled while leaving the diagonals of $A$ to be all zeros.
 
-\subsection{Stochastic Block Model as a Weighted Random Dot Product Graph}
+%\begin{definition}
+%Consider a collection of one-parameter distributions $\mathcal{F} = \{ F_{\theta}, \theta \in \Theta \subset \mathbb{R} \}$. Then the weighted random dot product graph model (WRDPG) with respect to $\mathcal{F}$ is defined as following: Let $\boldsymbol{X}, \boldsymbol{Y} \in \mathbb{R}^{n \times d}$ be such that $\boldsymbol{X} = [X_1, X_2, \cdots, X_n]^T$ and $\boldsymbol{Y} = [Y_1, Y_2, \cdots, Y_n]^T$, where $X_u, Y_u \in \mathbb{R}^d$ for all $u \in [n]$. The matrices $\boldsymbol{X}$ and $\boldsymbol{Y}$ are random and satisfy $\mathbb{P}\left[ \langle X_u, Y_v \rangle \in \Theta \right] = 1$ for all $u, v \in [n]$. Conditioned on $\boldsymbol{X}$ and $\boldsymbol{Y}$, the entries of the adjacency matrix $\boldsymbol{A}$ are independent and $\boldsymbol{A}_{uv}$ is a random variable with distribution $f \in \mathcal{F}$ with parameter $\langle X_u, Y_v \rangle$ for all $u \ne v \in [n]$.
+%\end{definition}
+\end{itemize}
+
+\subsection{Weighted Stochastic Blockmodel as a Weighted Random Dot Product Graph}
 \label{section:WSBM}
 \begin{itemize}
-\item One of the most important structures is the community structure in which vertices are clustered into different communities such that vertices of the same community behave similarly. Such structural property is captured by the SBM, where each vertex is assigned to a block and the probability that an edge exists between two vertices depends only on their respective block memberships.
-\item Formally, the SBM is determined by the number of blocks K (generally way less than the number of vertices N), block proportion vector $\rho$, and block probability matrix B.
-\item Now if we consider the SBM as a weighted random dot product graph, all vertices in the same block would have identical latent positions.
+\item Community structure is an important property of graphs under which vertices are clustered into different communities such that vertices within the same community behave similarly. The stochastic blockmodel (SBM) \cite{holland1983stochastic} captures such property, where each vertex is assigned to one block and the connectivity between two vertices depends only on their respective block memberships.
+\item Formally, the SBM is determined by the number of blocks $K$ (generally much smaller than the number of vertices $n$), block probability matrix $B \in \Theta^{K \times K} \subset \mathbb{R}^{K \times K}$, and the block assignment vector $\tau \in [K]^n$, where $\tau_i = k$ represents vertex $i$ belongs to block $k$. Conditioned on the block membership $\tau$, the connectivity between vertex $i$ and vertex $j$ follows a Bernoulli distribution with parameter $B_{\tau_i, \tau_j}$. This can easily be generalized to the weighted stochastic blockmodel (WSBM), by substituting the Bernoulli distribution to a general distribution family $\mathcal{F}$.
+\item In order to consider WSBM as a WRDPG, the matrix $B$ needs to be positive semi-definite. From now on, we will note the sub-model of WSBM with positive semi-definite $B$ as the WSBM.
+\item Now consider the WSBM as a WRDPG with respect to $\mathcal{F} = \{ F_{\theta}, \theta \in \Theta \subset \mathbb{R} \}$. Let $d = 
+\mathrm{rank}(B)$, then all vertices in block $k$ have shared latent position $\nu_k \in \mathbb{R}^{d}$, where $B = \nu \nu^{\top}$ and $\nu = [\nu_1, \cdots, \nu_K]^{\top} \in \mathbb{R}^{K \times d}$. That is to say, $X_i = \nu_{\tau_i}$ and $A_{ij}$ $(i < j)$ is distributed from $F$ with parameter $B_{\tau_i, \tau_j} = \nu_{\tau_i}^{\top} \nu_{\tau_j}$. Here the parameter matrix $P \in \mathbb{R}^{n \times n}$ is symmetric, hollow, and satisfies $P_{ij} = X_i^{\top} X_j = \nu_{\tau_i}^{\top} \nu_{\tau_j} = B_{\tau_i, \tau_j}$.
+\item In order to generate $m$ graphs under this model with known vertex correspondence, we first sample $\tau$ from the categorical distribution with parameter $\rho$ and keep it fixed for all $m$ graphs. Then $m$ symmetric and hollow graphs $G^{(1)}, \cdots, G^{(m)}$ are sampled such that conditioning on $\tau$, the adjacency matrices are distributed entry-wise independently as $A^{(t)}_{ij} \stackrel{ind}{\sim} F_{B_{\tau_i, \tau_j}} = F_{P_{ij}}$ for each $1 \le t \le m$, $1 \le i < j \le n$. Here $P \in \mathbb{R}^{n \times n}$ is the actual parameter matrix for each pair of vertices with the same block structure as $B$.
+\item Here is an example of the SBM. (Figure for simulation)
 \end{itemize}
 
-\subsection{Stochastic Block Model as a Weighted Random Dot Product Graph with Contaminations}
+\subsection{Stochastic Blockmodel as a Weighted Random Dot Product Graph with Contaminations}
+\label{section:Contamination}
 \begin{itemize}
-\item In practice, we always get noisy data. Thus to better describe the real world, a contaminated model is needed.
-\item Here we define the edge contaminated model as following.
+\item In practice, we always get noise in the observations, which deviates from our general model assumptions. In order to incorporate this effect, a contamination model, e.g. gross error model \cite{AIC:AIC690280519, bickel2001mathematical} considered in this work, is always preferred.
+\item Generally in a gross error model, we observe good measurement $G^* \sim F_P \in \mathcal{F}$ most of the time, while there are a few wild values $G^{**} \sim H_C \in \mathcal{H}$ when the gross errors occur. Here $P$ and $C$ represent the respective parameter matrices for the two distribution families.
+As to the graphs, one way is to contaminate the entire graph with some small probability $\epsilon$, that is $G \sim (1-\epsilon) F_P + \epsilon H_C$. However, since we are under the independent edge model, it is more natural to consider the contaminations on each edge, i.e. for $1 \le i <  j \le n$, $G_{ij} \sim (1-\epsilon) F_{P_{ij}} + \epsilon H_{C_{ij}}$ with $F \in \mathcal{F}$ and $G \in \mathcal{G}$, where both $\mathcal{F}$ and $\mathcal{G}$ are one-parameter distribution families.
+\item In this paper, we assume that when gross errors occur, the connectivity also follows the WSBM as a WRDPG. That is, the contamination distributions $H_{C_{ij}}$ are also from the same one-parameter family $\mathcal{F}$ as $F_{P_{ij}}$ do. Moreover, the parameter matrix $C$ for the contamination has the same block structure. (Note: not necessarily the same block structure)
+\item To generate $m$ graphs under this contamination model with known vertex correspondence, we first sample $\tau$ from the categorical distribution with parameter $\rho$ and keep it fixed for all $m$ graphs as in Section \ref{section:WSBM}. Then $m$ symmetric and hollow graphs $G^{(1)}, \cdots, G^{(m)}$ are sampled such that conditioning on $\tau$, the adjacency matrices are distributed entry-wise independently as $A^{(t)}_{ij} \stackrel{ind}{\sim} (1-\epsilon) F_{P_{ij}} + \epsilon F_{C_{ij}}$ for each $1 \le t \le m$, $1 \le i < j \le n$. Here $\epsilon$ is the probability of an edge to be contaminated, $P$ is the parameter matrix as in Section \ref{section:WSBM}, and $C$ is the parameter matrix for contaminations.
 \end{itemize}
-
-
 
 
 
 \section{Estimators}
-Estimator pointing to the previous figure
+
+Under each of the models mentioned in Section \ref{section:model}, our goal is to estimate the parameter matrix $P$ based on the $m$ observations $A^{(1)}, \cdots, A^{(m)}$. In this section, we present four estimators as in Figure \ref{fig:roadmap}, the standard entry-wise MLE $\hat{P}^{(1)}$, the low-rank approximation of the entry-wise MLE $\widetilde{P}^{(1)}$, the entry-wise robust estimator ML$q$E $\hat{P}^{(q)}$, and the low-rank approximation of the entry-wise ML$q$E $\widetilde{P}^{(q)}$.
 
 \subsection{Entry-wise Maximum Likelihood Estimator $\hat{P}^{(1)}$}
 \begin{itemize}
 \item Under the WIEM, the most natural estimator is the element-wise MLE $\hat{P}^{(1)}$ based on the adjacency matrices $A^{(1)}, \cdots, A^{(m)}$.
-\item In many cases, the entry-wise MLE happens to be the mean graph $\bar{A}$, which is the UMVUE under WIEG with no constraints. But, it doesn't exploit any graph structure. 
+\item In some cases, for instance Bernoulli, Exponential, and Poisson, the entry-wise MLE happens to be the mean graph $\bar{A}$, which is the UMVUE under WIEG with no constraints. So it has the smallest variance among all unbiased estimators. In addition, as being an MLE, it satisfies many good asymptotic properties as the number of graphs $m \to \infty$. But the performance will not get any better when the number of vertices in each graph $n$ increases. In addition, it doesn't exploit any graph structure. If the graphs are actually distributed under a WRDPG or a WSBM, then the entry-wise MLE is no longer the MLE any more. As a result, the performance can be very poor, especially when $m$ is small.
 \end{itemize}
 
 
 
 \subsection{Estimator $\widetilde{P}^{(1)}$ Based on Adjacency Spectral Embedding of $\hat{P}^{(1)}$}
 \begin{itemize}
-\item In order to take advantage of the underlying low rank structure of the WRDPG, we use the adjacency spectral embedding (ASE) studied by Sussman et. al. to enforce a low rank approximation on the entry-wise MLE matrix $\hat{P}^{(1)}$, which will decrease the variance without losing much in bias if we embed it into the right dimension.
+\item Motivated by the low-rank structure of the parameter matrix $P$ in WRDPG, we use the similar idea as in \cite{chatterjee2015matrix, tang2016law} to propose the estimate $\widetilde{P}^{(1)}$ based on the spectral decomposition of $\hat{P}^{(1)}$. we use the adjacency spectral embedding (ASE) studied by Sussman et. al. to enforce a low-rank approximation on the entry-wise MLE matrix $\hat{P}^{(1)}$, which will decrease the variance without losing much in bias if we embed it into the right dimension.
 \item There are varies ways dealing with dimension selection. In this paper, we consider Zhu and Ghodsi's elbow selection method.
 \item Detailed description of the algorithm for our estimator $\widetilde{P}^{(1)}$.
 \end{itemize}
@@ -215,6 +221,7 @@ Estimator pointing to the previous figure
 
 \subsection{Entry-wise Maximum L$q$ Likelihood Estimator $\hat{P}^{(q)}$}
 \begin{itemize}
+\item Motivated by the contamination
 \item The MLE is asymptotically efficient, i.e. when sample size is large enough, the MLE is at least as accurate as any other estimator. However, when the sample size is moderate, robust estimators always outperforms MLE in terms of mean squared error by winning the bias-variance tradeoff.
 \item Moreover, in practice, the observations are generally contaminated. In this case, robust estimators can even beat MLE asymptotically.
 \item The class of parametric estimators based on the $q$-entropy function, the ML$q$E, is considered in this paper.
