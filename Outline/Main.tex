@@ -32,6 +32,14 @@
 \usetikzlibrary{arrows}
 \usepackage{amsmath}
 
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{bm}
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\renewcommand{\hat}{\widehat}
+
 % Defines a `datastore' shape for use in DFDs.  This inherits from a
 % rectangle and only draws two horizontal lines.
 \makeatletter
@@ -117,7 +125,7 @@ As to the graphs, one way to generalize from the gross error model is to contami
 
   % Position the nodes using a matrix layout
   \matrix{
-  	\& \node[block] (Data) {Data $G^{(1)}, \cdots, G^{(m)}$};\\
+  	\& \node[block] (Data) {Data $G^{(1)}, \dotsc, G^{(m)}$};\\
     \node[block] (MLE) {$\hat{P}^{(1)}$};
       \& \& \node[block] (MLqE) {$\hat{P}^{(q)}$};\\
 	\\
@@ -148,7 +156,7 @@ As to the graphs, one way to generalize from the gross error model is to contami
 \section{Models}
 \label{section:model}
 \begin{itemize}
-\item For this work, we are in the scenario where $m$ weighted graphs each with $n$ vertices are given in the adjacency matrices form $\{ A^{(t)} \} (t = 1, \cdots, m)$. The graphs we consider in this work are undirected without self-loop, i.e. each $A^{(t)}$ is symmetric with zeros along the diagonal. Moreover, we assume the vertex correspondence is known throughout different graphs, so that vertex $i$ of graph $t_1$ corresponds to vertex $i$ of graph $t_2$ for any $i$, $t_1$, $t_2$.
+\item For this work, we are in the scenario where $m$ weighted graphs each with $n$ vertices are given in the adjacency matrices form $\{ A^{(t)} \} (t = 1, \dotsc, m)$. The graphs we consider in this work are undirected without self-loop, i.e. each $A^{(t)}$ is symmetric with zeros along the diagonal. Moreover, we assume the vertex correspondence is known throughout different graphs, so that vertex $i$ of graph $t_1$ corresponds to vertex $i$ of graph $t_2$ for any $i$, $t_1$, $t_2$.
 \item In this section, we present three nested models, the weighted independent edge model in Section \ref{section:WIEM}, the weighted random dot product graph model in Section \ref{section:WRDPG}, and the weighted stochastic blockmodel (WSBM) as a WRDPG in Section \ref{section:WSBM}. Moreover, we introduce a contaminated model based on Section \ref{section:WSBM} in Section \ref{section:Contamination}.
 \end{itemize}
 
@@ -166,7 +174,7 @@ As to the graphs, one way to generalize from the gross error model is to contami
 \item The connectivity between two vertices in a graph generally depends on some hidden properties of the corresponding vertices. The latent positions model proposed by Hoff et al. \cite{hoff2002latent} captures such properties by assigning each vertex $i$ with a corresponding latent vector $X_i \in \mathbb{R}^d$. Conditioned on the latent vectors $X_i$ and $X_j$, the edge between vertex $i$ and vertex $j$ is independent of all other edges and depends only on $X_i$ and $X_j$ through a link function. This can easily be generalized to the weighted version easily.
 \item A special case of the latent position model is the random dot product graph model (RDPG) in which the link function is the inner product \cite{young2007random, nickel2007random}. In the following, we give a definition of the weighted random dot product graph (WRDPG) as a generalization of the weighted latent positions model.
 \begin{definition}
-Consider a collection of one-parameter distributions $\mathcal{F} = \{ F_{\theta}, \theta \in \Theta \subset \mathbb{R} \}$. Then the weighted random dot product graph model (WRDPG) with respect to $\mathcal{F}$ is defined as following: Let $\boldsymbol{X} \in \mathbb{R}^{n \times d}$ be such that $\boldsymbol{X} = [X_1, X_2, \cdots, X_n]^T$, where $X_i \in \mathbb{R}^d$ for all $i \in [n]$. The matrix $\boldsymbol{X}$ is random and satisfies $\mathbb{P}\left[ \langle X_i, X_j \rangle \in \Theta \right] = 1$ for all $i, j \in [n]$. Conditioned on $\boldsymbol{X}$, the entries of the adjacency matrix $\boldsymbol{A}$ are independent and $\boldsymbol{A}_{ij}$ is a random variable with distribution $F \in \mathcal{F}$ with parameter $\langle X_i, X_j \rangle$ for all $i \ne j \in [n]$.
+Consider a collection of one-parameter distributions $\mathcal{F} = \{ F_{\theta}, \theta \in \Theta \subset \mathbb{R} \}$. Then the weighted random dot product graph model (WRDPG) with respect to $\mathcal{F}$ is defined as following: Let $\boldsymbol{X} \in \mathbb{R}^{n \times d}$ be such that $\boldsymbol{X} = [X_1, X_2, \dotsc, X_n]^T$, where $X_i \in \mathbb{R}^d$ for all $i \in [n]$. The matrix $\boldsymbol{X}$ is random and satisfies $\mathbb{P}\left[ \langle X_i, X_j \rangle \in \Theta \right] = 1$ for all $i, j \in [n]$. Conditioned on $\boldsymbol{X}$, the entries of the adjacency matrix $\boldsymbol{A}$ are independent and $\boldsymbol{A}_{ij}$ is a random variable with distribution $F \in \mathcal{F}$ with parameter $\langle X_i, X_j \rangle$ for all $i \ne j \in [n]$.
 \end{definition}
 Under the WRDPG defined above, the parameter matrix $P = X X^T \in \mathbb{R}^{n \times n}$ is automatically symmetric because the link function is inner product. Moreover, to have symmetric graphs without self-loop, only $A_{ij}$ ($i < j$) are sampled while leaving the diagonals of $A$ to be all zeros.
 
@@ -182,8 +190,8 @@ Under the WRDPG defined above, the parameter matrix $P = X X^T \in \mathbb{R}^{n
 \item Formally, the SBM is determined by the number of blocks $K$ (generally much smaller than the number of vertices $n$), block probability matrix $B \in \Theta^{K \times K} \subset \mathbb{R}^{K \times K}$, and the block assignment vector $\tau \in [K]^n$, where $\tau_i = k$ represents vertex $i$ belongs to block $k$. Conditioned on the block membership $\tau$, the connectivity between vertex $i$ and vertex $j$ follows a Bernoulli distribution with parameter $B_{\tau_i, \tau_j}$. This can easily be generalized to the weighted stochastic blockmodel (WSBM), by substituting the Bernoulli distribution to a general distribution family $\mathcal{F}$.
 \item In order to consider WSBM as a WRDPG, the matrix $B$ needs to be positive semi-definite. From now on, we will note the sub-model of WSBM with positive semi-definite $B$ as the WSBM.
 \item Now consider the WSBM as a WRDPG with respect to $\mathcal{F} = \{ F_{\theta}, \theta \in \Theta \subset \mathbb{R} \}$. Let $d = 
-\mathrm{rank}(B)$, then all vertices in block $k$ have shared latent position $\nu_k \in \mathbb{R}^{d}$, where $B = \nu \nu^{\top}$ and $\nu = [\nu_1, \cdots, \nu_K]^{\top} \in \mathbb{R}^{K \times d}$. That is to say, $X_i = \nu_{\tau_i}$ and $A_{ij}$ $(i < j)$ is distributed from $F$ with parameter $B_{\tau_i, \tau_j} = \nu_{\tau_i}^{\top} \nu_{\tau_j}$. Here the parameter matrix $P \in \mathbb{R}^{n \times n}$ is symmetric, hollow, and satisfies $P_{ij} = X_i^{\top} X_j = \nu_{\tau_i}^{\top} \nu_{\tau_j} = B_{\tau_i, \tau_j}$.
-\item In order to generate $m$ graphs under this model with known vertex correspondence, we first sample $\tau$ from the categorical distribution with parameter $\rho$ and keep it fixed for all $m$ graphs. Then $m$ symmetric and hollow graphs $G^{(1)}, \cdots, G^{(m)}$ are sampled such that conditioning on $\tau$, the adjacency matrices are distributed entry-wise independently as $A^{(t)}_{ij} \stackrel{ind}{\sim} F_{B_{\tau_i, \tau_j}} = F_{P_{ij}}$ for each $1 \le t \le m$, $1 \le i < j \le n$. Here $P \in \mathbb{R}^{n \times n}$ is the actual parameter matrix for each pair of vertices with the same block structure as $B$.
+\mathrm{rank}(B)$, then all vertices in block $k$ have shared latent position $\nu_k \in \mathbb{R}^{d}$, where $B = \nu \nu^{\top}$ and $\nu = [\nu_1, \dotsc, \nu_K]^{\top} \in \mathbb{R}^{K \times d}$. That is to say, $X_i = \nu_{\tau_i}$ and $A_{ij}$ $(i < j)$ is distributed from $F$ with parameter $B_{\tau_i, \tau_j} = \nu_{\tau_i}^{\top} \nu_{\tau_j}$. Here the parameter matrix $P \in \mathbb{R}^{n \times n}$ is symmetric, hollow, and satisfies $P_{ij} = X_i^{\top} X_j = \nu_{\tau_i}^{\top} \nu_{\tau_j} = B_{\tau_i, \tau_j}$.
+\item In order to generate $m$ graphs under this model with known vertex correspondence, we first sample $\tau$ from the categorical distribution with parameter $\rho$ and keep it fixed for all $m$ graphs. Then $m$ symmetric and hollow graphs $G^{(1)}, \dotsc, G^{(m)}$ are sampled such that conditioning on $\tau$, the adjacency matrices are distributed entry-wise independently as $A^{(t)}_{ij} \stackrel{ind}{\sim} F_{B_{\tau_i, \tau_j}} = F_{P_{ij}}$ for each $1 \le t \le m$, $1 \le i < j \le n$. Here $P \in \mathbb{R}^{n \times n}$ is the actual parameter matrix for each pair of vertices with the same block structure as $B$.
 \item Here is an example of the SBM. (Figure for simulation)
 \end{itemize}
 
@@ -194,30 +202,82 @@ Under the WRDPG defined above, the parameter matrix $P = X X^T \in \mathbb{R}^{n
 \item Generally in a gross error model, we observe good measurement $G^* \sim F_P \in \mathcal{F}$ most of the time, while there are a few wild values $G^{**} \sim H_C \in \mathcal{H}$ when the gross errors occur. Here $P$ and $C$ represent the respective parameter matrices for the two distribution families.
 As to the graphs, one way is to contaminate the entire graph with some small probability $\epsilon$, that is $G \sim (1-\epsilon) F_P + \epsilon H_C$. However, since we are under the independent edge model, it is more natural to consider the contaminations on each edge, i.e. for $1 \le i <  j \le n$, $G_{ij} \sim (1-\epsilon) F_{P_{ij}} + \epsilon H_{C_{ij}}$ with $F \in \mathcal{F}$ and $G \in \mathcal{G}$, where both $\mathcal{F}$ and $\mathcal{G}$ are one-parameter distribution families.
 \item In this paper, we assume that when gross errors occur, the connectivity also follows the WSBM as a WRDPG. That is, the contamination distributions $H_{C_{ij}}$ are also from the same one-parameter family $\mathcal{F}$ as $F_{P_{ij}}$ do. Moreover, the parameter matrix $C$ for the contamination has the same block structure. (Note: not necessarily the same block structure)
-\item To generate $m$ graphs under this contamination model with known vertex correspondence, we first sample $\tau$ from the categorical distribution with parameter $\rho$ and keep it fixed for all $m$ graphs as in Section \ref{section:WSBM}. Then $m$ symmetric and hollow graphs $G^{(1)}, \cdots, G^{(m)}$ are sampled such that conditioning on $\tau$, the adjacency matrices are distributed entry-wise independently as $A^{(t)}_{ij} \stackrel{ind}{\sim} (1-\epsilon) F_{P_{ij}} + \epsilon F_{C_{ij}}$ for each $1 \le t \le m$, $1 \le i < j \le n$. Here $\epsilon$ is the probability of an edge to be contaminated, $P$ is the parameter matrix as in Section \ref{section:WSBM}, and $C$ is the parameter matrix for contaminations.
+\item To generate $m$ graphs under this contamination model with known vertex correspondence, we first sample $\tau$ from the categorical distribution with parameter $\rho$ and keep it fixed for all $m$ graphs as in Section \ref{section:WSBM}. Then $m$ symmetric and hollow graphs $G^{(1)}, \dotsc, G^{(m)}$ are sampled such that conditioning on $\tau$, the adjacency matrices are distributed entry-wise independently as $A^{(t)}_{ij} \stackrel{ind}{\sim} (1-\epsilon) F_{P_{ij}} + \epsilon F_{C_{ij}}$ for each $1 \le t \le m$, $1 \le i < j \le n$. Here $\epsilon$ is the probability of an edge to be contaminated, $P$ is the parameter matrix as in Section \ref{section:WSBM}, and $C$ is the parameter matrix for contaminations.
 \end{itemize}
 
 
 
 \section{Estimators}
 
-Under each of the models mentioned in Section \ref{section:model}, our goal is to estimate the parameter matrix $P$ based on the $m$ observations $A^{(1)}, \cdots, A^{(m)}$. In this section, we present four estimators as in Figure \ref{fig:roadmap}, the standard entry-wise MLE $\hat{P}^{(1)}$, the low-rank approximation of the entry-wise MLE $\widetilde{P}^{(1)}$, the entry-wise robust estimator ML$q$E $\hat{P}^{(q)}$, and the low-rank approximation of the entry-wise ML$q$E $\widetilde{P}^{(q)}$.
+Under each of the models mentioned in Section \ref{section:model}, our goal is to estimate the parameter matrix $P$ based on the $m$ observations $A^{(1)}, \dotsc, A^{(m)}$. In this section, we present four estimators as in Figure \ref{fig:roadmap}, the standard entry-wise MLE $\hat{P}^{(1)}$, the low-rank approximation of the entry-wise MLE $\widetilde{P}^{(1)}$, the entry-wise robust estimator ML$q$E $\hat{P}^{(q)}$, and the low-rank approximation of the entry-wise ML$q$E $\widetilde{P}^{(q)}$. Since the observed graphs are symmetric and hollow with a symmetric parameter matrix of the model, we don't really care about the estimate of the diagonal of $P$, but the estimate itself should be at least symmetric.
 
 \subsection{Entry-wise Maximum Likelihood Estimator $\hat{P}^{(1)}$}
 \begin{itemize}
-\item Under the WIEM, the most natural estimator is the element-wise MLE $\hat{P}^{(1)}$ based on the adjacency matrices $A^{(1)}, \cdots, A^{(m)}$.
-\item In some cases, for instance Bernoulli, Exponential, and Poisson, the entry-wise MLE happens to be the mean graph $\bar{A}$, which is the UMVUE under WIEG with no constraints. So it has the smallest variance among all unbiased estimators. In addition, as being an MLE, it satisfies many good asymptotic properties as the number of graphs $m \to \infty$. But the performance will not get any better when the number of vertices in each graph $n$ increases. In addition, it doesn't exploit any graph structure. If the graphs are actually distributed under a WRDPG or a WSBM, then the entry-wise MLE is no longer the MLE any more. As a result, the performance can be very poor, especially when $m$ is small.
+\item Under the WIEM, the most natural estimator is the element-wise MLE $\hat{P}^{(1)}$ based on the adjacency matrices $A^{(1)}, \dotsc, A^{(m)}$.
+\item In some cases, for instance Bernoulli, Exponential, and Poisson, the entry-wise MLE happens to be the mean graph $\bar{A}$, which is the UMVUE under WIEG with no other constraints. So it has the smallest variance among all unbiased estimators. In addition, as being an MLE, it satisfies many good asymptotic properties as the number of graphs $m \to \infty$. But the performance will not get any better when the number of vertices in each graph $n$ increases. In addition, it doesn't exploit any graph structure. If the graphs are actually distributed under a WRDPG or a WSBM, then the entry-wise MLE is no longer the MLE any more. As a result, the performance can be very poor, especially when $m$ is small.
 \end{itemize}
 
 
 
 \subsection{Estimator $\widetilde{P}^{(1)}$ Based on Adjacency Spectral Embedding of $\hat{P}^{(1)}$}
 \begin{itemize}
-\item Motivated by the low-rank structure of the parameter matrix $P$ in WRDPG, we use the similar idea as in \cite{chatterjee2015matrix, tang2016law} to propose the estimate $\widetilde{P}^{(1)}$ based on the spectral decomposition of $\hat{P}^{(1)}$. we use the adjacency spectral embedding (ASE) studied by Sussman et. al. to enforce a low-rank approximation on the entry-wise MLE matrix $\hat{P}^{(1)}$, which will decrease the variance without losing much in bias if we embed it into the right dimension.
-\item There are varies ways dealing with dimension selection. In this paper, we consider Zhu and Ghodsi's elbow selection method.
-\item Detailed description of the algorithm for our estimator $\widetilde{P}^{(1)}$.
+\item Motivated by the low-rank structure of the parameter matrix $P$ in WRDPG, we consider the estimator $\widetilde{P}^{(1)}$ proposed by Tang et al. \cite{tang2016law} based on the spectral decomposition of $\hat{P}^{(1)}$. The estimator $\widetilde{P}^{(1)}$ is similar to the estimator proposed by Chaterjee \cite{chatterjee2015matrix} with adjustment for the specific estimation task, including a different dimension selection technique and a diagonal augmentation procedure.
 \end{itemize}
 
+\subsubsection{Rank-$d$ Approximation}
+\begin{itemize}
+\item Given the dimension $d$, we consider the best rank-$d$ positive semi-definite approximation of $\hat{P}^{(1)}$, denoted as $\widetilde{P}^{(1)}$. First calculate the eigen-decomposition of the symmetric matrix $\hat{P}^{(1)} = \hat{U} \hat{S} \hat{U}^{\top} + \widetilde{U} \widetilde{S} \widetilde{U}^{\top}$, where $\hat{S}$ is the diagonal matrix with the largest $d$ eigenvalues of $\hat{P}^{(1)}$, and $\hat{U}$ has the corresponding eigenvectors as each column. Then the best rank-$d$ positive semi-definite approximation is $\widetilde{P}^{(1)} = \hat{U} \hat{S} \hat{U}^{\top}$. Note that the $d$-dimensional adjacency spectral embedding (ASE) here is defined as $\hat{X} = \hat{U} \hat{S}^{1/2} \in \mathbb{R}^{n \times d}$. Thus the low rank approximation of $\hat{P}^{(1)}$ can also be represented as $\hat{X} \hat{X}^{\top}$. In the RDPG setting, Sussman et al. \cite{sussman2014consistent} proved that each row of $\hat{X}$ can accurately estimate the the latent position for each vertex up to an orthogonal transformation. We will analyze its performance under the WRDPG setting in Section \ref{section:theory}.
+\item We restate the algorithm in \cite{tang2016law} to give the steps of computing this low-rank approximation of a general $n$-by-$n$ symmetric matrix $A$ in Algorithm \ref{algo:lowrank}.
+\end{itemize}
+\begin{algorithm}[H]
+\caption{Algorithm to compute the rank-$d$ approximation of a matrix.}
+\label{algo:lowrank}
+\begin{algorithmic}[1]
+\REQUIRE Symmetric matrix $A\in \mathbb{R}^{n \times n}$ and dimension $d\leq n$.
+\ENSURE $\mathrm{lowrank}_d(A)\in \mathbb{R}^{n \times n}$
+\STATE Compute the algebraically largest $d$ eigenvalues of $A$, $s_1\geq s_2\ge \dotsc \ge s_d$ and corresponding unit-norm eigenvectors $u_1,u_2,\dotsc,u_d\in \mathbb{R}^n$;
+\STATE Set $\hat{S}$ to the $d\times d$ diagonal matrix $\mathrm{diag}(s_1,\dotsc,s_d)$;
+\STATE Set $\hat{U} = [u_1,\dotsc,u_d]\in \mathbb{R}^{n \times d}$;
+\STATE Set $\mathrm{lowrank}_d(A)$ to $\hat{U}\hat{S}\hat{U}^T$;
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Dimension Selection}
+\label{section:dim_select}
+\begin{itemize}
+\item A general way to choose the dimension $d$ in a dimension reduction setting is based on analyzing the ordered eigenvalues and looking for the ``gap'' or ``elbow'' in the scree-plot.
+\item In 2006, Zhu and Ghodsi proposed an automatic method for finding the gap in the scree-plot by only looking at the eigenvalues based on a Gaussian mixture model \cite{zhu2006automatic}. Generally, the method provides multiple results based on different ``elbow''. In this paper, to avoid under-estimating the dimension, which is often much more harmful than over-estimating it, we always choose the 3rd elbow.
+\item Although it is always challenge to choose a proper dimension, based on the (try simulation?) and real data experiment, a wide range of dimensions will lead to results nearly optimal. Thus a proper dimension selection method can be applied directly without carefully tuning the parameter, which is much more practical.
+\end{itemize}
+
+\subsubsection{Diagonal Augmentation}
+\label{section:diag_aug}
+\begin{itemize}
+\item Since the graphs considered in this paper have no self-loops, all the adjacency matrices $A^{(t)}$ ($1 \le t \le m$) are hollow, i.e. all diagonal entries are zeros. And thus the diagonal of the parameter matrix $P$ doesn't matter since all off-diagonal entries are independent of them conditioned on the off-diagonal entries of $P$.
+\item However, unlike the entry-wise estimators, e.g. $\hat{P}^{(1)}$, the ones which take advantage of the graph structure need the information from the diagonals. As a result, the zero diagonals of the observed graphs will lead to biased estimates. 
+\item To compensate for such inaccurate estimate, Marchette et al. \cite{marchette2011vertex} suggested to use the average of the non-diagonal entries of the corresponding row as the diagonal entry before embedding. Also, Scheinerman and Tucker \cite{scheinerman2010modeling} proposed an iterative method, which gives a different approach to resolve such issue.
+\item As suggested in \cite{tang2016law}, in this work we are going to combine both ideas by first using Marchette's row-averaging method (see Step 3 of Algorithm \ref{algo:basic}) and then another one-step Scheinerman's iterative method (see Step 6 of Algorithm \ref{algo:basic}).
+\end{itemize}
+
+\begin{algorithm}[H]
+\caption{Algorithm to compute $\widetilde{P}^{(1)}$}
+\label{algo:basic}
+\begin{algorithmic}[1]
+\REQUIRE Adjacency matrices $A^{(1)}, A^{(2)}, \dotsc, A^{(m)}$, with each $A^{(t)} \in \{0,1\}^{n \times n}$
+\ENSURE Estimate $\widetilde{P}^{(1)} \in \mathbb{R}^{n \times n}$
+\STATE Calculate the entry-wise MLE $\hat{P}^{(1)}$;
+\STATE Calculate the scaled degree matrix $D = \mathrm{diag}(\hat{P}^{(1)} \bm{1})/(n-1)$;
+\STATE Select the dimension $d$ based on the eigenvalues of $\hat{P}^{(1)} + D$; (see Section~\ref{section:dim_select})
+\STATE Set $Q$ to $\mathrm{lowrank}_d(\hat{P}^{(1)} + D)$; (see Algorithm~\ref{algo:lowrank})
+\STATE Set $D^{\prime}$ to $ \mathrm{diag}(Q)$, the diagonal matrix with diagonal matching $Q$; 
+\STATE Set $Q^{\prime}$ to $\mathrm{lowrank}_d(Q + D^{\prime})$; (see Algorithm~\ref{algo:lowrank})
+\STATE Set $\widetilde{P}^{(1)}$ to $Q^{\prime}$ with values $<0$ set to $0$.
+\end{algorithmic}
+\end{algorithm}
+
+\begin{itemize}
+\item Detailed description of the estimator $\widetilde{P}^{(1)}$ are given in Algorithm \ref{algo:basic}.
+\end{itemize}
 
 \subsection{Entry-wise Maximum L$q$ Likelihood Estimator $\hat{P}^{(q)}$}
 \begin{itemize}
