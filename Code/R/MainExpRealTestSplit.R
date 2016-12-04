@@ -1,9 +1,9 @@
 rm(list = ls())
-# setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
-setwd("E:/GitHub/RobustASE/Code/R")
+setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
+# setwd("E:/GitHub/RobustASE/Code/R")
 
 q <- 0.9
-nCores <- 1
+nCores <- 2
 # dataName <- "desikan"
 dataName <- "CPAC200"
 # dataName <- "Talairach"
@@ -26,26 +26,26 @@ pairBetweenVec <- Matrix(1:M, nrow=2)
 nCross <- dim(pairCrossVec)[2]
 nBetween <- dim(pairBetweenVec)[2]
 
-# errorABarBetween <- rep(0, nBetween)
-# errorPHatBetween <- rep(0, nBetween)
-# errorABarASEBetween <- rep(0, nBetween)
-# errorPHatASEBetween <- rep(0, nBetween)
-# out <- mclapply(1:nBetween, function(iIter) ExpTest(M, AList[pairBetweenVec[, iIter]],
-#                                                     q, isSVD), mc.cores=nCores)
-# out = array(unlist(out), dim = c(4, nBetween))
-# errorABarBetween <- out[1,]
-# errorPHatBetween <- out[2,]
-# errorABarASEBetween <- out[3,]
-# errorPHatASEBetween <- out[4,]
-# 
-# if (isSVD) {
-#   fileName = paste("../../Result/result_", dataName, "_test_0_q_", q, "_svd.RData", sep="")
-# } else {
-#   fileName = paste("../../Result/result_", dataName, "_test_0_q_", q, "_eig.RData", sep="")
-# }
-# 
-# save(errorABarBetween, errorPHatBetween, errorABarASEBetween, errorPHatASEBetween,
-#      n, M, file=fileName)
+errorABarBetween <- rep(0, nBetween)
+errorPHatBetween <- rep(0, nBetween)
+errorABarASEBetween <- rep(0, nBetween)
+errorPHatASEBetween <- rep(0, nBetween)
+out <- mclapply(1:nBetween, function(iIter) ExpTest(M, AList[pairBetweenVec[, iIter]],
+                                                    q, isSVD), mc.cores=nCores)
+out = array(unlist(out), dim = c(4, nBetween))
+errorABarBetween <- out[1,]
+errorPHatBetween <- out[2,]
+errorABarASEBetween <- out[3,]
+errorPHatASEBetween <- out[4,]
+
+if (isSVD) {
+  fileName = paste("../../Result/result_", dataName, "_test_0_q_", q, "_svd.RData", sep="")
+} else {
+  fileName = paste("../../Result/result_", dataName, "_test_0_q_", q, "_eig.RData", sep="")
+}
+
+save(errorABarBetween, errorPHatBetween, errorABarASEBetween, errorPHatASEBetween,
+     n, M, file=fileName)
 
 for (iGroup in 210:(nCross/nBetween)) {
   errorABarCross <- rep(0, nBetween)
