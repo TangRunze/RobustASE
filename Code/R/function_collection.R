@@ -1111,11 +1111,35 @@ ExpAllDimSingleAug <- function(M, m, dVec, AList, ASum, AList0, ASum0, q, isSVD=
   result[2*nD+7] <- (norm(PBar0 - ABar, "F"))^2/n/(n-1)
   
   n <- dim(ABar)[[1]]
-  ATensor <- array(unlist(AList[sampleVec]), dim = c(n, n, m))
-  #   AMLqE <- apply(ATensor, c(1, 2), MLqESolverExp, q)  
+  
+  # ATensor <- array(unlist(AList[sampleVec]), dim = c(n, n, m))
+  # AMLqE1 <- apply(ATensor, c(1, 2), mlqe_exp_solver, q)
+  
+  AList1 <- AList[sampleVec]
+  for (i in 1:m) {
+    AList1[[i]][upper.tri(AList1[[i]])] <- 0
+  }
+  ATensor <- array(unlist(AList1), dim = c(n, n, m))
   AMLqE <- apply(ATensor, c(1, 2), mlqe_exp_solver, q)
+  AMLqE <- AMLqE + t(AMLqE)
+  
   result[nD + 2] <- (norm(PBar - AMLqE, "F"))^2/n/(n-1)
   result[3*nD+8] <- (norm(PBar0 - AMLqE, "F"))^2/n/(n-1)
+  
+  
+  ### MLqE ###
+  # ATensor <- array(unlist(AList), dim = c(n, n, m))
+  # AMLqE <- apply(ATensor, c(1, 2), mlqe_exp_solver, q)
+  AList1 <- AList
+  AList1[[1]][upper.tri(AList1[[1]])] <- 0
+  AList1[[2]][upper.tri(AList1[[2]])] <- 0
+  ATensor <- array(unlist(AList1), dim = c(n, n, m))
+  AMLqE <- apply(ATensor, c(1, 2), mlqe_exp_solver, q)
+  AMLqE <- AMLqE + t(AMLqE)
+  
+  
+  
+  
   
   ABarDiagAug <- diag_aug(ABar)
   # ABarDiagAug <- ABar
