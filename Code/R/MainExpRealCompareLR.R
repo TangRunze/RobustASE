@@ -33,7 +33,7 @@ for (m in mVec) {
   errorABarASE <- matrix(0, nD, nIter)
   errorPHatASE <- matrix(0, nD, nIter)
   
-  out <- mclapply(1:nIter, function(x) ExpAllDim(M, m, dVec, AList, ASum, q, isSVD), 
+  out <- mclapply(1:nIter, function(x) ExpAllDimCompareLR(M, m, dVec, AList, ASum, q, isSVD), 
                   mc.cores=nCores)
   out = array(unlist(out), dim = c(2*nD+6, nIter))
   
@@ -58,9 +58,9 @@ for (m in mVec) {
   }
   
   if (isSVD) {
-    fileName = paste("../../Result/result_", dataName, "_new_brute_", "m_", m, "_q_", q, "_svd.RData", sep="")
+    fileName = paste("../../Result/result_", dataName, "_compareLR_brute_", "m_", m, "_q_", q, "_svd.RData", sep="")
   } else {
-    fileName = paste("../../Result/result_", dataName, "_new_brute_", "m_", m, "_q_", q, "_eig.RData", sep="")
+    fileName = paste("../../Result/result_", dataName, "_compareLR_brute_", "m_", m, "_q_", q, "_eig.RData", sep="")
   }
   
   save(errorABar, errorABarASE, errorPHat, errorPHatASE,
