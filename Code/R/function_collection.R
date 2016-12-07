@@ -509,7 +509,7 @@ mlqe_exp_solver <- function(xVec, q, tol=1e-6) {
     return(mean(xVec))
   }
   thetaMin = min(xVec)
-#   thetaMax = max(xVec)
+  #   thetaMax = max(xVec)
   thetaMax = mean(xVec)
   if (thetaMin == thetaMax) {
     return(thetaMin)
@@ -821,10 +821,10 @@ MLqESolverExp <- function(data, q) {
   thetaHat <- mean(data)
   thetaInit <- thetaHat
   if (var(data) > 0) {
-#     resultOpti <- optim(par = thetaInit, fn = MLqEObjExp, data = data, q = q,
-#                         gr = MLqEGradExp, method = "BFGS")
-#     resultOpti <- optim(par = thetaInit, fn = MLqEObjExp, data = data, q = q,
-#                         method = "BFGS")
+    #     resultOpti <- optim(par = thetaInit, fn = MLqEObjExp, data = data, q = q,
+    #                         gr = MLqEGradExp, method = "BFGS")
+    #     resultOpti <- optim(par = thetaInit, fn = MLqEObjExp, data = data, q = q,
+    #                         method = "BFGS")
     resultOpti <- optim(par = thetaInit, fn = MLqEObjExp, data = data, q = q)
     thetaHat <- resultOpti$par
   }
@@ -851,7 +851,7 @@ ExpAllDim <- function(M, m, dVec, AList, ASum, q, isSVD=1, PBar=NA) {
   
   n <- dim(ABar)[[1]]
   ATensor <- array(unlist(AList[sampleVec]), dim = c(n, n, m))
-#   AMLqE <- apply(ATensor, c(1, 2), MLqESolverExp, q)  
+  #   AMLqE <- apply(ATensor, c(1, 2), MLqESolverExp, q)  
   AMLqE <- apply(ATensor, c(1, 2), mlqe_exp_solver, q)
   result[nD + 2] <- (norm(PBar - AMLqE, "F"))^2/n/(n-1)
   
@@ -877,7 +877,7 @@ ExpAllDim <- function(M, m, dVec, AList, ASum, q, isSVD=1, PBar=NA) {
     PHat <- regularize(AHat)
     result[1 + iD] <- (norm(PBar - PHat, "F"))^2/n/(n-1)
   }
-
+  
   # AASE1 = ase(ABarDiagAug, dMax, 1)
   # AASE0 = ase(ABarDiagAug, dMax, 0)
   # for (iD in 1:nD) {
@@ -905,7 +905,7 @@ ExpAllDim <- function(M, m, dVec, AList, ASum, q, isSVD=1, PBar=NA) {
   #   (norm(ABarDiagAug, "F"))^2/n/(n-1)
   # }
   
-    
+  
   # (norm(PBar, "F"))^2/n/(n-1)
   # (norm(ABar, "F"))^2/n/(n-1)
   # (norm(AHat, "F"))^2/n/(n-1)
@@ -1233,14 +1233,14 @@ ExpTest <- function(M, AList, q, isSVD=1) {
   }
   PHat <- regularize(AHat)
   result[3] <- (sum((PHat - AList[[1]])^2) + sum((PHat - AList[[2]])^2))/n/(n-1)
-
+  
   ### ASE o MLqE ###
   AMLqEDiagAug <- diag_aug(AMLqE)
   # ZG
   nElbow <- 3
   evalVec <- ase(AMLqEDiagAug, ceiling(n*3/5), isSVD)[[1]]
   dZG <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
-
+  
   AASE <- ase(AMLqEDiagAug, dZG, isSVD)
   if (dZG == 1) {
     AHat <- AASE[[1]]*AASE[[3]]%*%t(AASE[[2]])
@@ -1326,4 +1326,165 @@ ExpAllDimTruncate <- function(M, m, dVec, AList, ASum, q, isSVD=1, PBar=NA) {
     result[nD + 2 + iD] <- (norm(PBar - PHatASE, "F"))^2/n/(n-1)
   }
   return(result)
+}
+
+
+ExpAllDimClassify <- function(AListTrain1, labelTrain1, AListTrain2, labelTrain2,
+                              AListTest, labelTest, dVec, q, isSVD=1) {
+  source("getElbows.R")
+  source("USVT.R")
+  
+  nD <- length(dVec)
+  dMax <- max(dVec)
+  
+  # MLE
+  m1 <- length(AListTrain1)
+  m2 <- length(AListTrain2)
+  ABar1 <- add(AListTrain1)/m1
+  ABar2 <- add(AListTrain2)/m2
+  
+  errorMLE <- 0
+  for (iTest in 1:length(AListTest)) {
+    if (substr(labelTest[iTest], 1, 1) == substr(labelTrain1, 1, 1)) {
+      errorMLE <- errorMLE +
+        (norm(AListTest[[iTest]] - ABar1, "F") > norm(AListTest[[iTest]] - ABar2, "F"))
+    } else {
+      errorMLE <- errorMLE +
+        (norm(AListTest[[iTest]] - ABar1, "F") < norm(AListTest[[iTest]] - ABar2, "F"))
+    }
+  }
+  
+  # MLqE
+  n <- dim(ABar1)[[1]]
+  AListTmp <- AListTrain1
+  for (i in 1:length(AListTmp)) {
+    AListTmp[[i]][upper.tri(AListTmp[[i]], T)] <- 0
+  }
+  ATensor <- array(unlist(AListTmp), dim = c(n, n, length(AListTmp)))
+  AMLqE1 <- apply(ATensor, c(1, 2), mlqe_exp_solver, q)
+  AMLqE1 <- AMLqE1 + t(AMLqE1)
+  
+  AListTmp <- AListTrain2
+  for (i in 1:length(AListTmp)) {
+    AListTmp[[i]][upper.tri(AListTmp[[i]], T)] <- 0
+  }
+  ATensor <- array(unlist(AListTmp), dim = c(n, n, length(AListTmp)))
+  AMLqE2 <- apply(ATensor, c(1, 2), mlqe_exp_solver, q)
+  AMLqE2 <- AMLqE2 + t(AMLqE2)
+  
+  errorMLqE <- 0
+  for (iTest in 1:length(AListTest)) {
+    if (substr(labelTest[iTest], 1, 1) == substr(labelTrain1, 1, 1)) {
+      errorMLqE <- errorMLqE +
+        (norm(AListTest[[iTest]] - AMLqE1, "F") > norm(AListTest[[iTest]] - AMLqE2, "F"))
+    } else {
+      errorMLqE <- errorMLqE +
+        (norm(AListTest[[iTest]] - AMLqE1, "F") < norm(AListTest[[iTest]] - AMLqE2, "F"))
+    }
+  }
+  
+  # MLE_ASE
+  errorMLEASE <- rep(0, 1, nD)
+  
+  ABarDiagAug1 <- diag_aug(ABar1)
+  ABarDiagAug2 <- diag_aug(ABar2)
+  
+  AASE1 = ase(ABarDiagAug1, dMax, isSVD)
+  AASE2 = ase(ABarDiagAug2, dMax, isSVD)
+  for (iD in 1:nD) {
+    d <- dVec[iD]
+    if (d == 1) {
+      AHat1 <- AASE1[[1]]*AASE1[[3]]%*%t(AASE1[[2]])
+      AHat2 <- AASE2[[1]]*AASE2[[3]]%*%t(AASE2[[2]])
+    } else {
+      AHat1 <- AASE1[[3]][, 1:d]%*%diag(AASE1[[1]][1:d])%*%t(AASE1[[2]][ ,1:d])
+      AHat2 <- AASE2[[3]][, 1:d]%*%diag(AASE2[[1]][1:d])%*%t(AASE2[[2]][ ,1:d])
+    }
+    PHat1 <- regularize(AHat1)
+    PHat2 <- regularize(AHat2)
+    for (iTest in 1:length(AListTest)) {
+      if (substr(labelTest[iTest], 1, 1) == substr(labelTrain1, 1, 1)) {
+        errorMLEASE[iD] <- errorMLEASE[iD] +
+          (norm(AListTest[[iTest]] - PHat1, "F") > norm(AListTest[[iTest]] - PHat2, "F"))
+      } else {
+        errorMLEASE[iD] <- errorMLEASE[iD] +
+          (norm(AListTest[[iTest]] - PHat1, "F") < norm(AListTest[[iTest]] - PHat2, "F"))
+      }
+    }
+  }
+  
+  # ZG
+  nElbow <- 3
+  evalVec <- ase(ABarDiagAug1, ceiling(n*3/5), isSVD)[[1]]
+  dZG1 <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
+  evalVec <- ase(ABarDiagAug2, ceiling(n*3/5), isSVD)[[1]]
+  dZG2 <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
+  AHat1 <- AASE1[[3]][, 1:dZG1]%*%diag(AASE1[[1]][1:dZG1])%*%t(AASE1[[2]][ ,1:dZG1])
+  AHat2 <- AASE2[[3]][, 1:dZG2]%*%diag(AASE2[[1]][1:dZG2])%*%t(AASE2[[2]][ ,1:dZG2])
+  PHat1 <- regularize(AHat1)
+  PHat2 <- regularize(AHat2)
+  errorMLEASE_ZG <- 0
+  for (iTest in 1:length(AListTest)) {
+    if (substr(labelTest[iTest], 1, 1) == substr(labelTrain1, 1, 1)) {
+      errorMLEASE_ZG <- errorMLEASE_ZG +
+        (norm(AListTest[[iTest]] - PHat1, "F") > norm(AListTest[[iTest]] - PHat2, "F"))
+    } else {
+      errorMLEASE_ZG <- errorMLEASE_ZG +
+        (norm(AListTest[[iTest]] - PHat1, "F") < norm(AListTest[[iTest]] - PHat2, "F"))
+    }
+  }
+  
+  # MLqE_ASE
+  errorMLqEASE <- rep(0, 1, nD)
+  
+  AMLqEDiagAug1 <- diag_aug(AMLqE1)
+  AMLqEDiagAug2 <- diag_aug(AMLqE2)
+  
+  AASE1 <- ase(AMLqEDiagAug1, dMax, isSVD)
+  AASE2 <- ase(AMLqEDiagAug2, dMax, isSVD)
+  for (iD in 1:nD) {
+    d <- dVec[iD]
+    if (d == 1) {
+      AHat1 <- AASE1[[1]]*AASE1[[3]]%*%t(AASE1[[2]])
+      AHat2 <- AASE2[[1]]*AASE2[[3]]%*%t(AASE2[[2]])
+    } else {
+      AHat1 <- AASE1[[3]][ ,1:d]%*%diag(AASE1[[1]][1:d])%*%t(AASE1[[2]][ ,1:d])
+      AHat2 <- AASE2[[3]][ ,1:d]%*%diag(AASE2[[1]][1:d])%*%t(AASE2[[2]][ ,1:d])
+    }
+    PHatASE1 <- regularize(AHat1)
+    PHatASE2 <- regularize(AHat2)
+    for (iTest in 1:length(AListTest)) {
+      if (substr(labelTest[iTest], 1, 1) == substr(labelTrain1, 1, 1)) {
+        errorMLqEASE[iD] <- errorMLqEASE[iD] +
+          (norm(AListTest[[iTest]] - PHatASE1, "F") > norm(AListTest[[iTest]] - PHatASE2, "F"))
+      } else {
+        errorMLqEASE[iD] <- errorMLqEASE[iD] +
+          (norm(AListTest[[iTest]] - PHatASE1, "F") < norm(AListTest[[iTest]] - PHatASE2, "F"))
+      }
+    }
+  }
+  
+  # ZG
+  nElbow <- 3
+  evalVec <- ase(AMLqEDiagAug1, ceiling(n*3/5), isSVD)[[1]]
+  dZG1 <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
+  evalVec <- ase(AMLqEDiagAug2, ceiling(n*3/5), isSVD)[[1]]
+  dZG2 <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
+  AHat1 <- AASE1[[3]][, 1:dZG1]%*%diag(AASE1[[1]][1:dZG1])%*%t(AASE1[[2]][ ,1:dZG1])
+  AHat2 <- AASE2[[3]][, 1:dZG2]%*%diag(AASE2[[1]][1:dZG2])%*%t(AASE2[[2]][ ,1:dZG2])
+  PHatASE1 <- regularize(AHat1)
+  PHatASE2 <- regularize(AHat2)
+  errorMLqEASE_ZG <- 0
+  for (iTest in 1:length(AListTest)) {
+    if (substr(labelTest[iTest], 1, 1) == substr(labelTrain1, 1, 1)) {
+      errorMLqEASE_ZG <- errorMLEASE_ZG +
+        (norm(AListTest[[iTest]] - PHatASE1, "F") > norm(AListTest[[iTest]] - PHatASE2, "F"))
+    } else {
+      errorMLqEASE_ZG <- errorMLEASE_ZG +
+        (norm(AListTest[[iTest]] - PHatASE1, "F") < norm(AListTest[[iTest]] - PHatASE2, "F"))
+    }
+  }
+  
+  result <- list(errorMLE, errorMLqE, errorMLEASE, errorMLEASE_ZG,
+                 errorMLqEASE, errorMLqEASE_ZG)
 }
