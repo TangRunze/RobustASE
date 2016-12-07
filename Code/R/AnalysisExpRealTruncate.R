@@ -1,7 +1,7 @@
 rm(list = ls())
 setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
 
-mVec <- c(2, 5)
+mVec <- c(3, 4)
 # mVec <- 1
 q <- 0.9
 nIter <- 100
@@ -172,7 +172,7 @@ errorByDimDf <- rbind(
              which = "PHat", m = mVec, d = n),
   data.frame(mse = c(errorPHatASEMean), lci = c(errorPHatASEMean), uci = c(errorPHatASEMean),
              which = "PHatASE", m = rep(mVec,n), d = rep(1:n, each = length(mVec)))) %>%
-  mutate(m = factor(paste0("m=", m), c("m=2", "m=5")))
+  mutate(m = factor(paste0("m=", m), c("m=3", "m=4")))
 
 dimSelectionDf <- rbind(
   data.frame(mse = errorABarZG, lci = errorABarZG, uci = errorABarZG,
@@ -183,7 +183,7 @@ dimSelectionDf <- rbind(
              which = "PHat ZG 3rd", m = mVec, d = dZGPHatMean)) %>%
   #   data.frame(mse = errorPHatUSVT, lci = errorPHatUSVT, uci = errorPHatUSVT,
   # which = "PHat USVT c=0.7", m = mVec, d = dUSVTPHatMean))
-  mutate(m = factor(paste0("m=", m), c("m=2", "m=5")))
+  mutate(m = factor(paste0("m=", m), c("m=3", "m=4")))
 
 
 

@@ -1,31 +1,36 @@
 # Simulation for LLG
-
 rm(list = ls())
-
 setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
 
 source("function_collection.R")
 
-
 # ###### Fix m ######
-m = 10
-# nVec = c(30, 50, 100)
-n = 100
-epsVec = (0:40)/100
-isSVD = 0
+m <- 10
+n <- 100
+epsVec <- (0:20)/100
+isSVD <- 0
 
-nIter = 100
-nCores = 2
+nIter <- 100
+nCores <- 2
 
-iModel = 1
+iModel <- 2
 
-B = matrix(c(4.2, 2, 2, 7), ncol = 2)
-CB = matrix(c(20, 18, 18, 25), ncol = 2)
-rho = c(0.5, 0.5)
-K = length(rho)
-eps = 0
-q = 0.8
-d = 2
+if (iModel == 1) {
+  B = matrix(c(4.2, 2, 2, 7), ncol = 2)
+  CB = matrix(c(20, 18, 18, 25), ncol = 2)
+  rho = c(0.5, 0.5)
+  K = length(rho)
+  eps = 0
+  q = 0.8
+  d = 2
+} else if (iModel == 2) {
+  B <- matrix(c(4, 2, 1, 2, 7, 3, 1, 3, 5), ncol = 3)
+  CB <- matrix(c(10, 8, 2, 8, 15, 7, 2, 7, 12), ncol = 3)
+  rho <- c(0.5, 0.3, 0.2)
+  K <- length(rho)
+  q <- 0.9
+  d <- 3
+}
 
 require(parallel)
 
@@ -33,15 +38,15 @@ for (eps in epsVec) {
   print(eps)
   
   if (isSVD) {
-    fileName = paste("../../Result/result_sim_", iModel, "_d_", d, "_n_", n, "_m_", m,
+    fileName <- paste("../../Result/result_sim_", iModel, "_d_", d, "_n_", n, "_m_", m,
                      "_eps_", eps, "_q_", q, "_svd.RData", sep="")
   } else {
-    fileName = paste("../../Result/result_sim_", iModel, "_d_", d, "_n_", n, "_m_", m,
+    fileName <- paste("../../Result/result_sim_", iModel, "_d_", d, "_n_", n, "_m_", m,
                      "_eps_", eps, "_q_", q, "_eig.RData", sep="")
   }
   
   if (file.exists(fileName) == F) {
-    tau = rep(1:K,n*rho)
+    tau <- rep(1:K, n*rho)
     P = B[tau, tau]
     C = CB[tau, tau]
     diag(P) = 0
