@@ -1,7 +1,8 @@
 rm(list = ls())
 setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
 
-# load("../../Data/gg-v2-14_02_01-deltat50-th0.Rbin")
+# # load("../../Data/gg-v2-14_02_01-deltat50-th0.Rbin")
+# load("../../Data/cov-v2-14_02_01-deltat50-th0.RBin")
 # load("../../Data/tlab.Rbin")
 # fileName <- paste("../../Data/fish.RData")
 # save(dd, tlab, file=fileName)
@@ -9,8 +10,8 @@ setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
 fileName <- paste("../../Data/fish.RData")
 load(fileName)
 
-# i <- 2
-# j <- 5
+# i <- 1
+# j <- 4
 # tmp <- sapply(1:length(dd), function(ind) {dd[[ind]][i, j]})
 # hist(tmp)
 
@@ -31,10 +32,13 @@ dataName <- "fish"
 isSVD <- 0
 
 train1Vec <- c("D2")
-labelTrain1 <- substr(train1Vec, 1, 1)
 train2Vec <- c("G4")
-labelTrain2 <- substr(train2Vec, 1, 1)
 testVec <- c("D3", "G5")
+# train1Vec <- c("D1")
+# train2Vec <- c("G2")
+# testVec <- c("D2", "D3", "G4", "G5")
+labelTrain1 <- substr(train1Vec, 1, 1)
+labelTrain2 <- substr(train2Vec, 1, 1)
 
 nvTrain1 <- sapply(1:length(labelVec), function(i) {labelVec[i] %in% train1Vec})
 nvTrain2 <- sapply(1:length(labelVec), function(i) {labelVec[i] %in% train2Vec})
@@ -56,42 +60,25 @@ nD <- length(dVec)
 out <- ExpAllDimClassify(AListTrain1, labelTrain1, AListTrain2, labelTrain2,
                          AListTest, labelTest, dVec, q, isSVD)
 
-errorABar <- matrix(0, nD, nIter)
-errorPHat <- matrix(0, nD, nIter)
-errorABarASE <- matrix(0, nD, nIter)
-errorPHatASE <- matrix(0, nD, nIter)
-
-out <- mclapply(1:nIter, function(x) ExpAllDim(M, m, dVec, AList, ASum, q, isSVD), 
-                mc.cores=nCores)
-out = array(unlist(out), dim = c(2*nD+6, nIter))
-
-errorABar = out[1,]
-errorABarASE = out[1+(1:nD),]
-errorPHat = out[nD+2,]
-errorPHatASE = out[nD+2+(1:nD),]
-dimZGABar = out[2*nD+3,]
-dimUSVTABar = out[2*nD+4,]
-dimZGPHat = out[2*nD+5,]
-dimUSVTPHat = out[2*nD+6,]
-
-errorABarZG = rep(0, length(dimZGABar))
-errorABarUSVT = rep(0, length(dimUSVTABar))
-errorPHatZG = rep(0, length(dimZGPHat))
-errorPHatUSVT = rep(0, length(dimUSVTPHat))
-for (i in 1:length(dimZGABar)) {
-  errorABarZG[i] = errorABarASE[dimZGABar[i], i]
-  errorABarUSVT[i] = errorABarASE[dimUSVTABar[i], i]
-  errorPHatZG[i] = errorPHatASE[dimZGPHat[i], i]
-  errorPHatUSVT[i] = errorPHatASE[dimUSVTPHat[i], i]
-}
+errorMLE <- out[[1]]/length(AListTest)
+errorMLqE <- out[[2]]/length(AListTest)
+errorMLEASE <- out[[3]]/length(AListTest)
+errorMLEASE_ZG <- out[[4]]/length(AListTest)
+errorMLqEASE <- out[[5]]/length(AListTest)
+errorMLqEASE_ZG <- out[[6]]/length(AListTest)
 
 if (isSVD) {
-  fileName = paste("../../Result/result_", dataName, "_new_brute_", "m_", m, "_q_", q, "_svd.RData", sep="")
+  fileName = paste("../../Result/result_", dataName, "_brute_",
+                   paste(train1Vec, collapse=""), "_",
+                   paste(train2Vec, collapse=""), "_",
+                   paste(testVec, collapse=""), "_q_", q, "_svd.RData", sep="")
 } else {
-  fileName = paste("../../Result/result_", dataName, "_new_brute_", "m_", m, "_q_", q, "_eig.RData", sep="")
+  fileName = paste("../../Result/result_", dataName, "_brute_",
+                   paste(train1Vec, collapse=""), "_",
+                   paste(train2Vec, collapse=""), "_",
+                   paste(testVec, collapse=""), "_q_", q, "_eig.RData", sep="")
 }
 
-save(errorABar, errorABarASE, errorPHat, errorPHatASE,
-     errorABarZG, errorABarUSVT, errorPHatZG, errorPHatUSVT, 
-     dimZGABar, dimUSVTABar, dimZGPHat, dimUSVTPHat,
-     n, M, m, dVec, nIter, file=fileName)
+save(errorMLE, errorMLqE, errorMLEASE, errorMLEASE_ZG,
+     errorMLqEASE, errorMLqEASE_ZG, n, dVec, file=fileName)
+
