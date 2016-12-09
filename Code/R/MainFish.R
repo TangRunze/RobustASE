@@ -1,23 +1,34 @@
 rm(list = ls())
-setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
+# setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
+setwd("E:/GitHub/RobustASE/Code/R")
 
 # # load("../../Data/gg-v2-14_02_01-deltat50-th0.Rbin")
-# load("../../Data/cov-v2-14_02_01-deltat50-th0.RBin")
+# # load("../../Data/cov-v2-14_02_01-deltat50-th0.RBin")
+# load("../../Data/cov-v2-14_02_01-deltat4-th0.RBin")
 # load("../../Data/tlab.Rbin")
-# fileName <- paste("../../Data/fish.RData")
+# fileName <- paste("../../Data/fish_4.RData")
+# dd <- lapply(1:(length(dd)), function(i) {abs(dd[[i]])})
 # save(dd, tlab, file=fileName)
 
-fileName <- paste("../../Data/fish.RData")
+# Consider the odd id of graphs to make them independent
+# dd <- dd[seq(1, length(dd), 2)]
+
+# fileName <- paste("../../Data/fish.RData")
+fileName <- paste("../../Data/fish_4.RData")
 load(fileName)
 
+source("function_collection.R")
+require(parallel)
+
+###### Histogram ######
 # i <- 1
 # j <- 4
 # tmp <- sapply(1:length(dd), function(ind) {dd[[ind]][i, j]})
+# nv = (tmp <= 1)
+# tmp = tmp[nv]
 # hist(tmp)
 
-# Consider the odd id of graphs to make them independent
-dd <- dd[seq(1, length(dd), 2)]
-# Make sure every time frame of 50 time belong to the same category
+# Make sure every time frame of 4 time belong to the same category
 labelVec <- rep("0", 1, length(dd))
 for (i in 1:(length(dd))) {
   if (all(tlab[((i - 1)*length(tlab)/length(dd) + 1):(i*length(tlab)/length(dd))]
@@ -26,10 +37,50 @@ for (i in 1:(length(dd))) {
   }
 }
 
+
 n <- dim(dd[[1]])[1]
 q <- 0.9
 dataName <- "fish"
 isSVD <- 0
+
+# Scree-plot
+labelScreePlot <- c("G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8",
+                    "N1", "N2", "N3", "D1", "D2", "D3")
+classScreePlot <- c(rep(1, 8), rep(2, 3), rep(3, 3))
+M <- length(labelScreePlot)
+source("getElbows.R")
+require(irlba)
+dMax = floor(n/2)
+elbMat = matrix(0, M, 3)
+evalMat = matrix(0, M, dMax)
+eval3Mat = matrix(0, M, 3)
+plot(1:dMax, type="n", ylim=c(0,100), xlab="embedding dimension", ylab="eigen value")
+for (i in 1:M) {
+  print(labelScreePlot[i])
+  nv <- sapply(1:length(labelVec), function(iter) {labelVec[iter] == labelScreePlot[i]})
+  AList <- dd[nv]
+  A <- add(AList)/length(AList)
+  vecs <- irlba(A, dMax, dMax)$d
+  # A = as.matrix(A_all[[i]])
+  # vecs = eigs_sym(A, dMax, which = "LM")$values
+  evalMat[i,] <- vecs
+  elb <- getElbows(vecs, plot=F)
+  elbMat[i,] <- elb
+  eval3Mat[i,] <- vecs[elb]
+  # points(vecs, type="l", col="grey")
+  points(vecs, type="l", col=classScreePlot[i]+4)
+  points(elb, vecs[elb], pch=19, col=2:4, cex=1)
+}
+
+# plot(1:20, type="n", ylim=c(0,10), xlab="embedding dimension", ylab="eigen value")
+# for (i in 1:M) {
+#   points(evalMat[i,], type="l", col=(classScreePlot[i]+4))
+#   points(elbMat[i,], evalMat[i,elb], pch=19, col=2:4, cex=1)
+# }
+
+ceiling(median(elbMat[,3]))
+
+
 
 train1Vec <- c("D2")
 train2Vec <- c("G4")
@@ -47,9 +98,6 @@ AListTrain1 <- dd[nvTrain1]
 AListTrain2 <- dd[nvTrain2]
 AListTest <- dd[nvTest]
 labelTest <- labelVec[nvTest]
-
-source("function_collection.R")
-require(parallel)
 
 dVec <- seq(1, n, 5)
 if (dVec[length(dVec)] != n) {
