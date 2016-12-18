@@ -1,6 +1,7 @@
 rm(list = ls())
 # setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
 setwd("E:/GitHub/RobustASE/Code/R")
+# setwd("/cis/home/rtang/RobustASE/Code/R")
 
 # # load("../../Data/gg-v2-14_02_01-deltat50-th0.Rbin")
 # # load("../../Data/cov-v2-14_02_01-deltat50-th0.RBin")
@@ -19,6 +20,7 @@ load(fileName)
 
 source("function_collection.R")
 require(parallel)
+nCores <- 1
 
 ###### Histogram ######
 # i <- 1
@@ -44,33 +46,33 @@ dataName <- "fish"
 isSVD <- 0
 
 # Scree-plot
-labelScreePlot <- c("G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8",
-                    "N1", "N2", "N3", "D1", "D2", "D3")
-classScreePlot <- c(rep(1, 8), rep(2, 3), rep(3, 3))
-M <- length(labelScreePlot)
-source("getElbows.R")
-require(irlba)
-dMax = floor(n/2)
-elbMat = matrix(0, M, 3)
-evalMat = matrix(0, M, dMax)
-eval3Mat = matrix(0, M, 3)
-plot(1:dMax, type="n", ylim=c(0,100), xlab="embedding dimension", ylab="eigen value")
-for (i in 1:M) {
-  print(labelScreePlot[i])
-  nv <- sapply(1:length(labelVec), function(iter) {labelVec[iter] == labelScreePlot[i]})
-  AList <- dd[nv]
-  A <- add(AList)/length(AList)
-  vecs <- irlba(A, dMax, dMax)$d
-  # A = as.matrix(A_all[[i]])
-  # vecs = eigs_sym(A, dMax, which = "LM")$values
-  evalMat[i,] <- vecs
-  elb <- getElbows(vecs, plot=F)
-  elbMat[i,] <- elb
-  eval3Mat[i,] <- vecs[elb]
-  # points(vecs, type="l", col="grey")
-  points(vecs, type="l", col=classScreePlot[i]+4)
-  points(elb, vecs[elb], pch=19, col=2:4, cex=1)
-}
+# labelScreePlot <- c("G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8",
+#                     "N1", "N2", "N3", "D1", "D2", "D3")
+# classScreePlot <- c(rep(1, 8), rep(2, 3), rep(3, 3))
+# M <- length(labelScreePlot)
+# source("getElbows.R")
+# require(irlba)
+# dMax = floor(n/2)
+# elbMat = matrix(0, M, 3)
+# evalMat = matrix(0, M, dMax)
+# eval3Mat = matrix(0, M, 3)
+# plot(1:dMax, type="n", ylim=c(0,100), xlab="embedding dimension", ylab="eigen value")
+# for (i in 1:M) {
+#   print(labelScreePlot[i])
+#   nv <- sapply(1:length(labelVec), function(iter) {labelVec[iter] == labelScreePlot[i]})
+#   AList <- dd[nv]
+#   A <- add(AList)/length(AList)
+#   vecs <- irlba(A, dMax, dMax)$d
+#   # A = as.matrix(A_all[[i]])
+#   # vecs = eigs_sym(A, dMax, which = "LM")$values
+#   evalMat[i,] <- vecs
+#   elb <- getElbows(vecs, plot=F)
+#   elbMat[i,] <- elb
+#   eval3Mat[i,] <- vecs[elb]
+#   # points(vecs, type="l", col="grey")
+#   points(vecs, type="l", col=classScreePlot[i]+4)
+#   points(elb, vecs[elb], pch=19, col=2:4, cex=1)
+# }
 
 # plot(1:20, type="n", ylim=c(0,10), xlab="embedding dimension", ylab="eigen value")
 # for (i in 1:M) {
@@ -78,7 +80,7 @@ for (i in 1:M) {
 #   points(elbMat[i,], evalMat[i,elb], pch=19, col=2:4, cex=1)
 # }
 
-ceiling(median(elbMat[,3]))
+# ceiling(median(elbMat[,3]))
 
 
 
@@ -99,21 +101,21 @@ AListTrain2 <- dd[nvTrain2]
 AListTest <- dd[nvTest]
 labelTest <- labelVec[nvTest]
 
-dVec <- seq(1, n, 5)
+dVec <- seq(1, n, 10)
 if (dVec[length(dVec)] != n) {
   dVec <- c(dVec, n)
 }
 nD <- length(dVec)
 
 out <- ExpAllDimClassify(AListTrain1, labelTrain1, AListTrain2, labelTrain2,
-                         AListTest, labelTest, dVec, q, isSVD)
+                         AListTest, labelTest, dVec, q, nCores, isSVD)
 
-errorMLE <- out[[1]]/length(AListTest)
-errorMLqE <- out[[2]]/length(AListTest)
-errorMLEASE <- out[[3]]/length(AListTest)
-errorMLEASE_ZG <- out[[4]]/length(AListTest)
-errorMLqEASE <- out[[5]]/length(AListTest)
-errorMLqEASE_ZG <- out[[6]]/length(AListTest)
+errorMLEVec <- out[[1]]
+errorMLqEVecVec <- out[[2]]
+errorMLEASEVec <- out[[3]]
+errorMLEASE_ZGVec <- out[[4]]
+errorMLqEASEVec <- out[[5]]
+errorMLqEASE_ZGVec <- out[[6]]
 
 if (isSVD) {
   fileName = paste("../../Result/result_", dataName, "_brute_",

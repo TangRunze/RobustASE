@@ -1330,7 +1330,7 @@ ExpAllDimTruncate <- function(M, m, dVec, AList, ASum, q, isSVD=1, PBar=NA) {
 
 
 ExpAllDimClassify <- function(AListTrain1, labelTrain1, AListTrain2, labelTrain2,
-                              AListTest, labelTest, dVec, q, isSVD=1) {
+                              AListTest, labelTest, dVec, q, ncores=1, isSVD=1) {
   source("getElbows.R")
   source("USVT.R")
   
@@ -1343,16 +1343,14 @@ ExpAllDimClassify <- function(AListTrain1, labelTrain1, AListTrain2, labelTrain2
   ABar1 <- add(AListTrain1)/m1
   ABar2 <- add(AListTrain2)/m2
   
-  errorMLE <- 0
+  errorMLEVec <- rep(0, length(AListTest))
   for (iTest in 1:length(AListTest)) {
     if (substr(labelTest[iTest], 1, 1) == substr(labelTrain1, 1, 1)) {
-      errorMLE <- errorMLE +
-        (norm(AListTest[[iTest]] - ABar1, "F") > norm(AListTest[[iTest]] - ABar2, "F"))
+      errorMLEVec[iTest] <- (norm(AListTest[[iTest]] - ABar1, "F") > norm(AListTest[[iTest]] - ABar2, "F"))
     } else if (substr(labelTest[iTest], 1, 1) == substr(labelTrain2, 1, 1)) {
-      errorMLE <- errorMLE +
-        (norm(AListTest[[iTest]] - ABar1, "F") < norm(AListTest[[iTest]] - ABar2, "F"))
+      errorMLEVec[iTest] <- (norm(AListTest[[iTest]] - ABar1, "F") < norm(AListTest[[iTest]] - ABar2, "F"))
     } else {
-      errorMLE <- errorMLE + "error"
+      errorMLEVec[iTest] <- errorMLEVec[iTest] + "error"
     }
   }
   
@@ -1360,35 +1358,51 @@ ExpAllDimClassify <- function(AListTrain1, labelTrain1, AListTrain2, labelTrain2
   n <- dim(ABar1)[[1]]
   AListTmp <- AListTrain1
   for (i in 1:length(AListTmp)) {
-    AListTmp[[i]][upper.tri(AListTmp[[i]], T)] <- 0
+    AListTmp[[i]][lower.tri(AListTmp[[i]], T)] <- 0
   }
   ATensor <- array(unlist(AListTmp), dim = c(n, n, length(AListTmp)))
-  AMLqE1 <- apply(ATensor, c(1, 2), mlqe_exp_solver, q)
+  # AMLqE1 <- apply(ATensor, c(1, 2), mlqe_exp_solver, q)
+  
+  out <- mclapply(1:(n*(n-1)/2), function(k) {
+    i <- n - 2 - floor(sqrt(-8*(k - 1) + 4*n*(n-1)-7)/2.0 - 0.5);
+    j <- k + i + 1 - n*(n-1)/2 + (n-i)*((n-i)-1)/2;
+    i <- i + 1;
+    mlqe_exp_solver(ATensor[i, j, ], q)}, mc.cores = nCores)
+  
+  AMLqE1 <- matrix(0, n, n)
+  AMLqE1[lower.tri(AMLqE1, diag=FALSE)] <- unlist(out)
   AMLqE1 <- AMLqE1 + t(AMLqE1)
   
   AListTmp <- AListTrain2
   for (i in 1:length(AListTmp)) {
-    AListTmp[[i]][upper.tri(AListTmp[[i]], T)] <- 0
+    AListTmp[[i]][lower.tri(AListTmp[[i]], T)] <- 0
   }
   ATensor <- array(unlist(AListTmp), dim = c(n, n, length(AListTmp)))
-  AMLqE2 <- apply(ATensor, c(1, 2), mlqe_exp_solver, q)
+  # AMLqE2 <- apply(ATensor, c(1, 2), mlqe_exp_solver, q)
+  
+  out <- mclapply(1:(n*(n-1)/2), function(k) {
+    i <- n - 2 - floor(sqrt(-8*(k - 1) + 4*n*(n-1)-7)/2.0 - 0.5);
+    j <- k + i + 1 - n*(n-1)/2 + (n-i)*((n-i)-1)/2;
+    i <- i + 1;
+    mlqe_exp_solver(ATensor[i, j, ], q)}, mc.cores = nCores)
+  
+  AMLqE2 <- matrix(0, n, n)
+  AMLqE2[lower.tri(AMLqE2, diag=FALSE)] <- unlist(out)
   AMLqE2 <- AMLqE2 + t(AMLqE2)
   
-  errorMLqE <- 0
+  errorMLqEVec <- rep(0, length(AListTest))
   for (iTest in 1:length(AListTest)) {
     if (substr(labelTest[iTest], 1, 1) == substr(labelTrain1, 1, 1)) {
-      errorMLqE <- errorMLqE +
-        (norm(AListTest[[iTest]] - AMLqE1, "F") > norm(AListTest[[iTest]] - AMLqE2, "F"))
+      errorMLqEVec[iTest] <- (norm(AListTest[[iTest]] - AMLqE1, "F") > norm(AListTest[[iTest]] - AMLqE2, "F"))
     } else if (substr(labelTest[iTest], 1, 1) == substr(labelTrain2, 1, 1)) {
-      errorMLqE <- errorMLqE +
-        (norm(AListTest[[iTest]] - AMLqE1, "F") < norm(AListTest[[iTest]] - AMLqE2, "F"))
+      errorMLqEVec[iTest] <- (norm(AListTest[[iTest]] - AMLqE1, "F") < norm(AListTest[[iTest]] - AMLqE2, "F"))
     } else {
-      errorMLqE <- errorMLqE + "error"
+      errorMLqEVec[iTest] <- errorMLqEVec[iTest] + "error"
     }
   }
   
   # MLE_ASE
-  errorMLEASE <- rep(0, 1, nD)
+  errorMLEASEVec <- matrix(0, nD, length(AListTest))
   
   ABarDiagAug1 <- diag_aug(ABar1)
   ABarDiagAug2 <- diag_aug(ABar2)
@@ -1396,15 +1410,15 @@ ExpAllDimClassify <- function(AListTrain1, labelTrain1, AListTrain2, labelTrain2
   AASE1 = ase(ABarDiagAug1, dMax, isSVD)
   AASE2 = ase(ABarDiagAug2, dMax, isSVD)
   
-  AListTestZG <- AListTest
+  # AListTestZG <- AListTest
   nElbow <- 3
   AASEList <- AListTest
   for (iTest in 1:length(AListTest)) {
     AASEList[[iTest]] = ase(diag_aug(AListTest[[iTest]]), dMax, isSVD)
-    evalVec <- ase(diag_aug(AListTest[[iTest]]), ceiling(n*3/5), isSVD)[[1]]
-    dZG <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
-    AHat <- AASEList[[iTest]][[3]][, 1:dZG]%*%diag(AASEList[[iTest]][[1]][1:dZG])%*%t(AASEList[[iTest]][[2]][ ,1:dZG])
-    AListTestZG[[iTest]] <- regularize(AHat)
+    # evalVec <- ase(diag_aug(AListTest[[iTest]]), ceiling(n*3/5), isSVD)[[1]]
+    # dZG <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
+    # AHat <- AASEList[[iTest]][[3]][, 1:dZG]%*%diag(AASEList[[iTest]][[1]][1:dZG])%*%t(AASEList[[iTest]][[2]][ ,1:dZG])
+    # AListTestZG[[iTest]] <- regularize(AHat)
   }
   
   for (iD in 1:nD) {
@@ -1426,13 +1440,11 @@ ExpAllDimClassify <- function(AListTrain1, labelTrain1, AListTrain2, labelTrain2
       }
       PHat <- regularize(AHat)
       if (substr(labelTest[iTest], 1, 1) == substr(labelTrain1, 1, 1)) {
-        errorMLEASE[iD] <- errorMLEASE[iD] +
-          (norm(PHat - PHat1, "F") > norm(PHat - PHat2, "F"))
+        errorMLEASEVec[iD, iTest] <- (norm(PHat - PHat1, "F") > norm(PHat - PHat2, "F"))
       } else if (substr(labelTest[iTest], 1, 1) == substr(labelTrain2, 1, 1)) {
-        errorMLEASE[iD] <- errorMLEASE[iD] +
-          (norm(PHat - PHat1, "F") < norm(PHat - PHat2, "F"))
+        errorMLEASEVec[iD, iTest] <- (norm(PHat - PHat1, "F") < norm(PHat - PHat2, "F"))
       } else {
-        errorMLEASE[iD] <- errorMLEASE[iD] + "error"
+        errorMLEASEVec[iD, iTest] <- errorMLEASEVec[iD, iTest] + "error"
       }
     }
   }
@@ -1443,25 +1455,30 @@ ExpAllDimClassify <- function(AListTrain1, labelTrain1, AListTrain2, labelTrain2
   dZG1 <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
   evalVec <- ase(ABarDiagAug2, ceiling(n*3/5), isSVD)[[1]]
   dZG2 <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
-  AHat1 <- AASE1[[3]][, 1:dZG1]%*%diag(AASE1[[1]][1:dZG1])%*%t(AASE1[[2]][ ,1:dZG1])
-  AHat2 <- AASE2[[3]][, 1:dZG2]%*%diag(AASE2[[1]][1:dZG2])%*%t(AASE2[[2]][ ,1:dZG2])
+  d <- max(dZG1, dZG2)
+  AHat1 <- AASE1[[3]][, 1:d]%*%diag(AASE1[[1]][1:d])%*%t(AASE1[[2]][ ,1:d])
+  AHat2 <- AASE2[[3]][, 1:d]%*%diag(AASE2[[1]][1:d])%*%t(AASE2[[2]][ ,1:d])
   PHat1 <- regularize(AHat1)
   PHat2 <- regularize(AHat2)
-  errorMLEASE_ZG <- 0
+  errorMLEASE_ZGVec <- rep(0, length(AListTest))
   for (iTest in 1:length(AListTest)) {
-    if (substr(labelTest[iTest], 1, 1) == substr(labelTrain1, 1, 1)) {
-      errorMLEASE_ZG <- errorMLEASE_ZG +
-        (norm(AListTestZG[[iTest]] - PHat1, "F") > norm(AListTestZG[[iTest]] - PHat2, "F"))
-    } else if (substr(labelTest[iTest], 1, 1) == substr(labelTrain2, 1, 1)) {
-      errorMLEASE_ZG <- errorMLEASE_ZG +
-        (norm(AListTestZG[[iTest]] - PHat1, "F") < norm(AListTestZG[[iTest]] - PHat2, "F"))
+    if (d == 1) {
+      AHat <- AASEList[[iTest]][[1]]*AASEList[[iTest]][[3]]%*%t(AASEList[[iTest]][[2]])
     } else {
-      errorMLEASE_ZG <- errorMLEASE_ZG + "error"
+      AHat <- AASEList[[iTest]][[3]][, 1:d]%*%diag(AASEList[[iTest]][[1]][1:d])%*%t(AASEList[[iTest]][[2]][ ,1:d])
+    }
+    PHat <- regularize(AHat)
+    if (substr(labelTest[iTest], 1, 1) == substr(labelTrain1, 1, 1)) {
+      errorMLEASE_ZGVec[iTest] <- (norm(PHat - PHat1, "F") > norm(PHat - PHat2, "F"))
+    } else if (substr(labelTest[iTest], 1, 1) == substr(labelTrain2, 1, 1)) {
+      errorMLEASE_ZGVec[iTest] <- (norm(PHat - PHat1, "F") < norm(PHat - PHat2, "F"))
+    } else {
+      errorMLEASE_ZGVec[iTest] <- errorMLEASE_ZGVec[iTest] + "error"
     }
   }
   
   # MLqE_ASE
-  errorMLqEASE <- rep(0, 1, nD)
+  errorMLqEASEVec <- matrix(0, nD, length(AListTest))
   
   AMLqEDiagAug1 <- diag_aug(AMLqE1)
   AMLqEDiagAug2 <- diag_aug(AMLqE2)
@@ -1488,13 +1505,11 @@ ExpAllDimClassify <- function(AListTrain1, labelTrain1, AListTrain2, labelTrain2
       }
       PHat <- regularize(AHat)
       if (substr(labelTest[iTest], 1, 1) == substr(labelTrain1, 1, 1)) {
-        errorMLqEASE[iD] <- errorMLqEASE[iD] +
-          (norm(PHat - PHatASE1, "F") > norm(PHat - PHatASE2, "F"))
+        errorMLqEASEVec[iD, iTest] <- (norm(PHat - PHatASE1, "F") > norm(PHat - PHatASE2, "F"))
       } else if (substr(labelTest[iTest], 1, 1) == substr(labelTrain2, 1, 1)) {
-        errorMLqEASE[iD] <- errorMLqEASE[iD] +
-          (norm(PHat - PHatASE1, "F") < norm(PHat - PHatASE2, "F"))
+        errorMLqEASEVec[iD, iTest] <- (norm(PHat - PHatASE1, "F") < norm(PHat - PHatASE2, "F"))
       } else {
-        errorMLqEASE[iD] <- errorMLqEASE[iD] + "error"
+        errorMLqEASEVec[iD, iTest] <- errorMLqEASEVec[iD, iTest] + "error"
       }
     }
   }
@@ -1505,25 +1520,30 @@ ExpAllDimClassify <- function(AListTrain1, labelTrain1, AListTrain2, labelTrain2
   dZG1 <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
   evalVec <- ase(AMLqEDiagAug2, ceiling(n*3/5), isSVD)[[1]]
   dZG2 <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
+  d <- max(dZG1, dZG2)
   AHat1 <- AASE1[[3]][, 1:dZG1]%*%diag(AASE1[[1]][1:dZG1])%*%t(AASE1[[2]][ ,1:dZG1])
   AHat2 <- AASE2[[3]][, 1:dZG2]%*%diag(AASE2[[1]][1:dZG2])%*%t(AASE2[[2]][ ,1:dZG2])
   PHatASE1 <- regularize(AHat1)
   PHatASE2 <- regularize(AHat2)
-  errorMLqEASE_ZG <- 0
+  errorMLqEASE_ZGVec <- rep(0, length(AListTest))
   for (iTest in 1:length(AListTest)) {
-    if (substr(labelTest[iTest], 1, 1) == substr(labelTrain1, 1, 1)) {
-      errorMLqEASE_ZG <- errorMLEASE_ZG +
-        (norm(AListTestZG[[iTest]] - PHatASE1, "F") > norm(AListTestZG[[iTest]] - PHatASE2, "F"))
-    } else if (substr(labelTest[iTest], 1, 1) == substr(labelTrain2, 1, 1)) {
-      errorMLqEASE_ZG <- errorMLEASE_ZG +
-        (norm(AListTestZG[[iTest]] - PHatASE1, "F") < norm(AListTestZG[[iTest]] - PHatASE2, "F"))
+    if (d == 1) {
+      AHat <- AASEList[[iTest]][[1]]*AASEList[[iTest]][[3]]%*%t(AASEList[[iTest]][[2]])
     } else {
-      errorMLqEASE_ZG <- errorMLqEASE_ZG + "error"
+      AHat <- AASEList[[iTest]][[3]][, 1:d]%*%diag(AASEList[[iTest]][[1]][1:d])%*%t(AASEList[[iTest]][[2]][ ,1:d])
+    }
+    PHat <- regularize(AHat)
+    if (substr(labelTest[iTest], 1, 1) == substr(labelTrain1, 1, 1)) {
+      errorMLqEASE_ZGVec[iTest] <- (norm(PHat - PHatASE1, "F") > norm(PHat - PHatASE2, "F"))
+    } else if (substr(labelTest[iTest], 1, 1) == substr(labelTrain2, 1, 1)) {
+      errorMLqEASE_ZGVec[iTest] <- (norm(PHat - PHatASE1, "F") < norm(PHat - PHatASE2, "F"))
+    } else {
+      errorMLqEASE_ZGVec[iTest] <- errorMLqEASE_ZGVec[iTest] + "error"
     }
   }
   
-  result <- list(errorMLE, errorMLqE, errorMLEASE, errorMLEASE_ZG,
-                 errorMLqEASE, errorMLqEASE_ZG)
+  result <- list(errorMLEVec, errorMLqEVec, errorMLEASEVec, errorMLEASE_ZGVec,
+                 errorMLqEASEVec, errorMLqEASE_ZGVec)
 }
 
 
