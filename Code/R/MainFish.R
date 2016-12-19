@@ -111,7 +111,7 @@ out <- ExpAllDimClassify(AListTrain1, labelTrain1, AListTrain2, labelTrain2,
                          AListTest, labelTest, dVec, q, nCores, isSVD)
 
 errorMLEVec <- out[[1]]
-errorMLqEVecVec <- out[[2]]
+errorMLqEVec <- out[[2]]
 errorMLEASEVec <- out[[3]]
 errorMLEASE_ZGVec <- out[[4]]
 errorMLqEASEVec <- out[[5]]
@@ -129,6 +129,6 @@ if (isSVD) {
                    paste(testVec, collapse=""), "_q_", q, "_eig.RData", sep="")
 }
 
-save(errorMLE, errorMLqE, errorMLEASE, errorMLEASE_ZG,
-     errorMLqEASE, errorMLqEASE_ZG, n, dVec, file=fileName)
+save(errorMLEVec, errorMLqEVec, errorMLEASEVec, errorMLEASE_ZGVec,
+     errorMLqEASEVec, errorMLqEASE_ZGVec, n, dVec, file=fileName)
 

@@ -1630,3 +1630,13 @@ ExpAllDimCompareLR <- function(M, m, dVec, AList, ASum, q, isSVD=1) {
   }
   return(result)
 }
+
+
+BuildMcNemarMatrix <- function(xVec, yVec) {
+  testMatrix <- matrix(0, 2, 2)
+  testMatrix[1, 1] <- sum(!(xVec | yVec))
+  testMatrix[1, 2] <- sum(!(xVec | !yVec))
+  testMatrix[2, 1] <- sum(!(!xVec | yVec))
+  testMatrix[2, 2] <- sum(!(!xVec | !yVec))
+  return(testMatrix)
+}

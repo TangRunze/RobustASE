@@ -1,5 +1,6 @@
 rm(list = ls())
-setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
+# setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
+setwd("E:/GitHub/RobustASE/Code/R")
 
 q <- 0.9
 dataName <- "fish"
@@ -28,10 +29,23 @@ if (isSVD) {
 
 load(fileName)
 
-errorMLE
-errorMLqE
-errorMLEASE
-errorMLqEASE
+source("function_collection.R")
 
-errorMLEASE_ZG
-errorMLqEASE_ZG
+mean(errorMLEVec)
+mean(errorMLqEVec)
+mcnemar.test(BuildMcNemarMatrix(errorMLEVec, errorMLqEVec))
+
+mean(errorMLEVec)
+rowMeans(errorMLEASEVec)
+
+mean(errorMLEVec)
+mean(errorMLEASE_ZGVec)
+mcnemar.test(BuildMcNemarMatrix(errorMLEVec, errorMLEASE_ZGVec))
+
+mean(errorMLqEVec)
+rowMeans(errorMLqEASEVec)
+
+mean(errorMLqEVec)
+mean(errorMLqEASE_ZGVec)
+mcnemar.test(BuildMcNemarMatrix(errorMLqEVec, errorMLqEASE_ZGVec))
+
