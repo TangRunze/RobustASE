@@ -1,6 +1,6 @@
 rm(list = ls())
-setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
-# setwd("E:/GitHub/RobustASE/Code/R")
+# setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
+setwd("E:/GitHub/RobustASE/Code/R")
 
 # # load("../../Data/gg-v2-14_02_01-deltat50-th0.Rbin")
 # # load("../../Data/cov-v2-14_02_01-deltat50-th0.RBin")
@@ -18,6 +18,9 @@ ptm <- proc.time()
 # fileName <- paste("../../Data/fish.RData")
 fileName <- paste("../../Data/fish_4.RData")
 load(fileName)
+
+# require(Matrix)
+# image(Matrix(dd[[1]]))
 
 source("function_collection.R")
 require(parallel)
