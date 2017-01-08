@@ -38,7 +38,13 @@ for (i in 1:(length(dd))) {
 labelVec <- labelVec[nv]
 dd <- dd[nv]
 
-set.seed(12345)
+tmp <- sapply(1:(length(dd)), function(iIter) {mean(dd[[iIter]])})
+nv <- (tmp < 0.01)
+labelVec <- labelVec[nv]
+dd <- dd[nv]
+
+
+set.seed(12346)
 nv <- sample(1:length(labelVec), 50)
 
 labelVec <- labelVec[nv]
@@ -136,6 +142,7 @@ while ((abs(errDiff) > maxTol) && (iIter < maxIter)) {
     evalVec <- ase(ABarDiagAug, ceiling(n*3/5), isSVD)[[1]]
     dZG <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
     d <- dZG
+    dZG <- 2
     AASE <- ase(ABarDiagAug, dZG, isSVD)
     AHat <- AASE[[3]]%*%diag(AASE[[1]])%*%t(AASE[[2]])
     muList[[k]] <- regularize(AHat)
@@ -159,4 +166,9 @@ while ((abs(errDiff) > maxTol) && (iIter < maxIter)) {
 
 
 
+tauMLE
+tauMLEASE
 
+mean(muList[[1]])
+mean(muList[[2]])
+mean(muList[[3]])

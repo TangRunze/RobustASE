@@ -1666,7 +1666,7 @@ ExpKMeans <- function(AList, K, q, labelVec, nCores=1, isSVD=1) {
   }
   tau0 <- sapply(1:length(AList), function(iter) {which.min(dist[, iter])})
   err0 <- sum(apply(dist, 2, min))
-  maxTol <- (1e-3)*err0
+  maxTol <- (1e-6)*err0
   
   maxIter <- 100
   
@@ -1818,13 +1818,6 @@ ExpKMeans <- function(AList, K, q, labelVec, nCores=1, isSVD=1) {
   while ((abs(errDiff) > maxTol) && (iIter < maxIter)) {
     iIter <- iIter + 1
     print(iIter)
-
-    for (k in 1:K) {
-      nv <- (tau == k)
-
-      muList[[k]] <- AMLqE
-    }
-
 
     # Average
     for (k in 1:K) {

@@ -3,77 +3,91 @@ rm(list = ls())
 setwd("E:/GitHub/RobustASE/Code/R")
 
 source("function_collection.R")
-require(parallel)
 
+nSample <- 100
+iReplicate <- 5
+K <- 3
 q <- 0.9
 dataName <- "fish"
 isSVD <- 0
 
 if (isSVD) {
-  fileName = paste("../../Result/result_", dataName, "_dissimilarity", "_q_", q, "_svd.RData", sep="")
+  fileName = paste("../../Result/result_", dataName, "_kmeans", "_q_", q, "_sample_", nSample,
+                   "_K_", K, "_replicate_", iReplicate, "_svd.RData", sep="")
 } else {
-  fileName = paste("../../Result/result_", dataName, "_dissimilarity", "_q_", q, "_eig.RData", sep="")
+  fileName = paste("../../Result/result_", dataName, "_kmeans", "_q_", q, "_sample_", nSample,
+                   "_K_", K, "_replicate_", iReplicate, "_eig.RData", sep="")
 }
-
 load(fileName)
 
-for (i in 1:length(MLEList)) {
-  diag(MLEList[[i]]) <- 0
-}
+require(fossil)
+adj.rand.index(tauMLE, tauStar)
+adj.rand.index(tauMLqE, tauStar)
+adj.rand.index(tauMLEASE, tauStar)
+adj.rand.index(tauMLqEASE, tauStar)
 
-disMatrixMLE <- matrix(0, M, M)
-disMatrixMLqE <- matrix(0, M, M)
-disMatrixMLEASE <- matrix(0, M, M)
-disMatrixMLqEASE <- matrix(0, M, M)
-for (i in 1:(M - 1)) {
-  for (j in (i + 1):M) {
-    disMatrixMLE[i, j] <- norm(MLEList[[i]] - MLEList[[j]], "F")
-    disMatrixMLE[j, i] <- disMatrixMLE[i, j]
-    disMatrixMLqE[i, j] <- norm(MLqEList[[i]] - MLqEList[[j]], "F")
-    disMatrixMLqE[j, i] <- disMatrixMLqE[i, j]
-    disMatrixMLEASE[i, j] <- norm(MLEASEList[[i]] - MLEASEList[[j]], "F")
-    disMatrixMLEASE[j, i] <- disMatrixMLEASE[i, j]
-    disMatrixMLqEASE[i, j] <- norm(MLqEASEList[[i]] - MLqEASEList[[j]], "F")
-    disMatrixMLqEASE[j, i] <- disMatrixMLqEASE[i, j]
-  }
-}
+mean(muListMLE[[1]])
+mean(muListMLE[[2]])
+mean(muListMLE[[3]])
 
-xMLE <- t(sapply(1:length(MLEList), function(i) {as.vector(MLEList[[i]])}))
-xMLqE <- t(sapply(1:length(MLqEList), function(i) {as.vector(MLqEList[[i]])}))
-xMLEASE <- t(sapply(1:length(MLEASEList), function(i) {as.vector(MLEASEList[[i]])}))
-xMLqEASE <- t(sapply(1:length(MLqEASEList), function(i) {as.vector(MLqEASEList[[i]])}))
-
-# strMethod <- "euclidean"
-# strMethod <- "maximum"
-strMethod <- "manhattan"
-hMLE <- hclust(dist(xMLE, method=strMethod))
-plot(hMLE, labels = labelScreePlot, main=paste0("MLE, ", strMethod))
-hMLqE <- hclust(dist(xMLqE, method=strMethod))
-plot(hMLqE, labels = labelScreePlot, main=paste0("MLqE, ", strMethod))
-hMLEASE <- hclust(dist(xMLEASE, method=strMethod))
-plot(hMLEASE, labels = labelScreePlot, main=paste0("MLEASE, ", strMethod))
-hMLqEASE <- hclust(dist(xMLqEASE, method=strMethod))
-plot(hMLqEASE, labels = labelScreePlot, main=paste0("MLqEASE, ", strMethod))
-
-
-hMLE <- hclust(as.dist(disMatrixMLE))
-plot(hMLE, labels = labelScreePlot, main="MLE")
-hMLqE <- hclust(as.dist(disMatrixMLqE))
-plot(hMLqE, labels = labelScreePlot, main="MLqE")
-hMLEASE <- hclust(as.dist(disMatrixMLEASE))
-plot(hMLEASE, labels = labelScreePlot, main="MLEASE")
-hMLqEASE <- hclust(as.dist(disMatrixMLqEASE))
-plot(hMLqEASE, labels = labelScreePlot, main="MLqEASE")
-
-tmp <- MLEList
+tauMLE
 
 
 
-tmp <- matrix(c(1,2,3,4,5,6,7,8), ncol=2)
-dist(tmp, method="euclidean")
+# 
+# fileName <- paste("../../Data/fish_4.RData")
+# load(fileName)
+# labelVec <- rep("0", 1, length(dd))
+# for (i in 1:(length(dd))) {
+#   if (all(tlab[((i - 1)*length(tlab)/length(dd) + 1):(i*length(tlab)/length(dd))]
+#           == tlab[(i*length(tlab)/length(dd))])) {
+#     labelVec[i] <- tlab[(i*length(tlab)/length(dd))]
+#   }
+# }
+# # Scree-plot
+# labelScreePlot <- c("G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8",
+#                     "N1", "N2", "N3", "D1", "D2", "D3")
+# classScreePlot <- c(rep(1, 8), rep(2, 3), rep(3, 3))
+# M <- length(labelScreePlot)
+# nv <- rep(F, length(dd))
+# for (i in 1:(length(dd))) {
+#   if (labelVec[i] %in% labelScreePlot) {
+#     nv[i] <- T
+#   }
+# }
+# labelVec <- labelVec[nv]
+# dd <- dd[nv]
+# 
+# tmp <- sapply(1:(length(dd)), function(iIter) {mean(dd[[iIter]])})
+# hist(tmp[tmp<0.05])
+# 
+# 
+# labelVec <- labelVec[indSample]
+# dd <- dd[indSample]
+# 
+# A1 <- add(dd[tauStar==1])/sum(tauStar==1)
+# A2 <- add(dd[tauStar==2])/sum(tauStar==2)
+# A3 <- add(dd[tauStar==3])/sum(tauStar==3)
+# 
+# mean(A1)
+# mean(A2)
+# mean(A3)
+# 
+# 
+# 
+# tauMLE
+# mean(muListMLE[[1]])
+# mean(muListMLE[[2]])
+# mean(muListMLE[[3]])
+# 
+# 
+# indSample[15]
+# mean(dd[[15]])
+# 
+# labelVec[(1:100)[sapply(1:100, function(iIter) {mean(dd[[iIter]])}) > 0.1]]
+# (sapply(1:100, function(iIter) {mean(dd[[iIter]])}))[(1:100)[sapply(1:100, function(iIter) {mean(dd[[iIter]])}) > 0.1]]
 
 
-MLEList[[1]][1:5,1:5]
-MLqEList[[1]][1:5,1:5]
-MLEASEList[[1]][1:5,1:5]
-MLqEASEList[[1]][1:5,1:5]
+
+
+
