@@ -1,6 +1,6 @@
 rm(list = ls())
-# setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
-setwd("E:/GitHub/RobustASE/Code/R")
+setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
+# setwd("E:/GitHub/RobustASE/Code/R")
 
 q <- 0.9
 dataName <- "fish"
@@ -48,4 +48,3 @@ rowMeans(errorMLqEASEVec)
 mean(errorMLqEVec)
 mean(errorMLqEASE_ZGVec)
 mcnemar.test(BuildMcNemarMatrix(errorMLqEVec, errorMLqEASE_ZGVec))
-

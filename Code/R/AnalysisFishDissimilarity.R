@@ -38,6 +38,13 @@ for (i in 1:(M - 1)) {
   }
 }
 
+require(Matrix)
+image(Matrix(disMatrixMLE))
+image(Matrix(disMatrixMLqE))
+image(Matrix(disMatrixMLEASE))
+image(Matrix(disMatrixMLqEASE))
+
+
 xMLE <- t(sapply(1:length(MLEList), function(i) {as.vector(MLEList[[i]])}))
 xMLqE <- t(sapply(1:length(MLqEList), function(i) {as.vector(MLqEList[[i]])}))
 xMLEASE <- t(sapply(1:length(MLEASEList), function(i) {as.vector(MLEASEList[[i]])}))
