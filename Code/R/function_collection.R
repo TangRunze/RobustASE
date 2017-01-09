@@ -1869,3 +1869,224 @@ ExpKMeans <- function(AList, K, q, labelVec, nCores=1, isSVD=1) {
   result <- list(tauMLE, tauMLqE, tauMLEASE, tauMLqEASE, tauStar, muListMLE, muListMLqE, muListMLEASE, muListMLqEASE)
   # result <- list(tauMLE, tauMLEASE, tauStar, muListMLE, muListMLEASE)
 }
+
+
+ExpSimKMeans <- function(AList, K, q, nCores=1, isSVD=1) {
+  n <- dim(AList[[1]])[1]
+  source("getElbows.R")
+  nElbow <- 2
+  for (i in 1:length(AList)) {
+    diag(AList[[i]]) <- 0
+  }
+  muList <- AList[sample(1:length(AList), K)]
+  
+  dist <- matrix(0, K, length(AList))
+  # Assignment
+  for (k in 1:K) {
+    dist[k, ] <- sapply(1:(length(AList)), function(iter) {norm(AList[[iter]] - muList[[k]], "F")^2})
+  }
+  tau0 <- sapply(1:length(AList), function(iter) {which.min(dist[, iter])})
+  err0 <- sum(apply(dist, 2, min))
+  maxTol <- (1e-6)*err0
+  
+  maxIter <- 100
+  
+  ###### MLE ######
+  tau <- tau0
+  errOld <- err0
+  errMin <- errOld
+  tauMLE <- tau
+  errDiff <- maxTol + 1
+  iIter <- 0
+  while ((abs(errDiff) > maxTol) && (iIter < maxIter)) {
+    iIter <- iIter + 1
+    print(iIter)
+    
+    # Average
+    for (k in 1:K) {
+      nv <- (tau == k)
+      AListGroup <- AList[nv]
+      muList[[k]] <- add(AListGroup)/length(AListGroup)
+    }
+    rm(AListGroup)
+    
+    # Assignment
+    for (k in 1:K) {
+      dist[k, ] <- sapply(1:(length(AList)), function(iter) {norm(AList[[iter]] - muList[[k]], "F")^2})
+    }
+    tau <- sapply(1:length(AList), function(iter) {which.min(dist[, iter])})
+    errNew <- sum(apply(dist, 2, min))
+    if (errNew < errMin) {
+      print("Update")
+      errMin <- errNew
+      tauMLE <- tau
+      muListMLE <- muList
+    }
+    errDiff <- errNew - errOld
+    # print(c(errNew, errDiff, maxTol, adj.rand.index(tau, tauStar)))
+    print(c(errNew, errDiff, maxTol))
+    errOld <- errNew
+  }
+  
+  
+  
+  
+  ###### MLqE ######
+  tau <- tau0
+  errOld <- err0
+  errMin <- errOld
+  tauMLqE <- tau
+  errDiff <- maxTol + 1
+  iIter <- 0
+  while ((abs(errDiff) > maxTol) && (iIter < maxIter)) {
+    iIter <- iIter + 1
+    print(iIter)
+    
+    # Average
+    for (k in 1:K) {
+      nv <- (tau == k)
+      AListTmp <- AList[nv]
+      for (i in 1:length(AListTmp)) {
+        AListTmp[[i]][lower.tri(AListTmp[[i]], T)] <- 0
+      }
+      ATensor <- array(unlist(AListTmp), dim = c(n, n, length(AListTmp)))
+      
+      out <- mclapply(1:(n*(n-1)/2), function(k) {
+        i <- n - 2 - floor(sqrt(-8*(k - 1) + 4*n*(n-1)-7)/2.0 - 0.5);
+        j <- k + i + 1 - n*(n-1)/2 + (n-i)*((n-i)-1)/2;
+        i <- i + 1;
+        mlqe_exp_solver(ATensor[i, j, ], q, tol = 1e-3)}, mc.cores = nCores)
+      
+      AMLqE <- matrix(0, n, n)
+      AMLqE[lower.tri(AMLqE, diag=FALSE)] <- unlist(out)
+      AMLqE <- AMLqE + t(AMLqE)
+      muList[[k]] <- AMLqE
+    }
+    
+    
+    # Assignment
+    for (k in 1:K) {
+      dist[k, ] <- sapply(1:(length(AList)), function(iter) {norm(AList[[iter]] - muList[[k]], "F")^2})
+    }
+    tau <- sapply(1:length(AList), function(iter) {which.min(dist[, iter])})
+    errNew <- sum(apply(dist, 2, min))
+    if (errNew < errMin) {
+      print("Update")
+      errMin <- errNew
+      tauMLqE <- tau
+      muListMLqE <- muList
+    }
+    errDiff <- errNew - errOld
+    # print(c(errNew, errDiff, maxTol, adj.rand.index(tau, tauStar)))
+    print(c(errNew, errDiff, maxTol))
+    errOld <- errNew
+  }
+  rm(AListTmp)
+  
+  ###### MLE_ASE ######
+  tau <- tau0
+  errOld <- err0
+  errMin <- errOld
+  tauMLEASE <- tau
+  errDiff <- maxTol + 1
+  iIter <- 0
+  while ((abs(errDiff) > maxTol) && (iIter < maxIter)) {
+    iIter <- iIter + 1
+    print(iIter)
+    
+    # Average
+    for (k in 1:K) {
+      nv <- (tau == k)
+      AListGroup <- AList[nv]
+      ABar <- add(AListGroup)/length(AListGroup)
+      ABarDiagAug <- diag_aug(ABar)
+      evalVec <- ase(ABarDiagAug, ceiling(n*3/5), isSVD)[[1]]
+      dZG <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
+      d <- dZG
+      AASE <- ase(ABarDiagAug, dZG, isSVD)
+      AHat <- AASE[[3]]%*%diag(AASE[[1]])%*%t(AASE[[2]])
+      muList[[k]] <- regularize(AHat)
+    }
+    
+    # Assignment
+    for (k in 1:K) {
+      dist[k, ] <- sapply(1:(length(AList)), function(iter) {norm(AList[[iter]] - muList[[k]], "F")^2})
+    }
+    tau <- sapply(1:length(AList), function(iter) {which.min(dist[, iter])})
+    errNew <- sum(apply(dist, 2, min))
+    if (errNew < errMin) {
+      print("Update")
+      errMin <- errNew
+      tauMLEASE <- tau
+      muListMLEASE <- muList
+    }
+    errDiff <- errNew - errOld
+    # print(c(errNew, errDiff, maxTol, adj.rand.index(tau, tauStar)))
+    print(c(errNew, errDiff, maxTol))
+    errOld <- errNew
+  }
+  
+  
+  
+  
+  ###### MLqE_ASE ######
+  tau <- tau0
+  errOld <- err0
+  errMin <- errOld
+  tauMLqEASE <- tau
+  errDiff <- maxTol + 1
+  iIter <- 0
+  while ((abs(errDiff) > maxTol) && (iIter < maxIter)) {
+    iIter <- iIter + 1
+    print(iIter)
+    
+    # Average
+    for (k in 1:K) {
+      nv <- (tau == k)
+      AListTmp <- AList[nv]
+      for (i in 1:length(AListTmp)) {
+        AListTmp[[i]][lower.tri(AListTmp[[i]], T)] <- 0
+      }
+      ATensor <- array(unlist(AListTmp), dim = c(n, n, length(AListTmp)))
+      
+      out <- mclapply(1:(n*(n-1)/2), function(k) {
+        i <- n - 2 - floor(sqrt(-8*(k - 1) + 4*n*(n-1)-7)/2.0 - 0.5);
+        j <- k + i + 1 - n*(n-1)/2 + (n-i)*((n-i)-1)/2;
+        i <- i + 1;
+        mlqe_exp_solver(ATensor[i, j, ], q, tol = 1e-3)}, mc.cores = nCores)
+      
+      AMLqE <- matrix(0, n, n)
+      AMLqE[lower.tri(AMLqE, diag=FALSE)] <- unlist(out)
+      AMLqE <- AMLqE + t(AMLqE)
+      
+      AMLqEDiagAug <- diag_aug(AMLqE)
+      evalVec <- ase(AMLqEDiagAug, ceiling(n*3/5), isSVD)[[1]]
+      dZG <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
+      d <- dZG
+      AASE <- ase(AMLqEDiagAug, dZG, isSVD)
+      AHat <- AASE[[3]]%*%diag(AASE[[1]])%*%t(AASE[[2]])
+      muList[[k]] <- regularize(AHat)
+    }
+    
+    # Assignment
+    for (k in 1:K) {
+      dist[k, ] <- sapply(1:(length(AList)), function(iter) {norm(AList[[iter]] - muList[[k]], "F")^2})
+    }
+    tau <- sapply(1:length(AList), function(iter) {which.min(dist[, iter])})
+    errNew <- sum(apply(dist, 2, min))
+    if (errNew < errMin) {
+      print("Update")
+      errMin <- errNew
+      tauMLqEASE <- tau
+      muListMLqEASE <- muList
+    }
+    errDiff <- errNew - errOld
+    # print(c(errNew, errDiff, maxTol, adj.rand.index(tau, tauStar)))
+    print(c(errNew, errDiff, maxTol))
+    errOld <- errNew
+  }
+  
+  
+  result <- list(tauMLE, tauMLqE, tauMLEASE, tauMLqEASE, muListMLE, muListMLqE, muListMLEASE, muListMLqEASE)
+  # result <- list(tauMLE, tauMLEASE, tauStar, muListMLE, muListMLEASE)
+}
