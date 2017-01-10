@@ -1984,6 +1984,21 @@ ExpSimKMeans <- function(AList, K, q, nCores=1, isSVD=1) {
   rm(AListTmp)
   
   ###### MLE_ASE ######
+  AList0 <- AList
+  for (i in 1:length(AList)) {
+    # d <- 55
+    d <- 10
+    AASE <- ase(AList[[i]], d, isSVD)
+    if (d == 1) {
+      AHat <- AASE[[1]]*AASE[[3]]%*%t(AASE[[2]])
+    } else {
+      AHat <- AASE[[3]][ ,1:d]%*%diag(AASE[[1]][1:d])%*%t(AASE[[2]][ ,1:d])
+    }
+    AList[[i]] <- regularize(AHat)
+  }
+  
+  
+  
   tau <- tau0
   errOld <- err0
   errMin <- errOld
@@ -2025,8 +2040,6 @@ ExpSimKMeans <- function(AList, K, q, nCores=1, isSVD=1) {
     print(c(errNew, errDiff, maxTol))
     errOld <- errNew
   }
-  
-  
   
   
   ###### MLqE_ASE ######
