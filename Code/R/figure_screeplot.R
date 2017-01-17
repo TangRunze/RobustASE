@@ -119,6 +119,10 @@ for (iData in 1:length(dataNameVec)) {
          # plot=gg+theme(text=element_text(size=10,family="CM Roman")),
          width=5.5,height=2.5)
   
+  ggsave(paste0("../../Result/corr_data_eval_", dataName, ".png"),
+         plot=gg+theme(text=element_text(size=10,family="Times")),
+         # plot=gg+theme(text=element_text(size=10,family="CM Roman")),
+         width=5.5,height=2.5)
 }
 
 
@@ -192,4 +196,8 @@ for (iData in 1:length(dataNameVec)) {
          # plot=gg+theme(text=element_text(size=10,family="CM Roman")),
          width=5.5,height=2.5)
   
+  ggsave(paste0("../../Result/corr_data_eval_", dataName, "_unweighted.png"),
+         plot=gg+theme(text=element_text(size=10,family="Times")),
+         # plot=gg+theme(text=element_text(size=10,family="CM Roman")),
+         width=5.5,height=2.5)
 }
