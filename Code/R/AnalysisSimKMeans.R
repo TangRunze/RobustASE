@@ -2,11 +2,11 @@ rm(list = ls())
 setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
 # setwd("E:/GitHub/RobustASE/Code/R")
 
-m <- 100
+m <- 10
 n <- 200
 eps <- 0.2
-q <- 0.9
-iReplicate <- 1
+q <- 0.8
+iReplicate <- 5
 isSVD <- 0
 
 if (isSVD) {

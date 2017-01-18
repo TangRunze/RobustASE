@@ -6,12 +6,12 @@ setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
 nCores <- 2
 
 K <- 3
-m <- 100
+m <- 10
 n <- 200
 rho <- c(0.6, 0.4)
-eps <- 0.1
+eps <- 0.2
 
-q <- 0.9
+q <- 0.8
 isSVD <- 0
 
 

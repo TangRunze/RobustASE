@@ -1563,7 +1563,8 @@ ExpAllDimCompareLR <- function(M, m, dVec, AList, ASum, q, isSVD=1) {
   
   sampleVec <- sample.int(M, m)
   ABar <- add(AList[sampleVec])
-  PBar <- (ASum - ABar)/(M - m)
+  # PBar <- (ASum - ABar)/(M - m)
+  PBar <- ASum/M
   
   PBarDiagAug <- diag_aug(PBar)
   nElbow <- 3

@@ -1,13 +1,13 @@
 rm(list = ls())
 setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
 
-mVec <- c(2, 5)
+mVec <- c(20, 50)
 # mVec <- 1
 q <- 0.9
-nIter <- 2
+nIter <- 100
 nCores <- 2
-# dataName <- "desikan"
-dataName <- "CPAC200"
+dataName <- "desikan"
+# dataName <- "CPAC200"
 # dataName <- "Talairach"
 
 isSVD <- 0
@@ -15,7 +15,7 @@ isSVD <- 0
 source("function_collection.R")
 require(parallel)
 
-tmpList <- ReadDataWeighted(dataName, DA = F, newGraph = T)
+tmpList <- ReadDataWeighted(dataName, DA = F, newGraph = F)
 AList <- tmpList[[1]]
 n <- tmpList[[2]]
 M <- tmpList[[3]]

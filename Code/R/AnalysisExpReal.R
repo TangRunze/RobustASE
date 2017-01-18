@@ -6,8 +6,8 @@ mVec <- c(1, 2, 5)
 q <- 0.9
 nIter <- 100
 nCores <- 2
-dataName <- "desikan"
-# dataName <- "CPAC200"
+# dataName <- "desikan"
+dataName <- "CPAC200"
 
 isSVD <- 0
 
