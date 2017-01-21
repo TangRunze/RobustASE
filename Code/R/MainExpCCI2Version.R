@@ -15,11 +15,11 @@ nCores <- 2
 isSVD <- 0
 isWeighted <- 1
 
-# # dataName2 <- "migraine"
+# # dataName2 <- "migrain"
 # dataName2 <- "ndmg"
 # dataName1 <- "m2g"
 
-dataNameVec <- c("migraine", "ndmg", "m2g")
+dataNameVec <- c("migrain", "ndmg", "m2g")
 for (dataName1 in dataNameVec) {
   for (dataName2 in dataNameVec) {
     
