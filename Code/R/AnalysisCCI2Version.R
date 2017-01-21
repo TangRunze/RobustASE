@@ -159,35 +159,35 @@ for (iM in 1:length(mVec)) {
   errorMLqEZG[iM] <- (y2-y1)/(x2-x1)*(x-x1)+y1
 }
 
-# errorByDimDf <- rbind(
-#   data.frame(mse = errorMLEMean, lci = errorMLELB, uci = errorMLEUB,
-#              which = "ABar", m = mVec, d = 1),
-#   data.frame(mse = errorMLEMean, lci = errorMLELB, uci = errorMLEUB,
-#              which = "ABar", m = mVec, d = n),
-#   data.frame(mse = c(errorMLEASEMean), lci = c(errorMLEASELB), uci = c(errorMLEASEUB),
-#              which = "ABarASE", m = rep(mVec,n), d = rep(1:n, each = length(mVec))),
-#   data.frame(mse = errorMLqEMean, lci = errorMLqELB, uci = errorMLqEUB,
-#              which = "PHat", m = mVec, d = 1),
-#   data.frame(mse = errorMLqEMean, lci = errorMLqELB, uci = errorMLqEUB,
-#              which = "PHat", m = mVec, d = n),
-#   data.frame(mse = c(errorMLqEASEMean), lci = c(errorMLqEASELB), uci = c(errorMLqEASEUB),
-#              which = "PHatASE", m = rep(mVec,n), d = rep(1:n, each = length(mVec)))) %>%
-#   mutate(m = factor(paste0("m=", m), c("m=2", "m=5")))
-
 errorByDimDf <- rbind(
-  data.frame(mse = errorMLEMean, lci = errorMLEMean, uci = errorMLEMean,
-             which = "ABar", m = mVec, d = max(dMin, 1)),
-  data.frame(mse = errorMLEMean, lci = errorMLEMean, uci = errorMLEMean,
-             which = "ABar", m = mVec, d = min(dMax, n)),
-  data.frame(mse = c(errorMLEASEMean), lci = c(errorMLEASEMean), uci = c(errorMLEASEMean),
+  data.frame(mse = errorMLEMean, lci = errorMLELB, uci = errorMLEUB,
+             which = "ABar", m = mVec, d = 1),
+  data.frame(mse = errorMLEMean, lci = errorMLELB, uci = errorMLEUB,
+             which = "ABar", m = mVec, d = n),
+  data.frame(mse = c(errorMLEASEMean), lci = c(errorMLEASELB), uci = c(errorMLEASEUB),
              which = "ABarASE", m = rep(mVec,n), d = rep(1:n, each = length(mVec))),
-  data.frame(mse = errorMLqEMean, lci = errorMLqEMean, uci = errorMLqEMean,
-             which = "PHat", m = mVec, d = max(dMin, 1)),
-  data.frame(mse = errorMLqEMean, lci = errorMLqEMean, uci = errorMLqEMean,
-             which = "PHat", m = mVec, d = min(dMax, n)),
-  data.frame(mse = c(errorMLqEASEMean), lci = c(errorMLqEASEMean), uci = c(errorMLqEASEMean),
+  data.frame(mse = errorMLqEMean, lci = errorMLqELB, uci = errorMLqEUB,
+             which = "PHat", m = mVec, d = 1),
+  data.frame(mse = errorMLqEMean, lci = errorMLqELB, uci = errorMLqEUB,
+             which = "PHat", m = mVec, d = n),
+  data.frame(mse = c(errorMLqEASEMean), lci = c(errorMLqEASELB), uci = c(errorMLqEASEUB),
              which = "PHatASE", m = rep(mVec,n), d = rep(1:n, each = length(mVec)))) %>%
-  mutate(m=factor(paste0("m=",m), sapply(mVec, function(m) {paste0("m=", m)})))
+  mutate(m = factor(paste0("m=", m), c("m=2", "m=5")))
+
+# errorByDimDf <- rbind(
+#   data.frame(mse = errorMLEMean, lci = errorMLEMean, uci = errorMLEMean,
+#              which = "ABar", m = mVec, d = max(dMin, 1)),
+#   data.frame(mse = errorMLEMean, lci = errorMLEMean, uci = errorMLEMean,
+#              which = "ABar", m = mVec, d = min(dMax, n)),
+#   data.frame(mse = c(errorMLEASEMean), lci = c(errorMLEASEMean), uci = c(errorMLEASEMean),
+#              which = "ABarASE", m = rep(mVec,n), d = rep(1:n, each = length(mVec))),
+#   data.frame(mse = errorMLqEMean, lci = errorMLqEMean, uci = errorMLqEMean,
+#              which = "PHat", m = mVec, d = max(dMin, 1)),
+#   data.frame(mse = errorMLqEMean, lci = errorMLqEMean, uci = errorMLqEMean,
+#              which = "PHat", m = mVec, d = min(dMax, n)),
+#   data.frame(mse = c(errorMLqEASEMean), lci = c(errorMLqEASEMean), uci = c(errorMLqEASEMean),
+#              which = "PHatASE", m = rep(mVec,n), d = rep(1:n, each = length(mVec)))) %>%
+#   mutate(m=factor(paste0("m=",m), sapply(mVec, function(m) {paste0("m=", m)})))
 
 nv <- ((errorByDimDf$d >= dMin) & (errorByDimDf$d <= dMax))
 errorByDimDf <- errorByDimDf[nv, ]
@@ -203,6 +203,9 @@ dimSelectionDf <- rbind(
              which = "PHat USVT c=0.7", m = mVec, d = dUSVTMLqEMean)) %>%
   mutate(m=factor(paste0("m=",m), sapply(mVec, function(m) {paste0("m=", m)})))
 
+
+
+
 # nv <- ((dimSelectionDf$d >= dMin) & (dimSelectionDf$d <= dMax))
 # dimSelectionDf <- dimSelectionDf[nv, ]
 
@@ -216,11 +219,13 @@ gg <- ggplot(errorByDimDf, aes(x = d, y = mse, linetype = factor(which), shape =
   # geom_point(data = dimSelectionDf, size = 3) +
   # scale_linetype_manual(name = "", values = c(1, 0, 0, 2, 3, 0, 0, 4)) +
   # scale_shape_manual(name = "", values = c(-1, 0, 0, -1, -1, 0, 0, -1)) +
-  scale_linetype_manual(name = "", values = c(1, 2, 3, 4)) +
-  scale_shape_manual(name = "", values = c(-1, -1, -1, -1)) +
+  scale_linetype_manual(name = "", values = c(1, 2, 3, 4),
+                        labels = c("MLE", "MLE_ASE", "MLqE", "MLqE_ASE")) +
+  scale_shape_manual(name = "", values = c(-1, -1, -1, -1),
+                     labels = c("MLE", "MLE_ASE", "MLqE", "MLqE_ASE")) +
   geom_line(alpha = 1, size = lSize) +
   geom_linerange(aes(ymin = lci, ymax = uci), alpha = .5, size = 1) +
-  xlab("Dimension")+ylab("MSE")+
+  xlab("dimension")+ylab("MSE")+
   theme(strip.text.x = element_text(size=20,face="bold"))+
   theme(axis.text=element_text(size=15),
         axis.title=element_text(size=20,face="bold"))+
@@ -232,6 +237,24 @@ gg <- ggplot(errorByDimDf, aes(x = d, y = mse, linetype = factor(which), shape =
   ggtitle(paste0(dataName1, ", ", dataName2, ", N=", n, ", ", M, " graphs"))+
   theme(legend.key.size=unit(legendSize,"line"))+
   theme(plot.title=element_text(lineheight=.8,size=20,face="bold"))
+
+
+
+# errorByDimDf <- rbind(
+#   data.frame(mse = errorMLEMean, lci = errorMLELB, uci = errorMLEUB,
+#              which = "ABar", m = mVec, d = max(dMin, 1)),
+#   data.frame(mse = errorMLEMean, lci = errorMLELB, uci = errorMLEUB,
+#              which = "ABar", m = mVec, d = min(dMax, n)),
+#   data.frame(mse = c(errorMLEASEMean), lci = c(errorMLEASELB), uci = c(errorMLEASEUB),
+#              which = "ABarASE", m = rep(mVec,n), d = rep(1:n, each = length(mVec))),
+#   data.frame(mse = errorMLqEMean, lci = errorMLqELB, uci = errorMLqEUB,
+#              which = "PHat", m = mVec, d = max(dMin, 1)),
+#   data.frame(mse = errorMLqEMean, lci = errorMLqELB, uci = errorMLqEUB,
+#              which = "PHat", m = mVec, d = min(dMax, n)),
+#   data.frame(mse = c(errorMLqEASEMean), lci = c(errorMLqEASELB), uci = c(errorMLqEASEUB),
+#              which = "PHatASE", m = rep(mVec,n), d = rep(1:n, each = length(mVec)))) %>%
+#   mutate(m=factor(paste0("m=",m), sapply(mVec, function(m) {paste0("m=", m)})))
+
 
 # pp[[3]]=gg
 
