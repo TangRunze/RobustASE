@@ -76,7 +76,7 @@ ReadData <- function(dataName, weighted=T, newGraph=T, DA=F) {
         } else {
           AList[[i]] <- as.matrix((fibergraph.list[[i]] > 0)*1)
         }
-        if (dataName == "migraine") {
+        if (dataName == "migrain") {
           AList[[i]] <- AList[[i]] + t(AList[[i]])
         }
       }

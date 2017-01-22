@@ -19,7 +19,7 @@ isWeighted <- 1
 # dataName2 <- "ndmg"
 # dataName1 <- "m2g"
 
-dataNameVec <- c("migrain", "ndmg", "m2g")
+dataNameVec <- c("migrain", "ndmg", "m2g", "ndmg2")
 for (dataName1 in dataNameVec) {
   for (dataName2 in dataNameVec) {
     
@@ -41,30 +41,6 @@ for (dataName1 in dataNameVec) {
     for (m in mVec) {
       print(c(m, isSVD))
       
-      errorMLE <- matrix(0, nD, nIter)
-      errorMLqE <- matrix(0, nD, nIter)
-      errorMLEASE <- matrix(0, nD, nIter)
-      errorMLqEASE <- matrix(0, nD, nIter)
-      out <- mclapply(1:nIter, function(x) ExpRealAllDim(AList1, m, q, isSVD,
-                                                         weighted = isWeighted,
-                                                         P = add(AList2)/M,
-                                                         dVec = dVec),
-                      mc.cores=nCores)
-      out <- array(unlist(out), dim = c(2*nD+10, nIter))
-      
-      errorMLE <- out[1, ]
-      errorMLEASE <- out[1+(1:nD), ]
-      errorMLqE <- out[nD+2, ]
-      errorMLqEASE <- out[nD+2+(1:nD), ]
-      dimZGMLE <- out[2*nD+3, ]
-      dimUSVTMLE <- out[2*nD+4, ]
-      dimZGMLqE <- out[2*nD+5, ]
-      dimUSVTMLqE <- out[2*nD+6, ]
-      errorMLEASEZG <- out[2*nD+7, ]
-      errorMLEASEUSVT <- out[2*nD+8, ]
-      errorMLqEASEZG <- out[2*nD+9, ]
-      errorMLqEASEUSVT <- out[2*nD+10, ]
-      
       if (isSVD) {
         strSVD <- "SVD"
       } else {
@@ -79,10 +55,37 @@ for (dataName1 in dataNameVec) {
                         dataName2, "_", strWeighted,
                         "_", "m_", m, "_q_", q, "_", strSVD, ".RData")
       
-      save(errorMLE, errorMLEASE, errorMLqE, errorMLqEASE,
-           errorMLEASEZG, errorMLEASEUSVT, errorMLqEASEZG, errorMLqEASEUSVT, 
-           dimZGMLE, dimUSVTMLE, dimZGMLqE, dimUSVTMLqE,
-           n, M, m, dVec, isWeighted, nIter, file=fileName)
+      if (!(file.exists(fileName))) {
+        
+        errorMLE <- matrix(0, nD, nIter)
+        errorMLqE <- matrix(0, nD, nIter)
+        errorMLEASE <- matrix(0, nD, nIter)
+        errorMLqEASE <- matrix(0, nD, nIter)
+        out <- mclapply(1:nIter, function(x) ExpRealAllDim(AList1, m, q, isSVD,
+                                                           weighted = isWeighted,
+                                                           P = add(AList2)/M,
+                                                           dVec = dVec),
+                        mc.cores=nCores)
+        out <- array(unlist(out), dim = c(2*nD+10, nIter))
+        
+        errorMLE <- out[1, ]
+        errorMLEASE <- out[1+(1:nD), ]
+        errorMLqE <- out[nD+2, ]
+        errorMLqEASE <- out[nD+2+(1:nD), ]
+        dimZGMLE <- out[2*nD+3, ]
+        dimUSVTMLE <- out[2*nD+4, ]
+        dimZGMLqE <- out[2*nD+5, ]
+        dimUSVTMLqE <- out[2*nD+6, ]
+        errorMLEASEZG <- out[2*nD+7, ]
+        errorMLEASEUSVT <- out[2*nD+8, ]
+        errorMLqEASEZG <- out[2*nD+9, ]
+        errorMLqEASEUSVT <- out[2*nD+10, ]
+        
+        save(errorMLE, errorMLEASE, errorMLqE, errorMLqEASE,
+             errorMLEASEZG, errorMLEASEUSVT, errorMLqEASEZG, errorMLqEASEUSVT, 
+             dimZGMLE, dimUSVTMLE, dimZGMLqE, dimUSVTMLqE,
+             n, M, m, dVec, isWeighted, nIter, file=fileName)
+      }
     }
     
   }

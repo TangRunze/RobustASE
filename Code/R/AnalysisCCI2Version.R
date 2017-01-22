@@ -41,7 +41,7 @@ if (isWeighted) {
 }
 
 
-dataNameVec <- c("migrain", "ndmg", "m2g")
+dataNameVec <- c("migrain", "ndmg", "m2g", "ndmg2")
 for (dataName1 in dataNameVec) {
   for (dataName2 in dataNameVec) {
     for (iM in 1:length(mVec)) {
