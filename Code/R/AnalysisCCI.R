@@ -5,7 +5,7 @@ library(lattice)
 
 
 ###### Parameter Setting ######
-dataNameVec <- c("migrain", "ndmg", "m2g")
+dataNameVec <- c("migrain", "ndmg", "m2g", "ndmg2")
 isWeighted <- 1
 
 if (isWeighted) {
@@ -46,8 +46,8 @@ for (iData in 1:length(dataNameVec)) {
 
 xVec <- sapply(1:M, function(iIter) {AList[[iIter]]})
 xVec <- c(xVec)
-# hist(xVec)
-hist(xVec[xVec < 10])
+hist(xVec)
+# hist(xVec[xVec < 10])
 
 
 
