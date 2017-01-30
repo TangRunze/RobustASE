@@ -1,14 +1,110 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
-\bibitem{neurodata}
-Neurodata’s mri to graphs pipeline.
-\newblock \url{http://m2g.io}.
-\newblock Accessed: 2016-05-23.
+\bibitem{bickel2001mathematical}
+P.J. Bickel and K.A. Doksum.
+\newblock {\em Mathematical Statistics: Basic Ideas and Selected Topics}.
+\newblock Number v. 1 in Holden-Day series in probability and statistics.
+  Prentice Hall, 2001.
 
-\bibitem{kiar2016graph}
-Gregory Kiar.
-\newblock Gremlin: Graph estimation from mr images leading to inference in
-  neuroscience.
-\newblock 2016.
+\bibitem{bollobas2007phase}
+B{\'e}la Bollob{\'a}s, Svante Janson, and Oliver Riordan.
+\newblock The phase transition in inhomogeneous random graphs.
+\newblock {\em Random Structures \& Algorithms}, 31(1):3--122, 2007.
+
+\bibitem{chatterjee2015matrix}
+Sourav Chatterjee et~al.
+\newblock Matrix estimation by universal singular value thresholding.
+\newblock {\em The Annals of Statistics}, 43(1):177--214, 2015.
+
+\bibitem{davis1970rotation}
+Chandler Davis and William~Morton Kahan.
+\newblock The rotation of eigenvectors by a perturbation. iii.
+\newblock {\em SIAM Journal on Numerical Analysis}, 7(1):1--46, 1970.
+
+\bibitem{ferrari2010}
+Davide Ferrari and Yuhong Yang.
+\newblock Maximum lq-likelihood estimation.
+\newblock {\em Ann. Statist.}, 38(2):753--783, 04 2010.
+
+\bibitem{hoff2002latent}
+Peter~D Hoff, Adrian~E Raftery, and Mark~S Handcock.
+\newblock Latent space approaches to social network analysis.
+\newblock {\em Journal of the american Statistical association},
+  97(460):1090--1098, 2002.
+
+\bibitem{holland1983stochastic}
+Paul~W Holland, Kathryn~Blackmond Laskey, and Samuel Leinhardt.
+\newblock Stochastic blockmodels: First steps.
+\newblock {\em Social networks}, 5(2):109--137, 1983.
+
+\bibitem{kiar2016ndmg}
+G~Kiar, W~Gray Roncal, D~Mhembere, E~Bridgeford, R~Burns, and J~Vogelstein.
+\newblock ndmg: Neurodata’s mri graphs pipeline, 2016.
+
+\bibitem{AIC:AIC690280519}
+R.~S.~H. Mah and A.~C. Tamhane.
+\newblock Detection of gross errors in process data.
+\newblock {\em AIChE Journal}, 28(5):828--830, 1982.
+
+\bibitem{marchette2011vertex}
+David Marchette, Carey Priebe, and Glen Coppersmith.
+\newblock Vertex nomination via attributed random dot product graphs.
+\newblock In {\em Proceedings of the 57th ISI World Statistics Congress},
+  volume~6, page~16, 2011.
+
+\bibitem{nickel2007random}
+Christine Leigh~Myers Nickel.
+\newblock {\em Random dot product graphs: A model for social networks},
+  volume~68.
+\newblock 2007.
+
+\bibitem{qin2013maximum}
+Yichen Qin and Carey~E Priebe.
+\newblock Maximum l q-likelihood estimation via the expectation-maximization
+  algorithm: A robust estimation of mixture models.
+\newblock {\em Journal of the American Statistical Association},
+  108(503):914--928, 2013.
+
+\bibitem{scheinerman2010modeling}
+Edward~R Scheinerman and Kimberly Tucker.
+\newblock Modeling graphs using dot product representations.
+\newblock {\em Computational Statistics}, 25(1):1--16, 2010.
+
+\bibitem{serfling2011asymptotic}
+Robert Serfling.
+\newblock Asymptotic relative efficiency in estimation.
+\newblock In {\em International encyclopedia of statistical science}, pages
+  68--72. Springer, 2011.
+
+\bibitem{sussman2014consistent}
+Daniel~L Sussman, Minh Tang, and Carey~E Priebe.
+\newblock Consistent latent position estimation and vertex classification for
+  random dot product graphs.
+\newblock {\em IEEE transactions on pattern analysis and machine intelligence},
+  36(1):48--57, 2014.
+
+\bibitem{tang2016law}
+Runze Tang, Michael Ketcha, Joshua~T Vogelstein, Carey~E Priebe, and Daniel~L
+  Sussman.
+\newblock Law of large graphs.
+\newblock {\em arXiv preprint arXiv:1609.01672}, 2016.
+
+\bibitem{tropp2012user}
+Joel~A Tropp.
+\newblock User-friendly tail bounds for sums of random matrices.
+\newblock {\em Foundations of computational mathematics}, 12(4):389--434, 2012.
+
+\bibitem{young2007random}
+Stephen~J Young and Edward~R Scheinerman.
+\newblock Random dot product graph models for social networks.
+\newblock In {\em International Workshop on Algorithms and Models for the
+  Web-Graph}, pages 138--149. Springer, 2007.
+
+\bibitem{zhu2006automatic}
+Mu~Zhu and Ali Ghodsi.
+\newblock Automatic dimensionality selection from the scree plot via the use of
+  profile likelihood.
+\newblock {\em Computational Statistics \& Data Analysis}, 51(2):918--930,
+  2006.
 
 \end{thebibliography}

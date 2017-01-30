@@ -3,47 +3,47 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: Main.aux
 The style file: plain.bst
 Database file #1: Bib.bib
-Warning--to sort, need author or key in neurodata
-Warning--empty journal in kiar2016graph
-You've used 2 entries,
+Warning--can't use both volume and number fields in nickel2007random
+Warning--empty publisher in nickel2007random
+You've used 19 entries,
             2118 wiz_defined-function locations,
-            506 strings with 4216 characters,
-and the built_in function-call counts, 391 in all, are:
-= -- 36
-> -- 8
-< -- 0
-+ -- 4
-- -- 2
-* -- 15
-:= -- 66
-add.period$ -- 6
-call.type$ -- 2
-change.case$ -- 7
+            630 strings with 7274 characters,
+and the built_in function-call counts, 6462 in all, are:
+= -- 649
+> -- 289
+< -- 6
++ -- 115
+- -- 94
+* -- 476
+:= -- 1068
+add.period$ -- 59
+call.type$ -- 19
+change.case$ -- 101
 chr.to.int$ -- 0
-cite$ -- 4
-duplicate$ -- 17
-empty$ -- 41
-format.name$ -- 2
-if$ -- 83
+cite$ -- 21
+duplicate$ -- 237
+empty$ -- 510
+format.name$ -- 94
+if$ -- 1342
 int.to.chr$ -- 0
-int.to.str$ -- 2
-missing$ -- 1
-newline$ -- 13
-num.names$ -- 2
-pop$ -- 16
+int.to.str$ -- 19
+missing$ -- 20
+newline$ -- 97
+num.names$ -- 38
+pop$ -- 98
 preamble$ -- 1
-purify$ -- 5
+purify$ -- 84
 quote$ -- 0
-skip$ -- 12
+skip$ -- 167
 stack$ -- 0
-substring$ -- 10
-swap$ -- 1
-text.length$ -- 0
+substring$ -- 433
+swap$ -- 46
+text.length$ -- 6
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 8
+type$ -- 72
 warning$ -- 2
-while$ -- 2
-width$ -- 3
-write$ -- 20
+while$ -- 69
+width$ -- 21
+write$ -- 209
 (There were 2 warnings)

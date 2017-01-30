@@ -4,7 +4,7 @@ setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
 mVec <- c(5, 10, 20, 50)
 # mVec <- 2
 q <- 0.9
-nIter <- 100
+# nIter <- 100
 # dataName <- "CPAC200"
 dataName <- "desikan"
 
@@ -213,15 +213,6 @@ gg <- ggplot(errorByDimDf, aes(x = d, y = mse, linetype = factor(which), shape =
   ggtitle(paste0(dataName, ", N=", n, ", ", M, " graphs"))+
   theme(legend.key.size=unit(legendSize,"line"))+
   theme(plot.title=element_text(lineheight=.8,size=20,face="bold"))
-
-# pp[[3]]=gg
-
-# source("function_collection.R")
-
-# library(gridExtra)
-# library(grid)
-
-# grid_arrange_shared_legend2(list(pp[[1]], pp[[2]], pp[[3]]), 3, 1)
 
 
 

@@ -1,15 +1,16 @@
 \documentclass[a4paper]{article}
 
+\usepackage{amsmath,amssymb}
+
 \usepackage[english]{babel}
-\usepackage[utf8]{inputenc}
-\usepackage{amsmath}
+\usepackage[utf8x]{inputenc}
+
 \usepackage{graphicx}
 \usepackage[colorinlistoftodos]{todonotes}
 
 \usepackage{theorem}
-\usepackage{amssymb}
 
-\usepackage{hyperref}
+\usepackage{nameref, hyperref}
 
 \usepackage{caption}
 \usepackage{subcaption}
@@ -28,9 +29,12 @@
 \newcommand{\RT}[1]{\marginpar{\footnotesize\color{red}RT: #1}}
 
 
+%\usepackage[numbers]{natbib}
+%\bibliographystyle{plainnat}
+\usepackage{natbib}
+
 \usepackage{tikz}
 \usetikzlibrary{arrows}
-\usepackage{amsmath}
 
 \usepackage{algorithm}
 \usepackage{algorithmic}
@@ -42,6 +46,7 @@
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
 \renewcommand{\hat}{\widehat}
+\renewcommand{\tilde}{\widetilde}
 
 % Defines a `datastore' shape for use in DFDs.  This inherits from a
 % rectangle and only draws two horizontal lines.
@@ -190,7 +195,7 @@ Under the WRDPG defined above, the parameter matrix $P = X X^T \in \mathbb{R}^{n
 \label{section:WSBM}
 \begin{itemize}
 \item Community structure is an important property of graphs under which vertices are clustered into different communities such that vertices within the same community behave similarly. The stochastic blockmodel (SBM) \cite{holland1983stochastic} captures such property, where each vertex is assigned to one block and the connectivity between two vertices depends only on their respective block memberships.
-\item Formally, the SBM is determined by the number of blocks $K$ (generally much smaller than the number of vertices $n$), block probability matrix $B \in \Theta^{K \times K} \subset \mathbb{R}^{K \times K}$, and the block assignment vector $\tau \in [K]^n$, where $\tau_i = k$ represents vertex $i$ belongs to block $k$. Conditioned on the block membership $\tau$, the connectivity between vertex $i$ and vertex $j$ follows a Bernoulli distribution with parameter $B_{\tau_i, \tau_j}$. This can easily be generalized to the weighted stochastic blockmodel (WSBM), by substituting the Bernoulli distribution to a general distribution family $\mathcal{F}$.
+\item Formally, the SBM is determined by the number of blocks $K$ (generally much smaller than the number of vertices $n$), block probability matrix $B \in \Theta^{K \times K} \subset \mathbb{R}^{K \times K}$, and the block assignment vector $\tau \in [K]^n$, where $\tau_i = k$ represents vertex $i$ belongs to block $k$. Conditioned on the block membership $\tau$, the connectivity between vertex $i$ and vertex $j$ follows a Bernoulli distribution with parameter $B_{\tau_i, \tau_j}$. This can easily be generalized to the weighted stochastic blockmodel (WSBM), with the Bernoulli distribution replaced by a general distribution family $\mathcal{F}$.
 \item In order to consider WSBM as a WRDPG, the matrix $B$ needs to be positive semi-definite. From now on, we will note the sub-model of WSBM with positive semi-definite $B$ as the WSBM.
 \item Now consider the WSBM as a WRDPG with respect to $\mathcal{F} = \{ f_{\theta}, \theta \in \Theta \subset \mathbb{R} \}$. Let $d = 
 \mathrm{rank}(B)$, then all vertices in block $k$ have shared latent position $\nu_k \in \mathbb{R}^{d}$, where $B = \nu \nu^{\top}$ and $\nu = [\nu_1, \dotsc, \nu_K]^{\top} \in \mathbb{R}^{K \times d}$. That is to say, $X_i = \nu_{\tau_i}$ and $A_{ij}$ $(i < j)$ is distributed from $f$ with parameter $B_{\tau_i, \tau_j} = \nu_{\tau_i}^{\top} \nu_{\tau_j}$. Here the parameter matrix $P \in \mathbb{R}^{n \times n}$ is symmetric, hollow, and satisfies $P_{ij} = X_i^{\top} X_j = \nu_{\tau_i}^{\top} \nu_{\tau_j} = B_{\tau_i, \tau_j}$.
@@ -616,7 +621,7 @@ We will get exactly the same results as in Section \ref{section:theory}. However
 %\end{itemize}
 
 \begin{itemize}
-\item Here we consider the 3-block SBM parameterized by
+\item Here we consider the 3-block SBM with respect to the exponential distributions parameterized by
 \begin{equation*}
 B = \begin{bmatrix}
 4 & 2 & 1 \\
@@ -627,7 +632,7 @@ B = \begin{bmatrix}
 0.5 & 0.3 & 0.2
 \end{bmatrix}.
 \end{equation*}
-\item The contamination is also a 3-block SBM parameterized by
+\item The contamination is also a 3-block SBM with respect to the exponential distributions parameterized by
 \begin{equation*}
 B^{\prime} = \begin{bmatrix}
 10 & 8 & 2 \\
@@ -686,30 +691,65 @@ When contamination is large enough, $\widetilde{P}^{(q)}$ based on ML$q$E is bet
 \end{figure}
 
   
-\begin{figure}
-\centering
-\includegraphics[width=0.8\textwidth]{Cluster.png}
-\end{figure}
+%\begin{figure}
+%\centering
+%\includegraphics[width=0.8\textwidth]{Cluster.png}
+%\end{figure}
 
 
 
 \subsection{CoRR Graphs}
 \begin{itemize}
-\item In practice, the graphs may not perfectly follow an RDPG, or even not IEM. But we are still interested in the discussed approach. To demonstrate that the estimates are still valid in such cases, we examine the datasets, CPAC200, which is a set of 454 brain connectomes with different number of nodes generated from fMRI scans available at the Consortium for Reliability and Reproducibility (CoRR).
-\item The dataset has 454 different brain scans in the form of weighted, undirected graph with no self loop, based on the pipeline described in \cite{kiar2016graph} and \cite{neurodata}.
-\item To compare the four estimators, we perform a cross-validation study on 454 graphs.
-\item We run 1000 simulations on the dataset for each sample size $m = 1$, $m = 2$, $m = 5$. And we apply ASE for all possible dimensions, i.e. $d$ ranges from 1 to $n$. The result is shown in Figure \ref{fig:CPAC200}.
-\item Since it is real data, ML$q$E outperforms ML$E$ because of the robustness property. Moreover, as suggested in the previous theorems, such property is kept after the ASE procedure.
-\item When $d$ is small, ASE procedure underestimates the dimension and fail to get important information, which leads to poor performance. In practice, we use algorithms like Zhu and Ghodsi's method to select the dimension $d$. We can see Zhu and Ghodsi's algorithm does a pretty good job for selecting the dimension to embed.
-\item When $m$ is small, MLE and ML$q$E have large variances which lead to large MSE. Meanwhile, the ASE procedure reduces the variance by taking advantages of the graph structure.
-\end{itemize}
+\item In practice, the graphs may not perfectly follow an RDPG, or even not IEM. But we are still interested in the performance of the four estimators. In this work, we examine the structural connectomic data. The graphs are based on diffusion tensor MR
+images. It contains 114 different brain scans, each of which was processed to yield an undirected, weighted graph with no
+self-loops, using the m2g pipeline described in \citet{kiar2016ndmg}. The vertices of the graphs represent different regions in the brain defined according to an atlas. We used the desikan atlas with 70 vertices. The weight of an edge between two vertices represents the number of white-matter tract connecting the corresponding two regions of the brain.
+\item To compare the four estimators, we need to know the true parameter matrix $P$. However, $P$ is definitely not obtainable in practice since the 114 graphs are also a sample from the population. In this work, we are going to use two different approaches to approximate the the probability matrix $P$.
+\item First, we assume that the true probability matrix $P$ has the low-rank property. In this case, the low-rank approximation of the mean graph of all 114 graphs is a good estimate of the probability matrix $P$.
+We admit that this setting is preferable by the low-rank estimators. However, it is illustrative to see how the estimators perform in this case.
+\item In the above setting, we run 100 simulations on the dataset for each sample size $m = 2$, $m = 5$, and $m = 10$.
+Specifically, for each Monte Carlo replicate, we sample $m$ graphs out of the 114 from the m2g dataset and computing the four estimates based on the $m$ sampled graphs. We then compared these estimates to the low-rank approximation of the mean of all 114 graphs from the m2g dataset.
+For those two low-rank estimators, we apply ASE for all possible dimensions, i.e. $d$ ranges from 1 to $n$. The result is shown in Figure \ref{fig:CCI_LR}.
+\item Since the approximated $P$ contains outliers, we don't expect ML$q$E helps much as shown in the figure. However, since the estimated $P$ has the low-rank property, ASE procedure helps improving the performance. The dimensions chosen by the 3d elbow of Zhu and Ghodsi are denoted in triangle and square. We can see it does a good job. More importantly, a wide range of dimensions could lead to an improvement.
 
 \begin{figure}
 \centering
-\includegraphics[width=0.8\textwidth]{CPAC200.png}
-\caption{Comparison of mean squared error in average among four estimators while embedding the graphs into different dimensions with different size $m$ of the subsamples. The dimensions chosen by the 3d elbow of Zhu and Ghodsi are denoted in triangle and square. When $m$ is small, both robust estimation and ASE procedure help improving the performance, making $\widetilde{P}^{(q)}$ the best among four estimators.}
-\label{fig:CPAC200}
+\includegraphics[width=0.8\textwidth]{CCI_CompareLR.pdf}
+\caption{Comparison of mean squared error in average among four estimators while embedding the graphs into different dimensions with different size $m$ of the subsamples by using the low-rank approximation of the mean of the rest $114 - m$ graphs as the approximation of $P$. Four estimators are represented by different line styles as explained in the legend. Since the approximated $P$ contains outliers, we don't expect ML$q$E helps much as shown in the figure. However, since the estimated $P$ has the low-rank property, ASE procedure helps improving the performance. The dimensions chosen by the 3rd elbow of Zhu and Ghodsi are denoted in triangle and square. We can see it does a good job. More importantly, a wide range of dimensions could lead to an improvement.}
+\label{fig:CCI_LR}
 \end{figure}
+
+\item Also, we consider a setting which is favorable to the MLE, i.e. assuming that the probability matrix $P$ has a high-rank property. Since we know ndmg is a better pipeline compared to m2g, the mean graph derived from ndmg should be a relative accurate estimate of the actual population mean graph. Since the mean of 114 graphs has full rank, it breaks the low-rank assumptions and are favorable to the MLE.
+In order to evaluate the performance of the four estimators, we build estimates based on the samples with size $m$ from the m2g dataset, while using the sample mean of all 114 graphs from the ndmg dataset as an estimate of the probability matrix $P$.
+\item We run 100 simulations on the dataset for each sample size $m = 2$, $m = 5$, and $m = 10$.
+Specifically, for each Monte Carlo replicate, we sample $m$ graphs out of the 114 from the m2g dataset and computing the four estimates based on the $m$ sampled graphs. We then compared these estimates to the mean of all 114 graphs in the ndmg dataset.
+For those two low-rank estimators, we apply ASE for all possible dimensions, i.e. $d$ ranges from 1 to $n$. The result is shown in Figure \ref{fig:CCI}.
+\item Since it is real data, ML$q$E outperforms ML$E$ because of the robustness property. Moreover, as suggested in the previous theorems, such property is kept after the ASE procedure.
+\item When $d$ is small, ASE procedure underestimates the dimension and fails to get important information, which leads to poor performance. In practice, we use algorithms like Zhu and Ghodsi's method to select the dimension $d$. We can see Zhu and Ghodsi's algorithm does a pretty good job for selecting the dimension to embed.
+\item For all three sample sizes ($m = 2$, $m = 5$, $m = 10$), MLE and ML$q$E have large variances which lead to large MSE. Meanwhile, the ASE procedure reduces the variance by taking advantages of the graph structure.
+\end{itemize}
+
+
+
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{CCI.pdf}
+\caption{{\bf Comparison of MSE of the four estimators for the desikan atlases at three sample sizes based on m2g and ndmg pipelines.}  
+{\bf 1. MLE (horizontal solid line) vs MLqE (horizontal dotted line):} 
+ML$q$E outperforms MLE since robust estimators are always preferred in practice;
+{\bf 2. MLE (horizontal solid line) vs MLE\_ASE (dashed line):} MLE\_ASE wins the bias-variance tradeoff when embedded into a proper dimension; 
+{\bf 3. MLqE (horizontal dotted line) vs ML$q$E\_ASE (dashed dotted line):}
+ML$q$E\_ASE wins the bias-variance tradeoff when embedded into a proper dimension; 
+{\bf 4.  ML$q$E\_ASE (dashed dotted line) vs MLE\_ASE (dashed
+line):}
+MLqE\_ASE is better, since it inherits the robustness from 
+ML$q$E. And the square and circle represent the dimensions selected by the Zhu and Ghodsi method. We can see it does a pretty good job. And more importantly, a wide range of dimensions could lead to an improvement.
+}
+\label{fig:CCI}
+\end{figure}
+
 
 
 

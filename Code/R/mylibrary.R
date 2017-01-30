@@ -306,7 +306,11 @@ ExpRealAllDim <- function(AList, m, q, isSVD = 0, weighted = 1, P = NA, dVec = N
   
   result <- rep(NaN, 2*nD+10)
   
-  sampleVec <- sample.int(M, m)
+  if (m < M) {
+    sampleVec <- sample.int(M, m)
+  } else {
+    sampleVec <- 1:M
+  }
   A_MLE <- add(AList[sampleVec])
   if (any(is.na(P))) {
     P <- (add(AList) - A_MLE)/(M - m)
@@ -315,7 +319,7 @@ ExpRealAllDim <- function(AList, m, q, isSVD = 0, weighted = 1, P = NA, dVec = N
   
   # MLE
   A_MLE <- A_MLE/m
-  result[1] <- (norm(P - A_MLE, "F"))/sqrt(n*(n-1))
+  result[1] <- (norm(P - A_MLE, "F"))^2/(n*(n-1))
   
   
   
@@ -330,7 +334,7 @@ ExpRealAllDim <- function(AList, m, q, isSVD = 0, weighted = 1, P = NA, dVec = N
   A_MLqE <- A_MLqE + t(A_MLqE)
   # ATensor <- array(unlist(AList[sampleVec]), dim = c(n, n, m))
   # A_MLqE <- apply(ATensor, c(1, 2), MLqE_Exp_Solver, q)
-  result[nD + 2] <- (norm(P - A_MLqE, "F"))/sqrt(n*(n-1))
+  result[nD + 2] <- (norm(P - A_MLqE, "F"))^2/(n*(n-1))
   
   
   # MLE_ASE
@@ -346,13 +350,13 @@ ExpRealAllDim <- function(AList, m, q, isSVD = 0, weighted = 1, P = NA, dVec = N
     D1 <- Diagonal(n, x = diag(P0))
     P1 <- LR(A_MLE + D1, d)
     A_MLE_ASE <- Regularize(P1, weighted)
-    result[1 + iD] <- (norm(P - A_MLE_ASE, "F"))/sqrt(n*(n-1))
+    result[1 + iD] <- (norm(P - A_MLE_ASE, "F"))^2/(n*(n-1))
   }
   
   A_MLE_ASE_ZG <- LR_Estimate(A_MLE, weighted, isSVD, method = 1)
-  result[2*nD+7] <- (norm(P - A_MLE_ASE_ZG, "F"))/sqrt(n*(n-1))
+  result[2*nD+7] <- (norm(P - A_MLE_ASE_ZG, "F"))^2/(n*(n-1))
   A_MLE_ASE_USVT <- LR_Estimate(A_MLE, weighted, isSVD = 1, method = 2, param = m)
-  result[2*nD+8] <- (norm(P - A_MLE_ASE_USVT, "F"))/sqrt(n*(n-1))
+  result[2*nD+8] <- (norm(P - A_MLE_ASE_USVT, "F"))^2/(n*(n-1))
   
   # MLqE_ASE
   D0 <- Diagonal(n, x = rowSums(A_MLqE)/(n-1))
@@ -366,19 +370,180 @@ ExpRealAllDim <- function(AList, m, q, isSVD = 0, weighted = 1, P = NA, dVec = N
     D1 <- Diagonal(n, x = diag(P0))
     P1 <- LR(A_MLqE + D1, d)
     A_MLqE_ASE <- Regularize(P1, weighted)
-    result[nD + 2 + iD] <- (norm(P - A_MLqE_ASE, "F"))/sqrt(n*(n-1))
+    result[nD + 2 + iD] <- (norm(P - A_MLqE_ASE, "F"))^2/(n*(n-1))
   }
   
   A_MLqE_ASE_ZG <- LR_Estimate(A_MLqE, weighted, isSVD, method = 1)
-  result[2*nD+9] <- (norm(P - A_MLqE_ASE_ZG, "F"))/sqrt(n*(n-1))
+  result[2*nD+9] <- (norm(P - A_MLqE_ASE_ZG, "F"))^2/(n*(n-1))
   A_MLqE_ASE_USVT <- LR_Estimate(A_MLqE, weighted, isSVD = 1, method = 2, param = m)
-  result[2*nD+10] <- (norm(P - A_MLqE_ASE_USVT, "F"))/sqrt(n*(n-1))
+  result[2*nD+10] <- (norm(P - A_MLqE_ASE_USVT, "F"))^2/(n*(n-1))
   
   return(result)
 }
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SimTwoData <- function(m, n, tau, P, C1, C2, eps1, eps2, q, d, isSVD = 0) {
+  # result = rep(NaN, 4)
+  
+  # P <- B[tau, tau] + rnorm(n^2, mean = 0, sd = 0)*(B[tau, tau])/5
+  
+  # ind <- lower.tri(P, 1)
+  # diag(P) <- 0
+  
+  # P1 <- (1-eps1)*P + eps1*C1
+  # D0 <- Diagonal(n, x = rowSums(P1)/(n-1))
+  # eigenResult <- eigen(P1 + D0)$values
+  # plot(eigenResult)
+  # 
+  # P2 <- (1-eps2)*P + eps2*C2
+  # D0 <- Diagonal(n, x = rowSums(P2)/(n-1))
+  # eigenResult <- eigen(P2 + D0)$values
+  # plot(eigenResult)
+  
+  
+  AList1 <- list()
+  AList2 <- list()
+  
+  dVec <- 1:n
+  nD <- length(dVec)
+  
+  ind <- lower.tri(P, 1)
+  for (i in 1:m) {
+    contamVec1 <- (runif(n^2) > eps1)
+    A <- contamVec1*matrix(rexp(n^2, 1/P), ncol=n) +
+      (1 - contamVec1)*matrix(rexp(n^2, 1/C1), ncol=n)
+    A[ind] <- 0
+    A <- A + t(A)
+    AList1[[i]] <- A
+    
+    contamVec2 <- (runif(n^2) > eps2)
+    # contamVec2 <- contamVec1
+    A <- contamVec2*matrix(rexp(n^2, 1/P), ncol=n) +
+      (1 - contamVec2)*matrix(rexp(n^2, 1/C2), ncol=n)
+    A[ind] <- 0
+    A <- A + t(A)
+    AList2[[i]] <- A
+  }
+  
+  out1 <- ExpRealAllDim(AList1, m, q, isSVD, P = add(AList2)/m)
+  out2 <- ExpRealAllDim(AList2, m, q, isSVD, P = add(AList1)/m)
+  
+  return(c(out1, out2))
+}
+
+
+
+
+ExpAllDimCompareLR <- function(AList, m, q, isSVD = 0, dVec = NA) {
+  
+  weighted <- 1
+  
+  n <- dim(AList[[1]])[1]
+  M <- length(AList)
+  if (any(is.na(dVec))) {
+    dVec <- 1:n
+  }
+  nD <- length(dVec)
+  dMax <- max(dVec)
+  
+  result <- rep(NaN, 2*nD+11)
+  
+  if (m < M) {
+    sampleVec <- sample.int(M, m)
+  } else {
+    sampleVec <- 1:M
+  }
+  A_MLE <- add(AList[sampleVec])
+  P <- (add(AList) - A_MLE)/(M - m)
+  
+  require(Matrix)
+  D0 <- Diagonal(n, x = rowSums(P)/(n-1))
+  dZG <- DimSelect(P + D0, isSVD, method = 1)
+  d <- dZG
+  P0 <- LR(P + D0, d, isSVD)
+  D1 <- Diagonal(n, x = diag(P0))
+  P1 <- LR(P + D1, d)
+  P <- Regularize(P1, weighted)
+  result[2*nD+11] <- d
+  
+  # MLE
+  A_MLE <- A_MLE/m
+  result[1] <- (norm(P - A_MLE, "F"))^2/(n*(n-1))
+  
+  
+  
+  # MLqE  
+  AListTmp <- AList[sampleVec]
+  nv <- lower.tri(AListTmp[[1]], T)
+  for (i in 1:length(AListTmp)) {
+    AListTmp[[i]][nv] <- 0
+  }
+  ATensor <- array(unlist(AListTmp), dim = c(n, n, m))
+  A_MLqE <- apply(ATensor, c(1, 2), MLqE_Exp_Solver, q)
+  A_MLqE <- A_MLqE + t(A_MLqE)
+  # ATensor <- array(unlist(AList[sampleVec]), dim = c(n, n, m))
+  # A_MLqE <- apply(ATensor, c(1, 2), MLqE_Exp_Solver, q)
+  result[nD + 2] <- (norm(P - A_MLqE, "F"))^2/(n*(n-1))
+  
+  
+  # MLE_ASE
+  require(Matrix)
+  D0 <- Diagonal(n, x = rowSums(A_MLE)/(n-1))
+  dZG <- DimSelect(A_MLE + D0, isSVD, method = 1)
+  dUSVT <- DimSelect(A_MLE + D0, isSVD = 1, method = 2, param = m)
+  result[nD*2 + 3] <- dZG
+  result[nD*2 + 4] <- dUSVT
+  for (iD in 1:nD) {
+    d <- dVec[iD]
+    P0 <- LR(A_MLE + D0, d, isSVD)
+    D1 <- Diagonal(n, x = diag(P0))
+    P1 <- LR(A_MLE + D1, d)
+    A_MLE_ASE <- Regularize(P1, weighted)
+    result[1 + iD] <- (norm(P - A_MLE_ASE, "F"))^2/(n*(n-1))
+  }
+  
+  A_MLE_ASE_ZG <- LR_Estimate(A_MLE, weighted, isSVD, method = 1)
+  result[2*nD+7] <- (norm(P - A_MLE_ASE_ZG, "F"))^2/(n*(n-1))
+  A_MLE_ASE_USVT <- LR_Estimate(A_MLE, weighted, isSVD = 1, method = 2, param = m)
+  result[2*nD+8] <- (norm(P - A_MLE_ASE_USVT, "F"))^2/(n*(n-1))
+  
+  # MLqE_ASE
+  D0 <- Diagonal(n, x = rowSums(A_MLqE)/(n-1))
+  dZG <- DimSelect(A_MLqE + D0, isSVD, method = 1)
+  dUSVT <- DimSelect(A_MLqE + D0, isSVD = 1, method = 2, param = m)
+  result[nD*2 + 5] <- dZG
+  result[nD*2 + 6] <- dUSVT
+  for (iD in 1:nD) {
+    d <- dVec[iD]
+    P0 <- LR(A_MLqE + D0, d, isSVD)
+    D1 <- Diagonal(n, x = diag(P0))
+    P1 <- LR(A_MLqE + D1, d)
+    A_MLqE_ASE <- Regularize(P1, weighted)
+    result[nD + 2 + iD] <- (norm(P - A_MLqE_ASE, "F"))^2/(n*(n-1))
+  }
+  
+  A_MLqE_ASE_ZG <- LR_Estimate(A_MLqE, weighted, isSVD, method = 1)
+  result[2*nD+9] <- (norm(P - A_MLqE_ASE_ZG, "F"))^2/(n*(n-1))
+  A_MLqE_ASE_USVT <- LR_Estimate(A_MLqE, weighted, isSVD = 1, method = 2, param = m)
+  result[2*nD+10] <- (norm(P - A_MLqE_ASE_USVT, "F"))^2/(n*(n-1))
+  
+  return(result) 
+}
 
 
 
@@ -1831,90 +1996,6 @@ ExpRealAllDim <- function(AList, m, q, isSVD = 0, weighted = 1, P = NA, dVec = N
 # }
 # 
 # 
-# ExpAllDimCompareLR <- function(M, m, dVec, AList, ASum, q, isSVD=1) {
-#   source("getElbows.R")
-#   source("USVT.R")
-#   
-#   nD <- length(dVec)
-#   dMax <- max(dVec)
-#   result <- rep(NaN, 2*nD+6)
-#   
-#   sampleVec <- sample.int(M, m)
-#   ABar <- add(AList[sampleVec])
-#   # PBar <- (ASum - ABar)/(M - m)
-#   PBar <- ASum/M
-#   
-#   PBarDiagAug <- diag_aug(PBar)
-#   nElbow <- 3
-#   evalVec <- ase(PBarDiagAug, ceiling(n*3/5), isSVD)[[1]]
-#   dZG <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
-#   
-#   AASE = ase(PBarDiagAug, dZG, isSVD)
-#   d <- dZG
-#   if (d == 1) {
-#     AHat <- AASE[[1]]*AASE[[3]]%*%t(AASE[[2]])
-#   } else {
-#     AHat <- AASE[[3]][, 1:d]%*%diag(AASE[[1]][1:d])%*%t(AASE[[2]][ ,1:d])
-#   }
-#   PBar <- regularize(AHat)
-#   
-#   ABar <- ABar/m
-#   result[1] <- (norm(PBar - ABar, "F"))^2/n/(n-1)
-#   
-#   n <- dim(ABar)[[1]]
-#   ATensor <- array(unlist(AList[sampleVec]), dim = c(n, n, m))
-#   #   AMLqE <- apply(ATensor, c(1, 2), MLqESolverExp, q)  
-#   AMLqE <- apply(ATensor, c(1, 2), mlqe_exp_solver, q)
-#   result[nD + 2] <- (norm(PBar - AMLqE, "F"))^2/n/(n-1)
-#   
-#   ABarDiagAug <- diag_aug(ABar)
-#   # ABarDiagAug <- ABar
-#   # ZG
-#   nElbow <- 3
-#   evalVec <- ase(ABarDiagAug, ceiling(n*3/5), isSVD)[[1]]
-#   dZG <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
-#   # USVT
-#   dUSVT <- length(usvt(ABarDiagAug, 1, m)$d)
-#   result[nD*2 + 3] <- dZG
-#   result[nD*2 + 4] <- dUSVT
-#   
-#   AASE = ase(ABarDiagAug, dMax, isSVD)
-#   for (iD in 1:nD) {
-#     d <- dVec[iD]
-#     if (d == 1) {
-#       AHat <- AASE[[1]]*AASE[[3]]%*%t(AASE[[2]])
-#     } else {
-#       AHat <- AASE[[3]][, 1:d]%*%diag(AASE[[1]][1:d])%*%t(AASE[[2]][ ,1:d])
-#     }
-#     PHat <- regularize(AHat)
-#     result[1 + iD] <- (norm(PBar - PHat, "F"))^2/n/(n-1)
-#   }
-#   
-#   
-#   AMLqEDiagAug <- diag_aug(AMLqE)
-#   # AMLqEDiagAug <- AMLqE
-#   # ZG
-#   nElbow <- 3
-#   evalVec <- ase(AMLqEDiagAug, ceiling(n*3/5), isSVD)[[1]]
-#   dZG <- getElbows(evalVec, n = nElbow, plot = F)[[nElbow]]
-#   # USVT
-#   dUSVT <- length(usvt(AMLqEDiagAug, 1, m)$d)
-#   result[nD*2 + 5] <- dZG
-#   result[nD*2 + 6] <- dUSVT
-#   
-#   AASE <- ase(AMLqEDiagAug, dMax, isSVD)
-#   for (iD in 1:nD) {
-#     d <- dVec[iD]
-#     if (d == 1) {
-#       AHat <- AASE[[1]]*AASE[[3]]%*%t(AASE[[2]])
-#     } else {
-#       AHat <- AASE[[3]][ ,1:d]%*%diag(AASE[[1]][1:d])%*%t(AASE[[2]][ ,1:d])
-#     }
-#     PHatASE <- regularize(AHat)
-#     result[nD + 2 + iD] <- (norm(PBar - PHatASE, "F"))^2/n/(n-1)
-#   }
-#   return(result)
-# }
 # 
 # 
 # BuildMcNemarMatrix <- function(xVec, yVec) {

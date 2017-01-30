@@ -137,28 +137,44 @@ for (dataName1 in dataNameVec) {
       y1 <- errorMLEASEMean[iM, x1]
       x2 <- ceiling(x)
       y2 <- errorMLEASEMean[iM, x2]
-      errorMLEUSVT[iM] <- (y2-y1)/(x2-x1)*(x-x1)+y1
+      if (x1 == x2) {
+        errorMLEUSVT[iM] <- y1
+      } else {
+        errorMLEUSVT[iM] <- (y2-y1)/(x2-x1)*(x-x1)+y1
+      }
       
       x <- dZGMLEMean[iM]
       x1 <- floor(x)
       y1 <- errorMLEASEMean[iM, x1]
       x2 <- ceiling(x)
       y2 <- errorMLEASEMean[iM, x2]
-      errorMLEZG[iM] <- (y2-y1)/(x2-x1)*(x-x1)+y1
+      if (x1 == x2) {
+        errorMLEZG[iM] <- y1
+      } else {
+        errorMLEZG[iM] <- (y2-y1)/(x2-x1)*(x-x1)+y1
+      }
       
       x <- dUSVTMLqEMean[iM]
       x1 <- floor(x)
       y1 <- errorMLqEASEMean[iM, x1]
       x2 <- ceiling(x)
       y2 <- errorMLqEASEMean[iM, x2]
-      errorMLqEUSVT[iM] <- (y2-y1)/(x2-x1)*(x-x1)+y1
+      if (x1 == x2) {
+        errorMLqEUSVT[iM] <- y1  
+      } else {
+        errorMLqEUSVT[iM] <- (y2-y1)/(x2-x1)*(x-x1)+y1
+      }
       
       x <- dZGMLqEMean[iM]
       x1 <- floor(x)
       y1 <- errorMLqEASEMean[iM, x1]
       x2 <- ceiling(x)
       y2 <- errorMLqEASEMean[iM, x2]
-      errorMLqEZG[iM] <- (y2-y1)/(x2-x1)*(x-x1)+y1
+      if (x1 == x2) {
+        errorMLqEZG[iM] <- y1  
+      } else {
+        errorMLqEZG[iM] <- (y2-y1)/(x2-x1)*(x-x1)+y1
+      }
     }
     
     # errorByDimDf <- rbind(
@@ -197,12 +213,12 @@ for (dataName1 in dataNameVec) {
     dimSelectionDf <- rbind(
       data.frame(mse = errorMLEZG, lci = errorMLEZG, uci = errorMLEZG,
                  which = "ABar ZG 3rd", m = mVec, d = dZGMLEMean),
-      data.frame(mse = errorMLEUSVT, lci = errorMLEUSVT, uci = errorMLEUSVT,
-                 which = "ABar USVT c=0.7", m = mVec, d = dUSVTMLEMean),
+      # data.frame(mse = errorMLEUSVT, lci = errorMLEUSVT, uci = errorMLEUSVT,
+      #            which = "ABar USVT c=0.7", m = mVec, d = dUSVTMLEMean),
       data.frame(mse = errorMLqEZG, lci = errorMLqEZG, uci = errorMLqEZG,
-                 which = "PHat ZG 3rd", m = mVec, d = dZGMLqEMean),
-      data.frame(mse = errorMLqEUSVT, lci = errorMLqEUSVT, uci = errorMLqEUSVT,
-                 which = "PHat USVT c=0.7", m = mVec, d = dUSVTMLqEMean)) %>%
+                 which = "PHat ZG 3rd", m = mVec, d = dZGMLqEMean)) %>%
+      # data.frame(mse = errorMLqEUSVT, lci = errorMLqEUSVT, uci = errorMLqEUSVT,
+      #            which = "PHat USVT c=0.7", m = mVec, d = dUSVTMLqEMean)) %>%
       mutate(m=factor(paste0("m=",m), sapply(mVec, function(m) {paste0("m=", m)})))
     
     
@@ -218,15 +234,19 @@ for (dataName1 in dataNameVec) {
     
     gg <- ggplot(errorByDimDf, aes(x = d, y = mse, linetype = factor(which), shape = factor(which))) +
       facet_wrap(~m) +
-      # geom_point(data = dimSelectionDf, size = 3) +
+      geom_point(data = dimSelectionDf, size = 3) +
       # scale_linetype_manual(name = "", values = c(1, 0, 0, 2, 3, 0, 0, 4)) +
-      # scale_shape_manual(name = "", values = c(-1, 0, 0, -1, -1, 0, 0, -1)) +
-      scale_linetype_manual(name = "", values = c(1, 2, 3, 4),
-                            labels = c("MLE", "MLE_ASE", "MLqE", "MLqE_ASE")) +
-      scale_shape_manual(name = "", values = c(-1, -1, -1, -1),
-                         labels = c("MLE", "MLE_ASE", "MLqE", "MLqE_ASE")) +
+      # scale_shape_manual(name = "", values = c(-1, 0, 1, -1, -1, 0, 2, -1)) +
+      scale_linetype_manual(name = "", values = c(1, 0, 2, 3, 0, 4),
+                            labels = c("MLE", "MLE ZG", "MLE_ASE", "MLqE", "MLqE ZG", "MLqE_ASE")) +
+      scale_shape_manual(name = "", values = c(-1, 0, -1, -1, 1, -1),
+                         labels = c("MLE", "MLE ZG", "MLE_ASE", "MLqE", "MLqE ZG", "MLqE_ASE")) +
+      # scale_linetype_manual(name = "", values = c(1, 2, 3, 4),
+      #                       labels = c("MLE", "MLE_ASE", "MLqE", "MLqE_ASE")) +
+      # scale_shape_manual(name = "", values = c(-1, -1, -1, -1),
+      #                    labels = c("MLE", "MLE_ASE", "MLqE", "MLqE_ASE")) +
       geom_line(alpha = 1, size = lSize) +
-      geom_linerange(aes(ymin = lci, ymax = uci), alpha = .5, size = 1) +
+      # geom_linerange(aes(ymin = lci, ymax = uci), alpha = .5, size = 1) +
       xlab("dimension")+ylab("MSE")+
       theme(strip.text.x = element_text(size=20,face="bold"))+
       theme(axis.text=element_text(size=15),

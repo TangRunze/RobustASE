@@ -23,6 +23,7 @@ dataNameVec <- c("migrain", "ndmg", "m2g", "ndmg2")
 for (dataName1 in dataNameVec) {
   for (dataName2 in dataNameVec) {
     
+    print(paste0(dataName1, ", ", dataName2))
     
     ###### Read Data ######
     inputList <- ReadData(dataName1, weighted = isWeighted)
