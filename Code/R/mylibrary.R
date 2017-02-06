@@ -548,10 +548,26 @@ ExpAllDimCompareLR <- function(AList, m, q, isSVD = 0, dVec = NA) {
 
 
 
+GetEvals <- function(A) {
+  require(Matrix)
+  D0 <- Diagonal(n, x = rowSums(A)/(n-1))
+  return(eigen(A + D0)$values)
+}
 
-
-
-
+PlotEvals <- function(xVec, label_y_lb=NA, label_y_ub=NA) {
+  df <- data.frame(eval=xVec, k=1:n)
+  if ((is.na(label_y_lb)) || (is.na(label_y_ub))) {
+    gg <- ggplot(df,aes(x=k,y=eval))+
+      geom_line()+
+      xlab("order in algebraic") + ylab("eigenvalue")
+  } else {
+    gg <- ggplot(df,aes(x=k,y=eval))+
+      geom_line()+
+      scale_y_continuous(limits = c(label_y_lb, label_y_ub)) +
+      xlab("order in algebraic") + ylab("eigenvalue")
+  }
+  return(gg)
+}
 
 
 

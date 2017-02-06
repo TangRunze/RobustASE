@@ -227,7 +227,8 @@ for (dataName1 in dataNameVec) {
     # nv <- ((dimSelectionDf$d >= dMin) & (dimSelectionDf$d <= dMax))
     # dimSelectionDf <- dimSelectionDf[nv, ]
     
-    label_y <- with(errorByDimDf, .75*max(mse)+.25*min(mse))
+    # label_y <- with(errorByDimDf, .75*max(mse)+.25*min(mse))
+    label_y <- 7e+6
     
     lSize = .8
     legendSize = 1.5
@@ -246,6 +247,7 @@ for (dataName1 in dataNameVec) {
       # scale_shape_manual(name = "", values = c(-1, -1, -1, -1),
       #                    labels = c("MLE", "MLE_ASE", "MLqE", "MLqE_ASE")) +
       geom_line(alpha = 1, size = lSize) +
+      # scale_y_continuous(limits = c(0, label_y)) + 
       # geom_linerange(aes(ymin = lci, ymax = uci), alpha = .5, size = 1) +
       xlab("dimension")+ylab("MSE")+
       theme(strip.text.x = element_text(size=20,face="bold"))+

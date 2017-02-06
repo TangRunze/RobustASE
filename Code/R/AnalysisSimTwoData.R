@@ -7,7 +7,7 @@ library(dplyr)
 library(reshape2)
 
 ###### Parameter Setting ######
-iModel <- 3
+iModel <- 7
 m <- 10
 n <- 70
 
@@ -237,4 +237,18 @@ ggsave(paste0("../../Result/sim_two_data_model_", iModel,
 print(gg)
 
 
+# require(Matrix)
+# print(rankMatrix(P)[1])
+# print(rankMatrix(C1)[1])
+# print(rankMatrix(C2)[1])
+# 
+# label_y_ub <- max(c(GetEvals(P), GetEvals(C1), GetEvals(C2)))
+# label_y_lb <- min(c(GetEvals(P), GetEvals(C1), GetEvals(C2)))
+# 
+# print(PlotEvals(GetEvals(P), label_y_lb, label_y_ub))
+# print(PlotEvals(GetEvals(C1), label_y_lb, label_y_ub))
+# print(PlotEvals(GetEvals(C2), label_y_lb, label_y_ub))
+# 
+# print(PlotEvals(GetEvals((1-eps1)*P+eps1*C1), label_y_lb, label_y_ub))
+# print(PlotEvals(GetEvals((1-eps2)*P+eps1*C2), label_y_lb, label_y_ub))
 

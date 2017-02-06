@@ -624,26 +624,24 @@ We will get exactly the same results as in Section \ref{section:theory}. However
 \item Here we consider the 3-block SBM with respect to the exponential distributions parameterized by
 \begin{equation*}
 B = \begin{bmatrix}
-4 & 2 & 1 \\
-2 & 7 & 3 \\
-1 & 3 & 5
+4.2 & 2 \\
+2 & 7
 \end{bmatrix}
 ,\qquad \rho = \begin{bmatrix}
-0.5 & 0.3 & 0.2
+0.5 & 0.5
 \end{bmatrix}.
 \end{equation*}
 \item The contamination is also a 3-block SBM with respect to the exponential distributions parameterized by
 \begin{equation*}
 B^{\prime} = \begin{bmatrix}
-10 & 8 & 2 \\
-8 & 15 & 7 \\
-2 & 7 & 12
+20 & 18 \\
+18 & 25
 \end{bmatrix}
 ,\qquad \rho = \begin{bmatrix}
-0.5 & 0.3 & 0.2
+0.5 & 0.5
 \end{bmatrix}.
 \end{equation*}
-\item And we embed the graphs into the dimension $d = \mathrm{rank}(B) = 3$.
+\item And we embed the graphs into the dimension $d = \mathrm{rank}(B) = 2$.
 \end{itemize}
 
 
@@ -703,6 +701,7 @@ When contamination is large enough, $\widetilde{P}^{(q)}$ based on ML$q$E is bet
 \item In practice, the graphs may not perfectly follow an RDPG, or even not IEM. But we are still interested in the performance of the four estimators. In this work, we examine the structural connectomic data. The graphs are based on diffusion tensor MR
 images. It contains 114 different brain scans, each of which was processed to yield an undirected, weighted graph with no
 self-loops, using the m2g pipeline described in \citet{kiar2016ndmg}. The vertices of the graphs represent different regions in the brain defined according to an atlas. We used the desikan atlas with 70 vertices. The weight of an edge between two vertices represents the number of white-matter tract connecting the corresponding two regions of the brain.
+\item We first check if the dataset has the low-rank property. In the left panel of Fig.~\ref{fig:screehist}, we plot the eigenvalues of the mean graph of all 114 graphs (with diagonal augmentation) in decreasing algebraic order for the Desikan atlases based on the m2g pipeline. The eigenvalues first decrease dramatically and then stay around 0 for a large range of dimensions. In addition, we also plot the histograms in the right panel of Fig.~\ref{fig:screehist}. From the figures we can see many eigenvalues are around zero, with a few large eigenvalues. So the information is mostly contained in the first few dimensions. Such quasi low-rank property could be used.
 \item To compare the four estimators, we need to know the true parameter matrix $P$. However, $P$ is definitely not obtainable in practice since the 114 graphs are also a sample from the population. In this work, we are going to use two different approaches to approximate the the probability matrix $P$.
 \item First, we assume that the true probability matrix $P$ has the low-rank property. In this case, the low-rank approximation of the mean graph of all 114 graphs is a good estimate of the probability matrix $P$.
 We admit that this setting is preferable by the low-rank estimators. However, it is illustrative to see how the estimators perform in this case.
@@ -711,6 +710,16 @@ Specifically, for each Monte Carlo replicate, we sample $m$ graphs out of the 11
 For those two low-rank estimators, we apply ASE for all possible dimensions, i.e. $d$ ranges from 1 to $n$. The result is shown in Figure \ref{fig:CCI_LR}.
 \item Since the approximated $P$ contains outliers, we don't expect ML$q$E helps much as shown in the figure. However, since the estimated $P$ has the low-rank property, ASE procedure helps improving the performance. The dimensions chosen by the 3d elbow of Zhu and Ghodsi are denoted in triangle and square. We can see it does a good job. More importantly, a wide range of dimensions could lead to an improvement.
 
+\begin{figure}[!htbp]
+\centering
+\includegraphics[height=.2\textheight]{screeplot_m2g.pdf}
+\includegraphics[height=.2\textheight]{hist_m2g.pdf}
+\caption{{\bf Screeplot and the histogram of the eigenvalues of the  mean of 114 graphs based on m2g pipeline.}
+The screeplot in the left panel shows the eigenvalues of the mean graph of all 114 graphs with diagonal augmentation in decreasing algebraic order for the Desikan atlas. The right panel shows the histogram of the eigenvalues of the mean graph of all 114 graphs with diagonal augmentation. Many eigenvalues are around zero, which lead to a quasi low-rank structure.
+}
+\label{fig:screehist}
+\end{figure}
+
 \begin{figure}
 \centering
 \includegraphics[width=0.8\textwidth]{CCI_CompareLR.pdf}
@@ -718,10 +727,10 @@ For those two low-rank estimators, we apply ASE for all possible dimensions, i.e
 \label{fig:CCI_LR}
 \end{figure}
 
-\item Also, we consider a setting which is favorable to the MLE, i.e. assuming that the probability matrix $P$ has a high-rank property. Since we know ndmg is a better pipeline compared to m2g, the mean graph derived from ndmg should be a relative accurate estimate of the actual population mean graph. Since the mean of 114 graphs has full rank, it breaks the low-rank assumptions and are favorable to the MLE.
-In order to evaluate the performance of the four estimators, we build estimates based on the samples with size $m$ from the m2g dataset, while using the sample mean of all 114 graphs from the ndmg dataset as an estimate of the probability matrix $P$.
+\item Also, we consider a setting which is favorable to the MLE, i.e. assuming that the probability matrix $P$ has a high-rank property. Since we know ndmg2 is a better pipeline compared to m2g, the mean graph derived from ndmg2 should be a relative accurate estimate of the actual population mean graph. Since the mean of 114 graphs has full rank, it breaks the low-rank assumptions and are favorable to the MLE.
+In order to evaluate the performance of the four estimators, we build estimates based on the samples with size $m$ from the m2g dataset, while using the sample mean of all 114 graphs from the ndmg2 dataset as an estimate of the probability matrix $P$.
 \item We run 100 simulations on the dataset for each sample size $m = 2$, $m = 5$, and $m = 10$.
-Specifically, for each Monte Carlo replicate, we sample $m$ graphs out of the 114 from the m2g dataset and computing the four estimates based on the $m$ sampled graphs. We then compared these estimates to the mean of all 114 graphs in the ndmg dataset.
+Specifically, for each Monte Carlo replicate, we sample $m$ graphs out of the 114 from the m2g dataset and computing the four estimates based on the $m$ sampled graphs. We then compared these estimates to the mean of all 114 graphs in the ndmg2 dataset.
 For those two low-rank estimators, we apply ASE for all possible dimensions, i.e. $d$ ranges from 1 to $n$. The result is shown in Figure \ref{fig:CCI}.
 \item Since it is real data, ML$q$E outperforms ML$E$ because of the robustness property. Moreover, as suggested in the previous theorems, such property is kept after the ASE procedure.
 \item When $d$ is small, ASE procedure underestimates the dimension and fails to get important information, which leads to poor performance. In practice, we use algorithms like Zhu and Ghodsi's method to select the dimension $d$. We can see Zhu and Ghodsi's algorithm does a pretty good job for selecting the dimension to embed.
@@ -736,7 +745,7 @@ For those two low-rank estimators, we apply ASE for all possible dimensions, i.e
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{CCI.pdf}
-\caption{{\bf Comparison of MSE of the four estimators for the desikan atlases at three sample sizes based on m2g and ndmg pipelines.}  
+\caption{{\bf Comparison of MSE of the four estimators for the desikan atlases at three sample sizes based on m2g and ndmg2 pipelines.}  
 {\bf 1. MLE (horizontal solid line) vs MLqE (horizontal dotted line):} 
 ML$q$E outperforms MLE since robust estimators are always preferred in practice;
 {\bf 2. MLE (horizontal solid line) vs MLE\_ASE (dashed line):} MLE\_ASE wins the bias-variance tradeoff when embedded into a proper dimension; 
