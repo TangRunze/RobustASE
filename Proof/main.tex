@@ -279,10 +279,10 @@ Thus, we should choose the estimator $\widetilde{P}^{(q)}$.
   % Draw the arrows between the nodes and label them.
   \draw[tofrom] (MLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $n$, $C$ $\mathrm{large}$ $\mathrm{enough}$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(q)})$}
       node[midway,below] {$\underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(1)}) = \underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(q)}) = 0$} (MLqE);
-  \draw[tofrom] (MLE) -- node[midway,left] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ \\ $m = O(n^b)$ $\mathrm{for}$ $b>0$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(1)}) =$\\$ \underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$\\$ = O(n^{-2} (\log n)^6)$} (XMLE);
-  \draw[tofrom] (MLqE) -- node[midway,right] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ \\ $m = O(n^b)$ $\mathrm{for}$ $b>0$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(q)}) = $\\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(q)})/\mathrm{Var}(\hat{P}_{ij}^{(q)})$\\$= O(m n^{-2} (\log n)^6)$} (XMLqE);
+  \draw[tofrom] (MLE) -- node[midway,left] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ \\ $m = O(n^b)$ $\mathrm{for}$ $b>0$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(1)}) =$\\$ \underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$\\$ = O(n^{-1} (\log n)^3)$} (XMLE);
+  \draw[tofrom] (MLqE) -- node[midway,right] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ \\ $m = O(n^b)$ $\mathrm{for}$ $b>0$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(q)}) = $\\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(q)})/\mathrm{Var}(\hat{P}_{ij}^{(q)})$\\$= O(m n^{-1} (\log n)^3)$} (XMLqE);
   \draw[tofrom] (XMLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{sufficiently}$ $\mathrm{ large}$ $m$, $n$ $\mathrm{and}$ $C$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(q)})$}
-      node[midway,below] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ $m = o(n^2 (\log n)^{-6})$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(1)}) = \underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0$} (XMLqE);
+      node[midway,below] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ $m = o(n^1 (\log n)^{-3})$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(1)}) = \underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0$} (XMLqE);
 \end{tikzpicture}
 \end{center}
 \caption{\label{fig:summary}Relationship between four estimators.}
@@ -702,7 +702,7 @@ P\left(\|Z^T Z - n E[Z_1 Z_1^T]\|_F \ge k R \sqrt{n \ln(\sqrt{2/\eta})}\right) \
 
 Then by Weyl's Theorem \cite{horn2012matrix}, we have
 \[
-|\lambda_i(H) - n \lambda_i(Z_1 Z_1^T)| \le \|Z^T Z - n E[Z_1 Z_1^T]\|_2 = O(\sqrt{n\log{(1/\eta)}})
+|\lambda_i(H) - n \lambda_i(E[Z_1 Z_1^T])| \le \|Z^T Z - n E[Z_1 Z_1^T]\|_2 = O(\sqrt{n\log{(1/\eta)}})
 \]
 with probability at least $1 - k^2 \eta$.
 Thus $\lambda_i(H) = S_{ii} = \Theta(n)$ with probability at least $1 - \frac{2 k^2}{n^2}$ when $i \le k$.
@@ -824,10 +824,10 @@ Let $t = c R m^{-1/2} \log n$ for any $c > 0$, we have
 P \left( \left| 2 \sum_{s<t} (\hat{P}_{st} - H_{st}) u_{is} u_{jt} \right| \ge C m^{-1/2} \log n \right)
     \le n^{-c}.
 \]
-Thus each entry of $U^T(\hat{P} - H)U$ is of order $O(m^{-1} \log n)$ with high probability and
+Thus each entry of $U^T(\hat{P} - H)U$ is of order $O(m^{-1/2} \log n)$ with high probability and
 \begin{equation}
 \label{eqn:uPhatdiffHuL1}
-	\|U^T(\hat{P} - H)U\|_F = O(m^{-1} \log n)
+	\|U^T(\hat{P} - H)U\|_F = O(m^{-1/2} \log n)
 \end{equation}
 with high probability.
 Hence
@@ -973,7 +973,7 @@ Taking the union bound over all $i$ and $j$, with high probability we have,
 
 \begin{lemma}
 \label{lemma:1stMomentPhatDiffL1}
-$\left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right| = O(m^{-1/2} n^{-1} (\log n)^{3})$ with high probability.
+$\left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right| = O(m^{-1/2} n^{-1/2} (\log n)^{3/2})$ with high probability.
 \end{lemma}
 \noindent \textbf{Require:} Theorem \ref{thm:XhatDiffXWL1} \\
 \begin{proof}
@@ -988,9 +988,9 @@ Since $\|Z_i\|_2^2 = Z_i^T Z_i = H^{(1)}_{ii} =  E[\hat{P}^{(1)}_{ii}] = (1-\eps
 Combined with Theorem \ref{thm:XhatDiffXWL1},
 \begin{align*}
     \left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right|
-    = & (\|\hat{Z}_i\|_2 + \|Z_j\|_2) O(n^{-1/2} (\log n)^{3/2}) \\
+    = & (\|\hat{Z}_i\|_2 + \|Z_j\|_2) O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
     \le & (\|\hat{Z}_i - W Z_i\|_2 + \|W Z_i\|_2 + \|Z_j\|_2) O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
-    = & O(m^{-1/2} n^{-1} (\log n)^{3})
+    = & O(m^{-1/2} n^{-1/2} (\log n)^{3/2})
 \end{align*}
 with high probability.
 \end{proof}
@@ -1025,13 +1025,13 @@ For the first term, we have
 	& + E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}\}] \\
 	\le & E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ holds}] \\
 	& + n^{-c} E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
-	\le & O(m^{-1/2} n^{-1} (\log n)^3) \\
+	\le & O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
 	& + n^{-c} E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}_{ij}| \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
 	& + n^{-c} E[|\hat{P}_{ij} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
-	\le & O(m^{-1/2} n^{-1} (\log n)^3) + n^{-c} E[\hat{P}_{ij} \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
+	\le & O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) + n^{-c} E[\hat{P}_{ij} \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
 	& + n^{-c} E[(\hat{P}_{ij} + R) \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
-	\le & O(m^{-1/2} n^{-1} (\log n)^3) + a n^{-c} + (a+R) n^{-c} \\
-	\le & O(m^{-1/2} n^{-1} (\log n)^3) + 2 n^{-c} (a + R).
+	\le & O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) + a n^{-c} + (a+R) n^{-c} \\
+	\le & O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) + 2 n^{-c} (a + R).
 \end{align*}
 Notice that
 \begin{align*}
@@ -1063,16 +1063,16 @@ Thus for the second term,
 Thus
 \begin{align*}
 	& E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j|] \\
-	\le & O(m^{-1/2} n^{-1} (\log n)^3) + 4 n^{-c} (a + R) + 2 e^{-a/R} (a + 2 m R).
+	\le & O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) + 2 n^{-c} (a + R) + 2 e^{-a/R} (a + 2 m R).
 \end{align*}
 Let $a = m^{-1} n^{2b}$ for any $b > 0$, and $c = 2b + 3$, combined with the assumption $m = O(n^{b})$, we have
 \begin{align*}
 	& E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j|] \\
-	= & O(m^{-1/2} n^{-1} (\log n)^3) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(e^{-m^{-1} n^{2b}}) \\
-	= & O(m^{-1/2} n^{-1} (\log n)^3) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(e^{- n^{b}}) \\
-	= & O(m^{-1/2} n^{-1} (\log n)^3) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(n^{-2b-3}) \\
-	= & O(m^{-1/2} n^{-1} (\log n)^3) + O(m^{-1} n^{-3}) \\
-	= & O(m^{-1/2} n^{-1} (\log n)^3).
+	= & O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(e^{-m^{-1} n^{2b}}) \\
+	= & O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(e^{- n^{b}}) \\
+	= & O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(n^{-2b-3}) \\
+	= & O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) + O(m^{-1} n^{-3}) \\
+	= & O(m^{-1/2} n^{-1/2} (\log n)^{3/2}).
 \end{align*}
 \end{proof}
 
@@ -1080,7 +1080,7 @@ Let $a = m^{-1} n^{2b}$ for any $b > 0$, and $c = 2b + 3$, combined with the ass
 
 \begin{theorem}
 \label{thm:VarASEL1}
-Assuming that $m = O(n^b)$ for any $b > 0$, then $\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) = O(m^{-1} n^{-2} (\log n)^6)$.
+Assuming that $m = O(n^b)$ for any $b > 0$, then $\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) = O(m^{-1} n^{-1} (\log n)^3)$.
 \end{theorem}
 \noindent \textbf{Require:} Lemma \ref{lemma:1stMomentPhatDiffL1}, Exponential distribution \\
 \begin{proof}
@@ -1108,13 +1108,13 @@ For the first term, we have
 	& + E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}\}] \\
 	\le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ holds}] \\
 	& + n^{-c} E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
-	\le & O(m^{-1} n^{-2} (\log n)^6) \\
+	\le & O(m^{-1} n^{-1} (\log n)^3) \\
 	& + 2 n^{-c} E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}_{ij})^2 \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
 	& + 2 n^{-c} E[(\hat{P}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
-	\le & O(m^{-1} n^{-2} (\log n)^6) + 2 n^{-c} E[\hat{P}_{ij}^2 \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
+	\le & O(m^{-1} n^{-1} (\log n)^3) + 2 n^{-c} E[\hat{P}_{ij}^2 \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
 	& + 2 n^{-c} E[(\hat{P}_{ij} + R)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
-	\le & O(m^{-1} n^{-2} (\log n)^6) + 2 a^2 n^{-c} + 2 (a+R)^2 n^{-c} \\
-	\le & O(m^{-1} n^{-2} (\log n)^6) + 4 n^{-c} (a + R)^2.
+	\le & O(m^{-1} n^{-1} (\log n)^3) + 2 a^2 n^{-c} + 2 (a+R)^2 n^{-c} \\
+	\le & O(m^{-1} n^{-1} (\log n)^3) + 4 n^{-c} (a + R)^2.
 \end{align*}
 Notice that
 \begin{align*}
@@ -1154,16 +1154,16 @@ Thus,
 %\]
 \[
 	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) \le
-	O(m^{-1} n^{-2} (\log n)^6) + 16 (a+R)^2 n^{-c} + 16 (a+2 m^{1/2} R)^2 e^{-a/R}.
+	O(m^{-1} n^{-1} (\log n)^3) + 16 (a+R)^2 n^{-c} + 16 (a+2 m^{1/2} R)^2 e^{-a/R}.
 \]
 Let $a = m^{-1/2} n^{b}$ for any $b > 0$, and $c = 2b + 3$, combined with the assumption $m = O(n^{b})$, we have
 \begin{align*}
 	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}})
-	= & O(m^{-1} n^{-2} (\log n)^6) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(e^{-m^{-1/2} n^{b}}) \\
-	= & O(m^{-1} n^{-2} (\log n)^6) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(e^{- n^{b/2}}) \\
-	= & O(m^{-1} n^{-2} (\log n)^6) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(n^{-2b-3}) \\
-	= & O(m^{-1} n^{-2} (\log n)^6) + O(m^{-1} n^{-3}) \\
-	= & O(m^{-1} n^{-2} (\log n)^6).
+	= & O(m^{-1} n^{-1} (\log n)^3) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(e^{-m^{-1/2} n^{b}}) \\
+	= & O(m^{-1} n^{-1} (\log n)^3) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(e^{- n^{b/2}}) \\
+	= & O(m^{-1} n^{-1} (\log n)^3) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(n^{-2b-3}) \\
+	= & O(m^{-1} n^{-1} (\log n)^3) + O(m^{-1} n^{-3}) \\
+	= & O(m^{-1} n^{-1} (\log n)^3).
 \end{align*}
 \end{proof}
 
@@ -1185,7 +1185,7 @@ Direct result from central limit theorem.
 For fixed $m$, $1 \le i, j \le n$ and $i \ne j$,
 \[
 	\frac{\mathrm{Var}(\widetilde{P}_{ij}^{(1)})}{\mathrm{Var}(\hat{P}_{ij}^{(1)})}
-    = O(n^{-2} (\log n)^6).
+    = O(n^{-1} (\log n)^3).
 \]
 Thus
 \[
@@ -1660,7 +1660,7 @@ Similar to the proof of Theorem \ref{thm:XhatDiffXWL1}.
 
 \begin{lemma}
 \label{lemma:1stMomentPhatDiffLq}
-$\left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right| = O(n^{-1} (\log n)^{3})$ with high probability.
+$\left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right| = O(n^{-1/2} (\log n)^{3/2})$ with high probability.
 \end{lemma}
 \noindent \textbf{Require:} Theorem \ref{thm:XhatDiffXW} \\
 \begin{proof}
@@ -1716,17 +1716,17 @@ For the first term, we have
 	& + E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}\}] \\
 	\le & E[(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} |\{\mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ holds}] \\
 	& + n^{-c} E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
-	\le & O(n^{-1} (\log n)^3) \\
+	\le & O(n^{-1/2} (\log n)^{3/2}) \\
 	& + n^{-c} E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}^{(q)}_{ij}| \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
 	& + n^{-c} E[|\hat{P}^{(q)}_{ij} - Z_i^T Z_j| \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
-	\le & O(n^{-1} (\log n)^3) \\
+	\le & O(n^{-1/2} (\log n)^{3/2}) \\
 	& + n^{-c} E[\hat{P}^{(q)}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
 	& + n^{-c} E[(\hat{P}^{(q)}_{ij} + R) \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
-	\le & O(n^{-1} (\log n)^3) \\
+	\le & O(n^{-1/2} (\log n)^{3/2}) \\
 	& + n^{-c} E[\hat{P}^{(1)}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
 	& + n^{-c} E[(\hat{P}^{(1)}_{ij} + R) \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
-	\le & O(n^{-1} (\log n)^3) + a n^{-c} + (a+R) n^{-c} \\
-	\le & O(n^{-1} (\log n)^3) + 2 n^{-c} (a + R).
+	\le & O(n^{-1/2} (\log n)^{3/2}) + a n^{-c} + (a+R) n^{-c} \\
+	\le & O(n^{-1/2} (\log n)^{3/2}) + 2 n^{-c} (a + R).
 \end{align*}
 For the second term, we have
 \begin{align*}
@@ -1738,7 +1738,7 @@ For the second term, we have
 \end{align*}
 Similarly, assuming $m = O(n^b)$ for any $b > 0$, we have
 \[
-E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j|] = O(n^{-1} (\log n)^3).
+E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j|] = O(n^{-1/2} (\log n)^{3/2}).
 \]
 \end{proof}
 
@@ -1746,7 +1746,7 @@ E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j|] = O(n^{-1} (\log n)^3).
 
 \begin{theorem}
 \label{thm:VarASELq}
-Assuming that $m = O(n^b)$ for any $b > 0$, then $\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) = O(n^{-2} (\log n)^6)$.
+Assuming that $m = O(n^b)$ for any $b > 0$, then $\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) = O(n^{-1} (\log n)^3)$.
 \end{theorem}
 \begin{proof}
 By Lemma \ref{lemma:1stMomentPhatDiffLq},
@@ -1774,17 +1774,17 @@ For the first term, we have
 	& + E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}\}] \\
 	\le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} |\{\mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ holds}] \\
 	& + n^{-c} E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
-	\le & O(n^{-2} (\log n)^6) \\
+	\le & O(n^{-1} (\log n)^3) \\
 	& + 2 n^{-c} E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}^{(q)}_{ij})^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
 	& + 2 n^{-c} E[(\hat{P}^{(q)}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
-	\le & O(n^{-2} (\log n)^6) \\
+	\le & O(n^{-1} (\log n)^3) \\
 	& + 2 n^{-c} E[\hat{P}^{(q)2}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
 	& + 2 n^{-c} E[(\hat{P}^{(q)}_{ij} + R)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
-	\le & O(n^{-2} (\log n)^6)
+	\le & O(n^{-1} (\log n)^3)
 	+ 2 n^{-c} E[\hat{P}^{(1)2}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
 	& + 2 n^{-c} E[(\hat{P}^{(1)}_{ij} + R)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
-	\le & O(n^{-2} (\log n)^6) + 2 a^2 n^{-c} + 2 (a+R)^2 n^{-c} \\
-	\le & O(n^{-2} (\log n)^6) + 4 n^{-c} (a + R)^2.
+	\le & O(n^{-1} (\log n)^3) + 2 a^2 n^{-c} + 2 (a+R)^2 n^{-c} \\
+	\le & O(n^{-1} (\log n)^3) + 4 n^{-c} (a + R)^2.
 \end{align*}
 For the second term, we have
 \begin{align*}
@@ -1797,7 +1797,7 @@ For the second term, we have
 Similarly, assuming $m = O(n^b)$ for any $b > 0$, we have
 \[
 	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}})
-	= O(n^{-2} (\log n)^6).
+	= O(n^{-1} (\log n)^3).
 \]
 \end{proof}
 
@@ -1823,13 +1823,13 @@ Direct result from Theorem \ref{thm:VarLq}. {\color{red} NEED PROOF HERE.}
 For fixed $m$, $1 \le i, j \le n$,
 \[
 	\frac{\mathrm{Var}(\widetilde{P}_{ij}^{(q)})}{\mathrm{Var}(\hat{P}_{ij}^{(q)})}
-    = O(m n^{-2} (\log n)^6).
+    = O(m n^{-1} (\log n)^3).
 \]
 Thus
 \[
 	\mathrm{ARE}(\hat{P}_{ij}^{(q)}, \widetilde{P}_{ij}^{(q)}) = 0.
 \]
-Furthermore, as long as $m$ goes to infinity of order $o(n^2 (\log n)^{-6})$,
+Furthermore, as long as $m$ goes to infinity of order $o(n (\log n)^{-3})$,
 \[
 	\mathrm{ARE}(\hat{P}_{ij}^{(q)}, \widetilde{P}_{ij}^{(q)}) = 0.
 \]

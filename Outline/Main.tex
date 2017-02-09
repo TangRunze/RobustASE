@@ -234,7 +234,10 @@ Under each of the models mentioned in Section \ref{section:model}, our goal is t
 
 \subsubsection{Rank-$d$ Approximation}
 \begin{itemize}
-\item Given the dimension $d$, we consider the best rank-$d$ positive semi-definite approximation of $\hat{P}^{(1)}$, denoted as $\widetilde{P}^{(1)}$. First calculate the eigen-decomposition of the symmetric matrix $\hat{P}^{(1)} = \hat{U} \hat{S} \hat{U}^{\top} + \widetilde{U} \widetilde{S} \widetilde{U}^{\top}$, where $\hat{S}$ is the diagonal matrix with the largest $d$ eigenvalues of $\hat{P}^{(1)}$, and $\hat{U}$ has the corresponding eigenvectors as each column. Then the best rank-$d$ positive semi-definite approximation is $\widetilde{P}^{(1)} = \hat{U} \hat{S} \hat{U}^{\top}$. Note that the $d$-dimensional adjacency spectral embedding (ASE) here is defined as $\hat{X} = \hat{U} \hat{S}^{1/2} \in \mathbb{R}^{n \times d}$. Thus the low rank approximation of $\hat{P}^{(1)}$ can also be represented as $\hat{X} \hat{X}^{\top}$. In the RDPG setting, Sussman et al. \cite{sussman2014consistent} proved that each row of $\hat{X}$ can accurately estimate the the latent position for each vertex up to an orthogonal transformation. We will analyze its performance under the WRDPG setting in Section \ref{section:theory}.
+\item Given the dimension $d$, we consider $\mathrm{lowrank}_d(\hat{P}^{(1)})$, the best rank-$d$ positive semi-definite approximation of $\hat{P}^{(1)}$, denoted as $\widetilde{P}^{(1)}$. First calculate the eigen-decomposition of the symmetric matrix $\hat{P}^{(1)} = \hat{U} \hat{S} \hat{U}^{\top} + \widetilde{U} \widetilde{S} \widetilde{U}^{\top}$, where $\hat{S}$ is the diagonal matrix with the largest $d$ eigenvalues of $\hat{P}^{(1)}$, and $\hat{U}$ has the corresponding eigenvectors as each column. Similarly, $\tilde{S}$ is the diagonal matrix with non-increasing entries along the diagonal corresponding to the rest $n - d$ eigenvalues of $\hat{P}^{(1)}$, and $\tilde{U}$ has the columns given by the corresponding eigenvectors.
+The $d$-dimensional adjacency spectral embedding (ASE) of $\hat{P}^{(1)}$ is given by $\hat{X}=\hat{U} \hat{S}^{1/2}\in \mathbb{R}^{n \times d}$.
+Using the adjacency spectral embedding, we have the best rank-$d$ positive semi-definite approximation of $\hat{P}^{(1)}$ to be $\widetilde{P}^{(1)} = \hat{X} \hat{X}^{\top}=\hat{U}\hat{S}\hat{U}^{\top}$.
+In the RDPG setting, Sussman et al. \cite{sussman2014consistent} proved that each row of $\hat{X}$ can accurately estimate the the latent position for each vertex up to an orthogonal transformation. We will analyze its performance under the WRDPG setting in Section \ref{section:theory}.
 \item We restate the algorithm in \cite{tang2016law} to give the steps of computing this low-rank approximation of a general $n$-by-$n$ symmetric matrix $A$ in Algorithm \ref{algo:lowrank}.
 \end{itemize}
 \begin{algorithm}[H]
@@ -293,7 +296,7 @@ Under each of the models mentioned in Section \ref{section:model}, our goal is t
 \subsection{Entry-wise Maximum L$q$-likelihood Estimator $\hat{P}^{(q)}$}
 \begin{itemize}
 \item The MLE is asymptotically efficient, i.e. when sample size is large enough, the MLE is at least as accurate as any other estimator. However, when the sample size is moderate, robust estimators always outperforms MLE in terms of mean squared error by winning the bias-variance tradeoff. Moreover, under contamination models, robust estimators can even beat MLE asymptotically since they are designed to be not unduly affected by the outliers. And we are going to consider the maximum L$q$-likelihood estimator (ML$q$E), proposed by Ferrari and Young in 2010 \cite{ferrari2010}, in this work.
-\item Let $X_1, \dotsc, X_m$ are sampled from $f_{\theta_0} \in \mathcal{F} = \{ f_{\theta}, \theta \in \Theta \}$, $\theta_0 \in \Theta$. Then the maximum L$q$-likelihood estimate ($q > 0$) of $\theta_0$ based on the parametric model $\mathcal{F}$ is defined as
+\item Let $X_1, \dotsc, X_m$ be sampled from $f_{\theta_0} \in \mathcal{F} = \{ f_{\theta}, \theta \in \Theta \}$, $\theta_0 \in \Theta$. Then the maximum L$q$-likelihood estimate ($q > 0$) of $\theta_0$ based on the parametric model $\mathcal{F}$ is defined as
 \[
 	\hat{\theta}_{\mathrm{ML}q\mathrm{E}} = \argmax_{\theta \in \Theta} \sum_{i=1}^m L_q[f_{\theta}(X_i)],
 \]
@@ -311,7 +314,7 @@ Then the ML$q$E $\hat{\theta}_{\mathrm{ML}q\mathrm{E}}$ can also be seen as a so
 \[
 	\sum_{i=1}^m U^{\star}_{\theta}(X_i; q) = 0.
 \]
-This form interprets $\hat{\theta}_{\mathrm{ML}q\mathrm{E}}$ as a solution to the weighted likelihood equation. The weights $f_{\theta}(x)^{1-q}$ are proportional to the $1-q$th power of the corresponding probability. Specifically, when $0 < q < 1$, the ML$q$E puts less weight on the data points which don't fit the current distribution well. Equal weights happen when $q=1$ and lead to the MLE.
+This form interprets $\hat{\theta}_{\mathrm{ML}q\mathrm{E}}$ as a solution to the weighted likelihood equation. The weights $f_{\theta}(x)^{1-q}$ are proportional to the $(1-q)$th power of the corresponding probability. Specifically, when $0 < q < 1$, the ML$q$E puts less weight on the data points which don't fit the current distribution well. Equal weights happen when $q=1$ and lead to the MLE.
 \item Under the WIEM, to have robustness, we can calculate the entry-wise ML$q$E $\hat{P}^{(q)}$ based on the adjacency matrices $A^{(1)}, \dotsc, A^{(m)}$. Note that $\hat{P}^{(1)}$, the entry-wise MLE, is a special case of entry-wise ML$q$E $\hat{P}^{(q)}$ when $q = 1$. That is what the superscriptions $q$ and $1$ mean.
 \end{itemize}
 
@@ -403,7 +406,7 @@ Assuming that $m = O(n^b)$ for any $b > 0$, then the estimator based on ASE of M
 \]
 \end{corollary}
 
-To prove the the corollary, we first give a bound on the $2$-norm of $\hat{P}^{(1)} - E[\hat{P}^{(1)}]$ by the matrix Bernstein inequality \cite{tropp2012user}. Since we are under the RDPG setting, $E[\hat{P}^{(1)}]$ still has finite rank, which makes the embedding reasonalbe. Then we approximate $U^T \hat{U}$ by an orthogonal matrix $W^{\star}$ based on Davis-Kahan theorem \cite{davis1970rotation}, where $U$ and $\hat{U}$ are the eigen-spaces for $E[\hat{P}^{(1)}]$ and $\hat{P}^{(1)}$ respectively. Then we can analyze the bounds much more easily by interchanging $U^T \hat{U}$ in the matrix multiplications. As a result, we can get the bound between the estimates of the latent positions and the true latent positions up to an orthogonal transformation in terms of $2 \to \infty$ norm. Corollary \ref{cor:L1Consistent} then follows by selecting the parameter carefully in the analysis.
+To prove the the corollary, we first give a bound on the $2$-norm of $\hat{P}^{(1)} - E[\hat{P}^{(1)}]$ by the matrix Bernstein inequality \cite{tropp2012user}. Since we are under the RDPG setting, $E[\hat{P}^{(1)}]$ still has finite rank, which makes the embedding reasonable. Then we approximate $U^T \hat{U}$ by an orthogonal matrix $W^{\star}$ based on Davis-Kahan theorem \cite{davis1970rotation}, where $U$ and $\hat{U}$ are the eigen-spaces for $E[\hat{P}^{(1)}]$ and $\hat{P}^{(1)}$ respectively. Then we can analyze the bounds much more easily by interchanging $U^T \hat{U}$ in the matrix multiplications. As a result, we can get the bound between the estimates of the latent positions and the true latent positions up to an orthogonal transformation in terms of $2 \to \infty$ norm. Corollary \ref{cor:L1Consistent} then follows by selecting the parameter carefully in the analysis.
 
 Corollary \ref{cor:L1Consistent} says that when $m = O(n^b)$ for any $b > 0$, the ASE procedure applied to $\hat{P}^{(1)}$ will not affect the asymptotic bias for estimating $P$.
 In this case, the asymptotic relative efficiency (ARE) \cite{serfling2011asymptotic} provides a good way to compare these two estimators. The definition proposed by Serfling in 2009 is based on unbiased estimators, here we extend it a little bit such that it can be measure two estimators which have the same asymptotic bias.
@@ -417,7 +420,7 @@ For any parameter $\theta$ of a distribution $f$, and for estimators $\hat{\thet
 In our situation, we can compare the performance between $\widetilde{P}^{(1)}$ and $\hat{P}^{(1)}$ entry-wise based on the ARE, which can be written as $\mathrm{ARE}(\widetilde{P}^{(1)}, \hat{P}^{(1)}) = \lim_{n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$. First, we analyze the order of $\mathrm{Var}(\widetilde{P}_{ij}^{(1)})$ in the following theorem.
 \begin{theorem}
 \label{thm:VarASEL1}
-Assuming that $m = O(n^b)$ for any $b > 0$, then $\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) = O(m^{-1} n^{-2} (\log n)^6)$.
+Assuming that $m = O(n^b)$ for any $b > 0$, then $\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) = O(m^{-1} n^{-1} (\log n)^3)$.
 \end{theorem}
 
 The tools we use to prove this theorem is the same as for Corollary \ref{cor:L1Consistent}. Combined with Lemma \ref{lemma:VarLqlVarMLE}, we directly have the ARE results as following:
@@ -426,7 +429,7 @@ The tools we use to prove this theorem is the same as for Corollary \ref{cor:L1C
 For fixed $m$, $1 \le i, j \le n$ and $i \ne j$,
 \[
 	\frac{\mathrm{Var}(\widetilde{P}_{ij}^{(1)})}{\mathrm{Var}(\hat{P}_{ij}^{(1)})}
-    = O(n^{-2} (\log n)^6).
+    = O(n^{-1} (\log n)^3).
 \]
 Thus
 \[
@@ -438,7 +441,7 @@ Furthermore, as long as $m$ goes to infinity of order $O(n^b)$ for any $b > 0$,
 \]
 \end{theorem}
 
-Theorem \ref{thm:AREL1} tells us that whenever $m = O(n^b)$ for any $b > 0$, i.e. $m$ is fixed or it grows not faster than polynomial with respect to $n$, the order of the ARE is $O(n^{-2} (\log n)^6)$, which converges to 0 when $n \to \infty$. An interesting fact here is that this bound of the ARE does not depend on $m$.
+Theorem \ref{thm:AREL1} tells us that whenever $m = O(n^b)$ for any $b > 0$, i.e. $m$ is fixed or it grows not faster than polynomial with respect to $n$, the order of the ARE is $O(n^{-1} (\log n)^3)$, which converges to 0 when $n \to \infty$. An interesting fact here is that this bound of the ARE does not depend on $m$.
 
 As a result, the ASE procedure applied to the entry-wise MLE $\hat{P}^{(1)}$ helps reduce the variance while keeping the bias asymptotically, leading to a better estimate $\widetilde{P}^{(1)}$ for $P$ in terms of MSE.
 
@@ -461,7 +464,7 @@ The proof for Corollary \ref{cor:LqConsistent} is almost the same as the proof f
 
 \begin{theorem}
 \label{thm:VarASELq}
-Assuming that $m = O(n^b)$ for any $b > 0$, then $\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) = O(n^{-2} (\log n)^6)$.
+Assuming that $m = O(n^b)$ for any $b > 0$, then $\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) = O(n^{-1} (\log n)^3)$.
 \end{theorem}
 
 Combined with Lemma \ref{lemma:VarLqlVarMLE}, we directly have the ARE results as following:
@@ -471,7 +474,7 @@ Combined with Lemma \ref{lemma:VarLqlVarMLE}, we directly have the ARE results a
 For fixed $m$, $1 \le i, j \le n$,
 \[
 	\frac{\mathrm{Var}(\widetilde{P}_{ij}^{(q)})}{\mathrm{Var}(\hat{P}_{ij}^{(q)})}
-    = O(m n^{-2} (\log n)^6).
+    = O(m n^{-1} (\log n)^3).
 \]
 Thus
 \[
@@ -483,7 +486,7 @@ Furthermore, as long as $m$ goes to infinity of order $o(n^2 (\log n)^{-6})$,
 \]
 \end{theorem}
 
-Theorem \ref{thm:ARELq} tells us that whenever $m = O(n^b)$ for any $b > 0$, i.e. $m$ is fixed or it grows not faster than polynomial with respect to $n$, the order of the ARE is $O(m n^{-2} (\log n)^6)$. When $m$ is fixed, the order of the ARE is $O(n^{-2} (\log n)^6)$, which will goes to 0 as $n \to \infty$. Even if $m$ also increases, as long as it grows in the order of $o(n^2 (\log n)^{-6})$, the ARE still goes to 0. 
+Theorem \ref{thm:ARELq} tells us that whenever $m = O(n^b)$ for any $b > 0$, i.e. $m$ is fixed or it grows not faster than polynomial with respect to $n$, the order of the ARE is $O(m n^{-1} (\log n)^3)$. When $m$ is fixed, the order of the ARE is $O(n^{-1} (\log n)^3)$, which will goes to 0 as $n \to \infty$. Even if $m$ also increases, as long as it grows in the order of $o(n (\log n)^{-3})$, the ARE still goes to 0. 
 
 Thus the ASE procedure applied to the entry-wise ML$q$E $\hat{P}^{(q)}$ also helps reduce the variance while keeping the bias asymptotically, leading to a better estimate $\widetilde{P}^{(q)}$ for $P$ in terms of MSE.
 
@@ -550,10 +553,10 @@ We summarize all the comparison in this section and we plot the relationship amo
   % Draw the arrows between the nodes and label them.
   \draw[tofrom] (MLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $n$, $C$ $\mathrm{large}$ $\mathrm{enough}$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(q)})$}
       node[midway,below] {$\underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(1)}) = \underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(q)}) = 0$} (MLqE);
-  \draw[tofrom] (MLE) -- node[midway,left] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ \\ $m = O(n^b)$ $\mathrm{for}$ $b>0$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(1)}) =$\\$ \underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$\\$ = O(n^{-2} (\log n)^6)$} (XMLE);
-  \draw[tofrom] (MLqE) -- node[midway,right] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ \\ $m = O(n^b)$ $\mathrm{for}$ $b>0$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(q)}) = $\\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(q)})/\mathrm{Var}(\hat{P}_{ij}^{(q)})$\\$= O(m n^{-2} (\log n)^6)$} (XMLqE);
+  \draw[tofrom] (MLE) -- node[midway,left] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ \\ $m = O(n^b)$ $\mathrm{for}$ $b>0$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(1)}) =$\\$ \underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$\\$ = O(n^{-1} (\log n)^3)$} (XMLE);
+  \draw[tofrom] (MLqE) -- node[midway,right] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ \\ $m = O(n^b)$ $\mathrm{for}$ $b>0$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(q)}) = $\\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(q)})/\mathrm{Var}(\hat{P}_{ij}^{(q)})$\\$= O(m n^{-1} (\log n)^3)$} (XMLqE);
   \draw[tofrom] (XMLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{sufficiently}$ $\mathrm{ large}$ $m$, $n$ $\mathrm{and}$ $C$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(q)})$}
-      node[midway,below] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ $m = o(n^2 (\log n)^{-6})$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(1)}) = \underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0$} (XMLqE);
+      node[midway,below] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ $m = o(n (\log n)^{-3})$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(1)}) = \underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0$} (XMLqE);
 \end{tikzpicture}
 \end{center}
 \caption{\label{fig:summary}Relationship among four estimators.}
@@ -584,8 +587,6 @@ Since we use the results of $\hat{P}^{(1)}$ to bound $\hat{P}^{(q)}$, the proof 
 We will get exactly the same results as in Section \ref{section:theory}. However, even if the variance of the new estimator is not of order $O(m^{-1})$, we will get similar results with a different term related to $m$.
 \end{enumerate}
 
-
-\newpage
 
 \section{Empirical Results}
 
