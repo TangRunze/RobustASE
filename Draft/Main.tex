@@ -166,55 +166,68 @@ Similarly, in order to take advantage of the low-rank structure, we enforce a lo
 
 \section{Models}
 \label{section:model}
-\begin{itemize}
-\item For this work, we are in the scenario where $m$ weighted graphs each with $n$ vertices are given in the adjacency matrices form $\{ A^{(t)} \} (t = 1, \dotsc, m)$. The graphs we consider in this work are undirected without self-loop, i.e. each $A^{(t)}$ is symmetric with zeros along the diagonal. Moreover, we assume the vertex correspondence is known throughout different graphs, so that vertex $i$ of graph $t_1$ corresponds to vertex $i$ of graph $t_2$ for any $i$, $t_1$, $t_2$.
-\item In this section, we present three nested models, the weighted independent edge model in Section \ref{section:WIEM}, the weighted random dot product graph model in Section \ref{section:WRDPG}, and the weighted stochastic blockmodel (WSBM) as a WRDPG in Section \ref{section:WSBM}. Moreover, we introduce a contaminated model based on Section \ref{section:WSBM} in Section \ref{section:Contamination}.
-\end{itemize}
+
+For this work, we are in the scenario where $m$ weighted graphs on $n$ vertices are given in the adjacency matrices form $\{ A^{(t)} \} (t = 1, \dotsc, m)$. The graphs are undirected without self-loop, i.e. each $A^{(t)}$ is symmetric with zeros along the diagonal. Moreover, we assume the vertex correspondence is known across different graphs, so that vertex $i$ of the $t_1$-th graph corresponds to vertex $i$ of the $t_2$-th graph for any $i \in [n]$, $t_1, t_2 \in [m]$.
+
+In this section, we present three nested models, the weighted independent edge model (WIEM) in Section~\ref{section:WIEM}, the weighted random dot product graph model (WRDPG) in Section~\ref{section:WRDPG}, and the weighted stochastic blockmodel (WSBM) as a WRDPG in Section~\ref{section:WSBM}. Moreover, we introduce a contaminated model based on Section~\ref{section:WSBM} in Section~\ref{section:Contamination}.
 
 \subsection{Weighted Independent Edge Model}
 \label{section:WIEM}
-\begin{itemize}
-\item We first extend the definition of independent edge model (IEM) \cite{bollobas2007phase} to the weighted independent edge model (WIEM) corresponding to a one-parameter family $\mathcal{F} = \{ f_{\theta} : \theta \in \Theta \subset \mathbb{R} \}$. Denote the graph parameter as a matrix $P \in \Theta^{n \times n} \subset \mathbb{R}^{n \times n}$, then under a WIEM, each edge between vertex $i$ and vertex $j$ ($i < j$ because of symmetry) is distributed from $f_{P_{ij}}$ independently.
-\item A simple example here is a WIEM for binary graphs with respect to $\mathcal{F}$ to be Bernoulli with a symmetric and hollow parameter matrix $P \in [0, 1]^{n \times n}$.
-\item Note that the graphs considered in this paper are undirected without self-loop, thus the parameter matrix $P$ needs to be symmetric and hollow. However, for convenience, we still define the parameters to be an $n$-by-$n$ matrix while only $n \choose 2$ of them are effective.
-\end{itemize}
+
+We first extend the definition of independent edge model (IEM) \citep{bollobas2007phase} to the weighted independent edge model (WIEM) with respect to a one-parameter family $\mathcal{F} = \{ f_{\theta} : \theta \in \Theta \subset \mathbb{R} \}$. Denote the graph parameters as a matrix $P \in \Theta^{n \times n} \subset \mathbb{R}^{n \times n}$. Then under a WIEM, each edge between vertex $i$ and vertex $j$ ($i < j$ because of symmetry) is distributed from $f_{P_{ij}}$ independently.
+
+To see that an IEM is a special case of WIEM, just let $\mathcal{F}$ be the collection of Bernoulli distributions and let the graph parameters be a symmetric and hollow matrix $P \in [0, 1]^{n \times n}$.
+Note that the graphs considered in this paper are undirected without self-loop, thus the parameter matrix $P$ needs to be symmetric and hollow. However, for convenience, we still define the parameters to be an $n$-by-$n$ matrix while only $n \choose 2$ of them are effective.
+
 
 \subsection{Weighted Random Dot Product Graph}
 \label{section:WRDPG}
-\begin{itemize}
-\item The connectivity between two vertices in a graph generally depends on some hidden properties of the corresponding vertices. The latent position model proposed by Hoff et al. \cite{hoff2002latent} captures such properties by assigning each vertex $i$ with a corresponding latent vector $X_i \in \mathbb{R}^d$. Conditioned on the latent vectors $X_i$ and $X_j$, the edge between vertex $i$ and vertex $j$ is independent of all other edges and depends only on $X_i$ and $X_j$ through a link function. This can easily be generalized to the weighted version easily.
-\item A special case of the latent position model is the random dot product graph model (RDPG) in which the link function is the inner product \cite{young2007random, nickel2007random}. In the following, we give a definition of the weighted random dot product graph (WRDPG) as a generalization of the weighted latent position model.
-\begin{definition}
-Consider a collection of one-parameter distributions $\mathcal{F} = \{ f_{\theta}, \theta \in \Theta \subset \mathbb{R} \}$. Then the weighted random dot product graph model (WRDPG) with respect to $\mathcal{F}$ is defined as following: Let $\boldsymbol{X} \in \mathbb{R}^{n \times d}$ be such that $\boldsymbol{X} = [X_1, X_2, \dotsc, X_n]^T$, where $X_i \in \mathbb{R}^d$ for all $i \in [n]$. The matrix $\boldsymbol{X}$ is random and satisfies $\mathbb{P}\left[ \langle X_i, X_j \rangle \in \Theta \right] = 1$ for all $i, j \in [n]$. Conditioned on $\boldsymbol{X}$, the entries of the adjacency matrix $\boldsymbol{A}$ are independent and $\boldsymbol{A}_{ij}$ is a random variable with distribution $f \in \mathcal{F}$ with parameter $\langle X_i, X_j \rangle$ for all $i \ne j \in [n]$.
+
+The connectivity between two vertices in a graph generally depends on some hidden properties of the corresponding vertices. The latent position model proposed by \citet{hoff2002latent} captures such properties by assigning each vertex $i$ with a corresponding latent vector $X_i \in \mathbb{R}^d$. Conditioned on the latent vectors $X_i$ and $X_j$, the edge weight between vertex $i$ and vertex $j$ is independent of all other edges and depends only on $X_i$ and $X_j$ through a link function.
+
+A special case of the latent position model is the random dot product graph model (RDPG) in which the link function is the inner product \citep{young2007random, nickel2007random}. Now we give a definition of the weighted random dot product graph (WRDPG) as a generalization of the weighted latent position model as following:
+\begin{definition}[Weighted Random Dot Product Graph Model]
+Consider a collection of one-parameter distributions $\mathcal{F} = \{ f_{\theta}, \theta \in \Theta \subset \mathbb{R} \}$. The weighted random dot product graph model (WRDPG) with respect to $\mathcal{F}$ is defined as following: Let $X \in \mathbb{R}^{n \times d}$ be such that $X = [X_1, X_2, \dotsc, X_n]^{\top}$, where $X_i \in \mathbb{R}^d$ for all $i \in [n]$. The matrix $X$ is random and satisfies $\mathbb{P}\left[ X_i^{\top} X_j \in \Theta \right] = 1$ for all $i, j \in [n]$. Conditioned on $X$, the entries of the adjacency matrix $A$ are independent and $A_{ij}$ is a random variable following distribution $f \in \mathcal{F}$ with parameter $ X_i^{\top} X_j $ for all $i \ne j \in [n]$.
 \end{definition}
 Under the WRDPG defined above, the parameter matrix $P = X X^T \in \mathbb{R}^{n \times n}$ is automatically symmetric because the link function is inner product. Moreover, to have symmetric graphs without self-loop, only $A_{ij}$ ($i < j$) are sampled while leaving the diagonals of $A$ to be all zeros.
 
 %\begin{definition}
 %Consider a collection of one-parameter distributions $\mathcal{F} = \{ F_{\theta}, \theta \in \Theta \subset \mathbb{R} \}$. Then the weighted random dot product graph model (WRDPG) with respect to $\mathcal{F}$ is defined as following: Let $\boldsymbol{X}, \boldsymbol{Y} \in \mathbb{R}^{n \times d}$ be such that $\boldsymbol{X} = [X_1, X_2, \cdots, X_n]^T$ and $\boldsymbol{Y} = [Y_1, Y_2, \cdots, Y_n]^T$, where $X_u, Y_u \in \mathbb{R}^d$ for all $u \in [n]$. The matrices $\boldsymbol{X}$ and $\boldsymbol{Y}$ are random and satisfy $\mathbb{P}\left[ \langle X_u, Y_v \rangle \in \Theta \right] = 1$ for all $u, v \in [n]$. Conditioned on $\boldsymbol{X}$ and $\boldsymbol{Y}$, the entries of the adjacency matrix $\boldsymbol{A}$ are independent and $\boldsymbol{A}_{uv}$ is a random variable with distribution $f \in \mathcal{F}$ with parameter $\langle X_u, Y_v \rangle$ for all $u \ne v \in [n]$.
 %\end{definition}
-\end{itemize}
+
+
+
 
 \subsection{Weighted Stochastic Blockmodel as a Weighted Random Dot Product Graph}
 \label{section:WSBM}
-\begin{itemize}
-\item Community structure is an important property of graphs under which vertices are clustered into different communities such that vertices within the same community behave similarly. The stochastic blockmodel (SBM) \cite{holland1983stochastic} captures such property, where each vertex is assigned to one block and the connectivity between two vertices depends only on their respective block memberships.
-\item Formally, the SBM is determined by the number of blocks $K$ (generally much smaller than the number of vertices $n$), block probability matrix $B \in \Theta^{K \times K} \subset \mathbb{R}^{K \times K}$, and the block assignment vector $\tau \in [K]^n$, where $\tau_i = k$ represents vertex $i$ belongs to block $k$. Conditioned on the block membership $\tau$, the connectivity between vertex $i$ and vertex $j$ follows a Bernoulli distribution with parameter $B_{\tau_i, \tau_j}$. This can easily be generalized to the weighted stochastic blockmodel (WSBM), with the Bernoulli distribution replaced by a general distribution family $\mathcal{F}$.
-\item In order to consider WSBM as a WRDPG, the matrix $B$ needs to be positive semi-definite. From now on, we will note the sub-model of WSBM with positive semi-definite $B$ as the WSBM.
-\item Now consider the WSBM as a WRDPG with respect to $\mathcal{F} = \{ f_{\theta}, \theta \in \Theta \subset \mathbb{R} \}$. Let $d = 
+
+Community structure is an important property of graphs under which vertices are clustered into different communities such that vertices within the same community behave similarly. The stochastic blockmodel (SBM) proposed by \citet{holland1983stochastic} captures such property, where each vertex is assigned to one block and the connectivity between two vertices depends only on their respective block memberships.
+
+Formally, the SBM is determined by the number of blocks $K$ (generally much smaller than the number of vertices $n$), block probability matrix $B \in [0, 1]^{K \times K}$, and the block assignment vector $\tau \in [K]^n$, where $\tau_i = k$ represents that vertex $i$ belongs to block $k$. Conditioned on the block membership $\tau$, the connectivity between vertex $i$ and vertex $j$ follows a Bernoulli distribution with parameter $B_{\tau_i, \tau_j}$. This can be easily generalized to the weighted stochastic blockmodel (WSBM), with the Bernoulli distributions replaced by a general distribution family one-parameter distributions $\mathcal{F} = \{ f_{\theta}, \theta \in \Theta \subset \mathbb{R} \}$ and the block probability matrix to be $B \in \Theta^{K \times K} \subset \mathbb{R}^{K \times K}$.
+
+Since the RDPG/WRDPG setting motivates the low-rank estimator, all analysis in this work are based on such setting. In order to consider WSBM as a WRDPG, the block probability matrix $B$ needs to be positive semi-definite by the structure of WRDPG. From now on, we will denote the sub-model of WSBM with positive semi-definite $B$ as the WSBM.
+
+Now consider the WSBM as a WRDPG with respect to $\mathcal{F} = \{ f_{\theta}, \theta \in \Theta \subset \mathbb{R} \}$. Let $d = 
 \mathrm{rank}(B)$, then all vertices in block $k$ have shared latent position $\nu_k \in \mathbb{R}^{d}$, where $B = \nu \nu^{\top}$ and $\nu = [\nu_1, \dotsc, \nu_K]^{\top} \in \mathbb{R}^{K \times d}$. That is to say, $X_i = \nu_{\tau_i}$ and $A_{ij}$ $(i < j)$ is distributed from $f$ with parameter $B_{\tau_i, \tau_j} = \nu_{\tau_i}^{\top} \nu_{\tau_j}$. Here the parameter matrix $P \in \mathbb{R}^{n \times n}$ is symmetric, hollow, and satisfies $P_{ij} = X_i^{\top} X_j = \nu_{\tau_i}^{\top} \nu_{\tau_j} = B_{\tau_i, \tau_j}$.
-\item In order to generate $m$ graphs under this model with known vertex correspondence, we first sample $\tau$ from the categorical distribution with parameter $\rho$ and keep it fixed for all $m$ graphs. Then $m$ symmetric and hollow graphs $G^{(1)}, \dotsc, G^{(m)}$ are sampled such that conditioning on $\tau$, the adjacency matrices are distributed entry-wise independently as $A^{(t)}_{ij} \stackrel{ind}{\sim} f_{B_{\tau_i, \tau_j}} = f_{P_{ij}}$ for each $1 \le t \le m$, $1 \le i < j \le n$. Here $P \in \mathbb{R}^{n \times n}$ is the actual parameter matrix for each pair of vertices with the same block structure as $B$.
-\item Here is an example of the SBM. (Figure for simulation)
+
+In order to generate $m$ graphs under this model with known vertex correspondence, we first sample $\tau$ from the categorical distribution with parameter $\rho = [\rho_1, \cdots, \rho_K]^{\top}$ with $\rho_k \in (0, 1)$ and $\sum_{k = 1}^{K} \rho_k = 1$, and keep $\rho$ fixed when sampling all $m$ graphs. Then $m$ symmetric and hollow graphs are sampled such that conditioning on $\tau$, the adjacency matrices are distributed entry-wise independently as $A^{(t)}_{ij} \stackrel{ind}{\sim} f_{B_{\tau_i, \tau_j}} = f_{P_{ij}}$ for each $1 \le t \le m$, $1 \le i < j \le n$.
+
+
+\begin{itemize}
+\item Here is an example of the WSBM. (Figure for simulation)
 \end{itemize}
 
-\subsection{Stochastic Blockmodel as a Weighted Random Dot Product Graph with Contaminations}
+\subsection{Weighted Stochastic Blockmodel as a Weighted Random Dot Product Graph with Contaminations}
 \label{section:Contamination}
-\begin{itemize}
-\item In practice, we always get noise in the observations, which deviates from our general model assumptions. In order to incorporate this effect, a contamination model, e.g. gross error model \cite{AIC:AIC690280519, bickel2001mathematical} considered in this work, is always preferred.
-\item Generally in a gross error model, we observe good measurement $G^* \sim f_P \in \mathcal{F}$ most of the time, while there are a few wild values $G^{**} \sim h_C \in \mathcal{H}$ when the gross errors occur. Here $P$ and $C$ represent the respective parameter matrices for the two distribution families.
-As to the graphs, one way is to contaminate the entire graph with some small probability $\epsilon$, that is $G \sim (1-\epsilon) f_P + \epsilon h_C$. However, since we are under the independent edge model, it is more natural to consider the contaminations on each edge, i.e. for $1 \le i <  j \le n$, $G_{ij} \sim (1-\epsilon) f_{P_{ij}} + \epsilon h_{C_{ij}}$ with $f \in \mathcal{F}$ and $h \in \mathcal{H}$, where both $\mathcal{F}$ and $\mathcal{H}$ are one-parameter distribution families.
-\item In this paper, we assume that when gross errors occur, the connectivity also follows the WSBM as a WRDPG. That is, the contamination distributions $h_{C_{ij}}$ are also from the same one-parameter family $\mathcal{F}$ as $f_{P_{ij}}$ do. Moreover, the parameter matrix $C$ for the contamination has the same block structure. (Note: not necessarily the same block structure)
-\item To generate $m$ graphs under this contamination model with known vertex correspondence, we first sample $\tau$ from the categorical distribution with parameter $\rho$ and keep it fixed for all $m$ graphs as in Section \ref{section:WSBM}. Then $m$ symmetric and hollow graphs $G^{(1)}, \dotsc, G^{(m)}$ are sampled such that conditioning on $\tau$, the adjacency matrices are distributed entry-wise independently as $A^{(t)}_{ij} \stackrel{ind}{\sim} (1-\epsilon) f_{P_{ij}} + \epsilon f_{C_{ij}}$ for each $1 \le t \le m$, $1 \le i < j \le n$. Here $\epsilon$ is the probability of an edge to be contaminated, $P$ is the parameter matrix as in Section \ref{section:WSBM}, and $C$ is the parameter matrix for contaminations.
-\end{itemize}
+
+In practice, we can hardly get data accurately. So there will always be noise in the observations, which deviates from our general model assumptions. In order to incorporate this effect, a contamination model, the gross error model \citep{AIC:AIC690280519, bickel2001mathematical}, is considered in this work.
+
+Generally in a gross error model, we observe good measurement $G^* \sim f_P \in \mathcal{F}$ most of the time, while there are a few wild values $G^{**} \sim h_C \in \mathcal{H}$ when the gross errors occur. Here $P$ and $C$ represent the respective parameter matrices of the two distribution families.
+As to the graphs, one way to generalize from the gross error model is to contaminate the entire graph with some small probability $\epsilon \in (0, 1)$, that is $G \sim (1-\epsilon) f_P + \epsilon h_C$. However, since all the models we consider are subsets of the WIEM, it is more natural to consider the contaminations with respect to each edge, i.e. for $1 \le i <  j \le n$, $G_{ij} \sim (1-\epsilon) f_{P_{ij}} + \epsilon h_{C_{ij}}$ with $f \in \mathcal{F}$ and $h \in \mathcal{H}$, where both $\mathcal{F}$ and $\mathcal{H}$ are one-parameter distribution families.
+
+In this paper, we assume that when gross errors occur, the connectivity also follows the WSBM as a WRDPG. That is, the contamination distributions $h_{C_{ij}}$ are also from the same one-parameter family $\mathcal{F}$ as well as $f_{P_{ij}}$. For clarity, we will introduce the sampling procedure when the contamination has the same block structure. However, the parameter matrix $C$ for the contamination does not need to have the same block structure as $P$ in general.
+
+To generate $m$ graphs under this contamination model with known vertex correspondence, we first sample $\tau$ from the categorical distribution with parameter $\rho$ and keep it fixed for all $m$ graphs as in Section \ref{section:WSBM}. Then $m$ symmetric and hollow graphs $G^{(1)}, \dotsc, G^{(m)}$ are sampled such that conditioning on $\tau$, the adjacency matrices are distributed entry-wise independently as $A^{(t)}_{ij} \stackrel{ind}{\sim} (1-\epsilon) f_{P_{ij}} + \epsilon f_{C_{ij}}$ for each $1 \le t \le m$, $1 \le i < j \le n$. Here $\epsilon$ is the probability of an edge to be contaminated, $P$ is the parameter matrix as in Section \ref{section:WSBM}, and $C$ is the parameter matrix for contaminations.
 
 
 
