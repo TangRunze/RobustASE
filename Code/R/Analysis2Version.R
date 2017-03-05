@@ -228,7 +228,7 @@ gg <- ggplot(errorByDimDf, aes(x = d, y = mse, linetype = factor(which), shape =
   theme(panel.background = element_rect(fill = 'white', colour = 'grey70'))+
   theme(legend.text=element_text(size=20,face="bold"))+
   theme(legend.position="bottom")+
-  ggtitle(paste0(dataName, ", N=", n, ", ", M, " graphs"))+
+  ggtitle(paste0(dataName, ", n=", n, ", ", M, " graphs"))+
   theme(legend.key.size=unit(legendSize,"line"))+
   theme(plot.title=element_text(lineheight=.8,size=20,face="bold"))
 

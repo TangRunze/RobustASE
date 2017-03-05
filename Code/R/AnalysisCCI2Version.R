@@ -258,7 +258,7 @@ for (dataName1 in dataNameVec) {
       theme(panel.background = element_rect(fill = 'white', colour = 'grey70'))+
       theme(legend.text=element_text(size=20,face="bold"))+
       theme(legend.position="bottom")+
-      ggtitle(paste0(dataName1, ", ", dataName2, ", N=", n, ", ", M, " graphs"))+
+      ggtitle(paste0(dataName1, ", ", dataName2, ", n=", n, ", ", M, " graphs"))+
       theme(legend.key.size=unit(legendSize,"line"))+
       theme(plot.title=element_text(lineheight=.8,size=20,face="bold"))
     
