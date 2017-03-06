@@ -381,11 +381,11 @@ Intuitively, the low-rank structure of the parameter matrix $P$ in WRDPG should 
 
 \section{Theoretical Results}
 \label{section:theory}
-In this section, for illustrative purpose, we are going to present theoretical results when the contamination model introduced in Section~\ref{section:Contamination} is based on exponential distributions. That is $\mathcal{F} = \{ f_{\theta}(x) = \frac{1}{\theta} e^{-x/\theta}, \theta \in [0, R] \subset \mathbb{R} \}$, where $R > 0$ is a constant. The results can be extended to a general situation with proper assumptions, which will be discussed in Section~\ref{section:extension}.
+In this section, for illustrative purpose, we are going to present theoretical results when the contamination model introduced in Section~\ref{section:Contamination} is with respect to exponential distributions. That is $\mathcal{F} = \{ f_{\theta}(x) = \frac{1}{\theta} e^{-x/\theta}, \theta \in [0, R] \subset \mathbb{R} \}$, where $R > 0$ is a constant. The results can be extended to a general situation with proper assumptions, which will be discussed in Section~\ref{section:extension}.
 
 For clarity, we restate the model settings discussed in Section~\ref{section:Contamination}. Consider the SBM with parameter $B$ and $\rho$. First sample the block membership $\tau$ from the categorical distribution with parameter $\rho$ and keep it fixed for all $m$ graphs. Conditioned on this $\tau$ we sampled, the probability matrix $P$ then satisfies $P_{ij} = B_{\tau_i, \tau_j}$. In this section, we assume the contamination has the same block membership $\tau$, thus the contamination matrix $C \in \mathbb{R}^{n \times n}$ has the same block structure as $P$. Note that this is not necessary for the result. Different block structure can lead to the same result since the rank is still finite. Denote $\epsilon$ as the probability of an edge to be contaminated. Then $m$ symmetric graphs $G^{(1)}, \dotsc, G^{(m)}$  are sampled such that conditioning on $\tau$, the adjacency matrices are distributed entry-wise independently as $A^{(t)}_{ij} \stackrel{ind}{\sim} (1-\epsilon) f_{P_{ij}} + \epsilon f_{C_{ij}}$ for each $1 \le t \le m$, $1 \le i < j \le n$. 
 
-Under such setting, we analyze the performance of all four estimators based on $m$ adjacency matrices for estimating the probability matrix $P$ in terms of the mean squared error. When comparing two estimators, we mainly focus on both asymptotic bias and asymptotic variance. Note that all the results in this section are entry-wise, which can easily lead to a result of the total MSE for the entire matrix.
+Under such setting, we now analyze the performance of all four estimators based on $m$ adjacency matrices for estimating the probability matrix $P$ in terms of the mean squared error. When comparing two estimators, we mainly focus on both asymptotic bias and asymptotic variance. Note that all the results in this section are entry-wise, which can easily lead to a result of the total MSE for the entire matrix.
 
 We only present the most important results in this section. The proofs with more results are in the Appendix.
 
@@ -414,26 +414,27 @@ Lemma~\ref{lemma:ELqlEMLE} shows that the entry-wise ML$q$E $\hat{P}^{(q)}$ has 
 for $1 \le i, j \le n$.
 \end{lemma}
 
-By this lemma, both estimators have asymptotic variances equal zero as the number of graphs $m \to \infty$. Under the mixture model, the result for MLE follows the central limit theorem immediately, while the ML$q$E result is not trivial. Our proof is based on the minimum contrast estimates (more details later).
+By this lemma, both estimators have asymptotic variances equal zero as the number of graphs $m$ goes to infinity. Under the mixture model, the result for MLE follows the central limit theorem immediately, while the ML$q$E result is not trivial. Our proof is based on the minimum contrast estimates (more details later).
 
 As a result, $\hat{P}^{(q)}$ reduces the bias while keeping variance the same asymptotically compared to $\hat{P}^{(1)}$. Thus in terms of MSE, $\hat{P}^{(q)}$ is a better estimator than $\hat{P}^{(1)}$ when the number of graphs $m$ is large with enough contaminations.
 
 \subsection{$\hat{P}^{(1)}$ vs. $\widetilde{P}^{(1)}$}
-Then we are going to analyze the effect of the ASE procedure applied to the entry-wise MLE $\hat{P}^{(1)}$ under the contamination model.
+Then we analyze the effect of the ASE procedure applied to the entry-wise MLE $\hat{P}^{(1)}$ under the contamination model, so that we can compare the performance between $\hat{P}^{(1)}$ and $\widetilde{P}^{(1)}$. Firstly, we show that the two estimators have the same entry-wise asymptotic bias under proper conditions in the following lemma.
 
-\begin{corollary}
-\label{cor:L1Consistent}
+\begin{lemma}
+\label{lm:L1Consistent}
 Assuming that $m = O(n^b)$ for any $b > 0$, then the estimator based on ASE of MLE has the same entry-wise asymptotic bias as MLE, i.e.
 \[
 	\lim_{n \to \infty} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)}) = \lim_{n \to \infty} E[\widetilde{P}_{ij}^{(1)}] - P_{ij} = \lim_{n \to \infty} E[\hat{P}^{(1)}_{ij}] - P_{ij}
     = \lim_{n \to \infty} \mathrm{Bias}(\hat{P}_{ij}^{(1)}).
 \]
-\end{corollary}
+\end{lemma}
 
-To prove the the corollary, we first give a bound on the $2$-norm of $\hat{P}^{(1)} - E[\hat{P}^{(1)}]$ by the matrix Bernstein inequality \cite{tropp2012user}. Since we are under the RDPG setting, $E[\hat{P}^{(1)}]$ still has finite rank, which makes the embedding reasonable. Then we approximate $U^T \hat{U}$ by an orthogonal matrix $W^{\star}$ based on Davis-Kahan theorem \cite{davis1970rotation}, where $U$ and $\hat{U}$ are the eigen-spaces for $E[\hat{P}^{(1)}]$ and $\hat{P}^{(1)}$ respectively. Then we can analyze the bounds much more easily by interchanging $U^T \hat{U}$ in the matrix multiplications. As a result, we can get the bound between the estimates of the latent positions and the true latent positions up to an orthogonal transformation in terms of $2 \to \infty$ norm. Corollary \ref{cor:L1Consistent} then follows by selecting the parameter carefully in the analysis.
+To prove the the lemma, we first give a bound on $\|\hat{P}^{(1)} - E[\hat{P}^{(1)}]\|_2$ by the matrix Bernstein inequality \citep{tropp2012user}. Since we are under the WRDPG setting, $E[\hat{P}^{(1)}]$ still has finite rank, which is the target embedding dimension. Then we approximate $U^T \hat{U}$ by an orthogonal matrix $W^{\star}$ based on Davis-Kahan theorem \citep{davis1970rotation}, where $U$ and $\hat{U}$ are the eigen-spaces for $E[\hat{P}^{(1)}]$ and $\hat{P}^{(1)}$ respectively. Then we can analyze the bounds much more easily by interchanging $U^T \hat{U}$ in the matrix multiplications. As a result, we can get the bound between the estimates of the latent positions and the true latent positions up to an orthogonal transformation in terms of $2 \to \infty$ norm. Lemma~\ref{lm:L1Consistent} then follows by selecting the parameter carefully in the analysis.
 
-Corollary \ref{cor:L1Consistent} says that when $m = O(n^b)$ for any $b > 0$, the ASE procedure applied to $\hat{P}^{(1)}$ will not affect the asymptotic bias for estimating $P$.
-In this case, the asymptotic relative efficiency (ARE) \cite{serfling2011asymptotic} provides a good way to compare these two estimators. The definition proposed by Serfling in 2009 is based on unbiased estimators, here we extend it a little bit such that it can be measure two estimators which have the same asymptotic bias.
+Lemma~\ref{lm:L1Consistent} says that when $m$ is a constant, or $m$ is going to infinity with order $m = O(n^b)$ for any $b > 0$, the ASE procedure applied to $\hat{P}^{(1)}$ will not affect the asymptotic bias for estimating $P$.
+In this case, the asymptotic relative efficiency (ARE) \citep{serfling2011asymptotic} provides a good way to compare these two estimators. The original definition is based on unbiased estimators. Here we extend it a little bit such that it can measure the performance between two estimators with the same asymptotic bias.
+
 \begin{definition}
 For any parameter $\theta$ of a distribution $f$, and for estimators $\hat{\theta}^{(1)}$ and $\hat{\theta}^{(2)}$ approximately $N(\theta^{\prime}, V_1(f)/n)$ and $N(\theta^{\prime}, V_2(f)/n)$ respectively, the ARE of $\hat{\theta}^{(2)}$ to $\hat{\theta}^{(1)}$ is given by
 \[
@@ -441,114 +442,101 @@ For any parameter $\theta$ of a distribution $f$, and for estimators $\hat{\thet
 \]
 \end{definition}
 
-In our situation, we can compare the performance between $\widetilde{P}^{(1)}$ and $\hat{P}^{(1)}$ entry-wise based on the ARE, which can be written as $\mathrm{ARE}(\widetilde{P}^{(1)}, \hat{P}^{(1)}) = \lim_{n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$. First, we analyze the order of $\mathrm{Var}(\widetilde{P}_{ij}^{(1)})$ in the following theorem.
+In our situation, we can compare the performance between $\widetilde{P}^{(1)}$ and $\hat{P}^{(1)}$ based on the entry-wise ARE, which can be written as $\mathrm{ARE}(\widetilde{P}^{(1)}_{ij}, \hat{P}^{(1)}_{ij}) = \lim_{n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$. The order of $\mathrm{Var}(\widetilde{P}_{ij}^{(1)})$ is analyzed in the following theorem.
 \begin{theorem}
 \label{thm:VarASEL1}
-Assuming that $m = O(n^b)$ for any $b > 0$, then $\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) = O(m^{-1} n^{-1} (\log n)^3)$.
+Assuming that $m = O(n^b)$ for any $b > 0$, then $\mathrm{Var}(\widetilde{P}_{ij}^{(1)}) = O(m^{-1} n^{-1} (\log n)^3)$.
 \end{theorem}
 
-The tools we use to prove this theorem is the same as for Corollary \ref{cor:L1Consistent}. Combined with Lemma \ref{lemma:VarLqlVarMLE}, we directly have the ARE results as following:
+The tools we use to prove this theorem is the same as for Lemma~\ref{lm:L1Consistent}. Combined with the fact that $\mathrm{Var}(\hat{P}_{ij}^{(1)}) = O(m^{-1})$, we have the ARE results directly as following:
 \begin{theorem}
 \label{thm:AREL1}
-For fixed $m$, $1 \le i, j \le n$ and $i \ne j$,
+Assuming that $m = O(n^b)$ for any $b > 0$,  then for $1 \le i, j \le n$ and $i \ne j$,
 \[
 	\frac{\mathrm{Var}(\widetilde{P}_{ij}^{(1)})}{\mathrm{Var}(\hat{P}_{ij}^{(1)})}
     = O(n^{-1} (\log n)^3).
 \]
-Thus
-\[
-	\mathrm{ARE}(\hat{P}_{ij}^{(1)}, \widetilde{P}_{ij}^{(1)}) = 0.
-\]
-Furthermore, as long as $m$ goes to infinity of order $O(n^b)$ for any $b > 0$,
+And thus
 \[
 	\mathrm{ARE}(\hat{P}_{ij}^{(1)}, \widetilde{P}_{ij}^{(1)}) = 0.
 \]
 \end{theorem}
 
-Theorem \ref{thm:AREL1} tells us that whenever $m = O(n^b)$ for any $b > 0$, i.e. $m$ is fixed or it grows not faster than polynomial with respect to $n$, the order of the ARE is $O(n^{-1} (\log n)^3)$, which converges to 0 when $n \to \infty$. An interesting fact here is that this bound of the ARE does not depend on $m$.
+Theorem~\ref{thm:AREL1} tells us that whenever $m = O(n^b)$ for any $b > 0$, i.e. $m$ is fixed or it grows not faster than any polynomial with respect to $n$, the order of the ARE is $O(n^{-1} (\log n)^3)$, which goes to 0 when $n \to \infty$. An interesting fact here is that this bound of the ARE does not depend on $m$.
 
-As a result, the ASE procedure applied to the entry-wise MLE $\hat{P}^{(1)}$ helps reduce the variance while keeping the bias asymptotically, leading to a better estimate $\widetilde{P}^{(1)}$ for $P$ in terms of MSE.
+As a result, the ASE procedure applied to the entry-wise MLE $\hat{P}^{(1)}$ helps reduce the variance while keeping the bias unchanged asymptotically, leading to a better estimate $\widetilde{P}^{(1)}$ for $P$ in terms of MSE.
 
 
 
 \subsection{$\hat{P}^{(q)}$ vs. $\widetilde{P}^{(q)}$}
 
-Similarly, we now analyze the effect of the ASE procedure applied to the entry-wise ML$q$E $\hat{P}^{(q)}$ under the contamination model.
+Similarly, we now analyze the effect of the ASE procedure applied to the entry-wise ML$q$E $\hat{P}^{(q)}$ under the contamination model in order to compare the performance between $\hat{P}^{(q)}$ and $\widetilde{P}^{(q)}$. Similarly, we first show that the two estimators have the same entry-wise asymptotic bias under proper conditions in the following lemma.
 
-\begin{corollary}
-\label{cor:LqConsistent}
+\begin{lemma}
+\label{lm:LqConsistent}
 Assuming that $m = O(n^b)$ for any $b > 0$, then the estimator based on ASE of ML$q$E has the same entry-wise asymptotic bias as ML$q$E, i.e.
 \[
 	\lim_{n \to \infty} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)}) = \lim_{n \to \infty} E[\widetilde{P}_{ij}^{(q)}] - P_{ij} = \lim_{n \to \infty} E[\hat{P}^{(q)}_{ij}] - P_{ij}
     = \lim_{n \to \infty} \mathrm{Bias}(\hat{P}_{ij}^{(q)}).
 \]
-\end{corollary}
+\end{lemma}
 
-The proof for Corollary \ref{cor:LqConsistent} is almost the same as the proof for Corollary \ref{cor:L1Consistent}. But unlike results for MLE, we cannot get the factor $m^{-1/2}$ in the results due to the structure of ML$q$ equation. Although it does not affect the result for asymptotic bias as in Corollary \ref{cor:LqConsistent}, the order of the variance of ML$q$E is missing $m^{-1}$ compared to MLE as following. Moreover, we will see later that this will cause a slight difference in the comparison. 
+The proof for Lemma \ref{lm:LqConsistent} is almost the same as the proof for Lemma \ref{lm:L1Consistent}. But unlike the results for MLE, we cannot get the term $m^{-1/2}$ in the results due to the structure of maximum L$q$ likelihood equation. Although it does not affect the result for asymptotic bias as in Lemma \ref{lm:LqConsistent}, the order of the variance of ML$q$E is missing $m^{-1}$ compared to MLE as in the following theorem. Moreover, later we will see that this will cause a slight difference in the comparison. 
 
 \begin{theorem}
 \label{thm:VarASELq}
-Assuming that $m = O(n^b)$ for any $b > 0$, then $\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) = O(n^{-1} (\log n)^3)$.
+Assuming that $m = O(n^b)$ for any $b > 0$, then $\mathrm{Var}(\widetilde{P}^{(q)}) = O(n^{-1} (\log n)^3)$.
 \end{theorem}
 
-Combined with Lemma \ref{lemma:VarLqlVarMLE}, we directly have the ARE results as following:
+The proofs are similar to Theorem~\ref{thm:VarASEL1}. Combined with the fact that $\mathrm{Var}(\hat{P}_{ij}^{(q)}) = O(m^{-1})$, we have the ARE results directly as following:
 
 \begin{theorem}
 \label{thm:ARELq}
-For fixed $m$, $1 \le i, j \le n$,
+Assuming that $m = O(n^b)$ for any $b > 0$,  then for $1 \le i, j \le n$ and $i \ne j$,
 \[
 	\frac{\mathrm{Var}(\widetilde{P}_{ij}^{(q)})}{\mathrm{Var}(\hat{P}_{ij}^{(q)})}
     = O(m n^{-1} (\log n)^3).
 \]
-Thus
-\[
-	\mathrm{ARE}(\hat{P}_{ij}^{(q)}, \widetilde{P}_{ij}^{(q)}) = 0.
-\]
-Furthermore, as long as $m$ goes to infinity of order $o(n^2 (\log n)^{-6})$,
+Moreover, if $m = o(n (\log n)^{-3})$, then
 \[
 	\mathrm{ARE}(\hat{P}_{ij}^{(q)}, \widetilde{P}_{ij}^{(q)}) = 0.
 \]
 \end{theorem}
 
-Theorem \ref{thm:ARELq} tells us that whenever $m = O(n^b)$ for any $b > 0$, i.e. $m$ is fixed or it grows not faster than polynomial with respect to $n$, the order of the ARE is $O(m n^{-1} (\log n)^3)$. When $m$ is fixed, the order of the ARE is $O(n^{-1} (\log n)^3)$, which will goes to 0 as $n \to \infty$. Even if $m$ also increases, as long as it grows in the order of $o(n (\log n)^{-3})$, the ARE still goes to 0. 
+Theorem~\ref{thm:ARELq} tells us that whenever $m = O(n^b)$ for any $b > 0$, i.e. $m$ is fixed or it grows not faster than polynomial with respect to $n$, the order of the ARE is $O(m n^{-1} (\log n)^3)$. Specifically, when $m$ is fixed, the order of the ARE is $O(n^{-1} (\log n)^3)$, which will goes to 0 as $n \to \infty$. Even if $m$ also increases as $n$ increases, as long as it grows in the order of $o(n (\log n)^{-3})$, the ARE still goes to 0. 
 
 Thus the ASE procedure applied to the entry-wise ML$q$E $\hat{P}^{(q)}$ also helps reduce the variance while keeping the bias asymptotically, leading to a better estimate $\widetilde{P}^{(q)}$ for $P$ in terms of MSE.
 
 
 \subsection{$\widetilde{P}^{(1)}$ vs. $\widetilde{P}^{(q)}$}
 
-To finish the last piece, we compare the performance between $\widetilde{P}^{(1)}$ and $\widetilde{P}^{(q)}$ without doing any extra work.
+To finish the last piece, we compare the performance between $\widetilde{P}^{(1)}$ and $\widetilde{P}^{(q)}$ by combining the previous results.
 
 \begin{theorem}
 \label{thm:biasL1andLq}
-For sufficiently large $n$ and $C$, any $1 \le i,j \le n$,
+For sufficiently large $C$ and any $1 \le i,j \le n$, if $m = O(n^b)$ for any $b > 0$, then
 \[
-	\lim_{m \to \infty} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)})
-    > \lim_{m \to \infty} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)})
+	\lim_{m, n \to \infty} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)})
+    > \lim_{m, n \to \infty} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)})
 \]
 \end{theorem}
 
 \begin{theorem}
 \label{thm:varianceL1andLq}
-For any fixed $m$, any $1 \le i,j \le n$,
+For sufficiently large $C$ and any $1 \le i,j \le n$, if $m = O(n (\log n)^{-3})$, then
 \[
-	\lim_{n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(1)})
-    = \lim_{n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0.
-\]
-Furthermore, as long as $m$ goes to infinity of order $o(n^2 (\log n)^{-6})$, any $1 \le i,j \le n$,
-\[
-	\lim_{n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(1)})
-    = \lim_{n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0
+	\lim_{m, n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(1)})
+    = \lim_{m, n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0.
 \]
 \end{theorem}
 
-Theorem \ref{thm:biasL1andLq} is a direct result of Lemma \ref{lemma:ELqlEMLE}, Corollary \ref{cor:L1Consistent}, and Corollary \ref{cor:LqConsistent}, while Theorem \ref{thm:varianceL1andLq} is based on Lemma \ref{lemma:VarLqlVarMLE}, Theorem \ref{thm:AREL1}, and Theorem \ref{thm:ARELq}.
+Theorem \ref{thm:biasL1andLq} is a direct result of Lemma \ref{lemma:ELqlEMLE}, Lemma \ref{lm:L1Consistent}, and Lemma \ref{lm:LqConsistent}, while Theorem \ref{thm:varianceL1andLq} is based on Lemma \ref{lemma:VarLqlVarMLE}, Theorem \ref{thm:AREL1}, and Theorem \ref{thm:ARELq}.
 
 So $\widetilde{P}^{(q)}$ inherits the robustness from the entry-wise ML$q$E $\hat{P}^{(q)}$ and has a smaller asymptotic bias compared to $\widetilde{P}^{(1)}$ while both estimates have variance goes to 0 as $m \to \infty$.
 
 
 \subsection{Summary}
-We summarize all the comparison in this section and we plot the relationship among four estimators in Figure \ref{fig:summary}. In conclusion, when contamination is relatively large and the number of graphs $m$ is not growing too fast, $\widetilde{P}^{(q)}$ is the best among the four estimators.
+We summarize all the comparison in this section and plot the relationship among four estimators in Figure~\ref{fig:summary}. In conclusion, when contamination is relatively large as well as $m$ and $n$, $\widetilde{P}^{(q)}$ is the best among the four estimators.
 
 \begin{figure}
 \begin{center}
@@ -575,12 +563,12 @@ We summarize all the comparison in this section and we plot the relationship amo
   };
 
   % Draw the arrows between the nodes and label them.
-  \draw[tofrom] (MLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $n$, $C$ $\mathrm{large}$ $\mathrm{enough}$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(q)})$}
+  \draw[tofrom] (MLE) -- node[midway,above] {$\mathrm{When}$ $C$ $\mathrm{is}$ $\mathrm{large}$ $\mathrm{enough}$, $\mathrm{for}$ $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\hat{P}_{ij}^{(q)})$}
       node[midway,below] {$\underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(1)}) = \underset{m \to \infty}{\lim} \mathrm{Var}(\hat{P}_{ij}^{(q)}) = 0$} (MLqE);
   \draw[tofrom] (MLE) -- node[midway,left] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ \\ $m = O(n^b)$ $\mathrm{for}$ $b>0$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(1)}) =$\\$ \underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$\\$ = O(n^{-1} (\log n)^3)$} (XMLE);
   \draw[tofrom] (MLqE) -- node[midway,right] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ \\ $m = O(n^b)$ $\mathrm{for}$ $b>0$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\hat{P}_{ij}^{(q)}) = $\\$\underset{n \to \infty}{\lim} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)})$\\$\mathrm{Var}(\widetilde{P}_{ij}^{(q)})/\mathrm{Var}(\hat{P}_{ij}^{(q)})$\\$= O(m n^{-1} (\log n)^3)$} (XMLqE);
-  \draw[tofrom] (XMLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{sufficiently}$ $\mathrm{ large}$ $m$, $n$ $\mathrm{and}$ $C$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(1)}) > \underset{m \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(q)})$}
-      node[midway,below] {$\mathrm{For}$ $\mathrm{any}$ $\mathrm{fixed}$ $m$, $\mathrm{or}$ $m = o(n (\log n)^{-3})$, \\$\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(1)}) = \underset{n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0$} (XMLqE);
+  \draw[tofrom] (XMLE) -- node[midway,above] {$\mathrm{For}$ $\mathrm{sufficiently}$ $\mathrm{large}$ $C$, \\$\mathrm{if}$ $m = O(n^b)$  $\mathrm{for}$ $b>0$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m, n \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(1)}) > \underset{m, n \to \infty}{\lim} \mathrm{Bias}^2(\widetilde{P}_{ij}^{(q)})$}
+      node[midway,below] {$\mathrm{If}$ $m = O(n (\log n)^{-3})$, $\mathrm{any}$ $1 \le i, j \le n$, \\$\underset{m, n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(1)}) = \underset{m, n \to \infty}{\lim} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0$} (XMLqE);
 \end{tikzpicture}
 \end{center}
 \caption{\label{fig:summary}Relationship among four estimators.}
