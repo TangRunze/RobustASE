@@ -233,29 +233,27 @@ To generate $m$ graphs under this contamination model with known vertex correspo
 
 \section{Estimators}
 
-Under each of the models mentioned in Section \ref{section:model}, our goal is to estimate the parameter matrix $P$ based on the $m$ observations $A^{(1)}, \dotsc, A^{(m)}$. In this section, we present four estimators as in Figure \ref{fig:roadmap}, the standard entry-wise MLE $\hat{P}^{(1)}$, the low-rank approximation of the entry-wise MLE $\widetilde{P}^{(1)}$, the entry-wise robust estimator ML$q$E $\hat{P}^{(q)}$, and the low-rank approximation of the entry-wise ML$q$E $\widetilde{P}^{(q)}$. Since the observed graphs are symmetric and hollow with a symmetric parameter matrix of the model, we don't really care about the estimate of the diagonal of $P$, but the estimate itself should be at least symmetric.
+Under any model introduced in Section~\ref{section:model}, our goal is to estimate the parameter matrix $P$ based on the $m$ observations $A^{(1)}, \dotsc, A^{(m)}$. Especially when under the contamination model, although there are other parameters like $\epsilon$ and $C$, our goal is still to estimate the uncontaminated parameter matrix $P$. In this section, we present four estimators as in Figure~\ref{fig:roadmap}, i.e. the standard entry-wise MLE $\hat{P}^{(1)}$, the low-rank approximation of the entry-wise MLE $\widetilde{P}^{(1)}$, the entry-wise robust estimator ML$q$E $\hat{P}^{(q)}$, and the low-rank approximation of the entry-wise ML$q$E $\widetilde{P}^{(q)}$. Since the observed graphs are symmetric and hollow with a symmetric parameter matrix of the model, we do not care about the estimate of the diagonal of $P$. However, the estimate itself should be at least symmetric.
 
 \subsection{Entry-wise Maximum Likelihood Estimator $\hat{P}^{(1)}$}
-\begin{itemize}
-\item Under the WIEM, the most natural estimator is the element-wise MLE $\hat{P}^{(1)}$ based on the adjacency matrices $A^{(1)}, \dotsc, A^{(m)}$.
-\item In some cases, for instance Bernoulli, Exponential, and Poisson, the entry-wise MLE happens to be the mean graph $\bar{A}$, which is the UMVUE under WIEG with no other constraints. So it has the smallest variance among all unbiased estimators. In addition, as being an MLE, it satisfies many good asymptotic properties as the number of graphs $m \to \infty$. But the performance will not get any better when the number of vertices in each graph $n$ increases. In addition, it doesn't exploit any graph structure. If the graphs are actually distributed under a WRDPG or a WSBM, then the entry-wise MLE is no longer the MLE any more. As a result, the performance can be very poor, especially when $m$ is small.
-\end{itemize}
+
+Under the WIEM, the most natural estimator is the MLE, which happens to be the element-wise MLE $\hat{P}^{(1)}$ in this case.
+Moreover, when $\mathcal{F}$ is a one-parameter exponential family, for instance Bernoulli and Exponential, the entry-wise MLE $\hat{P}^{(1)}$ is uniformly minimum-variance unbiased estimator, i.e. it has the smallest variance among all unbiased estimators. In addition, it satisfies many good asymptotic properties as the number of graphs $m$ goes to infinity.
+However, in high dimensional situations like this, the entry-wise MLE often leads to inaccurate estimates with very high variance when the sample size $m$ is small. Also, it does not exploit any graph structure. The performance will not get any better when the number of vertices in each graph $n$ increases since it is an entry-wise estimator. Moreover, if the graphs are actually distributed under a WRDPG or a WSBM, then the entry-wise MLE is no longer the MLE any more and the performance can be very poor.
 
 
 \subsection{Estimator $\widetilde{P}^{(1)}$ Based on Adjacency Spectral Embedding of $\hat{P}^{(1)}$}
-\begin{itemize}
-\item Motivated by the low-rank structure of the parameter matrix $P$ in WRDPG, we consider the estimator $\widetilde{P}^{(1)}$ proposed by Tang et al. \cite{tang2016law} based on the spectral decomposition of $\hat{P}^{(1)}$. The estimator $\widetilde{P}^{(1)}$ is similar to the estimator proposed by Chaterjee \cite{chatterjee2015matrix} with adjustment for the specific estimation task, including a different dimension selection technique and a diagonal augmentation procedure.
-\end{itemize}
 
+Motivated by the low-rank structure of the parameter matrix $P$ in WRDPG, we consider the estimator $\widetilde{P}^{(1)}$ proposed by \citet{tang2016law} based on the spectral decomposition of $\hat{P}^{(1)}$. The estimator $\widetilde{P}^{(1)}$ is similar to the estimator proposed by \citet{chatterjee2015matrix} with adjustment for the specific estimation task, including a different dimension selection technique discussed in Section~\ref{section:dim_select} and a diagonal augmentation procedure discussed in Section~\ref{section:diag_aug}. The construction procedure of $\widetilde{P}^{(1)}$ consists of several steps, which will be introduced respectively in the following subsections.
 
 \subsubsection{Rank-$d$ Approximation}
-\begin{itemize}
-\item Given the dimension $d$, we consider $\mathrm{lowrank}_d(\hat{P}^{(1)})$, the best rank-$d$ positive semi-definite approximation of $\hat{P}^{(1)}$, denoted as $\widetilde{P}^{(1)}$. First calculate the eigen-decomposition of the symmetric matrix $\hat{P}^{(1)} = \hat{U} \hat{S} \hat{U}^{\top} + \widetilde{U} \widetilde{S} \widetilde{U}^{\top}$, where $\hat{S}$ is the diagonal matrix with the largest $d$ eigenvalues of $\hat{P}^{(1)}$, and $\hat{U}$ has the corresponding eigenvectors as each column. Similarly, $\tilde{S}$ is the diagonal matrix with non-increasing entries along the diagonal corresponding to the rest $n - d$ eigenvalues of $\hat{P}^{(1)}$, and $\tilde{U}$ has the columns given by the corresponding eigenvectors.
+
+Given a dimension $d$, we consider $\widetilde{P}^{(1)} = \mathrm{lowrank}_d(\hat{P}^{(1)})$ as the best rank-$d$ positive semi-definite approximation of $\hat{P}^{(1)}$. To find such best approximation, first calculate the eigen-decomposition of the symmetric matrix $\hat{P}^{(1)} = \hat{U} \hat{S} \hat{U}^{\top} + \widetilde{U} \widetilde{S} \widetilde{U}^{\top}$, where $\hat{S}$ is the diagonal matrix with the largest $d$ eigenvalues of $\hat{P}^{(1)}$, and $\hat{U}$ has the corresponding eigenvectors as each column. Similarly, $\tilde{S}$ is the diagonal matrix with non-increasing entries along the diagonal corresponding to the rest $n - d$ eigenvalues of $\hat{P}^{(1)}$, and $\tilde{U}$ has the columns given by the corresponding eigenvectors.
 The $d$-dimensional adjacency spectral embedding (ASE) of $\hat{P}^{(1)}$ is given by $\hat{X}=\hat{U} \hat{S}^{1/2}\in \mathbb{R}^{n \times d}$.
-Using the adjacency spectral embedding, we have the best rank-$d$ positive semi-definite approximation of $\hat{P}^{(1)}$ to be $\widetilde{P}^{(1)} = \hat{X} \hat{X}^{\top}=\hat{U}\hat{S}\hat{U}^{\top}$.
-In the RDPG setting, Sussman et al. \cite{sussman2014consistent} proved that each row of $\hat{X}$ can accurately estimate the the latent position for each vertex up to an orthogonal transformation. We will analyze its performance under the WRDPG setting in Section \ref{section:theory}.
-\item We restate the algorithm in \cite{tang2016law} to give the steps of computing this low-rank approximation of a general $n$-by-$n$ symmetric matrix $A$ in Algorithm \ref{algo:lowrank}.
-\end{itemize}
+Based on the ASE result, we have the best rank-$d$ positive semi-definite approximation of $\hat{P}^{(1)}$ to be $\widetilde{P}^{(1)} = \hat{X} \hat{X}^{\top}=\hat{U}\hat{S}\hat{U}^{\top}$.
+In the RDPG setting, \citet{sussman2014consistent} proved that each row of $\hat{X}$ can accurately estimate the the latent position for each vertex up to an orthogonal transformation. We will analyze its performance under the WRDPG setting in Section \ref{section:theory}.
+
+Here, we restate the algorithm in \citep{tang2016law} to give the detailed steps of computing this low-rank approximation of a general $n$-by-$n$ symmetric matrix $A$ in Algorithm~\ref{algo:lowrank}.
 \begin{algorithm}[H]
 \caption{Algorithm to compute the rank-$d$ approximation of a matrix.}
 \label{algo:lowrank}
@@ -265,28 +263,34 @@ In the RDPG setting, Sussman et al. \cite{sussman2014consistent} proved that eac
 \STATE Compute the algebraically largest $d$ eigenvalues of $A$, $s_1\geq s_2\ge \dotsc \ge s_d$ and corresponding unit-norm eigenvectors $u_1,u_2,\dotsc,u_d\in \mathbb{R}^n$;
 \STATE Set $\hat{S}$ to the $d\times d$ diagonal matrix $\mathrm{diag}(s_1,\dotsc,s_d)$;
 \STATE Set $\hat{U} = [u_1,\dotsc,u_d]\in \mathbb{R}^{n \times d}$;
-\STATE Set $\mathrm{lowrank}_d(A)$ to $\hat{U}\hat{S}\hat{U}^T$;
+\STATE Set $\mathrm{lowrank}_d(A)$ to $\hat{U}\hat{S}\hat{U}^{\top}$;
 \end{algorithmic}
 \end{algorithm}
 
 
 \subsubsection{Dimension Selection}
 \label{section:dim_select}
-\begin{itemize}
-\item A general way to choose the dimension $d$ in a dimension reduction setting is based on analyzing the ordered eigenvalues and looking for the ``gap'' or ``elbow'' in the scree-plot.
-\item In 2006, Zhu and Ghodsi proposed an automatic method for finding the gap in the scree-plot by only looking at the eigenvalues based on a Gaussian mixture model \cite{zhu2006automatic}. Generally, the method provides multiple results based on different ``elbow''. In this paper, to avoid under-estimating the dimension, which is often much more harmful than over-estimating it, we always choose the 3rd elbow.
-\item Although it is always challenge to choose a proper dimension, based on the (try simulation?) and real data experiment, a wide range of dimensions will lead to results nearly optimal. Thus a proper dimension selection method can be applied directly without carefully tuning the parameter, which is much more practical.
-\end{itemize}
+
+Although Algorithm~\ref{algo:lowrank} gives us a way to calculate the best rank-$d$ positive semi-definite approximation of a general symmetric matrix $A$, it does not tell us how to select a proper dimension $d$. If we choose a relatively small dimension $d$, the estimator based on approximation will fail to catch much important information. On the other hand, when $d$ is too large, the approximation will contain too much noise and also lead to a bad estimate. So a carefully selected dimension $d$ is a key part of a good estimation.
+
+A general idea of selecting the dimension $d$ is to analyze the ordered eigenvalues and looking for the ``gap'' or ``elbow'' in the scree-plot.
+In 2006, \citet{zhu2006automatic} proposed an automatic method for finding the gap in the scree-plot by only looking at the eigenvalues based on a Gaussian mixture model. This method provides multiple choices based on different elbow. In this paper, to avoid under-estimating the dimension, which is often much more harmful than over-estimating it, we always choose the 3rd elbow.
+
+Although it is always challenge to select a proper dimension, based on the results of real data experiment in Section~\ref{section:real_data}, a wide range of dimensions will lead to a fairly good results. Thus a proper dimension selection method can be applied directly without carefully tuning the parameter, which makes the estimator much more useful in practice.
+
 
 
 \subsubsection{Diagonal Augmentation}
 \label{section:diag_aug}
-\begin{itemize}
-\item Since the graphs considered in this paper have no self-loops, all the adjacency matrices $A^{(t)}$ ($1 \le t \le m$) are hollow, i.e. all diagonal entries are zeros. And thus the diagonal of the parameter matrix $P$ doesn't matter since all off-diagonal entries are independent of them conditioned on the off-diagonal entries of $P$.
-\item However, unlike the entry-wise estimators, e.g. $\hat{P}^{(1)}$, the ones which take advantage of the graph structure need the information from the diagonals. As a result, the zero diagonals of the observed graphs will lead to biased estimates. 
-\item To compensate for such inaccurate estimate, Marchette et al. \cite{marchette2011vertex} suggested to use the average of the non-diagonal entries of the corresponding row as the diagonal entry before embedding. Also, Scheinerman and Tucker \cite{scheinerman2010modeling} proposed an iterative method, which gives a different approach to resolve such issue.
-\item As suggested in \cite{tang2016law}, in this work we are going to combine both ideas by first using Marchette's row-averaging method (see Step 3 of Algorithm \ref{algo:basic}) and then another one-step Scheinerman's iterative method (see Step 6 of Algorithm \ref{algo:basic}).
-\end{itemize}
+
+Since the graphs considered in this paper have no self-loops, all the adjacency matrices $A^{(t)}$ ($1 \le t \le m$) are hollow, i.e. all diagonal entries are zeros. Thus the diagonal of the parameter matrix $P$ does not matter since all off-diagonal entries are independent of them conditioned on the off-diagonal entries of $P$.
+
+However, unlike the entry-wise estimators, e.g. $\hat{P}^{(1)}$, the ones which take advantage of the graph structure need the information from the diagonals. As a result, the zero diagonals of the observed graphs will lead to unnecessary biases in those estimates.
+
+To compensate for such unnecessary biases, \citet{marchette2011vertex} suggested to use the average of the non-diagonal entries of the corresponding row as the diagonal entry before embedding. Also, \citet{scheinerman2010modeling} proposed an iterative method, which gives a different approach to resolve such issue.
+
+As suggested in \citep{tang2016law}, in this work we are going to combine both ideas by first using Marchette's row-averaging method (see Step 3 of Algorithm~\ref{algo:basic}) and then another one-step Scheinerman's iterative method (see Step 6 of Algorithm~\ref{algo:basic}).
+
 
 \begin{algorithm}[H]
 \caption{Algorithm to compute $\widetilde{P}^{(1)}$}
@@ -306,13 +310,18 @@ In the RDPG setting, Sussman et al. \cite{sussman2014consistent} proved that eac
 
 \begin{itemize}
 \item Truncation procedure. Need reasonable explanation here.
-\item Detailed description of the estimator $\widetilde{P}^{(1)}$ with dimension selection method and diagonal augmentation procedure are given in Algorithm \ref{algo:basic}.
 \end{itemize}
 
+By combining the key parts introduced above, we give the detailed description for calculating the estimator $\widetilde{P}^{(1)}$ with dimension selection method and diagonal augmentation procedure in Algorithm~\ref{algo:basic}.
+
+
+
+
 \subsection{Entry-wise Maximum L$q$-likelihood Estimator $\hat{P}^{(q)}$}
-\begin{itemize}
-\item The MLE is asymptotically efficient, i.e. when sample size is large enough, the MLE is at least as accurate as any other estimator. However, when the sample size is moderate, robust estimators always outperforms MLE in terms of mean squared error by winning the bias-variance tradeoff. Moreover, under contamination models, robust estimators can even beat MLE asymptotically since they are designed to be not unduly affected by the outliers. And we are going to consider the maximum L$q$-likelihood estimator (ML$q$E), proposed by Ferrari and Young in 2010 \cite{ferrari2010}, in this work.
-\item Let $X_1, \dotsc, X_m$ be sampled from $f_{\theta_0} \in \mathcal{F} = \{ f_{\theta}, \theta \in \Theta \}$, $\theta_0 \in \Theta$. Then the maximum L$q$-likelihood estimate ($q > 0$) of $\theta_0$ based on the parametric model $\mathcal{F}$ is defined as
+
+The MLE is asymptotically efficient, i.e. when sample size is large enough, the MLE is at least as accurate as any other estimator. However, when the sample size is moderate, robust estimators always outperforms MLE in terms of mean squared error by winning the bias-variance tradeoff. Moreover, under contamination models, robust estimators can even beat MLE asymptotically since they are designed to be not unduly affected by the outliers. And now we are going to consider one robust estimator, i.e. the maximum L$q$-likelihood estimator (ML$q$E) proposed by \citet{ferrari2010}.
+
+Let $X_1, \dotsc, X_m$ be sampled from $f_{\theta_0} \in \mathcal{F} = \{ f_{\theta}, \theta \in \Theta \}$, $\theta_0 \in \Theta$. Then the maximum L$q$-likelihood estimate ($q > 0$) of $\theta_0$ based on the parametric model $\mathcal{F}$ is defined as
 \[
 	\hat{\theta}_{\mathrm{ML}q\mathrm{E}} = \argmax_{\theta \in \Theta} \sum_{i=1}^m L_q[f_{\theta}(X_i)],
 \]
@@ -330,16 +339,15 @@ Then the ML$q$E $\hat{\theta}_{\mathrm{ML}q\mathrm{E}}$ can also be seen as a so
 \[
 	\sum_{i=1}^m U^{\star}_{\theta}(X_i; q) = 0.
 \]
-This form interprets $\hat{\theta}_{\mathrm{ML}q\mathrm{E}}$ as a solution to the weighted likelihood equation. The weights $f_{\theta}(x)^{1-q}$ are proportional to the $(1-q)$th power of the corresponding probability. Specifically, when $0 < q < 1$, the ML$q$E puts less weight on the data points which don't fit the current distribution well. Equal weights happen when $q=1$ and lead to the MLE.
-\item Under the WIEM, to have robustness, we can calculate the entry-wise ML$q$E $\hat{P}^{(q)}$ based on the adjacency matrices $A^{(1)}, \dotsc, A^{(m)}$. Note that $\hat{P}^{(1)}$, the entry-wise MLE, is a special case of entry-wise ML$q$E $\hat{P}^{(q)}$ when $q = 1$. That is what the superscriptions $q$ and $1$ mean.
-\end{itemize}
+This form interprets $\hat{\theta}_{\mathrm{ML}q\mathrm{E}}$ as a solution to the weighted likelihood equation. The weights $f_{\theta}(x)^{1-q}$ are proportional to the $(1-q)$th power of the corresponding probability. Specifically, when $0 < q < 1$, the ML$q$E puts less weight on the data points which do not fit the current distribution well. Equal weights happens when $q=1$ and lead to the MLE.
+
+Under the WIEM, we can calculate the robust entry-wise ML$q$E $\hat{P}^{(q)}$ based on the adjacency matrices $A^{(1)}, \dotsc, A^{(m)}$. Note that $\hat{P}^{(1)}$, the entry-wise MLE, is a special case of entry-wise ML$q$E $\hat{P}^{(q)}$ when $q = 1$. That is what the superscriptions $q$ and $1$ mean.
+
 
 
 \subsection{Estimator $\widetilde{P}^{(q)}$ Based on Adjacency Spectral Embedding $\hat{P}^{(q)}$}
-\begin{itemize}
-\item Intuitively, the low-rank structure of the parameter matrix $P$ in WRDPG should be preserved more or less in the entry-wise ML$q$E $\hat{P}^{(q)}$. Thus, in order to take advantage of such low-rank structure as well as the robustness, we apply the similar idea here as in building $\widetilde{P}^{(1)}$, i.e. enforce a low-rank approximation on the entry-wise ML$q$E matrix $\hat{P}^{(q)}$ to get $\widetilde{P}^{(q)}$. As in Algorithm \ref{algo:basic}, we apply the same dimension selection method and diagonal augmentation procedure. The only change is to substitute $\hat{P}^{(1)}$ by $\hat{P}^{(q)}$. The details of the algorithm is shown in Algorithm \ref{algo:basic_q}.
-(Maybe adding a procedure for selecting $q$?)
-\end{itemize}
+
+Intuitively, the low-rank structure of the parameter matrix $P$ in WRDPG should be preserved more or less in the entry-wise ML$q$E $\hat{P}^{(q)}$. Thus, in order to take advantage of such low-rank structure as well as the robustness, we apply the similar idea here as in building $\widetilde{P}^{(1)}$, i.e. enforce a low-rank approximation on the entry-wise ML$q$E matrix $\hat{P}^{(q)}$ to get $\widetilde{P}^{(q)}$. As in Algorithm~\ref{algo:basic}, we apply the same dimension selection method and diagonal augmentation procedure. The only change is to substitute $\hat{P}^{(1)}$ by $\hat{P}^{(q)}$. The details of the algorithm is shown in Algorithm~\ref{algo:basic_q}.
 
 \begin{algorithm}[H]
 \caption{Algorithm to compute $\widetilde{P}^{(q)}$}
@@ -353,7 +361,7 @@ This form interprets $\hat{\theta}_{\mathrm{ML}q\mathrm{E}}$ as a solution to th
 \STATE Set $Q$ to $\mathrm{lowrank}_d(\hat{P}^{(q)} + D)$; (see Algorithm~\ref{algo:lowrank})
 \STATE Set $D^{\prime}$ to $ \mathrm{diag}(Q)$, the diagonal matrix with diagonal matching $Q$; 
 \STATE Set $Q^{\prime}$ to $\mathrm{lowrank}_d(Q + D^{\prime})$; (see Algorithm~\ref{algo:lowrank})
-\STATE Set $\widetilde{P}^{(q)}$ to $Q^{\prime}$ with values $<0$ set to $0$.
+\STATE Set $\widetilde{P}^{(q)}$ with each entry $\widetilde{P}^{(q)}_{ij} = \min( \hat{P}^{(q)}_{ij}, \max(Q^{\prime}_{ij}, 0))$.
 \end{algorithmic}
 \end{algorithm}
 
@@ -373,11 +381,11 @@ This form interprets $\hat{\theta}_{\mathrm{ML}q\mathrm{E}}$ as a solution to th
 
 \section{Theoretical Results}
 \label{section:theory}
-In this section, for illustrative purpose, we are going to present theoretical results when the contaminated model introduced in \ref{section:Contamination} is based on exponential distributions, i.e. $\mathcal{F} = \{ f_{\theta}(x) = \frac{1}{\theta} e^{-x/\theta}, \theta \in [0, R] \subset \mathbb{R} \}$, where $R > 0$ is a constant. The results can be extended to a general situation with proper assumptions, which will be discussed in Section \ref{section:extension}.
+In this section, for illustrative purpose, we are going to present theoretical results when the contamination model introduced in Section~\ref{section:Contamination} is based on exponential distributions. That is $\mathcal{F} = \{ f_{\theta}(x) = \frac{1}{\theta} e^{-x/\theta}, \theta \in [0, R] \subset \mathbb{R} \}$, where $R > 0$ is a constant. The results can be extended to a general situation with proper assumptions, which will be discussed in Section~\ref{section:extension}.
 
-More specifically, consider the SBM with parameter $B$ and $\rho$. First sample the block membership $\tau$ from the categorical distribution with parameter $\rho$ and keep it fixed for all $m$ graphs. Conditioned on this $\tau$ we sampled, the probability matrix $P$ then satisfies $P_{ij} = B_{\tau_i, \tau_j}$. In this section, we assume the contamination has the same block membership $\tau$, thus the contamination matrix $C \in \mathbb{R}^{n \times n}$ has the same block structure as $P$. Note that this is not necessary for the result. Different block structure can lead to the same result since the rank is still finite. Denote $\epsilon$ as the probability of an edge to be contaminated. Then $m$ symmetric graphs without loops $G^{(1)}, \dotsc, G^{(m)}$  are sampled such that conditioning on $\tau$, the adjacency matrices are distributed entry-wise independently as $A^{(t)}_{ij} \stackrel{ind}{\sim} (1-\epsilon) f_{P_{ij}} + \epsilon f_{C_{ij}}$ for each $1 \le t \le m$, $1 \le i < j \le n$. 
+For clarity, we restate the model settings discussed in Section~\ref{section:Contamination}. Consider the SBM with parameter $B$ and $\rho$. First sample the block membership $\tau$ from the categorical distribution with parameter $\rho$ and keep it fixed for all $m$ graphs. Conditioned on this $\tau$ we sampled, the probability matrix $P$ then satisfies $P_{ij} = B_{\tau_i, \tau_j}$. In this section, we assume the contamination has the same block membership $\tau$, thus the contamination matrix $C \in \mathbb{R}^{n \times n}$ has the same block structure as $P$. Note that this is not necessary for the result. Different block structure can lead to the same result since the rank is still finite. Denote $\epsilon$ as the probability of an edge to be contaminated. Then $m$ symmetric graphs $G^{(1)}, \dotsc, G^{(m)}$  are sampled such that conditioning on $\tau$, the adjacency matrices are distributed entry-wise independently as $A^{(t)}_{ij} \stackrel{ind}{\sim} (1-\epsilon) f_{P_{ij}} + \epsilon f_{C_{ij}}$ for each $1 \le t \le m$, $1 \le i < j \le n$. 
 
-Under such setting, we analyze the performance of all four estimators based on $m$ adjacency matrices for estimating the probability matrix $P$ with respect to the mean squared error. When comparing two estimators, we always consider about both the asymptotic bias and the asymptotic variance. Note that all the results in this section are entry-wise, which can easily lead to a result of the total MSE for the entire matrix.
+Under such setting, we analyze the performance of all four estimators based on $m$ adjacency matrices for estimating the probability matrix $P$ in terms of the mean squared error. When comparing two estimators, we mainly focus on both asymptotic bias and asymptotic variance. Note that all the results in this section are entry-wise, which can easily lead to a result of the total MSE for the entire matrix.
 
 We only present the most important results in this section. The proofs with more results are in the Appendix.
 
@@ -392,10 +400,10 @@ For any $0 < q < 1$, there exists $C_0(P_{ij}, \epsilon, q) > 0$ such that under
 	\lim_{m \to \infty} \left| E[\hat{P}^{(q)}_{ij}] - P_{ij} \right| < 
     \lim_{m \to \infty} \left| E[\hat{P}^{(1)}_{ij}] - P_{ij} \right|,
 \]
-for $1 \le i, j, \le n$ and $i \ne j$.
+for $1 \le i, j \le n$ and $i \ne j$.
 \end{lemma}
 
-Lemma \ref{lemma:ELqlEMLE} shows that the entry-wise ML$q$E $\hat{P}^{(q)}$ has smaller bias for estimating $P$ asymptotically compared to the entry-wise MLE $\hat{P}^{(1)}$ under proper conditions. Although we put restrictions on the parameter matrix $C$ as an assumption, to have the current result about asymptotic bias, we only need to satisfy the inequality $\epsilon (C_{ij} - P_{ij}) > (1 - q) P_{ij}$. This condition actually requires the contamination of the model is large enough (either large contamination parameter matrix, or more likely to encounter an outlier). From a different perspective, it also requires $\hat{P}^{(q)}$ to be robust enough with respect to the contamination. Thus besides the current condition for $C$, equivalently, we can also replace it by the assumption of a large enough $\epsilon$ or small enough $q$.
+Lemma~\ref{lemma:ELqlEMLE} shows that the entry-wise ML$q$E $\hat{P}^{(q)}$ has smaller bias for estimating $P$ asymptotically compared to the entry-wise MLE $\hat{P}^{(1)}$ under proper conditions. Although we put restrictions on the parameter matrix $C$ in the assumption, to have the current result about asymptotic bias, we only need to satisfy the inequality $\epsilon (C_{ij} - P_{ij}) > (1 - q) P_{ij}$. This condition actually requires the contamination of the model is large enough (either large contamination parameter matrix, or more likely to encounter an outlier). From a different perspective, it also requires $\hat{P}^{(q)}$ to be robust enough with respect to the contamination. Thus besides the current condition for $C$, equivalently, we can also replace it by the assumption of a large enough $\epsilon$ or a small enough $q$.
 
 \begin{lemma}
 \label{lemma:VarLqlVarMLE}
@@ -406,7 +414,7 @@ Lemma \ref{lemma:ELqlEMLE} shows that the entry-wise ML$q$E $\hat{P}^{(q)}$ has 
 for $1 \le i, j \le n$.
 \end{lemma}
 
-By this lemma, both estimators have asymptotic variance to be zero as the number of graphs $m \to \infty$ according to Lemma \ref{lemma:VarLqlVarMLE}. Under the mixture model, the result for MLE follows the central limit theorem immediately, while the ML$q$E result is not trivial. Our proof is based on the minimum contrast estimates (more details later).
+By this lemma, both estimators have asymptotic variances equal zero as the number of graphs $m \to \infty$. Under the mixture model, the result for MLE follows the central limit theorem immediately, while the ML$q$E result is not trivial. Our proof is based on the minimum contrast estimates (more details later).
 
 As a result, $\hat{P}^{(q)}$ reduces the bias while keeping variance the same asymptotically compared to $\hat{P}^{(1)}$. Thus in terms of MSE, $\hat{P}^{(q)}$ is a better estimator than $\hat{P}^{(1)}$ when the number of graphs $m$ is large with enough contaminations.
 
@@ -714,6 +722,7 @@ When contamination is large enough, $\widetilde{P}^{(q)}$ based on ML$q$E is bet
 
 
 \subsection{CoRR Graphs}
+\label{section:real_data}
 \begin{itemize}
 \item In practice, the graphs may not perfectly follow an RDPG, or even not IEM. But we are still interested in the performance of the four estimators. In this work, we examine the structural connectomic data. The graphs are based on diffusion tensor MR
 images. It contains 114 different brain scans, each of which was processed to yield an undirected, weighted graph with no
