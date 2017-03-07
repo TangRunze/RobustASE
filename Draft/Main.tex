@@ -341,7 +341,7 @@ Then the ML$q$E $\hat{\theta}_{\mathrm{ML}q\mathrm{E}}$ can also be seen as a so
 \]
 This form interprets $\hat{\theta}_{\mathrm{ML}q\mathrm{E}}$ as a solution to the weighted likelihood equation. The weights $f_{\theta}(x)^{1-q}$ are proportional to the $(1-q)$th power of the corresponding probability. Specifically, when $0 < q < 1$, the ML$q$E puts less weight on the data points which do not fit the current distribution well. Equal weights happens when $q=1$ and lead to the MLE.
 
-Under the WIEM, we can calculate the robust entry-wise ML$q$E $\hat{P}^{(q)}$ based on the adjacency matrices $A^{(1)}, \dotsc, A^{(m)}$. Note that $\hat{P}^{(1)}$, the entry-wise MLE, is a special case of entry-wise ML$q$E $\hat{P}^{(q)}$ when $q = 1$. That is what the superscriptions $q$ and $1$ mean.
+Under the WIEM, we can calculate the robust entry-wise ML$q$E $\hat{P}^{(q)}$ based on the adjacency matrices $A^{(1)}, \dotsc, A^{(m)}$. Note that $\hat{P}^{(1)}$, the entry-wise MLE, is a special case of entry-wise ML$q$E $\hat{P}^{(q)}$ when $q = 1$. That is what the superscriptions $q$ and $1$ mean. There is also a bias-variance trade-off in selecting the parameter $q$. \citet{qin2013robust} proposed a way to select $q$ in general. In this work, we do not focus on how to select $q$.
 
 
 
@@ -602,39 +602,13 @@ We will get exactly the same results as in Section \ref{section:theory}. However
 
 \section{Empirical Results}
 
-\subsection{Simulation Results}
+\subsection{Simulation}
 
-\begin{itemize}
-\item In this section, we will illustrate the theoretical results of four estimators in Section \ref{section:theory} via various Monte Carlo simulation experiments.
-\end{itemize}
+In this section, we will illustrate the theoretical results of four estimators discussed in Section~\ref{section:theory} via various Monte Carlo simulation experiments in an idealized setting.
 
 \subsubsection{Simulation Setting}
-%\begin{itemize}
-%\item Here we consider the 2-block SBM parameterized by
-%\begin{equation*}
-%B = \begin{bmatrix}
-%4.2 & 2 \\
-%2 & 7
-%\end{bmatrix}
-%,\qquad \rho = \begin{bmatrix}
-%0.5 & 0.5
-%\end{bmatrix}.
-%\end{equation*}
-%\item The contamination is also a 2-block SBM parameterized by
-%\begin{equation*}
-%B = \begin{bmatrix}
-%20 & 18 \\
-%18 & 25
-%\end{bmatrix}
-%,\qquad \rho = \begin{bmatrix}
-%0.5 & 0.5
-%\end{bmatrix}.
-%\end{equation*}
-%\item And we embed the graphs into the dimension $d = \mathrm{rank}(B) = 2$.
-%\end{itemize}
-
-\begin{itemize}
-\item Here we consider the 3-block SBM with respect to the exponential distributions parameterized by
+\label{section:sim_setting}
+Here we consider the 3-block SBM with respect to the exponential distributions parameterized by
 \begin{equation*}
 B = \begin{bmatrix}
 4.2 & 2 \\
@@ -644,7 +618,7 @@ B = \begin{bmatrix}
 0.5 & 0.5
 \end{bmatrix}.
 \end{equation*}
-\item The contamination is also a 3-block SBM with respect to the exponential distributions parameterized by
+And let the contamination also be a 3-block SBM with the same structure parameterized by
 \begin{equation*}
 B^{\prime} = \begin{bmatrix}
 20 & 18 \\
@@ -654,27 +628,21 @@ B^{\prime} = \begin{bmatrix}
 0.5 & 0.5
 \end{bmatrix}.
 \end{equation*}
-\item And we embed the graphs into the dimension $d = \mathrm{rank}(B) = 2$.
-\end{itemize}
+The contamination probability $\epsilon = 0.2$ if not specified. However, we will vary $\epsilon$ in the following simulation. With these parameters specified, we can sample graphs according to Section~\ref{section:Contamination}.
+
+When calculating the two low-rank estimators $\widetilde{P}^{(1)}$ and $\widetilde{P}^{(q)}$, we skip the dimension selection step in Algorithm~\ref{algo:basic} and Algorithm~\ref{algo:basic_q}. Instead embed the graphs into the true dimension $d = \mathrm{rank}(B) = 2$.
+Note that the simplified setting in this simulation is primarily for interpretability.
+
 
 
 \subsubsection{Simulation Results}
-\begin{itemize}
-\item Figure \ref{fig:eps} plots the mean squared error in average by varying contamination ratio $\epsilon$ with fixed $n = 100$ and $m = 10$ based on 1000 Monte Carlo replicates. And we use $q=0.8$ when applying ML$q$E.
-Different colors represent the simulated MSE associated with four different estimators.
-\textbf{1. MLE $\hat{P}^{(1)}$ vs ML$q$E $\hat{P}^{(q)}$:}
-MLE outperforms a little bit when there is no contamination (i.e. $\epsilon = 0$), but it degrades dramatically when contamination increases;
-\textbf{2. MLE $\hat{P}^{(1)}$ vs ASE o MLE $\widetilde{P}^{(1)}$: }
-ASE procedure takes the low rank structure into account and $\widetilde{P}^{(1)}$ wins the bias-variance tradeoff;
-\textbf{3. ML$q$E $\hat{P}^{(q)}$ vs ASE o ML$q$E $\widetilde{P}^{(q)}$: }
-ML$q$E preserves the low rank structure of the original graph more or less, so ASE procedure still helps and $\widetilde{P}^{(q)}$ wins the bias-variance tradeoff;
-\textbf{4. ASE o ML$q$E $\widetilde{P}^{(q)}$ vs ASE o MLE $\widetilde{P}^{(1)}$: }
-When contamination is large enough, $\widetilde{P}^{(q)}$ based on ML$q$E is better, since it inherits the robustness from ML$q$E.
-\item Figure \ref{fig:q} show the mean squared error in average by varying the parameter $q$ in ML$q$E with fixed $n = 100$, $m = 10$ and $\epsilon = 0.2$ based on 1000 Monte Carlo replicates. Different colors represent the simulated MSE associated with four different estimators.
-1. ASE procedure takes advantage of the graph structure and improves the performance of the corresponding estimators;
-2. ML$q$E shows the robustness property compare to the MLE. And as $q$ goes to 1, ML$q$E goes to the MLE as expected.
-\item By comparing the performance of the four estimators based on different setting, we demonstrate the theoretical results in Section \ref{section:theory}.
-\end{itemize}
+
+In order to see how the performance of the four estimators varies with respect to the contaminations, we first run 1000 Monte Carlo replicates based on the contaminated SBM specified in Section~\ref{section:sim_setting} with a fixed number of vertices $n = 100$ and a fixed number of graphs $m = 10$ while varying the contamination probability $\epsilon$ from $0$ to $0.2$.
+Given each sample, four estimators can be calculated following Algorithm~\ref{algo:basic} and Algorithm~\ref{algo:basic_q}. Since we are not focusing on how to select the parameter $q$ in the ML$q$E estimator, we are going to use a fixed $q = 0.8$ throughout this paper. Then the MSE of each estimator can be estimated since the probability matrix $P$ is known in this simulation.
+
+We plot the MSE in average in Figure~\ref{fig:eps}. Different colors represent the simulated MSE associated with four different estimators.
+Firstly, MLE $\hat{P}^{(1)}$ outperforms a little bit when there is no contamination (i.e. $\epsilon = 0$), but it degrades dramatically when contamination increases. On the contrary, the ML$q$E $\hat{P}^{(q)}$ lose a little efficiency when the contamination is small, but shows its robustness under a large contamination.
+With a relative small number of vertices $n = 100$, the ASE procedure which takes advantage of the low rank structure already helps improve the performance of $\hat{P}^{(1)}$ and let $\widetilde{P}^{(1)}$ win the bias-variance tradeoff. Since the ML$q$E $\hat{P}^{(q)}$ preserves the low rank structure of the original graph more or less, the ASE procedure also helps and makes $\widetilde{P}^{(q)}$ a better estimate. Although both $\widetilde{P}^{(q)}$ and $\widetilde{P}^{(1)}$ take advantage of the low-rank structure and has reduced variances, $\widetilde{P}^{(q)}$ constructed based on ML$q$E inherits the robustness from ML$q$E in addition. So when the contamination is large enough, $\widetilde{P}^{(q)}$ outperforms $\widetilde{P}^{(1)}$ and degrades slower.
 
 \begin{figure}[!htb]
 \centering
@@ -683,14 +651,17 @@ When contamination is large enough, $\widetilde{P}^{(q)}$ based on ML$q$E is bet
 Different colors represent the simulated MSE associated with four different estimators.
 \textbf{1. MLE $\hat{P}^{(1)}$ vs ML$q$E $\hat{P}^{(q)}$:}
 MLE outperforms a little bit when there is no contamination (i.e. $\epsilon = 0$), but it degrades dramatically when contamination increases;
-\textbf{2. MLE $\hat{P}^{(1)}$ vs ASE o MLE $\widetilde{P}^{(1)}$: }
+\textbf{2. MLE $\hat{P}^{(1)}$ vs ASE $\circ$ MLE $\widetilde{P}^{(1)}$: }
 ASE procedure takes the low rank structure into account and $\widetilde{P}^{(1)}$ wins the bias-variance tradeoff;
-\textbf{3. ML$q$E $\hat{P}^{(q)}$ vs ASE o ML$q$E $\widetilde{P}^{(q)}$: }
+\textbf{3. ML$q$E $\hat{P}^{(q)}$ vs ASE $\circ$ ML$q$E $\widetilde{P}^{(q)}$: }
 ML$q$E preserves the low rank structure of the original graph more or less, so ASE procedure still helps and $\widetilde{P}^{(q)}$ wins the bias-variance tradeoff;
-\textbf{4. ASE o ML$q$E $\widetilde{P}^{(q)}$ vs ASE o MLE $\widetilde{P}^{(1)}$: }
+\textbf{4. ASE $\circ$ ML$q$E $\widetilde{P}^{(q)}$ vs ASE $\circ$ MLE $\widetilde{P}^{(1)}$: }
 When contamination is large enough, $\widetilde{P}^{(q)}$ based on ML$q$E is better, since it inherits the robustness from ML$q$E.}
 \label{fig:eps}
 \end{figure}
+
+\RT{Change this so that there is also a trade-off}
+Figure~\ref{fig:q} shows the mean squared error in average by varying the parameter $q$ in ML$q$E with fixed $n = 100$, $m = 10$ and $\epsilon = 0.2$ based on 1000 Monte Carlo replicates. Different colors represent the simulated MSE associated with four different estimators. From the figure, we can see that the ASE procedure takes advantage of the graph structure and improves the performance of the corresponding estimators. Moreover, the ML$q$E shows the robustness property compare to the MLE. And as $q$ goes to 1, ML$q$E goes to the MLE as expected.
 
 \begin{figure}[!htb]
 \centering
@@ -701,12 +672,7 @@ When contamination is large enough, $\widetilde{P}^{(q)}$ based on ML$q$E is bet
 \label{fig:q}
 \end{figure}
 
-  
-%\begin{figure}
-%\centering
-%\includegraphics[width=0.8\textwidth]{Cluster.png}
-%\end{figure}
-
+By comparing the performance of the four estimators based on different setting, we demonstrate the theoretical results in Section~\ref{section:theory}.
 
 
 \subsection{CoRR Graphs}
