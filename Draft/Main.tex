@@ -97,7 +97,7 @@ Consider the most basic setting, i.e. undirected and unweighted graphs with each
 Then the maximum likelihood estimate, which happens to be the entry-wise sample mean in this situation, is the uniformly minimum-variance unbiased estimator under the independent edge graph model (IEM) \citep{bollobas2007phase} without taking any graph structure into account. 
 However, in a high dimensional situation, unbiased estimators often leads to inaccurate estimates with very high variance when the sample size is small. And for this basic setting we considered, the graphs are high dimensional object with $n^2$ parameters since $\Theta = [0, 1]^{n\times n}$, where $n$ denotes the number of vertices. Thus the MLE does not perform very well especially when there are only a few observations available, which is likely the case in real world.
 
-Generally, by biasing towards low-rank structures carefully, the estimators will have a greatly reduced variances and win the bias-variance trade-off \citep{trunk1979problem}. Such improvement is not only important for the estimation itself, but also can help with other statistical inference procedures. For example, \citet{ginestet2014hypothesis} proposed a method to test if there is a difference between the networks of two groups of subjects. While hypothesis testing is the final goal, the estimation procedure is a key intermediate step and can be improved.
+Generally, by biasing towards low-rank structures carefully, the estimators will have a greatly reduced variances and win the bias-variance tradeoff \citep{trunk1979problem}. Such improvement is not only important for the estimation itself, but also can help with other statistical inference procedures. For example, \citet{ginestet2014hypothesis} proposed a method to test if there is a difference between the networks of two groups of subjects. While hypothesis testing is the final goal, the estimation procedure is a key intermediate step and can be improved.
 
 In order to improve the MLE considered above, the underlying graph structures are taken into account for exploiting the low-rank structure when constructing the estimator. One of the most important structures about the networks is the community structure in which vertices are clustered into different communities such that vertices within the same community behave similarly. The stochastic blockmodel (SBM) \citep{holland1983stochastic} captures such structural property strongly by assuming that vertices from the same block behave exactly the same.
 
@@ -116,7 +116,7 @@ Under the contamination model, although we observe $G$ instead of $G^*$, estimat
 
 Furthermore, with contaminations, it is more preferable to use robust methods, like ML$q$E \citep{ferrari2010, qin2013maximum} considered in this paper. We prove that entry-wise ML$q$E ($\hat{P}^{(q)}$ in Figure~\ref{fig:roadmap}) improves the performance compared to entry-wise MLE ($\hat{P}^{(1)}$ in Figure~\ref{fig:roadmap}) whenever contamination is relatively large.
 
-Similarly, in order to take advantage of the low-rank structure, we enforce a low-rank approximation on the entry-wise ML$q$E. We prove that, under proper assumptions, the new estimator ($\widetilde{P}^{(q)}$ in Figure~\ref{fig:roadmap}) not only inherits the robust property from ML$q$E ($\hat{P}^{(q)}$ in Figure~\ref{fig:roadmap}), but also wins the bias-variance trade-off by taking advantage of the low-rank structure.
+Similarly, in order to take advantage of the low-rank structure, we enforce a low-rank approximation on the entry-wise ML$q$E. We prove that, under proper assumptions, the new estimator ($\widetilde{P}^{(q)}$ in Figure~\ref{fig:roadmap}) not only inherits the robust property from ML$q$E ($\hat{P}^{(q)}$ in Figure~\ref{fig:roadmap}), but also wins the bias-variance tradeoff by taking advantage of the low-rank structure.
 
 
 \begin{figure}
@@ -341,7 +341,7 @@ Then the ML$q$E $\hat{\theta}_{\mathrm{ML}q\mathrm{E}}$ can also be seen as a so
 \]
 This form interprets $\hat{\theta}_{\mathrm{ML}q\mathrm{E}}$ as a solution to the weighted likelihood equation. The weights $f_{\theta}(x)^{1-q}$ are proportional to the $(1-q)$th power of the corresponding probability. Specifically, when $0 < q < 1$, the ML$q$E puts less weight on the data points which do not fit the current distribution well. Equal weights happens when $q=1$ and lead to the MLE.
 
-Under the WIEM, we can calculate the robust entry-wise ML$q$E $\hat{P}^{(q)}$ based on the adjacency matrices $A^{(1)}, \dotsc, A^{(m)}$. Note that $\hat{P}^{(1)}$, the entry-wise MLE, is a special case of entry-wise ML$q$E $\hat{P}^{(q)}$ when $q = 1$. That is what the superscriptions $q$ and $1$ mean. There is also a bias-variance trade-off in selecting the parameter $q$. \citet{qin2013robust} proposed a way to select $q$ in general. In this work, we do not focus on how to select $q$.
+Under the WIEM, we can calculate the robust entry-wise ML$q$E $\hat{P}^{(q)}$ based on the adjacency matrices $A^{(1)}, \dotsc, A^{(m)}$. Note that $\hat{P}^{(1)}$, the entry-wise MLE, is a special case of entry-wise ML$q$E $\hat{P}^{(q)}$ when $q = 1$. That is what the superscriptions $q$ and $1$ mean. There is also a bias-variance tradeoff in selecting the parameter $q$. \citet{qin2013robust} proposed a way to select $q$ in general. In this work, we do not focus on how to select $q$.
 
 
 
@@ -603,6 +603,7 @@ We will get exactly the same results as in Section \ref{section:theory}. However
 \section{Empirical Results}
 
 \subsection{Simulation}
+\label{section:sim}
 
 In this section, we will illustrate the theoretical results of four estimators discussed in Section~\ref{section:theory} via various Monte Carlo simulation experiments in an idealized setting.
 
@@ -660,7 +661,7 @@ When contamination is large enough, $\widetilde{P}^{(q)}$ based on ML$q$E is bet
 \label{fig:eps}
 \end{figure}
 
-\RT{Change this so that there is also a trade-off}
+\RT{Change this so that there is also a tradeoff}
 Figure~\ref{fig:q} shows the mean squared error in average by varying the parameter $q$ in ML$q$E with fixed $n = 100$, $m = 10$ and $\epsilon = 0.2$ based on 1000 Monte Carlo replicates. Different colors represent the simulated MSE associated with four different estimators. From the figure, we can see that the ASE procedure takes advantage of the graph structure and improves the performance of the corresponding estimators. Moreover, the ML$q$E shows the robustness property compare to the MLE. And as $q$ goes to 1, ML$q$E goes to the MLE as expected.
 
 \begin{figure}[!htb]
@@ -677,18 +678,11 @@ By comparing the performance of the four estimators based on different setting, 
 
 \subsection{CoRR Graphs}
 \label{section:real_data}
-\begin{itemize}
-\item In practice, the graphs may not perfectly follow an RDPG, or even not IEM. But we are still interested in the performance of the four estimators. In this work, we examine the structural connectomic data. The graphs are based on diffusion tensor MR
-images. It contains 114 different brain scans, each of which was processed to yield an undirected, weighted graph with no
-self-loops, using the m2g pipeline described in \citet{kiar2016ndmg}. The vertices of the graphs represent different regions in the brain defined according to an atlas. We used the desikan atlas with 70 vertices. The weight of an edge between two vertices represents the number of white-matter tract connecting the corresponding two regions of the brain.
-\item We first check if the dataset has the low-rank property. In the left panel of Fig.~\ref{fig:screehist}, we plot the eigenvalues of the mean graph of all 114 graphs (with diagonal augmentation) in decreasing algebraic order for the Desikan atlases based on the m2g pipeline. The eigenvalues first decrease dramatically and then stay around 0 for a large range of dimensions. In addition, we also plot the histograms in the right panel of Fig.~\ref{fig:screehist}. From the figures we can see many eigenvalues are around zero, with a few large eigenvalues. So the information is mostly contained in the first few dimensions. Such quasi low-rank property could be used.
-\item To compare the four estimators, we need to know the true parameter matrix $P$. However, $P$ is definitely not obtainable in practice since the 114 graphs are also a sample from the population. In this work, we are going to use two different approaches to approximate the the probability matrix $P$.
-\item First, we assume that the true probability matrix $P$ has the low-rank property. In this case, the low-rank approximation of the mean graph of all 114 graphs is a good estimate of the probability matrix $P$.
-We admit that this setting is preferable by the low-rank estimators. However, it is illustrative to see how the estimators perform in this case.
-\item In the above setting, we run 100 simulations on the dataset for each sample size $m = 2$, $m = 5$, and $m = 10$.
-Specifically, for each Monte Carlo replicate, we sample $m$ graphs out of the 114 from the m2g dataset and computing the four estimates based on the $m$ sampled graphs. We then compared these estimates to the low-rank approximation of the mean of all 114 graphs from the m2g dataset.
-For those two low-rank estimators, we apply ASE for all possible dimensions, i.e. $d$ ranges from 1 to $n$. The result is shown in Figure \ref{fig:CCI_LR}.
-\item Since the approximated $P$ contains outliers, we don't expect ML$q$E helps much as shown in the figure. However, since the estimated $P$ has the low-rank property, ASE procedure helps improving the performance. The dimensions chosen by the 3d elbow of Zhu and Ghodsi are denoted in triangle and square. We can see it does a good job. More importantly, a wide range of dimensions could lead to an improvement.
+
+Generally, the graphs in real life may not perfectly follow an RDPG, or not even follow IEM. But we are still interested in how the four estimators perform under those situations. In this work, we examine the structural connectomic data and compare the four estimators. The graphs in this dataset are based on diffusion tensor MR
+images. There are 114 different brain scans, each of which was processed to yield an undirected, weighted graph with no self-loops, using the m2g pipeline described in \citep{kiar2016ndmg}. The vertices of the graphs represent different regions in the brain defined according to an atlas. We used the Desikan atlas with 70 vertices in this expereiment. The weight of an edge between two vertices represents the number of white-matter tract connecting the corresponding two regions of the brain.
+
+Before we calculate those estimators, we want to check whether the dataset has a low-rank property. Without that, the ASE procedure cannot win the bias-variance tradeoff because of a high bias. In the left panel of Figure~\ref{fig:screehist}, we plot the eigenvalues of the mean graph of all 114 graphs (with diagonal augmentation) in decreasing algebraic order for the Desikan atlases based on the m2g pipeline. The eigenvalues first decrease dramatically and then stay around 0 for a large range of dimensions. In addition, we also plot the histograms in the right panel of Figure~\ref{fig:screehist}. From the figures we can see many eigenvalues are around zero. So the information is mostly contained in the first few dimensions. Such quasi low-rank property provides an opportunity to win the bias-variance tradeoff by applying ASE procedure.
 
 \begin{figure}[!htbp]
 \centering
@@ -700,44 +694,52 @@ The screeplot in the left panel shows the eigenvalues of the mean graph of all 1
 \label{fig:screehist}
 \end{figure}
 
-\begin{figure}
-\centering
-\includegraphics[width=0.8\textwidth]{CCI_CompareLR.pdf}
-\caption{Comparison of mean squared error in average among four estimators while embedding the graphs into different dimensions with different size $m$ of the subsamples by using the low-rank approximation of the mean of the rest $114 - m$ graphs as the approximation of $P$. Four estimators are represented by different line styles as explained in the legend. Since the approximated $P$ contains outliers, we don't expect ML$q$E helps much as shown in the figure. However, since the estimated $P$ has the low-rank property, ASE procedure helps improving the performance. The dimensions chosen by the 3rd elbow of Zhu and Ghodsi are denoted in triangle and square. We can see it does a good job. More importantly, a wide range of dimensions could lead to an improvement.}
-\label{fig:CCI_LR}
-\end{figure}
+To compare the four estimators, we need to calculate the MSE, which requires the true parameter matrix $P$. However, unlike simulation experiment in Section~\ref{section:sim}, $P$ is definitely not obtainable in practice since the 114 graphs are also a sample from the population. So finding a good estimate for $P$ and use it to calculate the MSE is a feasible way in this experiment. Recently, \citet{kiar2016ndmg} proposed a better pipeline ndmg2 compared to m2g. Then the MLE derived from the 114 graphs in ndmg2 should be a relative more accurate estimate of the actual probability matrix $P$ for the population. And we are going to use this as $P$ when calculating the MSE. Such $P$ generally has full rank, which breaks the low-rank assumptions. So this setting makes it hard for $\widetilde{P}^{(1)}$ and $\widetilde{P}^{(q)}$ to improve and is favorable to the $\hat{P}^{(1)}$ and $\hat{P}^{(q)}$. Moreover, it is still possible that the 114 graphs from ndmg2 contain outliers. Thus by using the MLE as $P$, the performance of ML$q$E related estimators $\hat{P}^{(q)}$ and $\widetilde{P}^{(q)}$ are underestimated.
 
-\item Also, we consider a setting which is favorable to the MLE, i.e. assuming that the probability matrix $P$ has a high-rank property. Since we know ndmg2 is a better pipeline compared to m2g, the mean graph derived from ndmg2 should be a relative accurate estimate of the actual population mean graph. Since the mean of 114 graphs has full rank, it breaks the low-rank assumptions and are favorable to the MLE.
-In order to evaluate the performance of the four estimators, we build estimates based on the samples with size $m$ from the m2g dataset, while using the sample mean of all 114 graphs from the ndmg2 dataset as an estimate of the probability matrix $P$.
-\item We run 100 simulations on the dataset for each sample size $m = 2$, $m = 5$, and $m = 10$.
-Specifically, for each Monte Carlo replicate, we sample $m$ graphs out of the 114 from the m2g dataset and computing the four estimates based on the $m$ sampled graphs. We then compared these estimates to the mean of all 114 graphs in the ndmg2 dataset.
-For those two low-rank estimators, we apply ASE for all possible dimensions, i.e. $d$ ranges from 1 to $n$. The result is shown in Figure \ref{fig:CCI}.
-\item Since it is real data, ML$q$E outperforms ML$E$ because of the robustness property. Moreover, as suggested in the previous theorems, such property is kept after the ASE procedure.
-\item When $d$ is small, ASE procedure underestimates the dimension and fails to get important information, which leads to poor performance. In practice, we use algorithms like Zhu and Ghodsi's method to select the dimension $d$. We can see Zhu and Ghodsi's algorithm does a pretty good job for selecting the dimension to embed.
-\item For all three sample sizes ($m = 2$, $m = 5$, $m = 10$), MLE and ML$q$E have large variances which lead to large MSE. Meanwhile, the ASE procedure reduces the variance by taking advantages of the graph structure.
-\end{itemize}
-
-
-
-
-
+In this experiment, we build the four estimates based on the samples with size $m$ from the m2g dataset, while using the MLE of all 114 graphs from the ndmg2 dataset as the probability matrix $P$.
+We run 100 simulations on this dataset for different sample sizes $m = 2, 5, 10$. Specifically, in each Monte Carlo replicate, we sample $m$ graphs out of the 114 from the m2g dataset and compute the four estimates based on the $m$ sampled graphs. We then compare these estimates to the MLE of all 114 graphs in the ndmg2 dataset.
+For those two low-rank estimators $\widetilde{P}^{(1)}$ and $\widetilde{P}^{(q)}$, we apply ASE for all possible dimensions, i.e. $d$ ranges from 1 to $n$. The MSE results are shown in Figure~\ref{fig:CCI}.
 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{CCI.pdf}
-\caption{{\bf Comparison of MSE of the four estimators for the desikan atlases at three sample sizes based on m2g and ndmg2 pipelines.}  
-{\bf 1. MLE (horizontal solid line) vs MLqE (horizontal dotted line):} 
-ML$q$E outperforms MLE since robust estimators are always preferred in practice;
-{\bf 2. MLE (horizontal solid line) vs MLE\_ASE (dashed line):} MLE\_ASE wins the bias-variance tradeoff when embedded into a proper dimension; 
-{\bf 3. MLqE (horizontal dotted line) vs ML$q$E\_ASE (dashed dotted line):}
-ML$q$E\_ASE wins the bias-variance tradeoff when embedded into a proper dimension; 
-{\bf 4.  ML$q$E\_ASE (dashed dotted line) vs MLE\_ASE (dashed
-line):}
-MLqE\_ASE is better, since it inherits the robustness from 
-ML$q$E. And the square and circle represent the dimensions selected by the Zhu and Ghodsi method. We can see it does a pretty good job. And more importantly, a wide range of dimensions could lead to an improvement.
+\caption{{\bf Comparison of MSE of the four estimators for the Desikan atlases at three sample sizes.}
+The x-axis represents the dimensions to embed while y-axis is the MSE of each estimator.
+{\bf 1. MLE $\hat{P}^{(1)}$ (horizontal solid line) vs MLqE $\hat{P}^{(q)}$ (horizontal dotted line):} 
+ML$q$E outperforms MLE since in practice observations are always contaminated and robust estimators are preferred;
+{\bf 2. MLE $\hat{P}^{(1)}$ (horizontal solid line) vs ASE $\circ$ MLE $\widetilde{P}^{(1)}$ (dashed line):} $\widetilde{P}^{(1)}$ wins the bias-variance tradeoff when being embedded into a proper dimension; 
+{\bf 3. MLqE $\hat{P}^{(q)}$ (horizontal dotted line) vs ASE $\circ$ ML$q$E $\widetilde{P}^{(q)}$ (dashed dotted line):}
+$\widetilde{P}^{(q)}$ wins the bias-variance tradeoff when being embedded into a proper dimension; 
+{\bf 4.  ASE $\circ$ ML$q$E $\widetilde{P}^{(q)}$ (dashed dotted line) vs ASE $\circ$ MLE $\widetilde{P}^{(1)}$ (dashed line):}
+$\widetilde{P}^{(q)}$ is better, since it inherits the robustness from ML$q$E. The square and circle represent the dimensions selected by the Zhu and Ghodsi method. We can see it does a pretty good job. And more importantly, a wide range of dimensions could lead to an improvement.
 }
 \label{fig:CCI}
 \end{figure}
+
+When $d$ is small, ASE procedure underestimates the dimension and fails to get important information, which leads to poor performance. In this work, we use Zhu and Ghodsi's method discussed in Section~\ref{section:dim_select} to select the dimension $d$. We denote the selected dimensions by square and circle in the figure. We can see the algorithm does a pretty good job for selecting the dimension to embed. More importantly, there is a wide range of dimensions which could lead to a better performance when applying ASE. Although the $P$ we are estimating is actually a high-rank matrix, ASE procedure still wins the bias-variance tradeoff and improves the performance while being suppressed in this setting.
+
+Also, the robust estimator $\hat{P}^{(q)}$ performs relatively better than $\hat{P}^{(1)}$ in this experiment, even though $P$ still contains outliers. This strongly indicates that there are many outliers in the original graphs from m2g pipeline. And $\widetilde{P}^{(q)}$ successfully inherits the robustness from ML$q$E and outperforms $\widetilde{P}^{(1)}$.
+
+For all three sample sizes ($m = 2, 5, 10$), $\widetilde{P}^{(q)}$ estimates $P$ most accurately while the target is preferable to the other three estimators more or less. So it should provide a even better estimate for the true but unknown $P$.
+
+
+
+%First, we assume that the true probability matrix $P$ has the low-rank property. In this case, the low-rank approximation of the mean graph of all 114 graphs is a good estimate of the probability matrix $P$.
+%We admit that this setting is preferable by the low-rank estimators. However, it is illustrative to see how the estimators perform in this case.
+%
+%In the above setting, we run 100 simulations on the dataset for each sample size $m = 2$, $m = 5$, and $m = 10$.
+%Specifically, for each Monte Carlo replicate, we sample $m$ graphs out of the 114 from the m2g dataset and computing the four estimates based on the $m$ sampled graphs. We then compared these estimates to the low-rank approximation of the mean of all 114 graphs from the m2g dataset.
+%For those two low-rank estimators, we apply ASE for all possible dimensions, i.e. $d$ ranges from 1 to $n$. The result is shown in Figure \ref{fig:CCI_LR}.
+%
+%Since the approximated $P$ contains outliers, we don't expect ML$q$E helps much as shown in the figure. However, since the estimated $P$ has the low-rank property, ASE procedure helps improving the performance. The dimensions chosen by the 3d elbow of Zhu and Ghodsi are denoted in triangle and square. We can see it does a good job. More importantly, a wide range of dimensions could lead to an improvement.
+%
+%\begin{figure}
+%\centering
+%\includegraphics[width=0.8\textwidth]{CCI_CompareLR.pdf}
+%\caption{Comparison of mean squared error in average among four estimators while embedding the graphs into different dimensions with different size $m$ of the subsamples by using the low-rank approximation of the mean of the rest $114 - m$ graphs as the approximation of $P$. Four estimators are represented by different line styles as explained in the legend. Since the approximated $P$ contains outliers, we don't expect ML$q$E helps much as shown in the figure. However, since the estimated $P$ has the low-rank property, ASE procedure helps improving the performance. The dimensions chosen by the 3rd elbow of Zhu and Ghodsi are denoted in triangle and square. We can see it does a good job. More importantly, a wide range of dimensions could lead to an improvement.}
+%\label{fig:CCI_LR}
+%\end{figure}
+
 
 
 
