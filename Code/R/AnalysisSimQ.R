@@ -1,109 +1,104 @@
 rm(list = ls())
 setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
 # source("function_collection.R")
+library(latex2exp)
 
 m <- 10
 n <- 100
 isSVD<- 0
 iModel <- 2
 
-epsVec <- (0:20)/100
+qVec <- (10:100)/100
 
-q <- 0.9
+eps <- 0.1
 d <- 2
 
-errorMLEVec <- rep(0, length(epsVec))
-errorMLELBVec <- rep(0, length(epsVec))
-errorMLEUBVec <- rep(0, length(epsVec))
+errorMLEVec <- rep(0, length(qVec))
+errorMLELBVec <- rep(0, length(qVec))
+errorMLEUBVec <- rep(0, length(qVec))
 
-errorMLEASEVec <- rep(0, length(epsVec))
-errorMLEASELBVec <- rep(0, length(epsVec))
-errorMLEASEUBVec <- rep(0, length(epsVec))
+errorMLEASEVec <- rep(0, length(qVec))
+errorMLEASELBVec <- rep(0, length(qVec))
+errorMLEASEUBVec <- rep(0, length(qVec))
 
-errorMLqEVec <- rep(0, length(epsVec))
-errorMLqELBVec <- rep(0, length(epsVec))
-errorMLqEUBVec <- rep(0, length(epsVec))
+errorMLqEVec <- rep(0, length(qVec))
+errorMLqELBVec <- rep(0, length(qVec))
+errorMLqEUBVec <- rep(0, length(qVec))
 
-errorMLqEASEVec <- rep(0, length(epsVec))
-errorMLqEASELBVec <- rep(0, length(epsVec))
-errorMLqEASEUBVec <- rep(0, length(epsVec))
+errorMLqEASEVec <- rep(0, length(qVec))
+errorMLqEASELBVec <- rep(0, length(qVec))
+errorMLqEASEUBVec <- rep(0, length(qVec))
 
-for (iEps in 1:length(epsVec)) {
-  eps <- epsVec[iEps]
+for (iQ in 1:length(qVec)) {
+  q <- qVec[iQ]
   if (isSVD) {
-    fileName <- paste0("../../Result/result_sim_", iModel, "_d_", d, "_n_", n, "_m_", m,
-                       "_eps_", eps, "_q_", q, "_svd.RData")
+    fileName <- paste("../../Result/result_sim_", iModel, "_d_", d, "_n_", n, "_m_", m,
+                     "_eps_", eps, "_q_", q, "_svd.RData", sep="")
   } else {
-    fileName <- paste0("../../Result/result_sim_", iModel, "_d_", d, "_n_", n, "_m_", m,
-                       "_eps_", eps, "_q_", q, "_eig.RData")
+    fileName <- paste("../../Result/result_sim_", iModel, "_d_", d, "_n_", n, "_m_", m,
+                     "_eps_", eps, "_q_", q, "_eig.RData", sep="")
   }
   
   if (file.exists(fileName) == T) {
     load(fileName)
     
-    errorMLEVec[iEps] <- mean(error_MLE)
-    errorMLELBVec[iEps] <- errorMLEVec[iEps] -
+    errorMLEVec[iQ] <- mean(error_MLE)
+    errorMLELBVec[iQ] <- errorMLEVec[iQ] -
       sqrt(var(error_MLE))/sqrt(length(error_MLE))*1.96
-    errorMLEUBVec[iEps] <- errorMLEVec[iEps] +
+    errorMLEUBVec[iQ] <- errorMLEVec[iQ] +
       sqrt(var(error_MLE))/sqrt(length(error_MLE))*1.96
     
-    errorMLEASEVec[iEps] <- mean(error_MLE_ASE)
-    errorMLEASELBVec[iEps] <- errorMLEASEVec[iEps] -
+    errorMLEASEVec[iQ] <- mean(error_MLE_ASE)
+    errorMLEASELBVec[iQ] <- errorMLEASEVec[iQ] -
       sqrt(var(error_MLE_ASE))/sqrt(length(error_MLE_ASE))*1.96
-    errorMLEASEUBVec[iEps] <- errorMLEASEVec[iEps] +
+    errorMLEASEUBVec[iQ] <- errorMLEASEVec[iQ] +
       sqrt(var(error_MLE_ASE))/sqrt(length(error_MLE_ASE))*1.96
     
-    errorMLqEVec[iEps] <- mean(error_MLqE)
-    errorMLqELBVec[iEps] <- errorMLqEVec[iEps] -
+    errorMLqEVec[iQ] <- mean(error_MLqE)
+    errorMLqELBVec[iQ] <- errorMLqEVec[iQ] -
       sqrt(var(error_MLqE))/sqrt(length(error_MLqE))*1.96
-    errorMLqEUBVec[iEps] <- errorMLqEVec[iEps] +
+    errorMLqEUBVec[iQ] <- errorMLqEVec[iQ] +
       sqrt(var(error_MLqE))/sqrt(length(error_MLqE))*1.96
     
-    errorMLqEASEVec[iEps] <- mean(error_MLqE_ASE)
-    errorMLqEASELBVec[iEps] <- errorMLqEASEVec[iEps] -
+    errorMLqEASEVec[iQ] <- mean(error_MLqE_ASE)
+    errorMLqEASELBVec[iQ] <- errorMLqEASEVec[iQ] -
       sqrt(var(error_MLqE_ASE))/sqrt(length(error_MLqE_ASE))*1.96
-    errorMLqEASEUBVec[iEps] <- errorMLqEASEVec[iEps] +
+    errorMLqEASEUBVec[iQ] <- errorMLqEASEVec[iQ] +
       sqrt(var(error_MLqE_ASE))/sqrt(length(error_MLqE_ASE))*1.96
   }
 }
 
-plot.new()
-lines(errorMLEVec, col="black")
-lines(errorMLEASEVec, col="red")
-lines(errorMLqEVec, col="green")
-lines(errorMLqEASEVec, col="blue")
-
 dfError <- rbind(
   data.frame(mse=c(errorMLEVec),lci=c(errorMLELBVec),uci=c(errorMLEUBVec),
-             which="MLE",eps=epsVec),
+             which="MLE",q=qVec),
   data.frame(mse=c(errorMLEASEVec),lci=c(errorMLEASELBVec),uci=c(errorMLEASEUBVec),
-             which="MLE_ASE",eps=epsVec),
+             which="MLE_ASE",q=qVec),
   data.frame(mse=c(errorMLqEVec),lci=c(errorMLqELBVec),uci=c(errorMLqEUBVec),
-             which="MLqE",eps=epsVec),
+             which="MLqE",q=qVec),
   data.frame(mse=c(errorMLqEASEVec),lci=c(errorMLqEASELBVec),uci=c(errorMLqEASEUBVec),
-             which="MLqE_ASE",eps=epsVec))
+             which="MLqE_ASE",q=qVec))
 
-# dfError = dfError[dfError$eps<=0.2,]
 
 require(ggplot2)
 
 lSize = .8
 legendSize = 1.5
 
-# gg <- ggplot(dfError, aes(x=eps, y=mse, group=which, colour=which)) + 
+# gg <- ggplot(dfError, aes(x=q, y=mse, group=which, colour=which)) + 
 #   geom_line(size=2) +
-#   xlab("epsilon")+ylab("MSE")+
+#   xlab("q")+ylab("MSE")+
 #   theme(strip.text.x = element_text(size=20,face="bold"))+
 #   theme(axis.text=element_text(size=15),
 #         axis.title=element_text(size=20,face="bold"))+
 #   theme(legend.text=element_text(size=20,face="bold"))+
 #   theme(legend.position="bottom")+
-#   ggtitle(paste0("n=", n, ", m=", m, ", q=", q))+
+#   ggtitle(paste0("n=", n, ", m=", m, ", epsilon=", eps))+
 #   theme(legend.key.size=unit(legendSize,"line"))+
 #   theme(plot.title=element_text(lineheight=.8,size=20,face="bold")) +
 #   theme(legend.title=element_blank())
 
-gg <- ggplot(dfError, aes(x=eps, y=mse, linetype=which, shape=which)) + 
+
+gg <- ggplot(dfError, aes(x=q, y=mse, linetype=which, shape=which)) + 
   scale_linetype_manual(name="", values=c(1, 3, 2, 6),
                         labels=c(expression(widehat(P)^{(1)}),
                                  expression(widetilde(P)^{(1)}),
@@ -113,7 +108,7 @@ gg <- ggplot(dfError, aes(x=eps, y=mse, linetype=which, shape=which)) +
   # geom_line(size=2) +
   geom_line() +
   geom_linerange(aes(ymin=lci,ymax=uci),linetype=1,alpha=.5,size=.5) +
-  xlab(expression(epsilon))+ylab("MSE") +
+  xlab(expression(q))+ylab("MSE") +
   theme(panel.grid.major = element_line(colour="grey95"),
         panel.grid.minor = element_blank()) +
   theme(panel.background = element_rect(fill = 'white', colour = 'grey70')) +
@@ -122,11 +117,11 @@ gg <- ggplot(dfError, aes(x=eps, y=mse, linetype=which, shape=which)) +
         axis.title=element_text(size=20,face="bold"))+
   theme(legend.text=element_text(size=15,face="bold"))+
   theme(legend.position="bottom")+
-  ggtitle(TeX(sprintf('n = %d, m = %d, q = %.1f', n, m, q)))
+  ggtitle(TeX(sprintf('n = %d, m = %d, $\\epsilon = %.1f$', n, m, eps)))
   theme(legend.key.size=unit(legendSize,"line"))+
   theme(plot.title=element_text(lineheight=.8,size=20,face="bold")) +
   theme(legend.title=element_blank())
 gg
-ggsave("../../Result/sim_eps.pdf",
+ggsave("../../Result/sim_q.pdf",
        plot=gg+theme(text=element_text(size=10,family="Times")),
        width=5.5,height=4)
