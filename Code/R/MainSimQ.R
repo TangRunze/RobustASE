@@ -6,10 +6,10 @@ require(parallel)
 ###### Parameter Setting ######
 m <- 10
 n <- 100
-epsVec <- (0:10)/50
+qVec = (10:100)/100
 isSVD <- 0
 
-nIter <- 100
+nIter <- 200
 nCores <- 2
 
 iModel <- 2
@@ -19,18 +19,18 @@ if (iModel == 1) {
   CB <- matrix(c(20, 18, 18, 25), ncol = 2)
   rho <- c(0.5, 0.5)
   K <- length(rho)
-  q <- 0.8
+  eps <- 0.1
   d <- 2
 } else if (iModel == 2) {
-  B <- matrix(c(4.2, 2, 2, 7), ncol = 2)
-  CB <- matrix(c(20, 18, 18, 25), ncol = 2)/3
+  B <- matrix(c(4, 2, 2, 7), ncol = 2)
+  CB <- matrix(c(12, 9, 9, 15), ncol = 2)
   rho <- c(0.5, 0.5)
   K <- length(rho)
-  q <- 0.8
+  eps <- 0.1
   d <- 2
 }
 
-for (eps in epsVec) {
+for (q in qVec) {
   print(eps)
   
   if (isSVD) {

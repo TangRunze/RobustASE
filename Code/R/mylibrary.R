@@ -625,7 +625,7 @@ SimAll <- function(m, n, tau, B, CB, eps, q, d, isSVD=1) {
   P0 <- LR(A_MLqE + D0, d, isSVD)
   D1 <- Diagonal(n, x = diag(P0))
   P1 <- LR(A_MLqE + D1, d)
-  A_MLqE_ASE <- Regularize(P1, weighted)
+  A_MLqE_ASE <- Regularize(P1, T)
   result[4] <- (norm(P - A_MLqE_ASE, "F"))^2/(n*(n-1))
   
   return(result)
