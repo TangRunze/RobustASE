@@ -7,7 +7,7 @@ n <- 100
 isSVD<- 0
 iModel <- 2
 
-epsVec <- (0:20)/100
+epsVec <- (0:10)/50
 
 q <- 0.9
 d <- 2
@@ -67,11 +67,11 @@ for (iEps in 1:length(epsVec)) {
   }
 }
 
-plot.new()
-lines(errorMLEVec, col="black")
-lines(errorMLEASEVec, col="red")
-lines(errorMLqEVec, col="green")
-lines(errorMLqEASEVec, col="blue")
+# plot.new()
+# lines(errorMLEVec, col="black")
+# lines(errorMLEASEVec, col="red")
+# lines(errorMLqEVec, col="green")
+# lines(errorMLqEASEVec, col="blue")
 
 dfError <- rbind(
   data.frame(mse=c(errorMLEVec),lci=c(errorMLELBVec),uci=c(errorMLEUBVec),
@@ -119,10 +119,10 @@ gg <- ggplot(dfError, aes(x=eps, y=mse, linetype=which, shape=which)) +
   theme(panel.background = element_rect(fill = 'white', colour = 'grey70')) +
   theme(strip.text.x = element_text(size=20,face="bold")) +
   theme(axis.text=element_text(size=15),
-        axis.title=element_text(size=20,face="bold"))+
-  theme(legend.text=element_text(size=15,face="bold"))+
-  theme(legend.position="bottom")+
-  ggtitle(TeX(sprintf('n = %d, m = %d, q = %.1f', n, m, q)))
+        axis.title=element_text(size=20,face="bold")) +
+  theme(legend.text=element_text(size=15,face="bold")) +
+  theme(legend.position="bottom") +
+  ggtitle(TeX(sprintf('n = %d, m = %d, q = %.1f', n, m, q))) +
   theme(legend.key.size=unit(legendSize,"line"))+
   theme(plot.title=element_text(lineheight=.8,size=20,face="bold")) +
   theme(legend.title=element_blank())

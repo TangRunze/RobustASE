@@ -36,7 +36,7 @@ for (iData in 1:length(dataNameVec)) {
   ggsave(paste0("../../Result/screeplot_", dataName, ".pdf"),
          pp_scree[[iData]]+theme(text=element_text(size=10,family="Times")),
          # pp_scree[[iData]]+theme(text=element_text(size=10,family="CM Roman")),
-         width=2, height=2)
+         width=2.5, height=2)
   
   pp_hist[[iData]] <- ggplot(df, aes(x=eval))+
     geom_histogram()+
@@ -50,6 +50,6 @@ for (iData in 1:length(dataNameVec)) {
   ggsave(paste0("../../Result/hist_", dataName, ".pdf"),
          pp_hist[[iData]]+theme(text=element_text(size=10,family="Times")),
          # pp_scree[[iData]]+theme(text=element_text(size=10,family="CM Roman")),
-         width=2, height=2)
+         width=2.5, height=2)
 }
 

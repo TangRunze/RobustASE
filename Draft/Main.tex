@@ -29,6 +29,7 @@
 \newtheorem{proposition}[fact]{Proposition}
 \newtheorem{claim}[fact]{Claim}
 \newtheorem{exercise}[fact]{Exercise}
+\newtheorem{remark}[fact]{Remark}
 
 \newcommand{\RT}[1]{\marginpar{\footnotesize\color{red}RT: #1}}
 
@@ -304,13 +305,10 @@ As suggested in \citep{tang2016law}, in this work we are going to combine both i
 \STATE Set $Q$ to $\mathrm{lowrank}_d(\hat{P}^{(1)} + D)$; (see Algorithm~\ref{algo:lowrank})
 \STATE Set $D^{\prime}$ to $ \mathrm{diag}(Q)$, the diagonal matrix with diagonal matching $Q$; 
 \STATE Set $Q^{\prime}$ to $\mathrm{lowrank}_d(Q + D^{\prime})$; (see Algorithm~\ref{algo:lowrank})
-\STATE Set $\widetilde{P}^{(1)}$ with each entry $\widetilde{P}^{(1)}_{ij} = \min( \hat{P}^{(1)}_{ij}, \max(Q^{\prime}_{ij}, 0))$.
+%\STATE Set $\widetilde{P}^{(1)}$ with each entry $\widetilde{P}^{(1)}_{ij} = \min( \hat{P}^{(1)}_{ij}, \max(Q^{\prime}_{ij}, 0))$.
+\STATE Set $\widetilde{P}^{(1)}$ with each entry $\widetilde{P}^{(1)}_{ij} = \max(Q^{\prime}_{ij}, 0)$.
 \end{algorithmic}
 \end{algorithm}
-
-\begin{itemize}
-\item Truncation procedure. Need reasonable explanation here.
-\end{itemize}
 
 By combining the key parts introduced above, we give the detailed description for calculating the estimator $\widetilde{P}^{(1)}$ with dimension selection method and diagonal augmentation procedure in Algorithm~\ref{algo:basic}.
 
@@ -361,7 +359,8 @@ Intuitively, the low-rank structure of the parameter matrix $P$ in WRDPG should 
 \STATE Set $Q$ to $\mathrm{lowrank}_d(\hat{P}^{(q)} + D)$; (see Algorithm~\ref{algo:lowrank})
 \STATE Set $D^{\prime}$ to $ \mathrm{diag}(Q)$, the diagonal matrix with diagonal matching $Q$; 
 \STATE Set $Q^{\prime}$ to $\mathrm{lowrank}_d(Q + D^{\prime})$; (see Algorithm~\ref{algo:lowrank})
-\STATE Set $\widetilde{P}^{(q)}$ with each entry $\widetilde{P}^{(q)}_{ij} = \min( \hat{P}^{(q)}_{ij}, \max(Q^{\prime}_{ij}, 0))$.
+%\STATE Set $\widetilde{P}^{(q)}$ with each entry $\widetilde{P}^{(q)}_{ij} = \min( \hat{P}^{(q)}_{ij}, \max(Q^{\prime}_{ij}, 0))$.
+\STATE Set $\widetilde{P}^{(q)}$ with each entry $\widetilde{P}^{(q)}_{ij} = \max(Q^{\prime}_{ij}, 0)$.
 \end{algorithmic}
 \end{algorithm}
 
@@ -466,6 +465,10 @@ Theorem~\ref{thm:AREL1} tells us that whenever $m = O(n^b)$ for any $b > 0$, i.e
 
 As a result, the ASE procedure applied to the entry-wise MLE $\hat{P}^{(1)}$ helps reduce the variance while keeping the bias unchanged asymptotically, leading to a better estimate $\widetilde{P}^{(1)}$ for $P$ in terms of MSE.
 
+\begin{remark}
+\label{remark:var1}
+To prove the upper bound of the variance as in Theorem~\ref{thm:VarASEL1}, we slightly modify our estimator $\widetilde{P}^{(1)}$ to be $\min(\widetilde{P}^{(1)}, \alpha \hat{P}^{(1)})$ entry-wise for any constant $\alpha > 0$, i.e. truncate our estimator $\widetilde{P}^{(1)}_{ij}$ whenever it is larger than $\alpha \hat{P}^{(1)}$. Note that Theorem~\ref{lm:L1Consistent} still holds with this modified estimator. Since the constant $\alpha$ can be arbitrarily large, this modification is just for technical reason in the proof. Importantly, we do not have this truncation step in the algorithms, or any simulation/real data results in Section~\ref{section:results}.
+\end{remark}
 
 
 \subsection{$\hat{P}^{(q)}$ vs. $\widetilde{P}^{(q)}$}
@@ -507,6 +510,9 @@ Theorem~\ref{thm:ARELq} tells us that whenever $m = O(n^b)$ for any $b > 0$, i.e
 
 Thus the ASE procedure applied to the entry-wise ML$q$E $\hat{P}^{(q)}$ also helps reduce the variance while keeping the bias asymptotically, leading to a better estimate $\widetilde{P}^{(q)}$ for $P$ in terms of MSE.
 
+\begin{remark}
+Similar to Remark~\ref{remark:var1}, we prove the theorems above based on the modified estimator $\min(\widetilde{P}^{(q)}, \alpha \hat{P}^{(q)})$ entry-wise for any constant $\alpha > 0$. This modification is simply for the proof and is not included in algorithms or empirical results.
+\end{remark}
 
 \subsection{$\widetilde{P}^{(1)}$ vs. $\widetilde{P}^{(q)}$}
 
@@ -536,7 +542,11 @@ So $\widetilde{P}^{(q)}$ inherits the robustness from the entry-wise ML$q$E $\ha
 
 
 \subsection{Summary}
-We summarize all the comparison in this section and plot the relationship among four estimators in Figure~\ref{fig:summary}. In conclusion, when contamination is relatively large as well as $m$ and $n$, $\widetilde{P}^{(q)}$ is the best among the four estimators.
+We summarize all the comparison in this section and plot the relationship among four estimators in Figure~\ref{fig:summary}.
+From the upper layer to the low layer, we apply ASE to construct low-rank approximations which keep the asymptotic bias and reduce the asymptotic variance. So as long as the number of vertices $n$ is large enough, ASE will improve the performance with a proper number of graphs $m$. From the left part to the right part, we underweight the outliers to construct robust estimators. So with enough contaminations, whenever the number of graphs $m$ is large enough, the bias term which dominates the MSE will be improved.
+
+
+In conclusion, when contamination is relatively large as well as $m$ and $n$, $\widetilde{P}^{(q)}$ is the best among the four estimators.
 
 \begin{figure}
 \begin{center}
@@ -601,6 +611,7 @@ We will get exactly the same results as in Section \ref{section:theory}. However
 
 
 \section{Empirical Results}
+\label{section:results}
 
 \subsection{Simulation}
 \label{section:sim}
@@ -686,8 +697,8 @@ Before we calculate those estimators, we want to check whether the dataset has a
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[height=.2\textheight]{screeplot_m2g.pdf}
-\includegraphics[height=.2\textheight]{hist_m2g.pdf}
+\includegraphics[height=.22\textheight]{screeplot_m2g.pdf}
+\includegraphics[height=.22\textheight]{hist_m2g.pdf}
 \caption{{\bf Screeplot and the histogram of the eigenvalues of the  mean of 114 graphs based on m2g pipeline.}
 The screeplot in the left panel shows the eigenvalues of the mean graph of all 114 graphs with diagonal augmentation in decreasing algebraic order for the Desikan atlas. The right panel shows the histogram of the eigenvalues of the mean graph of all 114 graphs with diagonal augmentation. Many eigenvalues are around zero, which lead to a quasi low-rank structure.
 }
