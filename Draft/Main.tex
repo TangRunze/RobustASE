@@ -620,27 +620,27 @@ In this section, we will illustrate the theoretical results of four estimators d
 
 \subsubsection{Simulation Setting}
 \label{section:sim_setting}
-Here we consider the 3-block SBM with respect to the exponential distributions parameterized by
+Here we consider the 2-block SBM with respect to the exponential distributions parameterized by
 \begin{equation*}
 B = \begin{bmatrix}
-4.2 & 2 \\
+4 & 2 \\
 2 & 7
 \end{bmatrix}
 ,\qquad \rho = \begin{bmatrix}
 0.5 & 0.5
 \end{bmatrix}.
 \end{equation*}
-And let the contamination also be a 3-block SBM with the same structure parameterized by
+And let the contamination also be a 2-block SBM with the same structure parameterized by
 \begin{equation*}
 B^{\prime} = \begin{bmatrix}
-20 & 18 \\
-18 & 25
+9 & 6 \\
+6 & 13
 \end{bmatrix}
 ,\qquad \rho = \begin{bmatrix}
 0.5 & 0.5
 \end{bmatrix}.
 \end{equation*}
-The contamination probability $\epsilon = 0.2$ if not specified. However, we will vary $\epsilon$ in the following simulation. With these parameters specified, we can sample graphs according to Section~\ref{section:Contamination}.
+The contamination probability $\epsilon = 0.1$ if not specified. However, we will vary $\epsilon$ in the following simulation. With these parameters specified, we can sample graphs according to Section~\ref{section:Contamination}.
 
 When calculating the two low-rank estimators $\widetilde{P}^{(1)}$ and $\widetilde{P}^{(q)}$, we skip the dimension selection step in Algorithm~\ref{algo:basic} and Algorithm~\ref{algo:basic_q}. Instead embed the graphs into the true dimension $d = \mathrm{rank}(B) = 2$.
 Note that the simplified setting in this simulation is primarily for interpretability.
@@ -649,17 +649,18 @@ Note that the simplified setting in this simulation is primarily for interpretab
 
 \subsubsection{Simulation Results}
 
-In order to see how the performance of the four estimators varies with respect to the contaminations, we first run 1000 Monte Carlo replicates based on the contaminated SBM specified in Section~\ref{section:sim_setting} with a fixed number of vertices $n = 100$ and a fixed number of graphs $m = 10$ while varying the contamination probability $\epsilon$ from $0$ to $0.2$.
-Given each sample, four estimators can be calculated following Algorithm~\ref{algo:basic} and Algorithm~\ref{algo:basic_q}. Since we are not focusing on how to select the parameter $q$ in the ML$q$E estimator, we are going to use a fixed $q = 0.8$ throughout this paper. Then the MSE of each estimator can be estimated since the probability matrix $P$ is known in this simulation.
+In order to see how the performance of the four estimators varies with respect to the contaminations, we first run 1000 Monte Carlo replicates based on the contaminated SBM specified in Section~\ref{section:sim_setting} with a fixed number of vertices $n = 100$ and a fixed number of graphs $m = 20$ while varying the contamination probability $\epsilon$ from $0$ to $0.4$.
+Given each sample, four estimators can be calculated following Algorithm~\ref{algo:basic} and Algorithm~\ref{algo:basic_q}. Since we are not focusing on how to select the parameter $q$ in the ML$q$E estimator, we are going to use a fixed $q = 0.9$ throughout this paper. Then the MSE of each estimator can be estimated since the probability matrix $P$ is known in this simulation.
 
 We plot the MSE in average in Figure~\ref{fig:eps}. Different colors represent the simulated MSE associated with four different estimators.
 Firstly, MLE $\hat{P}^{(1)}$ outperforms a little bit when there is no contamination (i.e. $\epsilon = 0$), but it degrades dramatically when contamination increases. On the contrary, the ML$q$E $\hat{P}^{(q)}$ lose a little efficiency when the contamination is small, but shows its robustness under a large contamination.
-With a relative small number of vertices $n = 100$, the ASE procedure which takes advantage of the low rank structure already helps improve the performance of $\hat{P}^{(1)}$ and let $\widetilde{P}^{(1)}$ win the bias-variance tradeoff. Since the ML$q$E $\hat{P}^{(q)}$ preserves the low rank structure of the original graph more or less, the ASE procedure also helps and makes $\widetilde{P}^{(q)}$ a better estimate. Although both $\widetilde{P}^{(q)}$ and $\widetilde{P}^{(1)}$ take advantage of the low-rank structure and has reduced variances, $\widetilde{P}^{(q)}$ constructed based on ML$q$E inherits the robustness from ML$q$E in addition. So when the contamination is large enough, $\widetilde{P}^{(q)}$ outperforms $\widetilde{P}^{(1)}$ and degrades slower.
+Even with a relative small number of vertices $n = 100$, the ASE procedure which takes advantage of the low rank structure already helps improve the performance of $\hat{P}^{(1)}$ and let $\widetilde{P}^{(1)}$ win the bias-variance tradeoff. Since the ML$q$E $\hat{P}^{(q)}$ preserves the low rank structure of the original graph more or less, the ASE procedure also helps and makes $\widetilde{P}^{(q)}$ a better estimate. Although both $\widetilde{P}^{(q)}$ and $\widetilde{P}^{(1)}$ take advantage of the low-rank structure and has reduced variances, $\widetilde{P}^{(q)}$ constructed based on ML$q$E inherits the robustness from ML$q$E in addition. So when the contamination is large enough, $\widetilde{P}^{(q)}$ outperforms $\widetilde{P}^{(1)}$ and degrades slower.
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=1\textwidth]{eps.png}
-\caption{Mean squared error in average by varying contamination ratio $\epsilon$ with fixed $n = 100$ and $m = 10$ based on 1000 Monte Carlo replicates. And we use $q=0.8$ when applying ML$q$E.
+%\includegraphics[width=1\textwidth]{eps.png}
+\includegraphics[width=1\textwidth]{sim_eps.pdf}
+\caption{Mean squared error in average by varying contamination ratio $\epsilon$ with fixed $n = 100$ and $m = 20$ based on 1000 Monte Carlo replicates. And we use $q=0.9$ when applying ML$q$E.
 Different colors represent the simulated MSE associated with four different estimators.
 \textbf{1. MLE $\hat{P}^{(1)}$ vs ML$q$E $\hat{P}^{(q)}$:}
 MLE outperforms a little bit when there is no contamination (i.e. $\epsilon = 0$), but it degrades dramatically when contamination increases;
@@ -672,15 +673,15 @@ When contamination is large enough, $\widetilde{P}^{(q)}$ based on ML$q$E is bet
 \label{fig:eps}
 \end{figure}
 
-\RT{Change this so that there is also a tradeoff}
-Figure~\ref{fig:q} shows the mean squared error in average by varying the parameter $q$ in ML$q$E with fixed $n = 100$, $m = 10$ and $\epsilon = 0.2$ based on 1000 Monte Carlo replicates. Different colors represent the simulated MSE associated with four different estimators. From the figure, we can see that the ASE procedure takes advantage of the graph structure and improves the performance of the corresponding estimators. Moreover, the ML$q$E shows the robustness property compare to the MLE. And as $q$ goes to 1, ML$q$E goes to the MLE as expected.
+Figure~\ref{fig:q} shows the mean squared error in average by varying the parameter $q$ in ML$q$E with fixed $n = 100$, $m = 20$ and $\epsilon = 0.1$ based on 1000 Monte Carlo replicates. Different types of lines represent the simulated MSE associated with four different estimators. From the figure, we can see that the ASE procedure takes advantage of the graph structure and improves the performance of the corresponding estimators independent of the selection of $q$. Moreover, within a proper range of $q$, the ML$q$E wins the bias-variance tradeoff and shows the robustness property compare to the MLE. And as $q$ goes to 1, ML$q$E goes to the MLE as expected.
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=1\textwidth]{q.png}
-\caption{Mean squared error in average by varying the parameter $q$ in ML$q$E with fixed $n = 100$, $m = 10$ and $\epsilon = 0.2$ based on 1000 Monte Carlo replicates. Different colors represent the simulated MSE associated with four different estimators.
-1. ASE procedure takes advantage of the graph structure and improves the performance of the corresponding estimators;
-2. ML$q$E shows the robustness property compare to the MLE. And as $q$ goes to 1, ML$q$E goes to the MLE as expected.}
+%\includegraphics[width=1\textwidth]{q.png}
+\includegraphics[width=1\textwidth]{sim_q.pdf}
+\caption{Mean squared error in average by varying the parameter $q$ in ML$q$E with fixed $n = 100$, $m = 20$ and $\epsilon = 0.1$ based on 1000 Monte Carlo replicates. Different types of lines represent the simulated MSE associated with four different estimators.
+1. ASE procedure takes advantage of the graph structure and improves the performance of the corresponding estimators independent of the selection of $q$;
+2. Within a proper range of $q$, ML$q$E wins the bias-variance tradeoff and shows the robustness property compare to the MLE. Also as $q$ goes to 1, ML$q$E goes to the MLE as expected.}
 \label{fig:q}
 \end{figure}
 
@@ -708,7 +709,7 @@ The screeplot in the left panel shows the eigenvalues of the mean graph of all 1
 To compare the four estimators, we need to calculate the MSE, which requires the true parameter matrix $P$. However, unlike simulation experiment in Section~\ref{section:sim}, $P$ is definitely not obtainable in practice since the 114 graphs are also a sample from the population. So finding a good estimate for $P$ and use it to calculate the MSE is a feasible way in this experiment. Recently, \citet{kiar2016ndmg} proposed a better pipeline ndmg2 compared to m2g. Then the MLE derived from the 114 graphs in ndmg2 should be a relative more accurate estimate of the actual probability matrix $P$ for the population. And we are going to use this as $P$ when calculating the MSE. Such $P$ generally has full rank, which breaks the low-rank assumptions. So this setting makes it hard for $\widetilde{P}^{(1)}$ and $\widetilde{P}^{(q)}$ to improve and is favorable to the $\hat{P}^{(1)}$ and $\hat{P}^{(q)}$. Moreover, it is still possible that the 114 graphs from ndmg2 contain outliers. Thus by using the MLE as $P$, the performance of ML$q$E related estimators $\hat{P}^{(q)}$ and $\widetilde{P}^{(q)}$ are underestimated.
 
 In this experiment, we build the four estimates based on the samples with size $m$ from the m2g dataset, while using the MLE of all 114 graphs from the ndmg2 dataset as the probability matrix $P$.
-We run 100 simulations on this dataset for different sample sizes $m = 2, 5, 10$. Specifically, in each Monte Carlo replicate, we sample $m$ graphs out of the 114 from the m2g dataset and compute the four estimates based on the $m$ sampled graphs. We then compare these estimates to the MLE of all 114 graphs in the ndmg2 dataset.
+We run 100 simulations on this dataset for different sample sizes $m = 2, 5, 10$. Specifically, in each Monte Carlo replicate, we sample $m$ graphs out of the 114 from the m2g dataset and compute the four estimates based on the $m$ sampled graphs. As mentioned before, $q$ is set to be 0.9 without further exploiting. We then compare these estimates to the MLE of all 114 graphs in the ndmg2 dataset.
 For those two low-rank estimators $\widetilde{P}^{(1)}$ and $\widetilde{P}^{(q)}$, we apply ASE for all possible dimensions, i.e. $d$ ranges from 1 to $n$. The MSE results are shown in Figure~\ref{fig:CCI}.
 
 \begin{figure}
@@ -760,71 +761,182 @@ For all three sample sizes ($m = 2, 5, 10$), $\widetilde{P}^{(q)}$ estimates $P$
 \section{Discussion}
 
 
-\section{Appendix}
 
-All proofs here.
-
+\section*{Acknowledgments}
+This work is graciously supported by the XDATA program of the Defense
+Advanced Research Projects Agency (DARPA) administered through Air
+Force Research Laboratory contract FA8750-12-2-0303; the DARPA SIMPLEX
+program through SPAWAR contract N66001-15-C-4041; and DARPA GRAPHS
+contract N66001-14-1-4028.
 
 
 \bibliography{Bib}{}
-%\bibliographystyle{plain}
 \bibliographystyle{plainnat}
 
 
 
+\appendix
+
+
+\section{Proofs for Theory Results}
+
+\subsection{$\hat{P}^{(q)}$ vs. $\hat{P}^{(1)}$}
+
+\begin{lemma}
+\label{lemma:LqlMLE}
+Consider the model $X_1, \cdots, X_m \stackrel{iid}{\sim} \mathrm{Exp}(P)$ with $m \ge 2$ and $E[X_1] = P$. Given any data $x = (x_1, \cdots, x_m)$ such that $x_{(1)} > 0$ and not all $x_i$'s are the same, then no matter how the data is sampled, we have
+\begin{itemize}
+\item There exists at least one solution to the ML$q$ equation;
+\item All the solutions to the ML$q$ equation are less than the MLE.
+\end{itemize}
+Thus the ML$q$E $\hat{P}^{(q)}$, the root closest to the MLE, is well defined.
+\end{lemma}
+\begin{proof}
+The MLE is
+\[
+	\hat{P}^{(1)}(x) = \bar{x}.
+\]
+
+Consider the continuous function $g(\theta, x) = \sum_{i=1}^m e^{-\frac{(1-q)x_i}{\theta}}(x_i - \theta)$. Then the ML$q$ equation is $g(\theta, x) = 0$.
+
+Let $x_{(1)} \le \cdots \le x_{(l)} \le \bar{x} \le x_{(l+1)} \le \cdots \le x_{(m)}$. Define $s_i = \bar{x} - x_{(i)}$ for $1 \le i \le l$, and $t_{i} = x_{(l+i)} - \bar{x}$ for $1 \le i \le m - l$. Note that $\sum_{i=1}^l s_i = \sum_{i=1}^{m-l} t_i$. Then for any $\theta \ge \bar{x}$, we have
+\begin{align*}
+g(\theta, x) & = \sum_{i=1}^m e^{-\frac{(1-q)x_{(i)}}{\theta}}(x_{(i)} - \theta)
+= \sum_{i=1}^m e^{-\frac{(1-q)x_{(i)}}{\theta}}(x_{(i)} - \bar{x} + \bar{x} - \theta) \\
+& = - \sum_{i=1}^l e^{-\frac{(1-q)x_{(i)}}{\theta}}s_i
++ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\theta}}t_i
++ \sum_{i=1}^m e^{-\frac{(1-q)x_{(i)}}{\theta}}(\bar{x} - \theta)\\
+& \le - \sum_{i=1}^l e^{-\frac{(1-q)x_{(i)}}{\theta}}s_i
++ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\theta}}t_i \\
+& \le - e^{-\frac{(1-q)x_{(l+1)}}{\theta}} \sum_{i=1}^l s_i
++ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\theta}}t_i \\
+& \le - e^{-\frac{(1-q)x_{(l+1)}}{\theta}} \sum_{i=1}^{m-l} t_i
++ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\theta}}t_i \\
+& \le - \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\theta}}t_i
++ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\theta}}t_i\\
+& = 0,
+\end{align*}
+and equality holds if and only if all $x_i$'s are the same, which is excluded by the assumption.
+Thus $g(\theta, x) < 0$ for any $\theta \ge \bar{x}$.
+
+Denote any solution to the ML$q$ equation to be $\hat{P}^{(q)}(x)$, then we also know:
+\begin{itemize}
+\item $g(\hat{P}^{(q)}(x), x) = 0$;
+\item $\lim_{\theta \rightarrow 0^+}g(\theta, x) = 0$;
+\item $g(\theta, x) > 0$ when $\theta < x_{(1)}$;
+\end{itemize}
+
+Thus there exists at least one solution to the ML$q$ equation. And all solutions to the ML$q$ equation are between $x_{(1)}$ and $\bar{x}$, i.e. less than the MLE.
+\end{proof}
+
+\begin{lemma}
+\label{lemma:PopulationLqExist}
+Consider an exponential distribution model while the data is actually sampled from the contaminated model $X, X_1, \cdots, X_m \stackrel{iid}{\sim} (1-\epsilon) \mathrm{Exp}(P) + \epsilon \mathrm{Exp}(C)$. Denote such contaminated distribution as $F$.
+Then there exists at least one solution $\theta(F)$ of the population version of ML$q$ equation,
+i.e. $E_F[e^{-\frac{(1-q)X}{\theta(F)}}(X - \theta(F))] = 0$, such that $\theta(F) < E_F[\bar{X}] = (1-\epsilon) P + \epsilon C$.
+So we can define $\theta(F_{ij})$ to be the largest root which is less than $E_F[\bar{X}]$.
+\end{lemma}
+\begin{proof}
+For the MLE, i.e. $\bar{X}$, we have $E[\bar{X}] = (1-\epsilon) P + \epsilon C$.
+According to Equation (3.2) in \citep{ferrari2010}, $\theta(F)$ satisfies
+\[
+\frac{\epsilon C}{(C(1-q) + \theta)^2} - \frac{\epsilon}{C(1-q) + \theta}
++\frac{(1-\epsilon) P}{(P(1-q) + \theta)^2} - \frac{(1-\epsilon)}{P(1-q) + \theta}
+= 0,
+\]
+i.e.
+\[
+\frac{\epsilon (\theta - Cq)}{(C(1-q) + \theta)^2} =
+\frac{(1-\epsilon) (P q - \theta)}{(P(1-q) + \theta)^2}.
+\]
+Define $h(\theta) = (C(1-q) + \theta)^2 (1-\epsilon) (P q - \theta) - (P(1-q) + \theta)^2 \epsilon (\theta - Cq)$.
+Then $\lim_{\theta \to \infty}h(\theta) = -\infty$, $h(0) > 0$, and $h(Cq) < 0$.
+Consider $q$ as the variable and solve the equation $h(E[\bar{X}]) = 0$, we have three roots and one of them is $q = 1$ obviously.
+The other two roots are
+\[
+\frac{(P + C)\left( (P-C)^2 \epsilon(1-\epsilon) + 2PC \right)}{2PC(P \epsilon + C(1-\epsilon))}
+\pm \sqrt{\frac{\epsilon(1-\epsilon)(C-P)^2\left(\epsilon(1-\epsilon)(C-P)^4 - 4P^2C^2\right)}{4 P^2 C^2 (P\epsilon + C(1-\epsilon))^2}}.
+\]
+To prove the roots are greater or equal to 1, we need to show
+\[
+\frac{(P + C)\left( (P-C)^2 \epsilon(1-\epsilon) + 2PC \right)}{2PC(P \epsilon + C(1-\epsilon))}
+- \sqrt{\frac{\epsilon(1-\epsilon)(C-P)^2\left(\epsilon(1-\epsilon)(C-P)^4 - 4P^2C^2\right)}{4 P^2 C^2 (P\epsilon + C(1-\epsilon))^2}} > 1.
+\]
+For the first part,
+\[
+\frac{(P + C)\left( (P-C)^2 \epsilon(1-\epsilon) + 2PC \right)}{2PC(P \epsilon + C(1-\epsilon))}\\
+> 1 + \frac{(P-C)^2 \epsilon (1-\epsilon) (P+C)}{2PC(P \epsilon + C(1-\epsilon))}.
+\]
+To prove the roots are greater or equal to 1, we just need to show
+\[
+(P-C)^4 \epsilon^2 (1-\epsilon)^2 (P+C)^2 \ge \epsilon^2(1-\epsilon)^2(C-P)^6.
+\]
+Then it is sufficient to show that
+\[
+(P+C)^2 \ge (C-P)^2,
+\]
+which is true.
+Combined with the fact that when $q = 0$, $h(E[\bar{X}]) < 0$, we have for any $0 < q < 1$, $h(E[\bar{X}]) < 0$.
+
+The equation $h(\theta) = 0$ is a cubic polynomial, so it has at most three real roots. Combined with the fact that $h(0) > 0$ and $h(P q) = 0$, we have for any $0 < q < 1$, there exists at least one root of the population version of ML$q$ equation which is less than $E[\bar{X}] = (1-\epsilon)P + \epsilon C$.
+\end{proof}
+
+
+\begin{lemma}[Lemma~\ref{lemma:ELqlEMLE}]
+\label{lemma:ELqlEMLEproof}
+For any $0 < q < 1$, there exists $C_0(P_{ij}, \epsilon, q) > 0$ such that under the contaminated model with $C > C_0(P_{ij}, \epsilon, q)$,
+\[
+	\lim_{m \to \infty} \left| E[\hat{P}^{(q)}_{ij}] - P_{ij} \right| < 
+    \lim_{m \to \infty} \left| E[\hat{P}^{(1)}_{ij}] - P_{ij} \right|,
+\]
+for $1 \le i, j \le n$ and $i \ne j$.
+\end{lemma}
+\begin{proof}
+For the MLE $\hat{P}^{(1)}_{ij} = \bar{A}_{ij}$,
+\[
+	E[\hat{P}^{(1)}_{ij}] = E[\bar{A}_{ij}]
+    = \frac{1}{m} \sum_{t = 1}^m E[A_{ij}^{(t)}]
+    = E[A_{ij}^{(1)}]
+    = (1-\epsilon) P_{ij} + \epsilon C_{ij}.
+\]
+As shown in Lemma \ref{lemma:PopulationLqExist}, $\theta(F)$ satisfies
+\[
+\frac{\epsilon (\theta(F) - C_{ij}q)}{(C_{ij}(1-q) + \theta(F))^2} =
+\frac{(1-\epsilon) (P_{ij} q - \theta(F))}{(P_{ij}(1-q) + \theta(F))^2}.
+\]
+Thus $\theta(F) - C_{ij} q$ and $\theta(F) - P_{ij} q$ should have different signs. Combined with $C_{ij} > P_{ij}$, we have
+\[
+q P_{ij} < \theta(F).
+\]
+To have a smaller asymptotic bias in absolute value, combined with Lemma \ref{lemma:ELqConverge}, we need
+\[
+|\theta(F) - P_{ij}| < \epsilon (C_{ij} - P_{ij}).
+\]
+Based on Lemma \ref{lemma:LqlMLE}, we need
+\[
+q P_{ij} > P_{ij} - \epsilon(C_{ij} - P_{ij}),
+\]
+i.e.
+\[
+C_{ij} > P_{ij} + \frac{(1-q) P_{ij}}{\epsilon} = C_0(P_{ij}, \epsilon, q).
+\]
+\end{proof}
 
 
 
-%\newpage
-%
-%\section{Backup}
-%
-%
-%\section{Discussion}
-%
-%\subsection{Summary}
-%\begin{itemize}
-%\item In this paper, we propose a better way to estimate the mean of a collection of graphs by taking advantage of the low rank structure of the graphs.
-%\end{itemize}
-%
-%\subsection{Future Work}
-%\begin{itemize}
-%\item Generally the observations we have are always contaminated in practice. In this case, improved robust estimator based on the low rank structure of the graphs is preferred.
-%\item Estimating the rank of the graph structure accurately will certainly help improve the results.
-%\item In this paper, we are using Scheinerman's method with 1 iteration for diagonal augmentation.
-%\end{itemize}
-%
-%
-%
-%
-%
-%
-%\section{Methods}
-%
-%\subsection{Choosing Dimension}
-%\label{section:dim_select}
-%\begin{itemize}
-%\item Often in dimensionality reduction techniques, the choice for dimension, d, relies on visually analyzing a plot of the ordered eigenvalues, looking for a ``gap'' or ``elbow'' in the scree-plot.
-%\item USVT is a simple estimation procedure that works for any matrix that has ``a little bit of structure''.
-%\end{itemize}
-%
-%\subsection{Graph Diagonal Augmentation}
-%\begin{itemize}
-%\item The graphs examined in this work are hollow, in that there are no self-loops and thus the diagonal entries of the adjacency matrix are 0. This leads to a bias in the calculation of the eigenvectors.
-%\item We minimize this bias by using an iterative method developed by Scheinerman and Tucker.
-%\end{itemize}
-%
-%\subsection{Source Code}
-%
-%\subsection{Dataset Description}
-%\begin{itemize}
-%\item The original dataset is from the Emotion and Creativity One Year Retest Dataset provided by Qiu, Zhang and Wei from Southwest University. It is comprised of 235 subjects, all of whom were college students. Each subject underwent two sessions of anatomical, resting state DTI scans, spaced one year apart. Due to the incomplete data, the true number of scans is 454.
-%\item When deriving MR connectomes, the NeuroData team parcellate the brain into groups of nodes as defined by anatomical atlases. The atlases are defined either physiologically or structurally by neuroanatomists (Desikan and JHU), or are generated using a segmentation algorithm looking for certain features or groupings (CPAC200).
-%\item The graphs we are using are processed by NeuroData team from DTI data of the original dataset generated with different atlases (desikan, JHU and CPAC200), each containing different region/node definitions.
-%\item The graphs are undirected, unweighted and with no self-loops. An edge exists between two regions when there is at least one white-matter tract connecting the corresponding two parts of the brain.
-%\end{itemize}
-%
-%\subsection{Outline for the Proof of the Theorems}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
