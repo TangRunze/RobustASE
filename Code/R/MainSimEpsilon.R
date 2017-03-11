@@ -4,9 +4,9 @@ source("mylibrary.R")
 require(parallel)
 
 ###### Parameter Setting ######
-m <- 10
+m <- 20
 n <- 100
-epsVec <- (0:10)/50
+epsVec <- (0:40)/100
 isSVD <- 0
 
 nIter <- 100
@@ -22,11 +22,11 @@ if (iModel == 1) {
   q <- 0.8
   d <- 2
 } else if (iModel == 2) {
-  B <- matrix(c(4.2, 2, 2, 7), ncol = 2)
-  CB <- matrix(c(20, 18, 18, 25), ncol = 2)/3
+  B <- matrix(c(4, 2, 2, 7), ncol = 2)
+  CB <- matrix(c(9, 6, 6, 13), ncol = 2)/3
   rho <- c(0.5, 0.5)
   K <- length(rho)
-  q <- 0.8
+  q <- 0.9
   d <- 2
 }
 

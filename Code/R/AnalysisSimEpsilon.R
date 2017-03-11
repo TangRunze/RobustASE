@@ -1,13 +1,13 @@
 rm(list = ls())
 setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
-# source("function_collection.R")
 
-m <- 10
+m <- 20
 n <- 100
 isSVD<- 0
 iModel <- 2
 
-epsVec <- (0:10)/50
+epsVec <- (0:40)/100
+# epsVec <- (0:10)/25
 
 q <- 0.9
 d <- 2
@@ -117,16 +117,16 @@ gg <- ggplot(dfError, aes(x=eps, y=mse, linetype=which, shape=which)) +
   theme(panel.grid.major = element_line(colour="grey95"),
         panel.grid.minor = element_blank()) +
   theme(panel.background = element_rect(fill = 'white', colour = 'grey70')) +
-  theme(strip.text.x = element_text(size=20,face="bold")) +
-  theme(axis.text=element_text(size=15),
-        axis.title=element_text(size=20,face="bold")) +
-  theme(legend.text=element_text(size=15,face="bold")) +
+  # theme(strip.text.x = element_text(size=20,face="bold")) +
+  # theme(axis.text=element_text(size=15),
+  #       axis.title=element_text(size=20,face="bold")) +
+  # theme(legend.text=element_text(size=15,face="bold")) +
   theme(legend.position="bottom") +
   ggtitle(TeX(sprintf('n = %d, m = %d, q = %.1f', n, m, q))) +
   theme(legend.key.size=unit(legendSize,"line"))+
-  theme(plot.title=element_text(lineheight=.8,size=20,face="bold")) +
+  # theme(plot.title=element_text(lineheight=.8,size=20,face="bold")) +
   theme(legend.title=element_blank())
 gg
 ggsave("../../Result/sim_eps.pdf",
-       plot=gg+theme(text=element_text(size=10,family="Times")),
+       plot=gg+theme(text=element_text(size=15,family="Times")),
        width=5.5,height=4)

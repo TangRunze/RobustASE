@@ -1,14 +1,14 @@
 rm(list = ls())
 setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
-# source("function_collection.R")
 library(latex2exp)
 
-m <- 10
+m <- 20
 n <- 100
 isSVD<- 0
 iModel <- 2
 
-qVec <- (5:10)/10
+qVec <- (25:50)/50
+# qVec <- (5:10)/10
 
 eps <- 0.1
 d <- 2
@@ -68,6 +68,16 @@ for (iQ in 1:length(qVec)) {
   }
 }
 
+errorMLEVec <- rep(mean(errorMLEVec), 1, length(errorMLEVec))
+errorMLELBVec <- rep(min(errorMLELBVec), 1, length(errorMLEVec))
+errorMLEUBVec <- rep(max(errorMLEUBVec), 1, length(errorMLEVec))
+
+errorMLEASEVec <- rep(mean(errorMLEASEVec), 1, length(errorMLEASEVec))
+errorMLEASELBVec <- rep(min(errorMLEASELBVec), 1, length(errorMLEASEVec))
+errorMLEASEUBVec <- rep(max(errorMLEASEUBVec), 1, length(errorMLEASEVec))
+
+
+
 dfError <- rbind(
   data.frame(mse=c(errorMLEVec),lci=c(errorMLELBVec),uci=c(errorMLEUBVec),
              which="MLE",q=qVec),
@@ -112,16 +122,16 @@ gg <- ggplot(dfError, aes(x=q, y=mse, linetype=which, shape=which)) +
   theme(panel.grid.major = element_line(colour="grey95"),
         panel.grid.minor = element_blank()) +
   theme(panel.background = element_rect(fill = 'white', colour = 'grey70')) +
-  theme(strip.text.x = element_text(size=20,face="bold")) +
-  theme(axis.text=element_text(size=15),
-        axis.title=element_text(size=20,face="bold"))+
-  theme(legend.text=element_text(size=15,face="bold"))+
+  # theme(strip.text.x = element_text(size=20,face="bold")) +
+  # theme(axis.text=element_text(size=15),
+  #       axis.title=element_text(size=20,face="bold"))+
+  # theme(legend.text=element_text(size=15,face="bold"))+
   theme(legend.position="bottom")+
   ggtitle(TeX(sprintf('n = %d, m = %d, $\\epsilon = %.1f$', n, m, eps)))
   theme(legend.key.size=unit(legendSize,"line"))+
-  theme(plot.title=element_text(lineheight=.8,size=20,face="bold")) +
+  # theme(plot.title=element_text(lineheight=.8,size=20,face="bold")) +
   theme(legend.title=element_blank())
 gg
 ggsave("../../Result/sim_q.pdf",
-       plot=gg+theme(text=element_text(size=10,family="Times")),
+       plot=gg+theme(text=element_text(size=15,family="Times")),
        width=5.5,height=4)
