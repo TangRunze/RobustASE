@@ -594,7 +594,7 @@ In conclusion, when contamination is relatively large as well as $m$ and $n$, $\
 
 Although in Section \ref{section:theory}, we only present the results under exponential distributions, the results can be generalized to a broader class of distribution families, and even a different entry-wise robust estimator other than ML$q$E with the following conditions:
 \begin{enumerate}
-\item Let $A_{ij} \stackrel{ind}{\sim} (1-\epsilon) f_{P_{ij}} + \epsilon f_{C_{ij}}$, then $E[(A_{ij} - E[\hat{P}_{ij}^{(1)}])^k] \le \mathrm{const} \cdot k!$, where $\hat{P}^{(1)}$ is the entry-wise MLE as defined before;\\
+\item Let $A_{ij} \stackrel{ind}{\sim} (1-\epsilon) f_{P_{ij}} + \epsilon f_{C_{ij}}$, then $E[(A_{ij} - E[\hat{P}_{ij}^{(1)}])^k] \le \mathrm{const}^k \cdot k!$, where $\hat{P}^{(1)}$ is the entry-wise MLE as defined before;\\
 %$E[\hat{P}_{ij}^{(1)}] = (1-\epsilon) E_f(P_{ij}) + \epsilon E_f(C_{ij})$;
 This is to ensure the that observations will not deviate from the expectation too far away, such that the concentration inequality can apply.
 \item There exists $C_0(P_{ij}, \epsilon) > 0$ such that under the contaminated model with $C > C_0(P_{ij}, \epsilon)$,
@@ -609,6 +609,39 @@ Since we use the results of $\hat{P}^{(1)}$ to bound $\hat{P}^{(q)}$, the proof 
 We will get exactly the same results as in Section \ref{section:theory}. However, even if the variance of the new estimator is not of order $O(m^{-1})$, we will get similar results with a different term related to $m$.
 \end{enumerate}
 
+Poisson distribution is a commonly used distribution for nonnegative graphs with integer values. By Lemma we can see it satisfies Condition 1. Intuitively, since exponential distribution has a fatter tail compare to Poisson, we should have the bound for central moment of Poisson directly from the results for exponential distribution.
+
+\begin{lemma}
+\label{lm:poisson}
+Let $A_{ij} \stackrel{ind}{\sim} (1-\epsilon) f_{P_{ij}} + \epsilon f_{C_{ij}}$ with $f$ to be Poisson, then $E[(A_{ij} - E[\hat{P}_{ij}^{(1)}])^k] \le \mathrm{const}^k \cdot k!$, where $\hat{P}^{(1)}$ is the entry-wise MLE as defined before.
+\end{lemma}
+\begin{proof}
+First we prove $(x - \theta)^k \le k! (e^{x-\theta} + e^{\theta - x})$.
+\begin{enumerate}
+\item $k$ is even. Then by Taylor expansion, $e^{x - \theta} + e^{\theta - x} \ge \frac{(x-\theta)^k}{k!}$
+\item $k$ is odd. When $x \ge \theta$, still by Taylor expansion, $(x-\theta)^k \le k! e^{x-\theta}$. When $x < \theta$, $(x-\theta)^k < 0 \le k! e^{x-\theta}$.
+\end{enumerate}
+Thus $(x - \theta)^k \le k! (e^{x-\theta} + e^{\theta - x})$.
+So the $k$-th central moment of Poisson distribution with parameter $\theta$ is bounded by
+\begin{align*}
+E[(X-\theta)^k] & \le k! \left( E[e^{X-\theta}] + E[e^{\theta - X}] \right) \\
+& = k! \left( e^{-\theta} E[e^X] + e^{\theta} E[e^{-X}] \right) \\
+& = k! \left( e^{\theta(e - 2)} + e^{\theta e^{-1}} \right).
+\end{align*}
+Let $X_1 \sim \mathrm{Poisson}(P_{ij})$ and $X_2 \sim \mathrm{Poisson}(C_{ij})$.
+Then if $A_{ij}$ is distributed from a mixture model as in the statement, we have
+\begin{align*}
+& E[(A_{ij} - E[\hat{P}_{ij}^{(1)}])^k] \\
+= & (1-\epsilon) E[(X_1 - P_{ij} + P_{ij} - E[\hat{P}_{ij}^{(1)}])] +
+\epsilon E[(X_2 - C_{ij} + C_{ij} - E[\hat{P}_{ij}^{(1)}])] \\
+= & (1-\epsilon) \sum_{j = 0}^k \binom{k}{j} (P_{ij} - E[\hat{P}_{ij}^{(1)}])^{k - j} E[(X_1 - P_{ij})^j] \\
+& + \epsilon \sum_{j = 0}^k \binom{k}{j} (C_{ij} - E[\hat{P}_{ij}^{(1)}])^{k - j} E[(X_2 - C_{ij})^j] \\
+\le & (1-\epsilon) \sum_{j = 0}^k \binom{k}{j} (P_{ij} - E[\hat{P}_{ij}^{(1)}])^{k - j} \cdot j! \cdot \mathrm{const} \\
+& + \epsilon \sum_{j = 0}^k \binom{k}{j} (C_{ij} - E[\hat{P}_{ij}^{(1)}])^{k - j} \cdot j! \cdot \mathrm{const} \\ 
+\le & (1-\epsilon) k! \cdot \mathrm{const}^k + \epsilon k! \cdot \mathrm{const}^k \\
+\le & \mathrm{const}^k \cdot k!.
+\end{align*}
+\end{proof}
 
 \section{Empirical Results}
 \label{section:results}
