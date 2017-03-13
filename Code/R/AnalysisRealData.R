@@ -5,6 +5,7 @@ library(ggplot2)
 library(plyr)
 library(dplyr)
 library(reshape2)
+library(latex2exp)
 
 ###### Parameter Setting ######
 mVec <- c(2, 5, 10)
@@ -225,7 +226,8 @@ gg <- ggplot(errorByDimDf, aes(x = d, y = mse, linetype = factor(which), shape =
   theme(panel.background = element_rect(fill = 'white', colour = 'grey70'))+
   # theme(legend.text=element_text(size=20,face="bold"))+
   theme(legend.position="bottom")+
-  ggtitle(paste0(dataName1, ", ", dataName2, ", n=", n, ", ", M, " graphs"))+
+  ggtitle(TeX(sprintf('%s, %s, $n = %d$, %d graphs', dataName1, dataName2, n, M)))+
+  # ggtitle(paste0(dataName1, ", ", dataName2, ", n=", n, ", ", M, " graphs"))+
   theme(legend.key.size=unit(legendSize,"line"))+
   # theme(plot.title=element_text(lineheight=.8,size=20,face="bold")) +
   theme(legend.title=element_blank())
