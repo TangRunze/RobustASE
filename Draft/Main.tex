@@ -214,9 +214,7 @@ Now consider the WSBM as a WRDPG with respect to $\mathcal{F} = \{ f_{\theta}, \
 In order to generate $m$ graphs under this model with known vertex correspondence, we first sample $\tau$ from the categorical distribution with parameter $\rho = [\rho_1, \cdots, \rho_K]^{\top}$ with $\rho_k \in (0, 1)$ and $\sum_{k = 1}^{K} \rho_k = 1$, and keep $\rho$ fixed when sampling all $m$ graphs. Then $m$ symmetric and hollow graphs are sampled such that conditioning on $\tau$, the adjacency matrices are distributed entry-wise independently as $A^{(t)}_{ij} \stackrel{ind}{\sim} f_{B_{\tau_i, \tau_j}} = f_{P_{ij}}$ for each $1 \le t \le m$, $1 \le i < j \le n$.
 
 
-\begin{itemize}
-\item Here is an example of the WSBM. (Figure for simulation)
-\end{itemize}
+
 
 \subsection{Weighted Stochastic Blockmodel as a Weighted Random Dot Product Graph with Contaminations}
 \label{section:Contamination}
@@ -601,52 +599,23 @@ Although in Section \ref{section:theory}, we only present the results under expo
 \begin{enumerate}
 \item Let $A_{ij} \stackrel{ind}{\sim} (1-\epsilon) f_{P_{ij}} + \epsilon f_{C_{ij}}$, then $E[(A_{ij} - E[\hat{P}_{ij}^{(1)}])^k] \le \mathrm{const}^k \cdot k!$, where $\hat{P}^{(1)}$ is the entry-wise MLE as defined before;\\
 %$E[\hat{P}_{ij}^{(1)}] = (1-\epsilon) E_f(P_{ij}) + \epsilon E_f(C_{ij})$;
-This is to ensure the that observations will not deviate from the expectation too far away, such that the concentration inequality can apply.
+This is to ensure that observations will not deviate from the expectation too far away, so that the concentration inequalities hold.
 \item There exists $C_0(P_{ij}, \epsilon) > 0$ such that under the contaminated model with $C > C_0(P_{ij}, \epsilon)$,
 \[
 	\lim_{m \to \infty} \left| E[\hat{P}_{ij}] - P_{ij} \right| < 
     \lim_{m \to \infty} \left| E[\hat{P}^{(1)}_{ij}] - P_{ij} \right|;
 \]\\
 This condition is discussed in Section \ref{section:MLEvsMLqE}. It requires the contamination of the model to be large enough (a restriction on the distribution) and $\hat{P}$ to be robust enough with respect to the contamination (a condition on the estimator).
-\item $\hat{P}_{ij} \le \mathrm{const} \cdot \hat{P}_{ij}^{(1)}$; (This might be generalized to with high probability later)\\
+\item $\hat{P}_{ij} \le \mathrm{const} \cdot \hat{P}_{ij}^{(1)}$;\\
 Since we use the results of $\hat{P}^{(1)}$ to bound $\hat{P}^{(q)}$, the proof can apply directly with this condition for an arbitrary $\hat{P}$.
 \item $\mathrm{Var}(\hat{P}_{ij}) = O(m^{-1})$, where $m$ is the number of observations.\\
 We will get exactly the same results as in Section \ref{section:theory}. However, even if the variance of the new estimator is not of order $O(m^{-1})$, we will get similar results with a different term related to $m$.
 \end{enumerate}
 
-Poisson distribution is a commonly used distribution for nonnegative graphs with integer values. By Lemma we can see it satisfies Condition 1. Intuitively, since exponential distribution has a fatter tail compare to Poisson, we should have the bound for central moment of Poisson directly from the results for exponential distribution.
+The exponential distribution in Section~\ref{section:theory} is continuous and monotone. Now we consider Poisson distribution instead. Poisson distribution is a commonly used distribution for nonnegative graphs with integer values. By Lemma~\ref{lm:poisson} we can see it satisfies Condition 1. Intuitively, since exponential distribution has a fatter tail compare to Poisson, we should have the bound for central moment of Poisson directly from the results for exponential distribution. Condition 2 is satisfied as long as the contamination is large enough while keep using the robust ML$q$E. For Condition 3, the extreme case happens when there are $m$ data $x_1, \cdots, x_m$ with $x_1 = \cdots = x_k = 0$ and $x_{k+1} = \cdots = x_m = m \bar{x}/(m - k)$, which is assumed to be an integer. Also, to have ML$q$E larger than MLE $\bar{x}$, we need the weights of the first $m$ data to be larger than the weights of the rest $m - k$ data. Assuming $y$ satisfies such property, i.e. $e^{-\bar{x}} < \bar{x}^y e^{-\bar{x}} / y!$. Then $y! < \bar{x}^y$. By the lower bound in Stirling's formula, we have $y < \bar{x} e$ when $y > 0$. So $m\bar{x}/(m-k) < e \bar{x}$, and thus ML$q$E is bounded by $e \bar{x}$. So $\hat{P}_{ij} \le e \hat{P}_{ij}^{(1)}$ and Condition 3 is satisfied. At last, Condition 4 follows directly from theory of minimum contrast estimators.
 
-\begin{lemma}
-\label{lm:poisson}
-Let $A_{ij} \stackrel{ind}{\sim} (1-\epsilon) f_{P_{ij}} + \epsilon f_{C_{ij}}$ with $f$ to be Poisson, then $E[(A_{ij} - E[\hat{P}_{ij}^{(1)}])^k] \le \mathrm{const}^k \cdot k!$, where $\hat{P}^{(1)}$ is the entry-wise MLE as defined before.
-\end{lemma}
-\begin{proof}
-First we prove $(x - \theta)^k \le k! (e^{x-\theta} + e^{\theta - x})$.
-\begin{enumerate}
-\item $k$ is even. Then by Taylor expansion, $e^{x - \theta} + e^{\theta - x} \ge \frac{(x-\theta)^k}{k!}$
-\item $k$ is odd. When $x \ge \theta$, still by Taylor expansion, $(x-\theta)^k \le k! e^{x-\theta}$. When $x < \theta$, $(x-\theta)^k < 0 \le k! e^{x-\theta}$.
-\end{enumerate}
-Thus $(x - \theta)^k \le k! (e^{x-\theta} + e^{\theta - x})$.
-So the $k$-th central moment of Poisson distribution with parameter $\theta$ is bounded by
-\begin{align*}
-E[(X-\theta)^k] & \le k! \left( E[e^{X-\theta}] + E[e^{\theta - X}] \right) \\
-& = k! \left( e^{-\theta} E[e^X] + e^{\theta} E[e^{-X}] \right) \\
-& = k! \left( e^{\theta(e - 2)} + e^{\theta e^{-1}} \right).
-\end{align*}
-Let $X_1 \sim \mathrm{Poisson}(P_{ij})$ and $X_2 \sim \mathrm{Poisson}(C_{ij})$.
-Then if $A_{ij}$ is distributed from a mixture model as in the statement, we have
-\begin{align*}
-& E[(A_{ij} - E[\hat{P}_{ij}^{(1)}])^k] \\
-= & (1-\epsilon) E[(X_1 - P_{ij} + P_{ij} - E[\hat{P}_{ij}^{(1)}])] +
-\epsilon E[(X_2 - C_{ij} + C_{ij} - E[\hat{P}_{ij}^{(1)}])] \\
-= & (1-\epsilon) \sum_{j = 0}^k \binom{k}{j} (P_{ij} - E[\hat{P}_{ij}^{(1)}])^{k - j} E[(X_1 - P_{ij})^j] \\
-& + \epsilon \sum_{j = 0}^k \binom{k}{j} (C_{ij} - E[\hat{P}_{ij}^{(1)}])^{k - j} E[(X_2 - C_{ij})^j] \\
-\le & (1-\epsilon) \sum_{j = 0}^k \binom{k}{j} (P_{ij} - E[\hat{P}_{ij}^{(1)}])^{k - j} \cdot j! \cdot \mathrm{const} \\
-& + \epsilon \sum_{j = 0}^k \binom{k}{j} (C_{ij} - E[\hat{P}_{ij}^{(1)}])^{k - j} \cdot j! \cdot \mathrm{const} \\ 
-\le & (1-\epsilon) k! \cdot \mathrm{const}^k + \epsilon k! \cdot \mathrm{const}^k \\
-\le & \mathrm{const}^k \cdot k!.
-\end{align*}
-\end{proof}
+In summary, for all the theorems in Section~\ref{section:theory}, we can replace the exponential distribution by Poisson distribution and all the results still hold. This section provides a general way to extend the theory to proper models and robust estimators.
+
 
 \section{Empirical Results}
 \label{section:results}
@@ -654,7 +623,7 @@ Then if $A_{ij}$ is distributed from a mixture model as in the statement, we hav
 \subsection{Simulation}
 \label{section:sim}
 
-In this section, we will illustrate the theoretical results of four estimators discussed in Section~\ref{section:theory} via various Monte Carlo simulation experiments in an idealized setting.
+In this section, we will illustrate the theoretical results of the four estimators discussed in Section~\ref{section:theory} via various Monte Carlo simulation experiments in an idealized setting.
 
 \subsubsection{Simulation Setting}
 \label{section:sim_setting}
@@ -1923,7 +1892,37 @@ Direct result from Theorem \ref{thm:VarASEL1} and Theorem \ref{thm:VarASELq}.
 
 
 
-
+\begin{lemma}
+\label{lm:poisson}
+Let $A_{ij} \stackrel{ind}{\sim} (1-\epsilon) f_{P_{ij}} + \epsilon f_{C_{ij}}$ with $f$ to be Poisson, then $E[(A_{ij} - E[\hat{P}_{ij}^{(1)}])^k] \le \mathrm{const}^k \cdot k!$, where $\hat{P}^{(1)}$ is the entry-wise MLE as defined before.
+\end{lemma}
+\begin{proof}
+First we prove $(x - \theta)^k \le k! (e^{x-\theta} + e^{\theta - x})$.
+\begin{enumerate}
+\item $k$ is even. Then by Taylor expansion, $e^{x - \theta} + e^{\theta - x} \ge \frac{(x-\theta)^k}{k!}$
+\item $k$ is odd. When $x \ge \theta$, still by Taylor expansion, $(x-\theta)^k \le k! e^{x-\theta}$. When $x < \theta$, $(x-\theta)^k < 0 \le k! e^{x-\theta}$.
+\end{enumerate}
+Thus $(x - \theta)^k \le k! (e^{x-\theta} + e^{\theta - x})$.
+So the $k$-th central moment of Poisson distribution with parameter $\theta$ is bounded by
+\begin{align*}
+E[(X-\theta)^k] & \le k! \left( E[e^{X-\theta}] + E[e^{\theta - X}] \right) \\
+& = k! \left( e^{-\theta} E[e^X] + e^{\theta} E[e^{-X}] \right) \\
+& = k! \left( e^{\theta(e - 2)} + e^{\theta e^{-1}} \right).
+\end{align*}
+Let $X_1 \sim \mathrm{Poisson}(P_{ij})$ and $X_2 \sim \mathrm{Poisson}(C_{ij})$.
+Then if $A_{ij}$ is distributed from a mixture model as in the statement, we have
+\begin{align*}
+& E[(A_{ij} - E[\hat{P}_{ij}^{(1)}])^k] \\
+= & (1-\epsilon) E[(X_1 - P_{ij} + P_{ij} - E[\hat{P}_{ij}^{(1)}])] +
+\epsilon E[(X_2 - C_{ij} + C_{ij} - E[\hat{P}_{ij}^{(1)}])] \\
+= & (1-\epsilon) \sum_{j = 0}^k \binom{k}{j} (P_{ij} - E[\hat{P}_{ij}^{(1)}])^{k - j} E[(X_1 - P_{ij})^j] \\
+& + \epsilon \sum_{j = 0}^k \binom{k}{j} (C_{ij} - E[\hat{P}_{ij}^{(1)}])^{k - j} E[(X_2 - C_{ij})^j] \\
+\le & (1-\epsilon) \sum_{j = 0}^k \binom{k}{j} (P_{ij} - E[\hat{P}_{ij}^{(1)}])^{k - j} \cdot j! \cdot \mathrm{const} \\
+& + \epsilon \sum_{j = 0}^k \binom{k}{j} (C_{ij} - E[\hat{P}_{ij}^{(1)}])^{k - j} \cdot j! \cdot \mathrm{const} \\ 
+\le & (1-\epsilon) k! \cdot \mathrm{const}^k + \epsilon k! \cdot \mathrm{const}^k \\
+\le & \mathrm{const}^k \cdot k!.
+\end{align*}
+\end{proof}
 
 
 
