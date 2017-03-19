@@ -82,13 +82,18 @@
 \makeatother
 
 
-
 \title{Robust LLG}
 
 \date{\today}
 
 \begin{document}
 \maketitle
+
+\begin{abstract}
+
+Estimation of the graph parameters based on a sample in a parametric setting is essential for a wide range of graph inferences. We propose an estimator based on an embedding procedure applied to a robust estimate. In a contaminated stochastic blockmodel, theoretical results show that our estimator not only inherits the robust property from robust estimators, but also wins the bias-variance tradeoff by exploiting the low-rank graph structure under proper conditions. We also demonstrate the improvement offered by our method via simulations and a human connectome data experiment. \\
+{\bf Keywords}: network, weighted, embedding, low-rank, robustness, estimation
+\end{abstract}
 
 \section{Background and Overview}
 
@@ -767,6 +772,17 @@ For all three sample sizes ($m = 2, 5, 10$), $\widetilde{P}^{(q)}$ estimates $P$
 
 \section{Discussion}
 
+% SBM -> RDPG
+In this work, analysis are under the stochastic blockmodel setting. However, our estimator is proposed for random dot product graph instead of SBM, i.e. our estimator does not necessarily have the block structure. The reason is that the SBM assumption is just to ensure $\mathrm{rank}(E[\hat{P}^{(q)}])$ has an upper bound invariant of the number of vertices under the contamination model. With this assumption on the rank, all the theories still hold under the RDPG setting. In practice, graphs can hardly be exactly low rank. However, as shown in Figure~\ref{fig:screehist} and Figure~\ref{fig:CCI}, our estimator still provides large improvement with a quasi low-rank structure. Thus our method can be applied to a much more general setting instead of being restricted to SBM.
+
+% Generalization
+In Section~\ref{section:theory}, we present theories based on the exponential distribution with ML$q$E for clarity. And we prove that all results still hold as long as the distributions and robust estimators satisfy proper conditions in Section~\ref{section:extension}. Note that the major condition is Condition~1, which requires the MLE under the corresponding distribution is concentrated so that we can have all the matrix bounds we need. This generalization makes the theory more flexible and powerful.
+
+% Select q
+Selecting a proper distortion parameter $q$ in ML$q$E is complicated, and we use a fixed $q = 0.9$ throughout this work without presenting a formal way to do it. In order to have an improved performance, we might want to select a proper $q$ based on a adaptive method proposed by \citet{qin2013robust}.
+
+% uncontaminated
+The robust estimators $\hat{P}^{(q)}$ and $\widetilde{P}^{(q)}$ outperform the non-robust ones $\hat{P}^{(1)}$ and $\widetilde{P}^{(1)}$ mainly due to the reduced asymptotic bias in a contaminated model. However, robust estimators like ML$q$E should still provide improvement without contaminations based on finite samples. In this case, the embedding procedure will have a relatively larger impact, leading to a much better estimator $\widetilde{P}^{(q)}$ compared to $\hat{P}^{(q)}$. More work is needed under the uncontaminated setting.
 
 
 \section*{Acknowledgments}
