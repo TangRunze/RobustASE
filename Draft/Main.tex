@@ -426,7 +426,8 @@ By this lemma, both estimators have asymptotic variances equal zero as the numbe
 As a result, $\hat{P}^{(q)}$ reduces the bias while keeping variance the same asymptotically compared to $\hat{P}^{(1)}$. Thus in terms of MSE, $\hat{P}^{(q)}$ is a better estimator than $\hat{P}^{(1)}$ when the number of graphs $m$ is large with enough contaminations.
 
 \subsection{$\hat{P}^{(1)}$ vs. $\widetilde{P}^{(1)}$}
-Then we analyze the effect of the ASE procedure applied to the entry-wise MLE $\hat{P}^{(1)}$ under the contamination model, so that we can compare the performance between $\hat{P}^{(1)}$ and $\widetilde{P}^{(1)}$. Firstly, we show that the two estimators have the same entry-wise asymptotic bias under proper conditions in the following lemma.
+Then we analyze the effect of the ASE procedure applied to the entry-wise MLE $\hat{P}^{(1)}$ under the contamination model, so that we can compare the performance between $\hat{P}^{(1)}$ and $\widetilde{P}^{(1)}$.
+Firstly, we show that the two estimators have the same entry-wise asymptotic bias under proper conditions in the following lemma.
 
 \begin{lemma}
 \label{lm:L1Consistent}
@@ -470,6 +471,8 @@ And thus
 \end{theorem}
 
 Theorem~\ref{thm:AREL1} tells us that whenever $m = O(n^b)$ for any $b > 0$, i.e. $m$ is fixed or it grows not faster than any polynomial with respect to $n$, the order of the ARE is $O(n^{-1} (\log n)^3)$, which goes to 0 when $n \to \infty$. An interesting fact here is that this bound of the ARE does not depend on $m$.
+
+However, unlike \citep{tang2016law}, which derived an exact formula for ARE based on the limit theorem for eigenvectors \citep{athreya2016limit}, we can only get the upper bound due to the uncertainty of contaminations. But this bound is sufficient for comparing those estimators.
 
 As a result, the ASE procedure applied to the entry-wise MLE $\hat{P}^{(1)}$ helps reduce the variance while keeping the bias unchanged asymptotically, leading to a better estimate $\widetilde{P}^{(1)}$ for $P$ in terms of MSE.
 
@@ -781,8 +784,16 @@ In Section~\ref{section:theory}, we present theories based on the exponential di
 % Select q
 Selecting a proper distortion parameter $q$ in ML$q$E is complicated, and we use a fixed $q = 0.9$ throughout this work without presenting a formal way to do it. In order to have an improved performance, we might want to select a proper $q$ based on a adaptive method proposed by \citet{qin2013robust}.
 
+% Vertex correspondence
+In this work, we assume vertex correspondence is known across all graphs. However, in some applications, not all vertices are matched. In this case, our method can still apply after running the graph matching algorithms \citep{lyzinski2016graph, lyzinski2015spectral, lyzinski2014seeded}.
+
 % uncontaminated
 The robust estimators $\hat{P}^{(q)}$ and $\widetilde{P}^{(q)}$ outperform the non-robust ones $\hat{P}^{(1)}$ and $\widetilde{P}^{(1)}$ mainly due to the reduced asymptotic bias in a contaminated model. However, robust estimators like ML$q$E should still provide improvement without contaminations based on finite samples. In this case, the embedding procedure will have a relatively larger impact, leading to a much better estimator $\widetilde{P}^{(q)}$ compared to $\hat{P}^{(q)}$. More work is needed under the uncontaminated setting.
+
+% Other inference
+As we pointed out, improvement for estimation is not only important for the estimation itself, but also can help with other statistical inference procedures. \citet{priebe2015statistical} and \citet{chen2016robust} both discussed vertex classification based on a single unweighted graph with contaminations.
+Moreover, to have a even more general setting, we might want to extend the current RDPG setting to latent positions graphs. \citet{tang2013universally} showed the universally consistency of vertex classification method based on eigen-decomposition.
+More work is needed for inference tasks other than estimation based on multiple weighted graphs.
 
 
 \section*{Acknowledgments}
