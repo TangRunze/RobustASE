@@ -170,6 +170,31 @@ Similarly, in order to take advantage of the low-rank structure, we enforce a lo
 \end{figure}
 
 
+
+\section{Introduction (Alternate)}
+
+Statistical analysis on networks is burgeoning in varies areas, for example neurosciences, social networks, politics, etc. It is vital to know the connections among the objects. As to each of the fields we mentioned, the connections are the white-matter tract among regions in a neural network, the friendship relations in a social network, and the interactions between members of a political party. Many models are proposed to capture such connections among objects within the random graphs. \cite{goldenberg2010survey} gave a nice review of statistical models for networks. In particular, \citet{bollobas2007phase} discussed inhomogeneous random graphs, which is more practical than the homogenous random graph models.
+
+In a general parametric framework, $G \sim f \in \mathcal{F} = \{f_{\theta} : \theta \in \Theta \}$, selecting a good estimator $\hat{\theta}(G)$ for the unknown $\theta$ given a finite graph sample $\{G^{(1)}, \cdots, G^{(m)}\}$ is the core to understand the specific connections. It is not only important for the estimation itself, but also can help with other statistical inference procedures. For example, \citet{ginestet2014hypothesis} proposed a method to test if there is a difference between the networks of two groups of subjects. While hypothesis testing is the final goal, the estimation procedure is a key intermediate step and can be improved.
+
+Take the CoRR graphs experiment as an example. We have 114 brain scans. Each graph has 70 vertices representing different regions in the brain according to the Desikan atlas, while the weights of an edge between two vertices represents the number of white-matter tract connecting the corresponding two regions of the brain. Our goal in this situation is to estimate the average number of white-matter tract among different regions of the brain. A more accurate estimate can lead to a better understanding of the functionality of different parts of the brain. Also, it can potentially help with other tasks, such as diagnosis of brain disease. Details of this experiment are discussed in Section~\ref{section:real_data}.
+
+The maximum likelihood estimate, which happens to be the entry-wise sample mean in the example above, is a natural candidate of the estimation problem. However, it suffers from at least two major problems: high variance and non-robustness. 
+
+In a high dimensional situation, the maximum likelihood estimator often leads to inaccurate estimates with very high variance when the sample size is small. In a general setting, graphs are high dimensional object since $n^2$ parameters are needed to model $n^2$ possible edges, where $n$ denotes the number of vertices. Thus the MLE does not perform very well especially when there are only a few observations available, which is likely the case in real world.
+However, if the graphs are low-rank, by biasing towards low-rank structures carefully, the estimators will have a greatly reduced variances and win the bias-variance tradeoff. In our CoRR graphs experiment, we see the quasi low-rank property by Figure~\ref{fig:screehist}. Recently, \citet{tang2016law} considers an estimator based on a low-rank approximation and proves that the new estimator outperforms the MLE since it decreases the overall asymptotic variance dramatically by smoothing towards the low-rank structure.
+
+Another problem is that observations are usually contaminated in practice. So the weights of the edges are possibly observed with noise.
+The MLE is asymptotically efficient, i.e. when sample size is large enough, the MLE is at least as accurate as any other estimator. However, when the sample size is moderate, robust estimators always outperforms MLE in terms of mean squared error by winning the bias-variance tradeoff. Moreover, under contamination models, robust estimators can even beat MLE asymptotically since they are designed to be not unduly affected by the outliers. Thus, with contaminations, it is more preferable to use robust methods, like ML$q$E \citep{ferrari2010, qin2013maximum} considered in this paper.
+
+To resolve these two problems simultaneously, we propose an estimator, which is a natural extension of \citep{tang2016law}. It not only inherits the robust property from ML$q$E, but also wins the bias-variance tradeoff by taking advantage of the low-rank structure.
+
+We organize the paper as follows. In Section~\ref{section:model}, we extend the Independent Edge Model, Random Dot Product Graph Model, and Stochastic Blockmodel to the weighted version naturally and define the contamination model we are going to consider. In Section~\ref{section:estimators}, we propose two estimators other than the entry-wise MLE, in order to resolve the two issues we mentioned above respectively. And then we construct our final estimator by combining the two estimators, which improve in both aspects. In Section~\ref{section:theory}, we prove that our final estimator is the best among four estimators under some conditions, which is generalized in Section~\ref{section:extension}. In Section~\ref{section:results}, we illustrate the improvement of our final estimator through experimental results on simulated and real data.
+
+
+
+
+
 \section{Models}
 \label{section:model}
 
@@ -191,7 +216,7 @@ Note that the graphs considered in this paper are undirected without self-loop, 
 
 The connectivity between two vertices in a graph generally depends on some hidden properties of the corresponding vertices. The latent position model proposed by \citet{hoff2002latent} captures such properties by assigning each vertex $i$ with a corresponding latent vector $X_i \in \mathbb{R}^d$. Conditioned on the latent vectors $X_i$ and $X_j$, the edge weight between vertex $i$ and vertex $j$ is independent of all other edges and depends only on $X_i$ and $X_j$ through a link function.
 
-A special case of the latent position model is the random dot product graph model (RDPG) in which the link function is the inner product \citep{young2007random, nickel2007random}. Now we give a definition of the weighted random dot product graph (WRDPG) as a generalization of the weighted latent position model as following:
+A special case of the latent position model is the random dot product graph model (RDPG) in which the link function is the inner product \citep{young2007random, nickel2007random}. Now we give a definition of the weighted random dot product graph (WRDPG) as a special case of the weighted latent position model as following:
 \begin{definition}[Weighted Random Dot Product Graph Model]
 Consider a collection of one-parameter distributions $\mathcal{F} = \{ f_{\theta}, \theta \in \Theta \subset \mathbb{R} \}$. The weighted random dot product graph model (WRDPG) with respect to $\mathcal{F}$ is defined as following: Let $X \in \mathbb{R}^{n \times d}$ be such that $X = [X_1, X_2, \dotsc, X_n]^{\top}$, where $X_i \in \mathbb{R}^d$ for all $i \in [n]$. The matrix $X$ is random and satisfies $\mathbb{P}\left[ X_i^{\top} X_j \in \Theta \right] = 1$ for all $i, j \in [n]$. Conditioned on $X$, the entries of the adjacency matrix $A$ are independent and $A_{ij}$ is a random variable following distribution $f \in \mathcal{F}$ with parameter $ X_i^{\top} X_j $ for all $i \ne j \in [n]$.
 \end{definition}
@@ -236,7 +261,7 @@ To generate $m$ graphs under this contamination model with known vertex correspo
 
 
 \section{Estimators}
-
+\label{section:estimators}
 Under any model introduced in Section~\ref{section:model}, our goal is to estimate the parameter matrix $P$ based on the $m$ observations $A^{(1)}, \dotsc, A^{(m)}$. Especially when under the contamination model, although there are other parameters like $\epsilon$ and $C$, our goal is still to estimate the uncontaminated parameter matrix $P$. In this section, we present four estimators as in Figure~\ref{fig:roadmap}, i.e. the standard entry-wise MLE $\hat{P}^{(1)}$, the low-rank approximation of the entry-wise MLE $\widetilde{P}^{(1)}$, the entry-wise robust estimator ML$q$E $\hat{P}^{(q)}$, and the low-rank approximation of the entry-wise ML$q$E $\widetilde{P}^{(q)}$. Since the observed graphs are symmetric and hollow with a symmetric parameter matrix of the model, we do not care about the estimate of the diagonal of $P$. However, the estimate itself should be at least symmetric.
 
 \subsection{Entry-wise Maximum Likelihood Estimator $\hat{P}^{(1)}$}
