@@ -10,7 +10,6 @@ Data/JHU
 Data/DS01876
 *.graphml
 .Rhistory
-*.bbl
 *.blg
 Data/cov-v2-14_02_01-deltat50-th0.RBin
 
@@ -19,3 +18,4 @@ Data/cov-v2-14_02_01-deltat4-th0.RBin
 Data/fish_4.RData
 
 Result/result_fish_dissimilarity_q_0.9_eig.RData
+
