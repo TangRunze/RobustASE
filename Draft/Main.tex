@@ -420,21 +420,19 @@ We only present the most important results in this section. The proofs with more
 \label{section:MLEvsMLqE}
 We first compare the performance between the entry-wise MLE $\hat{P}^{(1)}$ and the entry-wise ML$q$E $\hat{P}^{(q)}$. Without using the graphs structure, the asymptotic results for these two estimators are in terms of the number of graphs $m$, not the number of vertices $n$ within each graph.
 
-\begin{lemma}
-\label{lemma:ELqlEMLE}
+
+
+\begin{theorem}
+\label{thm:MLEvsMLqE}
+%\label{lemma:ELqlEMLE}
+%\label{lemma:VarLqlVarMLE}
 For any $0 < q < 1$, there exists $C_0(P_{ij}, \epsilon, q) > 0$ such that under the contaminated model with $C > C_0(P_{ij}, \epsilon, q)$,
 \[
 	\lim_{m \to \infty} \left| E[\hat{P}^{(q)}_{ij}] - P_{ij} \right| < 
     \lim_{m \to \infty} \left| E[\hat{P}^{(1)}_{ij}] - P_{ij} \right|,
 \]
 for $1 \le i, j \le n$ and $i \ne j$.
-\end{lemma}
-
-Lemma~\ref{lemma:ELqlEMLE} shows that the entry-wise ML$q$E $\hat{P}^{(q)}$ has smaller bias for estimating $P$ asymptotically compared to the entry-wise MLE $\hat{P}^{(1)}$ under proper conditions. Although we put restrictions on the parameter matrix $C$ in the assumption, to have the current result about asymptotic bias, we only need to satisfy the inequality $\epsilon (C_{ij} - P_{ij}) > (1 - q) P_{ij}$. This condition actually requires the contamination of the model is large enough (either large contamination parameter matrix, or more likely to encounter an outlier). From a different perspective, it also requires $\hat{P}^{(q)}$ to be robust enough with respect to the contamination. Thus besides the current condition for $C$, equivalently, we can also replace it by the assumption of a large enough $\epsilon$ or a small enough $q$.
-
-\begin{lemma}
-\label{lemma:VarLqlVarMLE}
-For $1 \le i, j \le n$, 
+Moreover, without any assumption on the contaminated model, for $1 \le i, j \le n$, 
 \[
 	\mathrm{Var}(\hat{P}^{(1)}_{ij})
     = \mathrm{Var}(\hat{P}^{(q)}_{ij}) = O(1/m).
@@ -444,30 +442,18 @@ And thus
 	\lim_{m \to \infty} \mathrm{Var}(\hat{P}^{(1)}_{ij})
     = \lim_{m \to \infty} \mathrm{Var}(\hat{P}^{(q)}_{ij}) = 0.
 \]
-\end{lemma}
+\end{theorem}
 
-By this lemma, both estimators have asymptotic variances equal zero as the number of graphs $m$ goes to infinity. Under the mixture model, the result for MLE follows the central limit theorem immediately, while the ML$q$E result is not trivial. Our proof is based on the minimum contrast estimates (more details later).
+Theorem~\ref{thm:MLEvsMLqE} shows that the entry-wise ML$q$E $\hat{P}^{(q)}$ has smaller bias for estimating $P$ asymptotically compared to the entry-wise MLE $\hat{P}^{(1)}$ under proper conditions. Although we put restrictions on the parameter matrix $C$ in the assumption, to have the current result about asymptotic bias, we only need to satisfy the inequality $\epsilon (C_{ij} - P_{ij}) > (1 - q) P_{ij}$. This condition actually requires the contamination of the model is large enough (either large contamination parameter matrix, or more likely to encounter an outlier). From a different perspective, it also requires $\hat{P}^{(q)}$ to be robust enough with respect to the contamination. Thus besides the current condition for $C$, equivalently, we can also replace it by the assumption of a large enough $\epsilon$ or a small enough $q$.
 
-As a result, $\hat{P}^{(q)}$ reduces the bias while keeping variance the same asymptotically compared to $\hat{P}^{(1)}$. Thus in terms of MSE, $\hat{P}^{(q)}$ is a better estimator than $\hat{P}^{(1)}$ when the number of graphs $m$ is large with enough contaminations.
+Theorem~\ref{thm:MLEvsMLqE} also tells us that both estimators have asymptotic variances equal zero as the number of graphs $m$ goes to infinity, following the asymptotic properties of minimum contrast estimates. It indicates that the bias term will dominate in the comparison in terms of MSE.
+
+As a result, $\hat{P}^{(q)}$ reduces the bias while keeping variance the same asymptotically compared to $\hat{P}^{(1)}$. Thus in terms of MSE, $\hat{P}^{(q)}$ is a better estimator than $\hat{P}^{(1)}$ when the number of graphs $m$ is large with enough contamination.
 
 \subsection{$\hat{P}^{(1)}$ vs. $\widetilde{P}^{(1)}$}
 Then we analyze the effect of the ASE procedure applied to the entry-wise MLE $\hat{P}^{(1)}$ under the contamination model, so that we can compare the performance between $\hat{P}^{(1)}$ and $\widetilde{P}^{(1)}$.
-Firstly, we show that the two estimators have the same entry-wise asymptotic bias under proper conditions in the following lemma.
 
-\begin{lemma}
-\label{lm:L1Consistent}
-Assuming that $m = O(n^b)$ for any $b > 0$, then the estimator based on ASE of MLE has the same entry-wise asymptotic bias as MLE, i.e.
-\[
-	\lim_{n \to \infty} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)}) = \lim_{n \to \infty} E[\widetilde{P}_{ij}^{(1)}] - P_{ij} = \lim_{n \to \infty} E[\hat{P}^{(1)}_{ij}] - P_{ij}
-    = \lim_{n \to \infty} \mathrm{Bias}(\hat{P}_{ij}^{(1)}).
-\]
-\end{lemma}
-
-To prove the the lemma, we first give a bound on $\|\hat{P}^{(1)} - E[\hat{P}^{(1)}]\|_2$ by the matrix Bernstein inequality \citep{tropp2012user}. Since we are under the WRDPG setting, $E[\hat{P}^{(1)}]$ still has finite rank, which is the target embedding dimension. Then we approximate $U^T \hat{U}$ by an orthogonal matrix $W^{\star}$ based on Davis-Kahan theorem \citep{davis1970rotation}, where $U$ and $\hat{U}$ are the eigen-spaces for $E[\hat{P}^{(1)}]$ and $\hat{P}^{(1)}$ respectively. Then we can analyze the bounds much more easily by interchanging $U^T \hat{U}$ in the matrix multiplications. As a result, we can get the bound between the estimates of the latent positions and the true latent positions up to an orthogonal transformation in terms of $2 \to \infty$ norm. Lemma~\ref{lm:L1Consistent} then follows by selecting the parameter carefully in the analysis.
-
-Lemma~\ref{lm:L1Consistent} says that when $m$ is a constant, or $m$ is going to infinity with order $m = O(n^b)$ for any $b > 0$, the ASE procedure applied to $\hat{P}^{(1)}$ will not affect the asymptotic bias for estimating $P$.
-In this case, the asymptotic relative efficiency (ARE) \citep{serfling2011asymptotic} provides a good way to compare these two estimators. The original definition is based on unbiased estimators. Here we extend it a little bit such that it can measure the performance between two estimators with the same asymptotic bias.
-
+Before proceeding to compare the two estimators, we first introduce the general asymptotic relative efficiency (ARE) \citep{serfling2011asymptotic}, which is a very important and useful criterion to compare two estimators. The original definition is based on unbiased estimators. Here we extend it a little bit so that it can measure the performance between two estimators with the same asymptotic bias.
 \begin{definition}
 For any parameter $\theta$ of a distribution $f$, and for estimators $\hat{\theta}^{(1)}$ and $\hat{\theta}^{(2)}$ approximately $N(\theta^{\prime}, V_1(f)/n)$ and $N(\theta^{\prime}, V_2(f)/n)$ respectively, the ARE of $\hat{\theta}^{(2)}$ to $\hat{\theta}^{(1)}$ is given by
 \[
@@ -475,16 +461,21 @@ For any parameter $\theta$ of a distribution $f$, and for estimators $\hat{\thet
 \]
 \end{definition}
 
-In our situation, we can compare the performance between $\widetilde{P}^{(1)}$ and $\hat{P}^{(1)}$ based on the entry-wise ARE, which can be written as $\mathrm{ARE}(\widetilde{P}^{(1)}_{ij}, \hat{P}^{(1)}_{ij}) = \lim_{n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$. The order of $\mathrm{Var}(\widetilde{P}_{ij}^{(1)})$ is analyzed in the following theorem.
-\begin{theorem}
-\label{thm:VarASEL1}
-Assuming that $m = O(n^b)$ for any $b > 0$, then $\mathrm{Var}(\widetilde{P}_{ij}^{(1)}) = O(m^{-1} n^{-1} (\log n)^3)$.
-\end{theorem}
+By the definition above, if $\mathrm{ARE}(\hat{\theta}^{(2)}, \hat{\theta}^{(1)}) < 1$, then $\hat{\theta}^{(1)}$ has a smaller variance in its sampling distribution and thus is more efficient compared to $\hat{\theta}^{(2)}$. Combine with the fact that both estimators have the same asymptotic bias, $\hat{\theta}^{(1)}$ is a better estimate in this case.
 
-The tools we use to prove this theorem is the same as for Lemma~\ref{lm:L1Consistent}. Combined with the fact that $\mathrm{Var}(\hat{P}_{ij}^{(1)}) = O(m^{-1})$, we have the ARE results directly as following:
+To compare $\hat{P}^{(1)}$ and $\widetilde{P}^{(1)}$, we will first show they have the same entry-wise asymptotic bias under proper conditions, and then use the ARE criterion to compare the performance in the following theorem.
+
 \begin{theorem}
-\label{thm:AREL1}
-Assuming that $m = O(n^b)$ for any $b > 0$,  then for $1 \le i, j \le n$ and $i \ne j$,
+\label{thm:MLEvsMLEASE}
+%\label{lm:L1Consistent}
+%\label{thm:VarASEL1}
+%\label{thm:AREL1}
+Assuming that $m = O(n^b)$ for any $b > 0$, then the estimator based on ASE of MLE has the same entry-wise asymptotic bias as MLE, i.e.
+\[
+	\lim_{n \to \infty} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)}) = \lim_{n \to \infty} E[\widetilde{P}_{ij}^{(1)}] - P_{ij} = \lim_{n \to \infty} E[\hat{P}^{(1)}_{ij}] - P_{ij}
+    = \lim_{n \to \infty} \mathrm{Bias}(\hat{P}_{ij}^{(1)}).
+\]
+In the meantime, for $1 \le i, j \le n$ and $i \ne j$,
 \[
 	\frac{\mathrm{Var}(\widetilde{P}_{ij}^{(1)})}{\mathrm{Var}(\hat{P}_{ij}^{(1)})}
     = O(n^{-1} (\log n)^3).
@@ -495,7 +486,8 @@ And thus
 \]
 \end{theorem}
 
-Theorem~\ref{thm:AREL1} tells us that whenever $m = O(n^b)$ for any $b > 0$, i.e. $m$ is fixed or it grows not faster than any polynomial with respect to $n$, the order of the ARE is $O(n^{-1} (\log n)^3)$, which goes to 0 when $n \to \infty$. An interesting fact here is that this bound of the ARE does not depend on $m$.
+Theorem~\ref{thm:MLEvsMLEASE} says that when $m$ is a constant, or $m$ is going to infinity with order $m = O(n^b)$ for any $b > 0$, i.e. $m$ is fixed or it grows not faster than any polynomial with respect to $n$, the ASE procedure applied to $\hat{P}^{(1)}$ will not affect the asymptotic bias for estimating $P$.
+In this case, we can then compare the performance between $\widetilde{P}^{(1)}$ and $\hat{P}^{(1)}$ based on the entry-wise ARE, i.e. $\mathrm{ARE}(\widetilde{P}^{(1)}_{ij}, \hat{P}^{(1)}_{ij}) = \lim_{n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(1)})/\mathrm{Var}(\hat{P}_{ij}^{(1)})$. With the same condition for $m$, we can prove $\mathrm{Var}(\widetilde{P}_{ij}^{(1)}) = O(m^{-1} n^{-1} (\log n)^3)$. Combined with the fact that $\mathrm{Var}(\hat{P}_{ij}^{(1)}) = O(m^{-1})$, we have the order of the ARE to be $O(n^{-1} (\log n)^3)$, which goes to 0 when $n \to \infty$. Thus $\widetilde{P}_{ij}^{(1)}$ is much better than $\hat{P}_{ij}^{(1)}$ with a large $n$. An interesting fact here is that the bound of the ARE does not depend on $m$.
 
 However, unlike \citep{tang2016law}, which derived an exact formula for ARE based on the limit theorem for eigenvectors \citep{athreya2016limit}, we can only get the upper bound due to the uncertainty of contaminations. But this bound is sufficient for comparing those estimators.
 
@@ -503,35 +495,25 @@ As a result, the ASE procedure applied to the entry-wise MLE $\hat{P}^{(1)}$ hel
 
 \begin{remark}
 \label{remark:var1}
-To prove the upper bound of the variance as in Theorem~\ref{thm:VarASEL1}, we slightly modify our estimator $\widetilde{P}^{(1)}$ to be $\min(\widetilde{P}^{(1)}, \alpha \hat{P}^{(1)})$ entry-wise for any constant $\alpha > 0$, i.e. truncate our estimator $\widetilde{P}^{(1)}_{ij}$ whenever it is larger than $\alpha \hat{P}^{(1)}$. Note that Theorem~\ref{lm:L1Consistent} still holds with this modified estimator. Since the constant $\alpha$ can be arbitrarily large, this modification is just for technical reason in the proof. Importantly, we do not have this truncation step in the algorithms, or any simulation/real data results in Section~\ref{section:results}.
+To prove the upper bound of the variance of $\widetilde{P}_{ij}^{(1)}$, i.e. $\mathrm{Var}(\widetilde{P}_{ij}^{(1)}) = O(m^{-1} n^{-1} (\log n)^3)$ mentioned above, we slightly modify our estimator $\widetilde{P}^{(1)}$ to be $\min(\widetilde{P}^{(1)}, \alpha \hat{P}^{(1)})$ entry-wise for any constant $\alpha > 0$, i.e. truncate our estimator $\widetilde{P}^{(1)}_{ij}$ whenever it is larger than $\alpha \hat{P}^{(1)}$. Note that Theorem~\ref{thm:MLEvsMLEASE} still holds with this modified estimator. Since the constant $\alpha$ can be arbitrarily large, this modification is just for technical reason in the proof. Importantly, we do not have this truncation step in the algorithms, or any simulation/real data results in Section~\ref{section:results}.
 \end{remark}
 
 
 \subsection{$\hat{P}^{(q)}$ vs. $\widetilde{P}^{(q)}$}
 
-Similarly, we now analyze the effect of the ASE procedure applied to the entry-wise ML$q$E $\hat{P}^{(q)}$ under the contamination model in order to compare the performance between $\hat{P}^{(q)}$ and $\widetilde{P}^{(q)}$. Similarly, we first show that the two estimators have the same entry-wise asymptotic bias under proper conditions in the following lemma.
+We now proceed to analyze the effect of the ASE procedure applied to the entry-wise ML$q$E $\hat{P}^{(q)}$ under the contamination model in order to compare the performance between $\hat{P}^{(q)}$ and $\widetilde{P}^{(q)}$. Similarly, we first show that the two estimators have the same entry-wise asymptotic bias under proper conditions, and then use the ARE criterion to compare the performance in the following theorem.
 
-\begin{lemma}
-\label{lm:LqConsistent}
+\begin{theorem}
+\label{thm:MLqEvsMLqEASE}
+%\label{lm:LqConsistent}
+%\label{thm:VarASELq}
+%\label{thm:ARELq}
 Assuming that $m = O(n^b)$ for any $b > 0$, then the estimator based on ASE of ML$q$E has the same entry-wise asymptotic bias as ML$q$E, i.e.
 \[
 	\lim_{n \to \infty} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)}) = \lim_{n \to \infty} E[\widetilde{P}_{ij}^{(q)}] - P_{ij} = \lim_{n \to \infty} E[\hat{P}^{(q)}_{ij}] - P_{ij}
     = \lim_{n \to \infty} \mathrm{Bias}(\hat{P}_{ij}^{(q)}).
 \]
-\end{lemma}
-
-The proof for Lemma \ref{lm:LqConsistent} is almost the same as the proof for Lemma \ref{lm:L1Consistent}. But unlike the results for MLE, we cannot get the term $m^{-1/2}$ in the results due to the structure of maximum L$q$ likelihood equation. Although it does not affect the result for asymptotic bias as in Lemma \ref{lm:LqConsistent}, the order of the variance of ML$q$E is missing $m^{-1}$ compared to MLE as in the following theorem. Moreover, later we will see that this will cause a slight difference in the comparison. 
-
-\begin{theorem}
-\label{thm:VarASELq}
-Assuming that $m = O(n^b)$ for any $b > 0$, then $\mathrm{Var}(\widetilde{P}^{(q)}) = O(n^{-1} (\log n)^3)$.
-\end{theorem}
-
-The proofs are similar to Theorem~\ref{thm:VarASEL1}. Combined with the fact that $\mathrm{Var}(\hat{P}_{ij}^{(q)}) = O(m^{-1})$, we have the ARE results directly as following:
-
-\begin{theorem}
-\label{thm:ARELq}
-Assuming that $m = O(n^b)$ for any $b > 0$,  then for $1 \le i, j \le n$ and $i \ne j$,
+In the meantime, for $1 \le i, j \le n$ and $i \ne j$,
 \[
 	\frac{\mathrm{Var}(\widetilde{P}_{ij}^{(q)})}{\mathrm{Var}(\hat{P}_{ij}^{(q)})}
     = O(m n^{-1} (\log n)^3).
@@ -542,7 +524,7 @@ Moreover, if $m = o(n (\log n)^{-3})$, then
 \]
 \end{theorem}
 
-Theorem~\ref{thm:ARELq} tells us that whenever $m = O(n^b)$ for any $b > 0$, i.e. $m$ is fixed or it grows not faster than polynomial with respect to $n$, the order of the ARE is $O(m n^{-1} (\log n)^3)$. Specifically, when $m$ is fixed, the order of the ARE is $O(n^{-1} (\log n)^3)$, which will goes to 0 as $n \to \infty$. Even if $m$ also increases as $n$ increases, as long as it grows in the order of $o(n (\log n)^{-3})$, the ARE still goes to 0. 
+The proof for Theorem~\ref{thm:MLqEvsMLqEASE} is almost the same as the proof for Theorem~\ref{thm:MLEvsMLEASE}. But unlike the results for MLE, we are missing the term $m^{-1}$ in the variance bound $\mathrm{Var}(\widetilde{P}^{(q)}) = O(n^{-1} (\log n)^3)$ due to the structure of maximum L$q$ likelihood equation. As a result, while the ASE procedure still does not affect the asymptotic bias, the ARE has an extra term $m$. This leads to a slight difference in the comparison. Specifically, when $m$ is fixed, the order of the ARE is $O(n^{-1} (\log n)^3)$, which will goes to 0 as $n \to \infty$. Even if $m$ also increases as $n$ increases, as long as it grows in the order of $o(n (\log n)^{-3})$, the ARE still goes to 0. 
 
 Thus the ASE procedure applied to the entry-wise ML$q$E $\hat{P}^{(q)}$ also helps reduce the variance while keeping the bias asymptotically, leading to a better estimate $\widetilde{P}^{(q)}$ for $P$ in terms of MSE.
 
@@ -555,26 +537,23 @@ Similar to Remark~\ref{remark:var1}, we prove the theorems above based on the mo
 To finish the last piece, we compare the performance between $\widetilde{P}^{(1)}$ and $\widetilde{P}^{(q)}$ by combining the previous results.
 
 \begin{theorem}
-\label{thm:biasL1andLq}
+\label{thm:MLEASEvsMLqEASE}
+%\label{thm:biasL1andLq}
+%\label{thm:varianceL1andLq}
 For sufficiently large $C$ and any $1 \le i,j \le n$, if $m = O(n^b)$ for any $b > 0$, then
 \[
 	\lim_{m, n \to \infty} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)})
     > \lim_{m, n \to \infty} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)})
 \]
-\end{theorem}
-
-\begin{theorem}
-\label{thm:varianceL1andLq}
-For sufficiently large $C$ and any $1 \le i,j \le n$, if $m = O(n (\log n)^{-3})$, then
+Moreover, if $m = O(n (\log n)^{-3})$, then
 \[
 	\lim_{m, n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(1)})
     = \lim_{m, n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0.
 \]
 \end{theorem}
 
-Theorem \ref{thm:biasL1andLq} is a direct result of Lemma \ref{lemma:ELqlEMLE}, Lemma \ref{lm:L1Consistent}, and Lemma \ref{lm:LqConsistent}, while Theorem \ref{thm:varianceL1andLq} is based on Lemma \ref{lemma:VarLqlVarMLE}, Theorem \ref{thm:AREL1}, and Theorem \ref{thm:ARELq}.
-
-So $\widetilde{P}^{(q)}$ inherits the robustness from the entry-wise ML$q$E $\hat{P}^{(q)}$ and has a smaller asymptotic bias compared to $\widetilde{P}^{(1)}$ while both estimates have variance goes to 0 as $m \to \infty$.
+Theorem \ref{thm:MLEASEvsMLqEASE} is a direct result of Theorem~\ref{thm:MLEvsMLqE}, Theorem~\ref{thm:MLEvsMLEASE}, and Theorem~\ref{thm:MLqEvsMLqEASE}.
+It concludes that $\widetilde{P}^{(q)}$ inherits the robustness from the entry-wise ML$q$E $\hat{P}^{(q)}$ and has a smaller asymptotic bias compared to $\widetilde{P}^{(1)}$ while both estimates have variance goes to 0 as $m \to \infty$. Thus under proper conditions, $\widetilde{P}^{(q)}$ is the best among all four estimators.
 
 
 \subsection{Summary}
@@ -939,7 +918,7 @@ Combined with the fact that when $q = 0$, $h(E[\bar{X}]) < 0$, we have for any $
 The equation $h(\theta) = 0$ is a cubic polynomial, so it has at most three real roots. In addition, by calculating we know there is only one real root, while the other two are complex roots. Combined with the fact that $h(P q) > 0$, we have for any $0 < q < 1$, the only real root of the population version of ML$q$ equation is less than $E[\bar{X}] = (1-\epsilon)P + \epsilon C$.
 \end{proof}
 
-\begin{lemma}[Lemma~\ref{lemma:ELqlEMLE}]
+\begin{lemma}[Theorem~\ref{thm:MLEvsMLqE}]
 \label{lemma:ELqlEMLEproof}
 For any $0 < q < 1$, there exists $C_0(P_{ij}, \epsilon, q) > 0$ such that under the contaminated model with $C > C_0(P_{ij}, \epsilon, q)$,
 \[
@@ -1015,7 +994,7 @@ By the proof of Lemma~\ref{lemma:PopulationLqExist}, we have
 for every $\epsilon > 0$. Combined with Lemma~\ref{lemma:UniformConvergence}, we know the ML$q$ is consistent based on Theorem 5.2.3 in \citep{bickel2001mathematical}.
 \end{proof}
 
-\begin{lemma}[Lemma~\ref{lemma:VarLqlVarMLE}]
+\begin{lemma}[Theorem~\ref{thm:MLEvsMLqE}]
 \label{lemma:VarLqlVarMLEproof}
 For $1 \le i, j \le n$, 
 \[
@@ -1479,7 +1458,7 @@ Define $\widetilde{P}_{ij}^{(1)} = (\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}$, our e
 The truncation step above to construct estimator is only for technical reasons. Since the constant $R$ could be arbitrarily large, we do not need this truncation step in practice. And all our simulation and real data experiment do not contain this truncation procedure. Details are discussed in Remark~\ref{remark:var1}.
 \end{remark}
 
-\begin{lemma}[Lemma~\ref{lm:L1Consistent}]
+\begin{lemma}[Theorem~\ref{thm:MLEvsMLEASE} Part 1]
 \label{lm:L1Consistentproof}
 Assuming that $m = O(n^b)$ for any $b > 0$, then the estimator based on ASE of MLE has the same entry-wise asymptotic bias as MLE, i.e.
 \[
@@ -1552,7 +1531,7 @@ Let $a = m^{-1} n^{2b}$ for any $b > 0$, and $c = 2b + 3$, combined with the ass
 \end{align*}
 \end{proof}
 
-\begin{theorem}[Theorem~\ref{thm:VarASEL1}]
+\begin{theorem}
 \label{thm:VarASEL1proof}
 Assuming that $m = O(n^b)$ for any $b > 0$, then $\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) = O(m^{-1} n^{-1} (\log n)^3)$.
 \end{theorem}
@@ -1636,7 +1615,7 @@ Let $a = m^{-1/2} n^{b}$ for any $b > 0$, and $c = 2b + 3$, combined with the as
 \end{align*}
 \end{proof}
 
-\begin{theorem}[Theorem~\ref{thm:AREL1}]
+\begin{theorem}[Theorem~\ref{thm:MLEvsMLEASE} Part 2]
 \label{thm:AREL1proof}
 Assuming that $m = O(n^b)$ for any $b > 0$,  then for $1 \le i, j \le n$ and $i \ne j$,
 \[
@@ -1649,7 +1628,7 @@ And thus
 \]
 \end{theorem}
 \begin{proof}
-The results are direct from Theorem~\ref{thm:VarASEL1} and Lemma~\ref{lemma:VarLqlVarMLE}.
+The results are direct from Theorem~\ref{thm:VarASEL1proof} and Theorem~\ref{thm:MLEvsMLqE}.
 \end{proof}
 
 
@@ -1794,7 +1773,7 @@ Similar to the proof of Lemma \ref{lemma:1stMomentPhatDiffL1}.
 Define $\widetilde{P}_{ij}^{(q)} = (\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}$, our estimator for $P_{ij}$, to be a projection of $\hat{Z}_i^T \hat{Z}_j$ onto $[0, \min(\hat{P}_{ij}^{(q)}, R)]$.
 \end{definition}
 
-\begin{lemma}[Lemma~\ref{lm:LqConsistent}]
+\begin{lemma}[Theorem~\ref{thm:MLqEvsMLqEASE} Part 1]
 \label{lm:LqConsistentproof}
 Assuming that $m = O(n^b)$ for any $b > 0$, then the estimator based on ASE of ML$q$E has the same entry-wise asymptotic bias as ML$q$E, i.e.
 \[
@@ -1843,7 +1822,7 @@ E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j|] = O(n^{-1/2} (\log n)^{3/
 \]
 \end{proof}
 
-\begin{theorem}[Theorem~\ref{thm:VarASELq}]
+\begin{theorem}
 \label{thm:VarASELqproof}
 Assuming that $m = O(n^b)$ for any $b > 0$, then $\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) = O(n^{-1} (\log n)^3)$.
 \end{theorem}
@@ -1900,7 +1879,7 @@ Similarly, assuming $m = O(n^b)$ for any $b > 0$, we have
 \]
 \end{proof}
 
-\begin{theorem}[Theorem~\ref{thm:ARELq}]
+\begin{theorem}[Theorem~\ref{thm:MLqEvsMLqEASE} Part 2]
 \label{thm:ARELqproof}
 Assuming that $m = O(n^b)$ for any $b > 0$,  then for $1 \le i, j \le n$ and $i \ne j$,
 \[
@@ -1913,7 +1892,7 @@ Moreover, if $m = o(n (\log n)^{-3})$, then
 \]
 \end{theorem}
 \begin{proof}
-The results are direct from Theorem~\ref{thm:VarASELq} and Lemma~\ref{lemma:VarLqlVarMLE}.
+The results are direct from Theorem~\ref{thm:VarASELqproof} and Theorem~\ref{thm:MLEvsMLqE}.
 \end{proof}
 
 \begin{theorem}
@@ -1925,7 +1904,7 @@ For sufficiently large $C$ and any $1 \le i,j \le n$, if $m = O(n^b)$ for any $b
 \]
 \end{theorem}
 \begin{proof}
-Direct result from Lemma~\ref{lemma:ELqlEMLE}, Lemma~\ref{lm:L1Consistent} and Lemma~\ref{lm:LqConsistent}.
+Direct result from Theorem~\ref{thm:MLEvsMLqE}, Theorem~\ref{thm:MLEvsMLEASE} and Theorem~\ref{thm:MLqEvsMLqEASE}.
 \end{proof}
 
 \begin{theorem}
@@ -1937,7 +1916,7 @@ For sufficiently large $C$ and any $1 \le i,j \le n$, if $m = O(n (\log n)^{-3})
 \]
 \end{theorem}
 \begin{proof}
-Direct result from Theorem \ref{thm:VarASEL1} and Theorem \ref{thm:VarASELq}.
+Direct result from Theorem~\ref{thm:MLEvsMLEASE} and Theorem~\ref{thm:MLqEvsMLqEASE}.
 \end{proof}
 
 
