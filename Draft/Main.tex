@@ -309,17 +309,34 @@ Although it is always challenge to select a proper dimension, based on the resul
 
 
 
-\subsubsection{Diagonal Augmentation}
-\label{section:diag_aug}
-
-Since the graphs considered in this paper have no self-loops, all the adjacency matrices $A^{(t)}$ ($1 \le t \le m$) are hollow, i.e. all diagonal entries are zeros. Thus the diagonal of the parameter matrix $P$ does not matter since all off-diagonal entries are independent of them conditioned on the off-diagonal entries of $P$.
-
-However, unlike the entry-wise estimators, e.g. $\hat{P}^{(1)}$, the ones which take advantage of the graph structure need the information from the diagonals. As a result, the zero diagonals of the observed graphs will lead to unnecessary biases in those estimates.
-
-To compensate for such unnecessary biases, \citet{marchette2011vertex} suggested to use the average of the non-diagonal entries of the corresponding row as the diagonal entry before embedding. Also, \citet{scheinerman2010modeling} proposed an iterative method, which gives a different approach to resolve such issue.
-
-As suggested in \citep{tang2016law}, in this work we are going to combine both ideas by first using Marchette's row-averaging method (see Step 3 of Algorithm~\ref{algo:basic}) and then another one-step Scheinerman's iterative method (see Step 6 of Algorithm~\ref{algo:basic}).
-
+%\subsubsection{Diagonal Augmentation}
+%\label{section:diag_aug}
+%
+%Since the graphs considered in this paper have no self-loops, all the adjacency matrices $A^{(t)}$ ($1 \le t \le m$) are hollow, i.e. all diagonal entries are zeros. Thus the diagonal of the parameter matrix $P$ does not matter since all off-diagonal entries are independent of them conditioned on the off-diagonal entries of $P$.
+%
+%However, unlike the entry-wise estimators, e.g. $\hat{P}^{(1)}$, the ones which take advantage of the graph structure need the information from the diagonals. As a result, the zero diagonals of the observed graphs will lead to unnecessary biases in those estimates.
+%
+%To compensate for such unnecessary biases, \citet{marchette2011vertex} suggested to use the average of the non-diagonal entries of the corresponding row as the diagonal entry before embedding. Also, \citet{scheinerman2010modeling} proposed an iterative method, which gives a different approach to resolve such issue.
+%
+%As suggested in \citep{tang2016law}, in this work we are going to combine both ideas by first using Marchette's row-averaging method (see Step 3 of Algorithm~\ref{algo:basic}) and then another one-step Scheinerman's iterative method (see Step 6 of Algorithm~\ref{algo:basic}).
+%
+%
+%\begin{algorithm}[H]
+%\caption{Algorithm to compute $\widetilde{P}^{(1)}$}
+%\label{algo:basic}
+%\begin{algorithmic}[1]
+%\REQUIRE Symmetric adjacency matrices $A^{(1)}, A^{(2)}, \dotsc, A^{(m)}$, with each $A^{(t)} \in \mathbb{R}^{n \times n}$
+%\ENSURE Estimate $\widetilde{P}^{(1)} \in \mathbb{R}^{n \times n}$
+%\STATE Calculate the entry-wise MLE $\hat{P}^{(1)}$;
+%\STATE Calculate the scaled degree matrix $D = \mathrm{diag}(\hat{P}^{(1)} \bm{1})/(n-1)$;
+%\STATE Select the dimension $d$ based on the eigenvalues of $\hat{P}^{(1)} + D$; (see Section~\ref{section:dim_select})
+%\STATE Set $Q$ to $\mathrm{lowrank}_d(\hat{P}^{(1)} + D)$; (see Algorithm~\ref{algo:lowrank})
+%\STATE Set $D^{\prime}$ to $ \mathrm{diag}(Q)$, the diagonal matrix with diagonal matching $Q$; 
+%\STATE Set $Q^{\prime}$ to $\mathrm{lowrank}_d(Q + D^{\prime})$; (see Algorithm~\ref{algo:lowrank})
+%%\STATE Set $\widetilde{P}^{(1)}$ with each entry $\widetilde{P}^{(1)}_{ij} = \min( \hat{P}^{(1)}_{ij}, \max(Q^{\prime}_{ij}, 0))$.
+%\STATE Set $\widetilde{P}^{(1)}$ with each entry $\widetilde{P}^{(1)}_{ij} = \max(Q^{\prime}_{ij}, 0)$.
+%\end{algorithmic}
+%\end{algorithm}
 
 \begin{algorithm}[H]
 \caption{Algorithm to compute $\widetilde{P}^{(1)}$}
@@ -328,17 +345,14 @@ As suggested in \citep{tang2016law}, in this work we are going to combine both i
 \REQUIRE Symmetric adjacency matrices $A^{(1)}, A^{(2)}, \dotsc, A^{(m)}$, with each $A^{(t)} \in \mathbb{R}^{n \times n}$
 \ENSURE Estimate $\widetilde{P}^{(1)} \in \mathbb{R}^{n \times n}$
 \STATE Calculate the entry-wise MLE $\hat{P}^{(1)}$;
-\STATE Calculate the scaled degree matrix $D = \mathrm{diag}(\hat{P}^{(1)} \bm{1})/(n-1)$;
-\STATE Select the dimension $d$ based on the eigenvalues of $\hat{P}^{(1)} + D$; (see Section~\ref{section:dim_select})
-\STATE Set $Q$ to $\mathrm{lowrank}_d(\hat{P}^{(1)} + D)$; (see Algorithm~\ref{algo:lowrank})
-\STATE Set $D^{\prime}$ to $ \mathrm{diag}(Q)$, the diagonal matrix with diagonal matching $Q$; 
-\STATE Set $Q^{\prime}$ to $\mathrm{lowrank}_d(Q + D^{\prime})$; (see Algorithm~\ref{algo:lowrank})
-%\STATE Set $\widetilde{P}^{(1)}$ with each entry $\widetilde{P}^{(1)}_{ij} = \min( \hat{P}^{(1)}_{ij}, \max(Q^{\prime}_{ij}, 0))$.
-\STATE Set $\widetilde{P}^{(1)}$ with each entry $\widetilde{P}^{(1)}_{ij} = \max(Q^{\prime}_{ij}, 0)$.
+\STATE Select the dimension $d$ based on the eigenvalues of $\hat{P}^{(1)}$; (see Section~\ref{section:dim_select})
+\STATE Set $Q$ to $\mathrm{lowrank}_d(\hat{P}^{(1)})$; (see Algorithm~\ref{algo:lowrank})
+\STATE Set $\widetilde{P}^{(1)}$ with each entry $\widetilde{P}^{(1)}_{ij} = \max(Q_{ij}, 0)$.
 \end{algorithmic}
 \end{algorithm}
 
-By combining the key parts introduced above, we give the detailed description for calculating the estimator $\widetilde{P}^{(1)}$ with dimension selection method and diagonal augmentation procedure in Algorithm~\ref{algo:basic}.
+
+By combining the key parts introduced above, we give the detailed description for calculating the estimator $\widetilde{P}^{(1)}$ with dimension selection method in Algorithm~\ref{algo:basic}.
 
 
 
@@ -375,6 +389,23 @@ Under the WIEM, we can calculate the robust entry-wise ML$q$E $\hat{P}^{(q)}$ ba
 
 Intuitively, the low-rank structure of the parameter matrix $P$ in WRDPG should be preserved more or less in the entry-wise ML$q$E $\hat{P}^{(q)}$. Thus, in order to take advantage of such low-rank structure as well as the robustness, we apply the similar idea here as in building $\widetilde{P}^{(1)}$, i.e. enforce a low-rank approximation on the entry-wise ML$q$E matrix $\hat{P}^{(q)}$ to get $\widetilde{P}^{(q)}$. As in Algorithm~\ref{algo:basic}, we apply the same dimension selection method and diagonal augmentation procedure. The only change is to substitute $\hat{P}^{(1)}$ by $\hat{P}^{(q)}$. The details of the algorithm is shown in Algorithm~\ref{algo:basic_q}.
 
+%\begin{algorithm}[H]
+%\caption{Algorithm to compute $\widetilde{P}^{(q)}$}
+%\label{algo:basic_q}
+%\begin{algorithmic}[1]
+%\REQUIRE Symmetric adjacency matrices $A^{(1)}, A^{(2)}, \dotsc, A^{(m)}$, with each $A^{(t)} \in \mathbb{R}^{n \times n}$
+%\ENSURE Estimate $\widetilde{P}^{(q)} \in \mathbb{R}^{n \times n}$
+%\STATE Calculate the entry-wise ML$q$E $\hat{P}^{(q)}$;
+%\STATE Calculate the scaled degree matrix $D = \mathrm{diag}(\hat{P}^{(q)} \bm{1})/(n-1)$;
+%\STATE Select the dimension $d$ based on the eigenvalues of $\hat{P}^{(q)} + D$; (see Section~\ref{section:dim_select})
+%\STATE Set $Q$ to $\mathrm{lowrank}_d(\hat{P}^{(q)} + D)$; (see Algorithm~\ref{algo:lowrank})
+%\STATE Set $D^{\prime}$ to $ \mathrm{diag}(Q)$, the diagonal matrix with diagonal matching $Q$; 
+%\STATE Set $Q^{\prime}$ to $\mathrm{lowrank}_d(Q + D^{\prime})$; (see Algorithm~\ref{algo:lowrank})
+%%\STATE Set $\widetilde{P}^{(q)}$ with each entry $\widetilde{P}^{(q)}_{ij} = \min( \hat{P}^{(q)}_{ij}, \max(Q^{\prime}_{ij}, 0))$.
+%\STATE Set $\widetilde{P}^{(q)}$ with each entry $\widetilde{P}^{(q)}_{ij} = \max(Q^{\prime}_{ij}, 0)$.
+%\end{algorithmic}
+%\end{algorithm}
+
 \begin{algorithm}[H]
 \caption{Algorithm to compute $\widetilde{P}^{(q)}$}
 \label{algo:basic_q}
@@ -382,13 +413,9 @@ Intuitively, the low-rank structure of the parameter matrix $P$ in WRDPG should 
 \REQUIRE Symmetric adjacency matrices $A^{(1)}, A^{(2)}, \dotsc, A^{(m)}$, with each $A^{(t)} \in \mathbb{R}^{n \times n}$
 \ENSURE Estimate $\widetilde{P}^{(q)} \in \mathbb{R}^{n \times n}$
 \STATE Calculate the entry-wise ML$q$E $\hat{P}^{(q)}$;
-\STATE Calculate the scaled degree matrix $D = \mathrm{diag}(\hat{P}^{(q)} \bm{1})/(n-1)$;
-\STATE Select the dimension $d$ based on the eigenvalues of $\hat{P}^{(q)} + D$; (see Section~\ref{section:dim_select})
-\STATE Set $Q$ to $\mathrm{lowrank}_d(\hat{P}^{(q)} + D)$; (see Algorithm~\ref{algo:lowrank})
-\STATE Set $D^{\prime}$ to $ \mathrm{diag}(Q)$, the diagonal matrix with diagonal matching $Q$; 
-\STATE Set $Q^{\prime}$ to $\mathrm{lowrank}_d(Q + D^{\prime})$; (see Algorithm~\ref{algo:lowrank})
-%\STATE Set $\widetilde{P}^{(q)}$ with each entry $\widetilde{P}^{(q)}_{ij} = \min( \hat{P}^{(q)}_{ij}, \max(Q^{\prime}_{ij}, 0))$.
-\STATE Set $\widetilde{P}^{(q)}$ with each entry $\widetilde{P}^{(q)}_{ij} = \max(Q^{\prime}_{ij}, 0)$.
+\STATE Select the dimension $d$ based on the eigenvalues of $\hat{P}^{(q)}$; (see Section~\ref{section:dim_select})
+\STATE Set $Q$ to $\mathrm{lowrank}_d(\hat{P}^{(q)})$; (see Algorithm~\ref{algo:lowrank})
+\STATE Set $\widetilde{P}^{(q)}$ with each entry $\widetilde{P}^{(q)}_{ij} = \max(Q_{ij}, 0)$.
 \end{algorithmic}
 \end{algorithm}
 
@@ -665,6 +692,16 @@ When calculating the two low-rank estimators $\widetilde{P}^{(1)}$ and $\widetil
 Note that the simplified setting in this simulation is primarily for interpretability.
 
 
+\subsubsection{Diagonal Augmentation}
+\label{section:diag_aug}
+
+Since the graphs considered in this paper have no self-loops, all the adjacency matrices $A^{(t)}$ ($1 \le t \le m$) are hollow, i.e. all diagonal entries are zeros. Thus the diagonal of the parameter matrix $P$ does not matter since all off-diagonal entries are independent of them conditioned on the off-diagonal entries of $P$.
+
+However, unlike the entry-wise estimators, e.g. $\hat{P}^{(1)}$, the ones which take advantage of the graph structure need the information from the diagonals. As a result, the zero diagonals of the observed graphs will lead to unnecessary biases in those estimates.
+
+To compensate for such unnecessary biases, \citet{marchette2011vertex} suggested to use the average of the non-diagonal entries of the corresponding row as the diagonal entry before embedding. Also, \citet{scheinerman2010modeling} proposed an iterative method, which gives a different approach to resolve such issue.
+
+As suggested in \citep{tang2016law}, in this work we are going to combine both ideas by first using Marchette's row-averaging method and then another one-step Scheinerman's iterative method.
 
 \subsubsection{Simulation Results}
 
@@ -727,7 +764,7 @@ The screeplot in the left panel shows the eigenvalues of the mean graph of all 1
 
 To compare the four estimators, we need to calculate the MSE, which requires the true parameter matrix $P$. However, unlike simulation experiment in Section~\ref{section:sim}, $P$ is definitely not obtainable in practice since the 114 graphs are also a sample from the population. So finding a good estimate for $P$ and use it to calculate the MSE is a feasible way in this experiment. Recently, \citet{kiar2016ndmg} proposed a better pipeline ndmg2 compared to m2g. Then the MLE derived from the 114 graphs in ndmg2 should be a relative more accurate estimate of the actual probability matrix $P$ for the population. And we are going to use this as $P$ when calculating the MSE. Such $P$ generally has full rank, which breaks the low-rank assumptions. So this setting makes it hard for $\widetilde{P}^{(1)}$ and $\widetilde{P}^{(q)}$ to improve and is favorable to the $\hat{P}^{(1)}$ and $\hat{P}^{(q)}$. Moreover, it is still possible that the 114 graphs from ndmg2 contain outliers. Thus by using the MLE as $P$, the performance of ML$q$E related estimators $\hat{P}^{(q)}$ and $\widetilde{P}^{(q)}$ are underestimated.
 
-In this experiment, we build the four estimates based on the samples with size $m$ from the m2g dataset, while using the MLE of all 114 graphs from the ndmg2 dataset as the probability matrix $P$.
+In this experiment, we build the four estimates based on the samples with size $m$ from the m2g dataset, while using the MLE of all 114 graphs from the ndmg2 dataset as the probability matrix $P$. Note that diagonal augmentation procedure introduced in Section~\ref{section:diag_aug} is also applied here to compensate for the unnecessary bias.
 We run 100 simulations on this dataset for different sample sizes $m = 2, 5, 10$. Specifically, in each Monte Carlo replicate, we sample $m$ graphs out of the 114 from the m2g dataset and compute the four estimates based on the $m$ sampled graphs. As mentioned before, $q$ is set to be 0.9 without further exploiting. We then compare these estimates to the MLE of all 114 graphs in the ndmg2 dataset.
 For those two low-rank estimators $\widetilde{P}^{(1)}$ and $\widetilde{P}^{(q)}$, we apply ASE for all possible dimensions, i.e. $d$ ranges from 1 to $n$. The MSE results are shown in Figure~\ref{fig:CCI}.
 
