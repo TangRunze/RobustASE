@@ -855,7 +855,27 @@ contract N66001-14-1-4028.
 
 \section{Proofs for Theory Results}
 
+\subsection{Outline of the Proofs}
+
+Firstly, in Section~\ref{section:pf_MLqEvsMLE}, we prove in Lemma~\ref{lemma:ELqlEMLEproof} that when the contamination is large enough, the robust estimator $\hat{P}^{(q)}$ has smaller asymptotic bias compared to $\hat{P}^{(1)}$. By the results of minimum contrast estimator, we also show in Lemma~\ref{lemma:VarLqlVarMLEproof} that both estimators have variances go to zero as the number of graphs $m$ goes to infinity.
+
+In Section~\ref{section:pf_MLEvsMLEASE1}, we mainly analyze the properties of the ASE procedure. We first prove Theorem~\ref{thm:P1Diff}, which provides an upper bound for the 2-norm of the difference between the estimator $\hat{P}^{(1)}$ and its expectation $H_{ij}^{(1)} = E[\hat{P}_{ij}^{(1)}]$. Lemma~\ref{lemma:AlmostOrthogonalL1} shows that $U^{\top} \hat{U}$ can be approximated by an orthogonal matrix $W^{*} = W_1 W_2^{\top}$, where $U$ and $\hat{U}$ are the eigenspaces with respect to the largest $d$ eigenvalues of $H_{ij}^{(1)}$ and $\hat{P}^{(1)}$ respectively. More conveniently, Lemma~\ref{lemma:exchangeL1} indicates that we can change the order of $W^*$ in the matrix multiplications accordingly without affecting the result much. With these tool results, in Lemma~\ref{lemma:XhatDiffXWexpressionL1} we give an upper bound of $\|\hat{Z} - Z W\|_F$, which controls the error of the $\hat{Z}$ for estimating the true latent positions $Z$ up to rotation. Briefly, in order to prove Lemma~\ref{lemma:XhatDiffXWexpressionL1}, we first write $\hat{Z} - U S^{1/2} W^*$ as the sum $(\hat{P} - H) U W^* \hat{S}^{-1/2} - U U^T(\hat{P} - H)U W^*\hat{S}^{-1/2} + (I - U U^T)(\hat{P} - H) Q_3 \hat{S}^{-1/2} + Q_1 \hat{S}^{1/2} + U Q_2$, and bound each term accordingly based on Lemma~\ref{lemma:AlmostOrthogonalL1} and Lemma~\ref{lemma:exchangeL1}. Then by the Bernstein inequality, in Theorem~\ref{thm:XhatDiffXWL1} we give the bound of the ($2 \to \infty$)-norm of the $\hat{Z} - Z W$, i.e. $\max_i \| \hat{Z}_i - W Z_i \|_2$.
+
+In Section~\ref{section:pf_MLEvsMLEASE2}, we give a bound of the estimation error $\left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right|$ in Lemma~\ref{lemma:1stMomentPhatDiffL1} based on the results in Section~\ref{section:pf_MLEvsMLEASE1}. In order to bound the variance of our estimator $\widetilde{P}^{(1)}$, all results in this section will be based on a truncated version of $\widetilde{P}^{(1)}$ defined in Definition~\ref{def:truncationMLE}. This is just for technical reasons and will not affect the estimation procedure in practice, which is discussed in details in Remark~\ref{remark:truncation}. Then we can bound the expectation (Lemma~\ref{lm:L1Consistentproof}) and variance (Theorem~\ref{thm:VarASEL1proof}) of the truncated $\widetilde{P}^{(1)}$ by carefully choosing a breakpoint $a$ and analyzing separately. And as a direct result, we have the bound for the relative efficiency between $\hat{P}_{ij}^{(1)}$ and $\widetilde{P}_{ij}^{(1)}$ in Theorem~\ref{thm:AREL1proof}.
+
+In Section~\ref{section:pf_MLqEASEvsMLqE}, we compare the performance between $\widetilde{P}^{(q)}$ and $\hat{P}^{(q)}$. The results in this section are proved in a similar way as in Section~\ref{section:pf_MLEvsMLEASE1} and Section~\ref{section:pf_MLEvsMLEASE2}. However, since ML$q$E can be bounded by MLE as in Lemma~\ref{lemma:LqlMLE}, we use the MLE results to have a relaxed bound when ML$q$E is hard to analyze.
+
+In Section~\ref{section:MLqEASEvsMLEASE}, we compare the performance between $\widetilde{P}^{(q)}$ and $\widetilde{P}^{(1)}$ by combining all the previous results.
+
+In Section~\ref{section:pf_other}, we provide proofs for all other results mentioned in the manuscript.
+
+Here we will first define the notation ``with high probability'', which is used through out the entire proofs.
+\begin{definition}
+We say a bound holds with high probability, if there exits a constant $n_0(c)$ such that if $n > n_0$, then for any $\eta$ satisfying $n^{-c} < \eta < 1/2$, the bound holds with probability greater than $1 - \eta$.
+\end{definition}
+
 \subsection{$\hat{P}^{(q)}$ vs. $\hat{P}^{(1)}$}
+\label{section:pf_MLqEvsMLE}
 
 \begin{lemma}
 \label{lemma:LqlMLE}
@@ -1047,6 +1067,11 @@ And thus
 \begin{proof}
 Both MLE and ML$q$E are minimum constrast estimators. By consistency (shown in Lemma~\ref{lemma:ELqConverge}) and other regularity conditions, we know the variances are both of order $1/m$ based on Theorem 5.4.2 in \citep{bickel2001mathematical}.
 \end{proof}
+
+
+
+\subsection{ASE Procedure of $\hat{P}^{(1)}$}
+\label{section:pf_MLEvsMLEASE1}
 
 \begin{theorem}%[Theorem 3.3]
 \label{thm:P1Diff}
@@ -1464,6 +1489,10 @@ Taking the union bound over all $i$ and $j$, with high probability we have,
 \end{align*}
 \end{proof}
 
+
+\subsection{$\widetilde{P}^{(1)}$ vs. $\hat{P}^{(1)}$}
+\label{section:pf_MLEvsMLEASE2}
+
 \begin{lemma}
 \label{lemma:1stMomentPhatDiffL1}
 $\left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right| = O(m^{-1/2} n^{-1/2} (\log n)^{3/2})$ with high probability.
@@ -1488,10 +1517,12 @@ with high probability.
 \end{proof}
 
 \begin{definition}
+\label{def:truncationMLE}
 Define $\widetilde{P}_{ij}^{(1)} = (\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}$, our estimator for $P_{ij}$, to be a projection of $\hat{Z}_i^T \hat{Z}_j$ onto $[0, \min(\hat{P}_{ij}^{(1)}, R)]$.
 \end{definition}
 
 \begin{remark}
+\label{remark:truncation}
 The truncation step above to construct estimator is only for technical reasons. Since the constant $R$ could be arbitrarily large, we do not need this truncation step in practice. And all our simulation and real data experiment do not contain this truncation procedure. Details are discussed in Remark~\ref{remark:var1}.
 \end{remark}
 
@@ -1669,6 +1700,13 @@ The results are direct from Theorem~\ref{thm:VarASEL1proof} and Theorem~\ref{thm
 \end{proof}
 
 
+
+
+
+
+
+\subsection{$\widetilde{P}^{(q)}$ vs. $\hat{P}^{(q)}$}
+\label{section:pf_MLqEASEvsMLqE}
 
 \begin{theorem}
 \label{thm:PqDiff}
@@ -1932,6 +1970,9 @@ Moreover, if $m = o(n (\log n)^{-3})$, then
 The results are direct from Theorem~\ref{thm:VarASELqproof} and Theorem~\ref{thm:MLEvsMLqE}.
 \end{proof}
 
+
+\subsection{$\widetilde{P}^{(q)}$ vs. $\widetilde{P}^{(1)}$}
+\label{section:MLqEASEvsMLEASE}
 \begin{theorem}
 \label{thm:biasL1andLq}
 For sufficiently large $C$ and any $1 \le i,j \le n$, if $m = O(n^b)$ for any $b > 0$, then
@@ -1958,7 +1999,8 @@ Direct result from Theorem~\ref{thm:MLEvsMLEASE} and Theorem~\ref{thm:MLqEvsMLqE
 
 
 
-
+\subsection{Other Proofs}
+\label{section:pf_other}
 
 \begin{lemma}
 \label{lm:poisson}
@@ -1991,6 +2033,1160 @@ Then if $A_{ij}$ is distributed from a mixture model as in the statement, we hav
 \le & \mathrm{const}^k \cdot k!.
 \end{align*}
 \end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%\subsection{$\hat{P}^{(q)}$ vs. $\hat{P}^{(1)}$}
+%
+%\begin{lemma}
+%\label{lemma:LqlMLE}
+%Consider the model $X_1, \cdots, X_m \stackrel{iid}{\sim} \mathrm{Exp}(P)$ with $m \ge 2$ and $E[X_1] = P$. Given any data $x = (x_1, \cdots, x_m)$ such that $x_{(1)} > 0$ and not all $x_i$'s are the same, then no matter how the data is sampled, we have
+%\begin{itemize}
+%\item There exists at least one solution to the ML$q$ equation;
+%\item All the solutions to the ML$q$ equation are less than the MLE.
+%\end{itemize}
+%Thus the ML$q$E $\hat{P}^{(q)}$, the root closest to the MLE, is well defined.
+%\end{lemma}
+%\begin{proof}
+%The MLE is
+%\[
+%	\hat{P}^{(1)}(x) = \bar{x}.
+%\]
+%
+%Consider the continuous function $g(\theta, x) = \sum_{i=1}^m e^{-\frac{(1-q)x_i}{\theta}}(x_i - \theta)$. Then the ML$q$ equation is $g(\theta, x) = 0$.
+%
+%Let $x_{(1)} \le \cdots \le x_{(l)} \le \bar{x} \le x_{(l+1)} \le \cdots \le x_{(m)}$. Define $s_i = \bar{x} - x_{(i)}$ for $1 \le i \le l$, and $t_{i} = x_{(l+i)} - \bar{x}$ for $1 \le i \le m - l$. Note that $\sum_{i=1}^l s_i = \sum_{i=1}^{m-l} t_i$. Then for any $\theta \ge \bar{x}$, we have
+%\begin{align*}
+%g(\theta, x) & = \sum_{i=1}^m e^{-\frac{(1-q)x_{(i)}}{\theta}}(x_{(i)} - \theta)
+%= \sum_{i=1}^m e^{-\frac{(1-q)x_{(i)}}{\theta}}(x_{(i)} - \bar{x} + \bar{x} - \theta) \\
+%& = - \sum_{i=1}^l e^{-\frac{(1-q)x_{(i)}}{\theta}}s_i
+%+ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\theta}}t_i
+%+ \sum_{i=1}^m e^{-\frac{(1-q)x_{(i)}}{\theta}}(\bar{x} - \theta)\\
+%& \le - \sum_{i=1}^l e^{-\frac{(1-q)x_{(i)}}{\theta}}s_i
+%+ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\theta}}t_i \\
+%& \le - e^{-\frac{(1-q)x_{(l+1)}}{\theta}} \sum_{i=1}^l s_i
+%+ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\theta}}t_i \\
+%& \le - e^{-\frac{(1-q)x_{(l+1)}}{\theta}} \sum_{i=1}^{m-l} t_i
+%+ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\theta}}t_i \\
+%& \le - \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\theta}}t_i
+%+ \sum_{i=1}^{m-l} e^{-\frac{(1-q)x_{(i+l)}}{\theta}}t_i\\
+%& = 0,
+%\end{align*}
+%and equality holds if and only if all $x_i$'s are the same, which is excluded by the assumption.
+%Thus $g(\theta, x) < 0$ for any $\theta \ge \bar{x}$.
+%
+%Denote any solution to the ML$q$ equation to be $\hat{P}^{(q)}(x)$, then we also know:
+%\begin{itemize}
+%\item $g(\hat{P}^{(q)}(x), x) = 0$;
+%\item $\lim_{\theta \rightarrow 0^+}g(\theta, x) = 0$;
+%\item $g(\theta, x) > 0$ when $\theta < x_{(1)}$;
+%\end{itemize}
+%
+%Thus there exists at least one solution to the ML$q$ equation. And all solutions to the ML$q$ equation are between $x_{(1)}$ and $\bar{x}$, i.e. less than the MLE.
+%\end{proof}
+%
+%\begin{lemma}
+%\label{lemma:PopulationLqExist}
+%Consider an exponential distribution model while the data is actually sampled from the contaminated model $X, X_1, \cdots, X_m \stackrel{iid}{\sim} (1-\epsilon) \mathrm{Exp}(P) + \epsilon \mathrm{Exp}(C)$. Denote such contaminated distribution as $F$.
+%Then there exists exactly one real solution $\theta(F)$ of the population version of ML$q$ equation,
+%i.e. $E_F[e^{-\frac{(1-q)X}{\theta(F)}}(X - \theta(F))] = 0$. Moreover, $\theta(F) < E_F[\bar{X}] = (1-\epsilon) P + \epsilon C$.
+%\end{lemma}
+%\begin{proof}
+%For the MLE, i.e. $\bar{X}$, we have $E[\bar{X}] = (1-\epsilon) P + \epsilon C$.
+%According to Equation (3.2) in \citep{ferrari2010}, $\theta(F)$ satisfies
+%\[
+%\frac{\epsilon C}{(C(1-q) + \theta)^2} - \frac{\epsilon}{C(1-q) + \theta}
+%+\frac{(1-\epsilon) P}{(P(1-q) + \theta)^2} - \frac{(1-\epsilon)}{P(1-q) + \theta}
+%= 0,
+%\]
+%i.e.
+%\[
+%\frac{\epsilon (\theta - Cq)}{(C(1-q) + \theta)^2} =
+%\frac{(1-\epsilon) (P q - \theta)}{(P(1-q) + \theta)^2}.
+%\]
+%Define $h(\theta) = (C(1-q) + \theta)^2 (1-\epsilon) (P q - \theta) - (P(1-q) + \theta)^2 \epsilon (\theta - Cq)$.
+%Then $\lim_{\theta \to \infty}h(\theta) = -\infty$, $h(0) > 0$, and $h(Cq) < 0$.
+%Consider $q$ as the variable and solve the equation $h(E[\bar{X}]) = 0$, we have three roots and one of them is $q = 1$ obviously.
+%The other two roots are
+%\[
+%\frac{(P + C)\left( (P-C)^2 \epsilon(1-\epsilon) + 2PC \right)}{2PC(P \epsilon + C(1-\epsilon))}
+%\pm \sqrt{\frac{\epsilon(1-\epsilon)(C-P)^2\left(\epsilon(1-\epsilon)(C-P)^4 - 4P^2C^2\right)}{4 P^2 C^2 (P\epsilon + C(1-\epsilon))^2}}.
+%\]
+%To prove the roots are greater or equal to 1, we need to show
+%\[
+%\frac{(P + C)\left( (P-C)^2 \epsilon(1-\epsilon) + 2PC \right)}{2PC(P \epsilon + C(1-\epsilon))}
+%- \sqrt{\frac{\epsilon(1-\epsilon)(C-P)^2\left(\epsilon(1-\epsilon)(C-P)^4 - 4P^2C^2\right)}{4 P^2 C^2 (P\epsilon + C(1-\epsilon))^2}} > 1.
+%\]
+%For the first part,
+%\[
+%\frac{(P + C)\left( (P-C)^2 \epsilon(1-\epsilon) + 2PC \right)}{2PC(P \epsilon + C(1-\epsilon))}\\
+%> 1 + \frac{(P-C)^2 \epsilon (1-\epsilon) (P+C)}{2PC(P \epsilon + C(1-\epsilon))}.
+%\]
+%To prove the roots are greater or equal to 1, we just need to show
+%\[
+%(P-C)^4 \epsilon^2 (1-\epsilon)^2 (P+C)^2 \ge \epsilon^2(1-\epsilon)^2(C-P)^6.
+%\]
+%Then it is sufficient to show that
+%\[
+%(P+C)^2 \ge (C-P)^2,
+%\]
+%which is true.
+%Combined with the fact that when $q = 0$, $h(E[\bar{X}]) < 0$, we have for any $0 < q < 1$, $h(E[\bar{X}]) < 0$.
+%
+%The equation $h(\theta) = 0$ is a cubic polynomial, so it has at most three real roots. In addition, by calculating we know there is only one real root, while the other two are complex roots. Combined with the fact that $h(P q) > 0$, we have for any $0 < q < 1$, the only real root of the population version of ML$q$ equation is less than $E[\bar{X}] = (1-\epsilon)P + \epsilon C$.
+%\end{proof}
+%
+%\begin{lemma}[Theorem~\ref{thm:MLEvsMLqE}]
+%\label{lemma:ELqlEMLEproof}
+%For any $0 < q < 1$, there exists $C_0(P_{ij}, \epsilon, q) > 0$ such that under the contaminated model with $C > C_0(P_{ij}, \epsilon, q)$,
+%\[
+%	\lim_{m \to \infty} \left| E[\hat{P}^{(q)}_{ij}] - P_{ij} \right| < 
+%    \lim_{m \to \infty} \left| E[\hat{P}^{(1)}_{ij}] - P_{ij} \right|,
+%\]
+%for $1 \le i, j \le n$ and $i \ne j$.
+%\end{lemma}
+%\begin{proof}
+%For the MLE $\hat{P}^{(1)}_{ij} = \bar{A}_{ij}$,
+%\[
+%	E[\hat{P}^{(1)}_{ij}] = E[\bar{A}_{ij}]
+%    = \frac{1}{m} \sum_{t = 1}^m E[A_{ij}^{(t)}]
+%    = E[A_{ij}^{(1)}]
+%    = (1-\epsilon) P_{ij} + \epsilon C_{ij}.
+%\]
+%As shown in Lemma \ref{lemma:PopulationLqExist}, $\theta(F)$ satisfies
+%\[
+%\frac{\epsilon (\theta(F) - C_{ij}q)}{(C_{ij}(1-q) + \theta(F))^2} =
+%\frac{(1-\epsilon) (P_{ij} q - \theta(F))}{(P_{ij}(1-q) + \theta(F))^2}.
+%\]
+%Thus $\theta(F) - C_{ij} q$ and $\theta(F) - P_{ij} q$ should have different signs. Combined with $C_{ij} > P_{ij}$, we have
+%\[
+%q P_{ij} < \theta(F).
+%\]
+%To have a smaller asymptotic bias in absolute value, combined with Lemma \ref{lemma:ELqConverge}, we need
+%\[
+%|\theta(F) - P_{ij}| < \epsilon (C_{ij} - P_{ij}).
+%\]
+%Based on Lemma \ref{lemma:LqlMLE}, we need
+%\[
+%q P_{ij} > P_{ij} - \epsilon(C_{ij} - P_{ij}),
+%\]
+%i.e.
+%\[
+%C_{ij} > P_{ij} + \frac{(1-q) P_{ij}}{\epsilon} = C_0(P_{ij}, \epsilon, q).
+%\]
+%\end{proof}
+%
+%
+%\begin{lemma}
+%\label{lemma:minimumcontrast}
+%The ML$q$E based on the model to be exponential distribution $\mathrm{Exp}(P)$ while the data is actually sampled from the contaminated distribution $(1-\epsilon) \mathrm{Exp}(P) + \epsilon \mathrm{Exp}(C)$ is a minimum contrast estimator.
+%\end{lemma}
+%\begin{proof}
+%Consider the contaminated distribution $F(x) = (1-\epsilon) f(x; P) + \epsilon f(x; C)$, where $f(x)$ represents the pdf of exponential distribution. By Lemma~\ref{lemma:PopulationLqExist}, we know there is a one-to-one correspondence between the uncontaminated parameter $P$ and the only real solution $\theta(F)$ of the population version of ML$q$ equation,
+%i.e. $E_F[e^{-\frac{(1-q)X}{\theta(F)}}(X - \theta(F))] = 0$. Let $r(\theta(F)) = P$.
+%Then we can define $\rho(x; \theta) = \frac{f(x; r(\theta))^{1-q}}{1 - q}$, where $q \in (0, 1)$ is a constant.
+%By reparameterizing $\rho(x; \theta)$ to $\widetilde{\rho}(x; r)$ such that $\widetilde{\rho}(x; r(\theta)) = \rho(x; \theta)$, we can use the proof of Lemma~\ref{lemma:PopulationLqExist} directly to prove that $D(\theta_0, \theta) = E_{\theta_0}[\rho(X, \theta)]$ is uniquely minimized at $\theta_0$. Thus the ML$q$E is a minimum contrast estimator.
+%\end{proof}
+%
+%\begin{lemma}
+%\label{lemma:UniformConvergence}
+%Uniform convergence of the MLq equation, i.e.
+%\[
+%	\sup_{\theta \in [0, R]} \left| \frac{1}{m} \sum_{i=1}^m e^{-\frac{(1-q) X_i}{\theta}}(X_i - \theta) - E_F[e^{-\frac{(1-q) X}{\theta}}(X - \theta)] \right| \stackrel{a.s.}{\to} 0.
+%\]
+%\end{lemma}
+%\begin{proof}
+%Define $g(x,\theta) = e^{-\frac{(1-q) x}{\theta}}(x - \theta)$ and $d(x) = e^{-\frac{(1-q)x}{R}}(x + R)$. Then $E_F[d(X)] < \infty$ and $g(x,\theta) \le d(x)$ for all $\theta \in [0, R]$.
+%Combined with the fact that $[0, R]$ is compact and the function $g(x,\theta)$ is continuous at each $\theta$ for all $x > 0$ and measurable function of $x$ at each $\theta$, we have the uniform convergence by Lemma 2.4 in \citep{newey1994large}.
+%\end{proof}
+%
+%\begin{lemma}
+%\label{lemma:ELqConverge}
+%$\hat{P}_{ij}^{(q)} \stackrel{P}{\to} \theta(F_{ij})$ as $m \to \infty$, where $F_{ij}$ is the contaminated distribution $(1-\epsilon) \mathrm{Exp}(P_{ij}) + \epsilon \mathrm{Exp}(C_{ij})$, and $ \theta(F_{ij})$ is defined in Lemma~\ref{lemma:PopulationLqExist}. 
+%\end{lemma}
+%\begin{proof}
+%By the proof of Lemma~\ref{lemma:PopulationLqExist}, we have
+%\[
+%	\inf\{D(\theta_0, \theta): |\theta - \theta_0| \ge \epsilon \} > D(\theta_0, \theta_0)
+%\]
+%for every $\epsilon > 0$. Combined with Lemma~\ref{lemma:UniformConvergence}, we know the ML$q$ is consistent based on Theorem 5.2.3 in \citep{bickel2001mathematical}.
+%\end{proof}
+%
+%\begin{lemma}[Theorem~\ref{thm:MLEvsMLqE}]
+%\label{lemma:VarLqlVarMLEproof}
+%For $1 \le i, j \le n$, 
+%\[
+%	\mathrm{Var}(\hat{P}^{(1)}_{ij})
+%    = \mathrm{Var}(\hat{P}^{(q)}_{ij}) = O(1/m).
+%\]
+%And thus
+%\[
+%	\lim_{m \to \infty} \mathrm{Var}(\hat{P}^{(1)}_{ij})
+%    = \lim_{m \to \infty} \mathrm{Var}(\hat{P}^{(q)}_{ij}) = 0.
+%\]
+%\end{lemma}
+%\begin{proof}
+%Both MLE and ML$q$E are minimum constrast estimators. By consistency (shown in Lemma~\ref{lemma:ELqConverge}) and other regularity conditions, we know the variances are both of order $1/m$ based on Theorem 5.4.2 in \citep{bickel2001mathematical}.
+%\end{proof}
+%
+%\begin{theorem}%[Theorem 3.3]
+%\label{thm:P1Diff}
+%Let $P$ and $C$ be two $n$-by-$n$ symmetric matrices satisfying element-wise conditions $0 < P_{ij} \le C_{ij} \le R$ for some constant $R > 0$. For $0 < \epsilon < 1$, we define $m$ symmetric and hollow matrices as
+%\[
+%	A^{(t)} \stackrel{iid}{\sim} (1-\epsilon) \mathrm{Exp}(P) + \epsilon \mathrm{Exp}(C),
+%\]
+%for $1 \le t \le m$.
+%Let $\hat{P}^{(1)}$ be the element-wise MLE based on exponential distribution with $m$ observations.
+%Define $H_{ij}^{(1)} = E[\hat{P}_{ij}^{(1)}] = (1-\epsilon) P_{ij} + \epsilon C_{ij}$,
+%then for any constant $c > 0$, there exists another constant $n_0(c)$, independent of $n$, $P$, $C$ and $\epsilon$, such that if $n > n_0$, then for all $\eta$ satisfying $n^{-c} \le \eta \le 1/2$,
+%\[
+%	P \left( \| \hat{P}^{(1)} - H^{(1)} \|_2 \le 4 R \sqrt{n \ln(n/\eta)/m}\right) \ge 1 - \eta.
+%\]
+%\end{theorem}
+%\textbf{Remark:} This is an extended version of Theorem 3.1 in \citep{oliveira2009concentration}. \\
+%\begin{proof}
+%Let $\{e_i\}_{i=1}^n$ be the canonical basis for $\mathbb{R}^n$. For each $1 \le i, j \le n$, define a corresponding matrix $G_{ij}$:
+%\[
+%    G_{ij} \equiv \left\{
+%    \begin{array}{l l}
+%        e_i e_j^T + e_j e_i^T, \quad & i \ne j;\\
+%        e_i e_i^T, \quad & i = j.
+%    \end{array}
+%    \right.
+%\]
+%Thus
+%\[
+%\hat{P}^{(1)} = \sum_{1 \le i < j \le n} \hat{P}^{(1)}_{ij} G_{ij} = \frac{1}{m}\sum_{t=1}^m \sum_{1 \le i < j \le n} A^{(t)}_{ij} G_{ij}
+%\]
+%and
+%\[
+%H^{(1)} = \sum_{1 \le i < j \le n} H^{(1)}_{ij} G_{ij}.
+%\]
+%Then we have $\hat{P}^{(1)} - H^{(1)} = \frac{1}{m} \sum_{1 \le t \le m, 1 \le i < j \le n} X_{ij}^{(t)}$, where $X_{ij}^{(t)} = \left( A^{(t)}_{ij} - H^{(1)}_{ij} \right) G_{ij}$ for $1 \le t \le m$ and $1 \le i < j \le n$.
+%
+%First bound the $k$-th moment of $X_{ij}$ for $1 \le i < j \le n$ as following:
+%\begin{align*}
+%	E[(A^{(t)}_{ij} - H^{(1)}_{ij})^k]
+%    \le & (1-\epsilon) \cdot \exp(-H_{ij}/P_{ij}) P_{ij}^k \Gamma(1+k, -H_{ij}/P_{ij}) \\
+%    & + \epsilon \cdot \exp(-H_{ij}/C_{ij}) C_{ij}^k \Gamma(1+k, -H_{ij}/C_{ij}) \\
+%    \le & \left( (1-\epsilon) \cdot \exp(-H_{ij}/P_{ij}) P_{ij}^k + \epsilon \cdot \exp(-H_{ij}/C_{ij}) C_{ij}^k \right) k! \\
+%    \le & \left( (1-\epsilon) \cdot P_{ij}^k + \epsilon \cdot C_{ij}^k \right) k! \\
+%    \le & R^k k!,
+%    \stepcounter{equation}\tag{\theequation}\label{eqn:expectpdiffqpowerkL1}
+%\end{align*}
+%
+%Combined with
+%\[
+%    G_{ij}^k \equiv \left\{
+%    \begin{array}{l l}
+%        e_i e_i^T + e_j e_j^T, \quad & $k$ \text{ is even};\\
+%        e_i e_j^T + e_j e_i^T, \quad & $k$ \text{ is odd},
+%    \end{array}
+%    \right.
+%\]
+%thus we have
+%\begin{enumerate}
+%\item When $k$ is even,
+%\[
+%E[(X_{ij}^{(t)})^k] = E[(A^{(t)}_{ij} - H^{(1)}_{ij})^k] G_{ij}^2 \preceq k! R^k G_{ij}^2;
+%\]
+%\item When $k$ is odd,
+%\[
+%E[(X_{ij}^{(t)})^k] = E[(A^{(t)}_{ij} - H^{(1)}_{ij})^k] G_{ij} \preceq k! R^k G_{ij}^2.
+%\]
+%\end{enumerate}
+%So
+%\[
+%E[(X_{ij}^{(t)})^k] \preceq k! R^k G_{ij}^2.
+%\]
+%Let
+%\[
+%	\sigma^2 := \left\| \sum_{1 \le t \le m, 1 \le i < j \le n} (\sqrt{2} R G_{ij})^2 \right\|_2 = 2 R^2 m \| (n - 1) I \|_2 = 2 R^2 m (n - 1).
+%\]
+%Notice that random matrices $X_{ij}^{(t)}$ are independent, self-adjoint and have mean zero, apply Theorem 6.2 in \citep{tropp2012user} we have
+%\begin{align*}
+%	P \left( \lambda_{\max}(\hat{P}^{(1)} - H^{(1)}) \ge t \right)
+%	& = P \left( \lambda_{\max}\left(\frac{1}{m} \sum_{1 \le t \le m, 1 \le i < j \le n} X_{ij}^{(t)}\right) \ge t \right) \\
+%	& = P \left( \lambda_{\max}\left(\sum_{1 \le t \le m, 1 \le i < j \le n} X_{ij}^{(t)}\right) \ge m t \right) \\
+%	& \le n \exp \left( - \frac{(m t)^2/2}{\sigma^2 + R m t} \right) \\
+%	& \le n \exp \left( - \frac{m t^2/2}{2 R^2 n + R t} \right).
+%\end{align*}
+%
+%Now consider $Y_{ij}^{(t)} \equiv \left( H_{ij}^{(1)} - A_{ij}^{(t)} \right) G_{ij}$, for $1 \le t \le m$ and $1 \le i < j \le n$. Then we have $H^{(1)} - \hat{P}^{(1)} = \frac{1}{m} \sum_{1 \le t \le m, 1 \le i < j \le n} Y_{ij}^{(t)}$.
+%Since
+%\[
+%	E[(H^{(1)} - \hat{P}^{(1)})^k]
+%    = (-1)^k E[(\hat{P}^{(1)} - H^{(1)})^k],
+%\]
+%\begin{enumerate}
+%\item When $k$ is even,
+%\[
+%E[(Y_{ij}^{(t)})^k] = E[(\hat{P}^{(1)} - H^{(1)})^k] G_{ij}^2 \preceq k! R^k G_{ij}^2;
+%\]
+%\item When $k$ is odd,
+%\[
+%E[Y_{ij}^k] = - E[(\hat{P}^{(1)} - H^{(1)})^k] G_{ij} \preceq k! R^k G_{ij}^2.
+%\]
+%\end{enumerate}
+%Thus by similar arguments,
+%\begin{align*}
+%	P \left( \lambda_{\min}(\hat{P}^{(1)} - H^{(1)}) \le -t \right) &
+%    = P \left( \lambda_{\max}(H^{(1)} - \hat{P}^{(1)}) \ge t \right) \\
+%    & \le n \exp \left( - \frac{m t^2/2}{2 R^2 n + R t} \right).
+%\end{align*}
+%Therefore we have
+%\[
+%	P \left( \| \hat{P}^{(1)} - H^{(1)} \|_2 \ge t \right)
+%    \le n \exp \left( - \frac{m t^2/2}{2 R^2 n + R t} \right).
+%\]
+%
+%Now let $c > 0$ be given and assume $n^{-c} \le \eta \le 1/2$. Then there exists a $n_0(c)$ independent of $n$, $P$, $C$ and $\epsilon$ such that whenever $n > n_0(c)$,
+%\[
+%	t =  4 R \sqrt{n \ln(n/\eta)/m} \le 6 R n.
+%\]
+%
+%Plugging this $t$ into the equation above, we get
+%\[
+%	P(\| \hat{P}^{(1)} - H^{(1)} \|_2 \ge 4 R \sqrt{n \ln(n/\eta)/m})
+%    \le n \exp\left(-\frac{t^2}{16 R^2 n}\right) = \eta.
+%\]
+%\end{proof}
+%
+%Define $H^{(1)} = E[\hat{P}^{(1)}] = (1-\epsilon) P + \epsilon C$, where $P = X X^T$, $X \in \mathbb{R}^{n \times d}$, $C = Y Y^T$, $Y \in \mathbb{R}^{n\times d'}$.
+%Let $d^{(1)} = \mathrm{rank}(H^{(1)})$ be the dimension in which we are going to embed $\hat{P}^{(1)}$. Then we can define $H^{(1)} = Z Z^T$ where $Z \in \mathbb{R}^{n \times d^{(1)}}$.
+%Since $H^{(1)} = [\sqrt{1-\epsilon} X, \sqrt{\epsilon} Y] [\sqrt{1-\epsilon} X, \sqrt{\epsilon} Y]^T$, we have $d^{(1)} \le d+d'$.
+%
+%
+%For simplicity, from now on, we will use $\hat{P}$ to represent $\hat{P}^{(1)}$, use $H$ to represent $H^{(1)}$ and use $k$ to represent the dimension $d^{(1)}$ we are going to embed. Assume $H = U S U^T = Z Z^T$, where $Z = [Z_1, \cdots, Z_n]^T$ is a $n$-by-$k$ matrix. Then our estimate for $Z$ up to rotation is $\hat{Z} = \hat{U} \hat{S}^{1/2}$, where $\hat{U} \hat{S} \hat{U}^T$ is the rank-$k$ spectral decomposition of $|\hat{P}| = (\hat{P}^T \hat{P})^{1/2}$.
+%
+%Furthermore, we assume that the second moment matrix $E[Z_1 Z_1^T]$ is rank $k$ and has distinct eigenvalues $\lambda_i(E[Z_1 Z_1^T])$. In particular, we assume that there exists $\delta > 0$ such that
+%\[
+%	\delta < \lambda_k(E[Z_1 Z_1^T])
+%\]
+%
+%\begin{lemma}
+%\label{lemma:eigSShatL1}
+%Under the above assumptions, $\lambda_i(H) = \Theta(n)$ with high probability when $i \le k$, i.e. the largest $k$ eigenvalues of $H$ is of order $n$. Moreover, we have $\| S \|_2 = \Theta(n)$ and $\| \hat{S} \|_2 = \Theta(n)$ with high probability.
+%\end{lemma}
+%\textbf{Remark:} This is an extended version of Proposition 4.3 in \citep{sussman2014consistent}. \\
+%\begin{proof}
+%Note that $\lambda_i(H) = \lambda_i(Z Z^T) = \lambda_i(Z^T Z)$ when $i \le k$. Since each entry of $Z^T Z$ is a sum of $n$ independent random variables each in $[0, R]$, i.e. $(Z^T Z)_{ij} = \sum_{l = 1}^n Z_{li} Z_{lj}$.
+%By Hoeffding's inequality,
+%\[
+%P(|(Z^T Z - n E[Z_1 Z_1^T])_{ij}| \ge t) \le 2 \exp(-\frac{2t^2}{n R^2}).
+%\]
+%Now let $c > 0$ and assume $n^{-c} \le \eta \le 1/2$. Let
+%\[
+%	t =  R \sqrt{n \ln(\sqrt{2/\eta})},
+%\]
+%we have
+%\[
+%P\left(|(Z^T Z - n E[Z_1 Z_1^T])_{ij}| \ge R \sqrt{n \ln(\sqrt{2/\eta})}\right) \le \eta.
+%\]
+%By the union bound, we have
+%\[
+%P\left(\|Z^T Z - n E[Z_1 Z_1^T]\|_F \ge k R \sqrt{n \ln(\sqrt{2/\eta})}\right) \le k^2 \eta.
+%\]
+%
+%Then by Weyl's Theorem \citep{horn2012matrix}, we have
+%\[
+%|\lambda_i(H) - n \lambda_i(E[Z_1 Z_1^T])| \le \|Z^T Z - n E[Z_1 Z_1^T]\|_2 = O(\sqrt{n\log{(1/\eta)}})
+%\]
+%with probability at least $1 - k^2 \eta$.
+%Thus $\lambda_i(H) = S_{ii} = \Theta(n)$ with probability at least $1 - \frac{2 k^2}{n^2}$ when $i \le k$.
+%Moreover,
+%\[
+%\| H \|_2 - \|H - \hat{P}\|_2 \le \|\hat{S}\|_2 \le \|\hat{P} - H\|_2 + \|H\|_2.
+%\]
+%Combined with Theorem \ref{thm:P1Diff}, with high probability we have $\|\hat{S}\|_2 = \Theta(n)$.
+%\end{proof}
+%
+%\begin{lemma}
+%\label{lemma:AlmostOrthogonalL1}
+%Let $W_1 \Sigma W_2^T$ be the singular value decomposition of $U^T \hat{U}$. Then for sufficiently large $n$, 
+%\[
+%	\| U^T \hat{U} - W_1 W_2^T \|_F = O(m^{-1} n^{-1} \log n)
+%\]
+%with high probability.
+%\end{lemma}
+%\begin{proof}
+%Let $\sigma_1, \cdots, \sigma_k$ denote the singular values of $U^T \hat{U}$. Then $\sigma_i = \cos(\theta_i)$ where the $\theta_i$ are the principal angles between the subspaces spanned by $\hat{U}$ and $U$. Furthermore, by the Davis-Kahan $\sin(\Theta)$ theorem \citep{davis1970rotation}, combined with Theorem \ref{thm:P1Diff} and Lemma \ref{lemma:eigSShatL1},
+%\begin{equation}
+%\label{eqn:uhat2u2diffL1}
+%\begin{split}
+%	& \|\hat{U} \hat{U}^T - U U^T\|_2 = \max_i |\sin(\theta_i)| \\
+%    \le & \frac{\|\hat{P} - H\|_2}{\lambda_k(H)}
+%    \le \frac{C \sqrt{n \log n/m}}{n} \\
+%    = & O(m^{-1/2} n^{-1/2} \sqrt{\log n})
+%\end{split}
+%\end{equation}
+%for sufficiently large $n$ with high probability. Here $\lambda_k(H)$ denotes the $k$-th largest eigenvalue of $H$.
+%Thus with high probability, 
+%\begin{align*}
+%	\| U^T \hat{U} - W_1 W_2^T \|_F
+%    & = \| \Sigma - I \|_F
+%    = \sqrt{\sum_{i=1}^k (1-\sigma_i)^2} \\
+%    & \le \sum_{i=1}^k (1-\sigma_i) \le \sum_{i=1}^k (1-\sigma_i^2) \\
+%    & = \sum_{i=1}^k \sin^2(\theta_i)
+%    \le k \|\hat{U} \hat{U}^T - U U^T\|_2^2 \\
+%    & = O(m^{-1} n^{-1} \log n).
+%\end{align*}
+%\end{proof}
+%
+%We will denote the orthogonal matrix $W_1 W_2^T$ by $W^*$.
+%
+%\begin{lemma}
+%\label{lemma:exchangeL1}
+%For sufficiently large $n$,
+%\[
+%	\| W^* \hat{S} - S W^* \|_F = O(m^{-1/2} \log n),
+%\]
+%\[
+%	\|W^* \hat{S}^{1/2} - S^{1/2} W^* \|_F = O(m^{-1/2} n^{-1/2} \log n)
+%\]
+%and
+%\[
+%	\| W^* \hat{S}^{-1/2} - S^{-1/2} W^* \|_F = O(m^{-1/2} n^{-3/2} \log n)
+%\]
+%with high probability.
+%\end{lemma}
+%\begin{proof}
+%By Proposition~2.1 in \citep{rohe2011spectral} and Equation~(\ref{eqn:uhat2u2diffL1}), we have for some orthogonal matrix $W$, 
+%\begin{align*}
+%& \|\hat{U} - U W\|_F^2 \le \frac{2 \|\hat{U} \hat{U}^T - U U^T\|_F^2}{\delta^2}
+%\le \frac{8 k^2 \|\hat{U} \hat{U}^T - U U^T\|_2^2}{\delta^2} \\
+%= & O(m^{-1} n^{-1} \log n),
+%\end{align*}
+%with high probability.
+%Let $Q = \hat{U} - U U^T \hat{U}$. And $Q$ is the residual after projecting $\hat{U}$ orthogonally onto the column space of $U$, we have
+%\begin{equation}
+%\label{eqn:QFnormL1}
+%\| Q \|_F = \| \hat{U} - U U^T \hat{U} \|_F \le \| \hat{U} - U T \|_F = O(m^{-1/2} n^{-1/2} \sqrt{\log n}).
+%\end{equation}
+%for all $k \times k$ matrices $T$ with high probability. 
+%Then
+%\begin{align*}
+%	W^* \hat{S} = & (W^* - U^T \hat{U}) \hat{S} + U^T \hat{U} \hat{S}
+%    = (W^* - U^T \hat{U}) \hat{S} + U^T \hat{P} \hat{U} \\
+%    = & (W^* - U^T \hat{U}) \hat{S} + U^T (\hat{P} - H) \hat{U} + U^T H \hat{U} \\
+%    = & (W^* - U^T \hat{U}) \hat{S} + U^T (\hat{P} - H) Q + U^T (\hat{P} - H) U U^T \hat{U} + U^T H \hat{U} \\
+%    = & (W^* - U^T \hat{U}) \hat{S} + U^T (\hat{P} - H) Q + U^T (\hat{P} - H) U U^T \hat{U} + S U^T \hat{U}.
+%\end{align*}
+%Combined with Theorem~\ref{thm:P1Diff}, Lemma~\ref{lemma:eigSShatL1}, Lemma~\ref{lemma:AlmostOrthogonalL1}, we have
+%\begin{align*}
+%	& \| W^* \hat{S} - S W^* \|_F \\
+%    = & \| (W^* - U^T \hat{U}) \hat{S} + U^T (\hat{P} - H) Q + U^T (\hat{P} - H) U U^T \hat{U} + S (U^T \hat{U} - W^*)\|_F \\
+%    \le & \| W^* - U^T \hat{U} \|_F (\| \hat{S} \|_2 + \| S \|_2) + \| U^T \|_F \| \hat{P} - H\|_2 \| Q \|_F + \| U^T (\hat{P} - H) U \|_F \\
+%    \le & O(m^{-1} \log n) + O(m^{-1/2} \log n) + \| U^T (\hat{P} - H) U \|_F
+%\end{align*}
+%with high probability. And we know $U^T (\hat{P} - H) U$ is a $k \times k$ matrix with $ij$-th entry to be
+%\[
+%	u_i^T (\hat{P} - H) u_j
+%    = \sum_{s=1}^n \sum_{t=1}^n (\hat{P}_{st} - H_{st}) u_{is} u_{jt}
+%    = 2 \sum_{s<t} (\hat{P}_{st} - H_{st}) u_{is} u_{jt}
+%\]
+%where $u_i$ and $u_j$ are the $i$-th and $j$-th columns of $U$. Thus, conditioned on $H$, $U$ is fixed and $u_i^T (\hat{P} - H) u_j$ is a sum of independent mean 0 random variables.
+%
+%
+%By Equation~(\ref{eqn:expectpdiffqpowerkL1}), we have
+%\begin{align*}
+%	& E\left[\left((A^{(t')}_{st} - H_{st}) u_{is} u_{jt}\right)^k\right] \\
+%    \le & k! R^k u_{is}^k u_{jt}^k \\
+%    \le & \frac{k!}{2} R^{k-2} (\sqrt{2} u_{is} u_{jt} R)^2.
+%\end{align*}
+%Also we have
+%\[
+%	\sigma^2 := \left|\sum_{t', s<t} 2 R^2 u_{is}^2 u_{jt}^2\right| \le m R^2,
+%\]
+%then by Theorem~6.2 in \citep{tropp2012user}, we have
+%\[
+%	P \left( \left| 2 \sum_{s<t} (\hat{P}_{st} - H_{st}) u_{is} u_{jt} \right| \ge t \right)
+%    \le \exp \left( \frac{-m t^2/8}{R^2 + R t /2} \right).
+%\]
+%Let $t = c R m^{-1/2} \log n$ for any $c > 0$, we have
+%\[
+%P \left( \left| 2 \sum_{s<t} (\hat{P}_{st} - H_{st}) u_{is} u_{jt} \right| \ge C m^{-1/2} \log n \right)
+%    \le n^{-c}.
+%\]
+%Thus each entry of $U^T(\hat{P} - H)U$ is of order $O(m^{-1/2} \log n)$ with high probability and
+%\begin{equation}
+%\label{eqn:uPhatdiffHuL1}
+%	\|U^T(\hat{P} - H)U\|_F = O(m^{-1/2} \log n)
+%\end{equation}
+%with high probability.
+%Hence
+%\[
+%	\| W^* \hat{S} - S W^* \|_F = O(m^{-1/2} \log n)
+%\]
+%with high probability.
+%Also, since
+%\[
+%	W_{ij}^* (\lambda_j^{1/2}(\hat{P}) - \lambda_i^{1/2}(H)) = W_{ij}^* \frac{\lambda_j(\hat{P}) - \lambda_i(H)}{\lambda_j^{1/2}(\hat{P}) + \lambda_i^{1/2}(H)}
+%\]
+%and the eigenvalues $\lambda_j^{1/2}(\hat{P})$ and $\lambda_i^{1/2}(H)$ are both of order $\Theta(\sqrt{n})$, we have
+%\[
+%	\| W^* \hat{S}^{1/2} - S^{1/2} W^* \|_F = O(m^{-1/2} n^{-1/2} \log n)
+%\]
+%with high probability.
+%Similarly, since
+%\[
+%	W_{ij}^* (\lambda_j^{-1/2}(\hat{P}) - \lambda_i^{-1/2}(H)) = W_{ij}^* \frac{\lambda_i(H) - \lambda_j(\hat{P})}{(\lambda_j^{-1/2}(\hat{P}) + \lambda_i^{-1/2}(H))\lambda_j(\hat{P}) \lambda_i(H)}
+%\]
+%and the eigenvalues $\lambda_j(\hat{P})$ and $\lambda_i(H)$ are both of order $\Theta(n)$, with high probability we have
+%\[
+%	\| W^* \hat{S}^{-1/2} - S^{-1/2} W^* \|_F = O(m^{-1/2} n^{-3/2} \log n).
+%\]
+%\end{proof}
+%
+%\begin{lemma}
+%\label{lemma:XhatDiffXWexpressionL1}
+%There exists a rotation matrix $W$ such that for sufficiently large $n$,
+%\[
+%	\|\hat{Z} - Z W\|_F = \| (\hat{P} - H) U S^{-1/2} \|_F + O(m^{-1/2} n^{-1/2} (\log n)^{3/2})
+%\]
+%with high probability.
+%\end{lemma}
+%\begin{proof}
+%Let $Q_1 = U U^T \hat{U} - U W^*$, $Q_2 = W^* \hat{S}^{1/2} - S^{1/2} W^*$ and $Q_3 = \hat{U} - U W^* = \hat{U} - U U^T \hat{U} + Q_1 = Q + Q_1$. Then since $U U^T H = H$ and $\hat{U} \hat{S}^{1/2} = \hat{P} \hat{U} \hat{S}^{-1/2}$,
+%\begin{align*}
+%	\hat{Z} - U S^{1/2} W^*
+%    = & \hat{U} \hat{S}^{1/2} - U W^* \hat{S}^{1/2} + U(W^* \hat{S}^{1/2} - S^{1/2} W^*) \\
+%    = & (\hat{U} - U U^T \hat{U}) \hat{S}^{1/2} + Q_1 \hat{S}^{1/2} + U Q_2 \\
+%    = & (\hat{P} - H) \hat{U} \hat{S}^{-1/2} - U U^T(\hat{P} - H)\hat{U}\hat{S}^{-1/2} + Q_1 \hat{S}^{1/2} + U Q_2 \\
+%    = & (\hat{P} - H) U W^* \hat{S}^{-1/2} - U U^T(\hat{P} - H)U W^*\hat{S}^{-1/2} \\
+%    & + (I - U U^T)(\hat{P} - H) Q_3 \hat{S}^{-1/2} + Q_1 \hat{S}^{1/2} + U Q_2.
+%\end{align*}
+%By Lemma~\ref{lemma:AlmostOrthogonalL1}, with high probability, 
+%\[
+%	\|Q_1\|_F \le \| U\|_F \| U^T \hat{U} - W^* \|_F = O(m^{-1} n^{-1} \log n).
+%\]
+%By Lemma~\ref{lemma:exchangeL1}, with high probability, 
+%\[
+%	\|Q_2\|_F = O(m^{-1/2} n^{-1/2} \log n).
+%\]
+%By Equation~(\ref{eqn:QFnormL1}), with high probability, 
+%\[
+%	\|Q_3\|_F \le \|Q\|_F + \|Q_1\|_F = O(m^{-1/2} n^{-1/2} (\log n)^{1/2}).
+%\]
+%By Equation~(\ref{eqn:uPhatdiffHuL1}), with high probability, 
+%\[
+%	\| U U^T(\hat{P} - H)U W^*\hat{S}^{-1/2} \|_F
+%    \le \| U^T(\hat{P} - H)U \|_F \| \hat{S}^{-1/2} \|_2
+%    = O(m^{-1} n^{-1/2} \log n).
+%\]
+%By Lemma~\ref{lemma:exchangeL1}, with high probability, 
+%\[
+%	\| W^* \hat{S}^{-1/2} - S^{-1/2} W^* \|_F = O(m^{-1/2} n^{-3/2} \log n).
+%\]
+%Therefore, with high probability, 
+%\begin{align*}
+%	& \| \hat{Z} - U S^{1/2} W^* \|_F \\
+%    = & \| (\hat{P} - H) U W^* \hat{S}^{-1/2} \|_F + O(m^{-1} n^{-1/2} \log n)
+%    + \|I - U U^T \|_2 \| \hat{P} - H \|_2 O(m^{-1/2} n^{-1} (\log n)^{1/2}) \\
+%    & + O(m^{-1} n^{-1/2} \log n) + O(m^{-1/2} n^{-1/2} \log n)\\
+%    = & \| (\hat{P} - H) U W^* \hat{S}^{-1/2} \|_F + O(m^{-1/2} n^{-1/2} \log n) \\
+%    \le & \| (\hat{P} - H) U S^{-1/2} W^* \|_F + \|(\hat{P} - H) U (W^* \hat{S}^{-1/2} - S^{-1/2} W^*) \|_F + O(m^{-1/2} n^{-1/2} \log n) \\
+%    = & \| (\hat{P} - H) U S^{-1/2}\|_F + O(m^{-1} n^{-1} (\log n)^{3/2}) + O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
+%    = & \| (\hat{P} - H) U S^{-1/2}\|_F + O(m^{-1/2} n^{-1/2} (\log n)^{3/2}).
+%\end{align*}
+%Note that $Z = U S^{1/2} W$ for some orthogonal matrix $W$. As $W^*$ is also orthogonal, therefore $Z \tilde{W} = U S^{1/2} W^*$ for some orthogonal $\tilde{W}$, which completes the proof.
+%\end{proof}
+%
+%\begin{theorem}
+%\label{thm:XhatDiffXWL1}
+%There exists a rotation matrix $W$ such that for sufficiently large $n$,
+%\[
+%	\max_i \| \hat{Z}_i - W Z_i \|_2 = O(m^{-1/2} n^{-1/2} (\log n)^{3/2})
+%\]
+%with high probability.
+%\end{theorem}
+%\begin{proof}
+%By Lemma~\ref{lemma:XhatDiffXWexpressionL1}, we have
+%\[
+%	\|\hat{Z} - Z W\|_F = \| (\hat{P} - H) U S^{-1/2} \|_F + O(m^{-1/2} n^{-1/2} (\log n)^{3/2})
+%\]
+% with high probability and similarly we could have the bound for each column vector with high probability that
+%\begin{align*}
+%	\max_i \| \hat{Z}_i - W Z_i \|_2
+%    \le & \frac{1}{\lambda_k^{1/2}(H)} \max_i \| ((\hat{P} - H) U)_i \|_2 + O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
+%    \le & \frac{k^{1/2}}{\lambda_k^{1/2}(H)} \max_j \| (\hat{P} - H) u_j \|_{\infty} + O(m^{-1/2} n^{-1/2} (\log n)^{3/2})
+%\end{align*}
+%where $((\hat{P} - H) U)_i$ represents the $i$-th row of $(\hat{P} - H) U$ and $u_j$ denotes the $j$-th column of $U$. Now given $i$ and $j$, the $i$-th element of the vector $(\hat{P} - H) u_j$ is of the form
+%\[
+%	\sum_{s=1}^n (\hat{P}_{is} - H_{is}) u_{js} = \sum_{s \ne i} (\hat{P}_{is} - H_{is}) u_{js}.
+%\]
+%Thus, conditioned on $H$, the $i$-th element of the vector $(\hat{P} - H) u_j$ is a sum of independent mean 0 random variables.
+%By Equation~(\ref{eqn:expectpdiffqpowerkL1}), we have
+%\begin{align*}
+%	& E\left[\left((A^{(t)}_{is} - H_{is}) u_{js}\right)^k\right] \\ 
+%    \le & k! R^k u_{js}^k \\
+%    \le & \frac{k!}{2} R^{k-2} (\sqrt{2} R u_{js})^2.
+%\end{align*}
+%Also we have
+%\[
+%	\sigma^2 := |\sum_{t, s \ne i} 2 R^2 u_{js}^2| \le 2 R^2 m,
+%\]
+%then by Theorem~6.2 in \citep{tropp2012user}, we have
+%\[
+%	P \left( \left| \sum_{s \ne i} (\hat{P}_{is} - H_{is}) u_{js} \right| \ge t \right)
+%    \le \exp \left( \frac{-m t^2/2}{2 R^2 + R t} \right).
+%\]
+%Let $t = 3 c R m^{-1/2} \log n$, we have
+%\[
+%	P \left( \left| \sum_{s \ne i} (\hat{P}_{is} - H_{is}) u_{js} \right| \ge 3 c R m^{-1/2} \log n \right)
+%    \le n^{-c},
+%\]
+%i.e. it is of order $O(m^{-1/2} \log n)$ with high probability.
+%Taking the union bound over all $i$ and $j$, with high probability we have,
+%\begin{align*}
+%	\max_i \| \hat{Z}_i - W Z_i \|_2
+%    & \le \frac{C k^{1/2}}{\lambda_k^{1/2}(H)} m^{-1/2} (\log n)^{3/2} + O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
+%    & = O(m^{-1/2} n^{-1/2} (\log n)^{3/2}).
+%\end{align*}
+%\end{proof}
+%
+%\begin{lemma}
+%\label{lemma:1stMomentPhatDiffL1}
+%$\left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right| = O(m^{-1/2} n^{-1/2} (\log n)^{3/2})$ with high probability.
+%\end{lemma}
+%\begin{proof}
+%Let $W$ be the rotation matrix in Theorem~\ref{thm:XhatDiffXWL1}, then
+%\begin{align*}
+%	\left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right|
+%    = & \left| \hat{Z}_i^T \hat{Z}_j - \hat{Z}_i^T W Z_j + \hat{Z}_i^T W Z_j - (W Z_i)^T W Z_j \right| \\
+%    \le & \left| \hat{Z}_i^T (\hat{Z}_j - W Z_j) + (\hat{Z}_i^T - (W Z_i)^T) W Z_j \right| \\
+%    \le & \|\hat{Z}_i\|_2 \|\hat{Z}_j - W Z_j\|_2 + \|Z_j\|_2 \|\hat{Z}_i^T - (W Z_i)^T\|_2.
+%\end{align*}
+%Since $\|Z_i\|_2^2 = Z_i^T Z_i = H^{(1)}_{ii} =  E[\hat{P}^{(1)}_{ii}] = (1-\epsilon) P_{ij} + \epsilon C_{ij} \le R$, we have $\|Z_i\|_2 = O(1)$.
+%Combined with Theorem~\ref{thm:XhatDiffXWL1},
+%\begin{align*}
+%    \left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right|
+%    = & (\|\hat{Z}_i\|_2 + \|Z_j\|_2) O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
+%    \le & (\|\hat{Z}_i - W Z_i\|_2 + \|W Z_i\|_2 + \|Z_j\|_2) O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
+%    = & O(m^{-1/2} n^{-1/2} (\log n)^{3/2})
+%\end{align*}
+%with high probability.
+%\end{proof}
+%
+%\begin{definition}
+%Define $\widetilde{P}_{ij}^{(1)} = (\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}$, our estimator for $P_{ij}$, to be a projection of $\hat{Z}_i^T \hat{Z}_j$ onto $[0, \min(\hat{P}_{ij}^{(1)}, R)]$.
+%\end{definition}
+%
+%\begin{remark}
+%The truncation step above to construct estimator is only for technical reasons. Since the constant $R$ could be arbitrarily large, we do not need this truncation step in practice. And all our simulation and real data experiment do not contain this truncation procedure. Details are discussed in Remark~\ref{remark:var1}.
+%\end{remark}
+%
+%\begin{lemma}[Theorem~\ref{thm:MLEvsMLEASE} Part 1]
+%\label{lm:L1Consistentproof}
+%Assuming that $m = O(n^b)$ for any $b > 0$, then the estimator based on ASE of MLE has the same entry-wise asymptotic bias as MLE, i.e.
+%\[
+%	\lim_{n \to \infty} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)}) = \lim_{n \to \infty} E[\widetilde{P}_{ij}^{(1)}] - P_{ij} = \lim_{n \to \infty} E[\hat{P}^{(1)}_{ij}] - P_{ij}
+%    = \lim_{n \to \infty} \mathrm{Bias}(\hat{P}_{ij}^{(1)}).
+%\]
+%\end{lemma}
+%\begin{proof}
+%Fix some $a > 0$, we have
+%\begin{align*}
+%	& E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j|] \\
+%	= & E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} \le a\}]
+%	+ E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} > a\}]
+%\end{align*}
+%For the first term, we have
+%\begin{align*}
+%	& E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
+%	\le & E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ holds}\}] \\
+%	& + E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}\}] \\
+%	\le & E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ holds}] \\
+%	& + n^{-c} E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
+%	\le & O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) \\
+%	& + n^{-c} E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}_{ij}| \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
+%	& + n^{-c} E[|\hat{P}_{ij} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
+%	\le & O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) + n^{-c} E[\hat{P}_{ij} \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
+%	& + n^{-c} E[(\hat{P}_{ij} + R) \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
+%	\le & O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) + a n^{-c} + (a+R) n^{-c} \\
+%	\le & O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) + 2 n^{-c} (a + R).
+%\end{align*}
+%Notice that
+%\begin{align*}
+%	& E[\hat{P}_{ij} \mathbb{I} \{ \hat{P}_{ij} > a \}]
+%	= E[\left(\frac{1}{m} \sum_{1 \le t \le m} A_{ij}^{(t)}\right) \mathbb{I} \{ \hat{P}_{ij} > a \}] \\
+%	= & \frac{1}{m} E[\sum_{1 \le t \le m} A_{ij}^{(t)} \mathbb{I} \{ \hat{P}_{ij} > a \}]
+%	\le \frac{1}{m} E[\sum_{1 \le t \le m} A_{ij}^{(t)} \mathbb{I} \{ \max_{1 \le s \le m} A_{ij}^{(s)} > a \}] \\
+%	\le & \frac{1}{m} E[\sum_{1 \le t \le m} A_{ij}^{(t)} \left(\sum_{1 \le s \le m}\mathbb{I} \{ A_{ij}^{(s)} > a \}\right)]
+%	= E[A_{ij}^{(1)} \left(\sum_{1 \le s \le m}\mathbb{I} \{ A_{ij}^{(s)} > a \}\right)] \\
+%	= & E[A_{ij}^{(1)} \mathbb{I} \{ A_{ij}^{(1)} > a \})] + (m-1) E[A_{ij}^{(1)} \mathbb{I} \{ A_{ij}^{(2)} > a \})] \\
+%	= & E[A_{ij}^{(1)} \mathbb{I} \{ A_{ij}^{(1)} > a \})] + (m-1) E[A_{ij}^{(1)}] P(A_{ij}^{(1)} > a),
+%\end{align*}
+%and similarly
+%\begin{align*}
+%	& E[(\hat{P}_{ij} + R) \mathbb{I} \{ \hat{P}_{ij} > a \}] \\
+%	= & E[\hat{P}_{ij} \mathbb{I} \{ \hat{P}_{ij} > a \}] + R \cdot P(\hat{P}_{ij} > a) \\
+%	\le & E[A_{ij}^{(1)} \mathbb{I} \{ A_{ij}^{(1)} > a \})] + (m-1) E[A_{ij}^{(1)}] P(A_{ij}^{(1)} > a)
+%	+ R \cdot m \cdot P(A_{ij}^{(1)} > a).
+%\end{align*}
+%Thus for the second term,
+%\begin{align*}
+%	& E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} > a\}] \\
+%	\le & E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}_{ij}| \mathbb{I}\{\hat{P}_{ij} > a\}] + E[|\hat{P}_{ij} - Z_i^T Z_j| \mathbb{I}\{\hat{P}_{ij} > a\}] \\
+%	\le & E[\hat{P}_{ij} \mathbb{I}\{\hat{P}_{ij} > a\}] + E[(\hat{P}_{ij} + R) \mathbb{I}\{\hat{P}_{ij} > a\}] \\
+%	\le & 2 E[A_{ij}^{(1)} \mathbb{I} \{ A_{ij}^{(1)} > a \})] + 2(m-1) E[A_{ij}^{(1)}] P(A_{ij}^{(1)} > a) \\
+%	& + R \cdot m \cdot P(A_{ij}^{(1)} > a) \\
+%	\le & 2 e^{-a/R} (a + 2 m R).
+%\end{align*}
+%Thus
+%\begin{align*}
+%	& E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j|] \\
+%	\le & O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) + 2 n^{-c} (a + R) + 2 e^{-a/R} (a + 2 m R).
+%\end{align*}
+%Let $a = m^{-1} n^{2b}$ for any $b > 0$, and $c = 2b + 3$, combined with the assumption $m = O(n^{b})$, we have
+%\begin{align*}
+%	& E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j|] \\
+%	= & O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(e^{-m^{-1} n^{2b}}) \\
+%	= & O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(e^{- n^{b}}) \\
+%	= & O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(n^{-2b-3}) \\
+%	= & O(m^{-1/2} n^{-1/2} (\log n)^{3/2}) + O(m^{-1} n^{-3}) \\
+%	= & O(m^{-1/2} n^{-1/2} (\log n)^{3/2}).
+%\end{align*}
+%\end{proof}
+%
+%\begin{theorem}
+%\label{thm:VarASEL1proof}
+%Assuming that $m = O(n^b)$ for any $b > 0$, then $\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) = O(m^{-1} n^{-1} (\log n)^3)$.
+%\end{theorem}
+%\begin{proof}
+%By Lemma~\ref{lemma:1stMomentPhatDiffL1},
+%\begin{align*}
+%	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}})
+%    = & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - E[(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}])^2] \\
+%    = & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j + Z_i^T Z_j - E[(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}])^2] \\
+%    = & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2] + E[(Z_i^T Z_j - E[(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}])^2] \\ 
+%    & + 2E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)(Z_i^T Z_j - E[(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}])] \\
+%    \le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2] + E[(Z_i^T Z_j - E[(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}])^2] \\ 
+%    & + 2\sqrt{E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2] E[(Z_i^T Z_j - E[(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}])^2]} \\
+%    \le & 4 E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2].
+%\end{align*}
+%Fix some $a > 0$, we have
+%\begin{align*}
+%	& E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2] \\
+%	= & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}]
+%	+ E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} > a\}].
+%\end{align*}
+%For the first term, we have
+%\begin{align*}
+%	& E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}] \\
+%	\le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ holds}\}] \\
+%	& + E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}\}] \\
+%	\le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ holds}] \\
+%	& + n^{-c} E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
+%	\le & O(m^{-1} n^{-1} (\log n)^3) \\
+%	& + 2 n^{-c} E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}_{ij})^2 \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
+%	& + 2 n^{-c} E[(\hat{P}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
+%	\le & O(m^{-1} n^{-1} (\log n)^3) + 2 n^{-c} E[\hat{P}_{ij}^2 \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
+%	& + 2 n^{-c} E[(\hat{P}_{ij} + R)^2 \mathbb{I}\{\hat{P}_{ij} \le a\}| \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffL1} \mathrm{\ does\ not\ hold}] \\
+%	\le & O(m^{-1} n^{-1} (\log n)^3) + 2 a^2 n^{-c} + 2 (a+R)^2 n^{-c} \\
+%	\le & O(m^{-1} n^{-1} (\log n)^3) + 4 n^{-c} (a + R)^2.
+%\end{align*}
+%Notice that
+%\begin{align*}
+%	& E[\hat{P}_{ij}^2 \mathbb{I} \{ \hat{P}_{ij} > a \}]
+%	= E[(\frac{1}{m} \sum_{1 \le t \le m} A_{ij}^{(t)})^2 \mathbb{I} \{ \hat{P}_{ij} > a \}] \\
+%	\le & \frac{1}{m} E[\sum_{1 \le t \le m} A_{ij}^{(t)2} \mathbb{I} \{ \hat{P}_{ij} > a \}]
+%	\le \frac{1}{m} E[\sum_{1 \le t \le m} A_{ij}^{(t)2} \mathbb{I} \{ \max_{1 \le s \le m} A_{ij}^{(s)} > a \}] \\
+%	\le & \frac{1}{m} E[\sum_{1 \le t \le m} A_{ij}^{(t)2} (\sum_{1 \le s \le m}\mathbb{I} \{ A_{ij}^{(s)} > a \})]
+%	= E[A_{ij}^{(1)2} (\sum_{1 \le s \le m}\mathbb{I} \{ A_{ij}^{(s)} > a \})] \\
+%	= & E[A_{ij}^{(1)2} \mathbb{I} \{ A_{ij}^{(1)} > a \})] + (m-1) E[A_{ij}^{(1)2} \mathbb{I} \{ A_{ij}^{(2)} > a \})] \\
+%	= & E[A_{ij}^{(1)2} \mathbb{I} \{ A_{ij}^{(1)} > a \})] + (m-1) E[A_{ij}^{(1)2}] P(A_{ij}^{(1)} > a),
+%\end{align*}
+%and similarly
+%\begin{align*}
+%	& E[(\hat{P}_{ij} + R)^2 \mathbb{I} \{ \hat{P}_{ij} > a \}] \\
+%	= & E[\hat{P}_{ij}^2 \mathbb{I} \{ \hat{P}_{ij} > a \}] + 2R \cdot E[\hat{P}_{ij} \mathbb{I} \{ \hat{P}_{ij} > a \}] + R^2 P(\hat{P}_{ij} > a) \\
+%	\le & E[A_{ij}^{(1)2} \mathbb{I} \{ A_{ij}^{(1)} > a \})] + (m-1) E[A_{ij}^{(1)2}] P(A_{ij}^{(1)} > a) \\
+%	& + 2R \left( E[A_{ij}^{(1)} \mathbb{I} \{ A_{ij}^{(1)} > a \})] + (m-1) E[A_{ij}^{(1)}] P(A_{ij}^{(1)} > a) \right) \\
+%	& + R^2 \cdot m \cdot P(A_{ij}^{(1)} > a).
+%\end{align*}
+%Thus for the second term,
+%\begin{align*}
+%	& E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} > a\}] \\
+%	\le & 2 E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}_{ij})^2 \mathbb{I}\{\hat{P}_{ij} > a\}] + 2 E[(\hat{P}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}_{ij} > a\}] \\
+%	\le & 2 E[\hat{P}_{ij}^2 \mathbb{I}\{\hat{P}_{ij} > a\}] + 2 E[(\hat{P}_{ij} + R)^2 \mathbb{I}\{\hat{P}_{ij} > a\}] \\
+%	\le & 4 E[A_{ij}^{(1)2} \mathbb{I} \{ A_{ij}^{(1)} > a \})] + 4(m-1) E[A_{ij}^{(1)2}] P(A_{ij}^{(1)} > a) \\
+%	& + 4R \cdot E[A_{ij}^{(1)} \mathbb{I} \{ A_{ij}^{(1)} > a \})] + 2R(m-1) E[A_{ij}^{(1)}] P(A_{ij}^{(1)} > a) \\
+%	& + 2R^2 \cdot m \cdot P(A_{ij}^{(1)} > a) \\
+%	\le & 4 e^{-a/R} \left( a^2 + 3R a + 3(m+1)R^2 \right) \\
+%	\le & 4 e^{-a/R} (a + 2 m^{1/2} R)^2.
+%\end{align*}
+%
+%Thus,
+%\[
+%	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) \le
+%	O(m^{-1} n^{-1} (\log n)^3) + 16 (a+R)^2 n^{-c} + 16 (a+2 m^{1/2} R)^2 e^{-a/R}.
+%\]
+%Let $a = m^{-1/2} n^{b}$ for any $b > 0$, and $c = 2b + 3$, combined with the assumption $m = O(n^{b})$, we have
+%\begin{align*}
+%	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}})
+%	= & O(m^{-1} n^{-1} (\log n)^3) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(e^{-m^{-1/2} n^{b}}) \\
+%	= & O(m^{-1} n^{-1} (\log n)^3) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(e^{- n^{b/2}}) \\
+%	= & O(m^{-1} n^{-1} (\log n)^3) + O(m^{-1} n^{-3}) + O(m^{-1} n^{2b}) \cdot O(n^{-2b-3}) \\
+%	= & O(m^{-1} n^{-1} (\log n)^3) + O(m^{-1} n^{-3}) \\
+%	= & O(m^{-1} n^{-1} (\log n)^3).
+%\end{align*}
+%\end{proof}
+%
+%\begin{theorem}[Theorem~\ref{thm:MLEvsMLEASE} Part 2]
+%\label{thm:AREL1proof}
+%Assuming that $m = O(n^b)$ for any $b > 0$,  then for $1 \le i, j \le n$ and $i \ne j$,
+%\[
+%	\frac{\mathrm{Var}(\widetilde{P}_{ij}^{(1)})}{\mathrm{Var}(\hat{P}_{ij}^{(1)})}
+%    = O(n^{-1} (\log n)^3).
+%\]
+%And thus
+%\[
+%	\mathrm{ARE}(\hat{P}_{ij}^{(1)}, \widetilde{P}_{ij}^{(1)}) = 0.
+%\]
+%\end{theorem}
+%\begin{proof}
+%The results are direct from Theorem~\ref{thm:VarASEL1proof} and Theorem~\ref{thm:MLEvsMLqE}.
+%\end{proof}
+%
+%
+%
+%\begin{theorem}
+%\label{thm:PqDiff}
+%Let $P$ and $C$ be two $n$-by-$n$ symmetric and hollow matrices satisfying element-wise conditions $0 < P_{ij} \le C_{ij} \le R$ for some constant $R > 0$. For $0 < \epsilon < 1$, we define $m$ symmetric and hollow matrices as
+%\[
+%	A^{(t)} \stackrel{iid}{\sim} (1-\epsilon) \mathrm{Exp}(P) + \epsilon \mathrm{Exp}(C)
+%\]
+%for $1 \le t \le m$.
+%Let $\hat{P}^{(q)}$ be the entry-wise ML$q$E based on exponential distribution with $m$ observations.
+%Define $H^{(q)} = E[\hat{P}^{(q)}]$,
+%then for any constant $c > 0$ there exists another constant $n_0(c)$, independent of $n$, $P$, $C$ and $\epsilon$, such that if $n > n_0$, then for all $\eta$ satisfying $n^{-c} \le \eta \le 1/2$,
+%\[
+%	P \left( \| \hat{P}^{(q)} - H^{(q)} \|_2 \le 8 R \sqrt{2 n \ln(n/\eta)}) \right) \ge 1 - \eta.
+%\]
+%\end{theorem}
+%\begin{proof}
+%Similar to the proof of Theorem \ref{thm:P1Diff}.
+%
+%By Lemma \ref{lemma:LqlMLE} we have
+%\begin{align*}
+%	\left| \hat{P}^{(q)}_{ij} - H^{(q)}_{ij} \right|
+%    = & \left| \hat{P}^{(q)}_{ij} - \hat{P}^{(1)}_{ij} + \hat{P}^{(1)}_{ij} - H^{(1)}_{ij} + H^{(1)}_{ij} - H^{(q)}_{ij} \right| \\
+%    \le & \left| \hat{P}^{(q)}_{ij} - \hat{P}^{(1)}_{ij} \right| + \left| \hat{P}^{(1)}_{ij} - H^{(1)}_{ij} \right| + \left| H^{(1)}_{ij} - H^{(q)}_{ij} \right| \\
+%    \le & \hat{P}^{(1)}_{ij} + \left| \hat{P}^{(1)}_{ij} - H^{(1)}_{ij} \right| +  H^{(1)}_{ij} \\
+%    \le & 2 \left( \left| \hat{P}^{(1)}_{ij} - H^{(1)}_{ij} \right| + H^{(1)}_{ij} \right).
+%\end{align*}
+%Also,
+%\begin{align*}
+%	E[(\hat{P}^{(q)}_{ij} - H^{(q)}_{ij})^k]
+%    \le & E\left[\left|\hat{P}^{(q)}_{ij} - H^{(q)}_{ij}\right|^k\right] \\
+%    \le & 2^k E \left[ \left( \left| \hat{P}^{(1)}_{ij} - H^{(1)}_{ij} \right| + H^{(1)}_{ij} \right)^k \right] \\
+%    \le & 2^k \sum_{s = 0}^k \binom{k}{s} E \left[ \left| \hat{P}^{(1)}_{ij} - H^{(1)}_{ij} \right|^s \right] \left( H^{(1)}_{ij} \right)^{k-s} \\
+%    \le & 2^k \sum_{s = 0}^k \binom{k}{s} R^s s! \left( H^{(1)}_{ij} \right)^{k-s} \\
+%    \le & 2^k k! \sum_{s = 0}^k \binom{k}{s} R^s \left( H^{(1)}_{ij} \right)^{k-s} \\
+%    = & 2^k k! \left( R + H^{(1)}_{ij} \right)^k \\
+%    \le & 2^{2k} k! R^k.
+%    \stepcounter{equation}\tag{\theequation}\label{eqn:expectpdiffqpowerk}
+%\end{align*}
+%Therefore we have
+%\[
+%	P \left( \| \hat{P}^{(q)} - H^{(q)} \| \ge t \right)
+%    \le n \exp \left( - \frac{t^2/2}{32 R^2 n + R t} \right).
+%\]
+%
+%Now let $c > 0$ be given and assume $n^{-c} \le \eta \le 1/2$. Then there exists a $n_0(c)$ independent of $n$, $P$, $C$ and $\epsilon$ such that whenever $n > n_0(c)$,
+%\[
+%	t = 8 R \sqrt{2 n \ln(n/\eta)} \le 32 R n.
+%\]
+%
+%Plugging this $t$ into the equation above, we get
+%\[
+%	P(\| \hat{P}^{(q)} - H^{(q)} \| \ge 8 R \sqrt{2 n \ln(n/\eta)})
+%    \le n \exp\left(-\frac{t^2}{64 R^2 n}\right) = \eta.
+%\]
+%\end{proof}
+%
+%As we define $H^{(q)} = E[\hat{P}^{(q)}]$, let $d^{(q)} = \mathrm{rank}(H^{(q)})$ be the dimension in which we are going to embed $\hat{P}^{(q)}$. Notice that it is less than or equal to $K\times K'$ based on the SBM assumption. Then we can define $H^{(q)} = Z Z^T$ where $Z \in \mathbb{R}^{n \times d^{(q)}}$.
+%
+%For simplicity, from now on, we will use $\hat{P}$ to represent $\hat{P}^{(q)}$, use $H$ to represent $H^{(q)}$ and use $k$ to represent the dimension $d^{(q)}$ we are going to embed. Assume $H = U S U^T = Z Z^T$, where $Z = [Z_1, \cdots, Z_n]^T$ is a $n$-by-$k$ matrix. Then our estimate for $Z$ up to rotation is $\hat{Z} = \hat{U} \hat{S}^{1/2}$, where $\hat{U} \hat{S} \hat{U}^T$ is the rank-$d$ spectral decomposition of $|\hat{P}| = (\hat{P}^T \hat{P})^{1/2}$.
+%
+%Furthermore, we assume that the second moment matrix $E[Z_1 Z_1^T]$ is rank $k$ and has distinct eigenvalues $\lambda_i(E[Z_1 Z_1^T])$. In particular, we assume that there exists $\delta > 0$ such that
+%\[
+%	\delta < \lambda_k(E[Z_1 Z_1^T])
+%\]
+%
+%\begin{lemma}
+%\label{lemma:eigSShat}
+%Under the above assumptions, $\lambda_i(H) = \Theta(n)$ with high probability when $i \le k$, i.e. the largest $k$ eigenvalues of $H$ is of order $n$. Moreover, we have $\| S \|_2 = \Theta(n)$ and $\| \hat{S} \|_2 = \Theta(n)$ with high probability.
+%\end{lemma}
+%\begin{proof}
+%Exactly the same as proof for Lemma \ref{lemma:eigSShatL1}.
+%\end{proof}
+%
+%\begin{lemma}
+%\label{lemma:AlmostOrthogonal}
+%Let $W_1 \Sigma W_2^T$ be the singular value decomposition of $U^T \hat{U}$. Then for sufficiently large $n$, 
+%\[
+%	\| U^T \hat{U} - W_1 W_2^T \|_F = O(n^{-1} \log n)
+%\]
+%with high probability.
+%\end{lemma}
+%\begin{proof}
+%Exactly the same as proof for Lemma \ref{lemma:AlmostOrthogonalL1}.
+%\end{proof}
+%
+%We will denote the orthogonal matrix $W_1 W_2^T$ by $W^*$.
+%\begin{lemma}
+%\label{lemma:exchange}
+%For sufficiently large $n$,
+%\[
+%	\| W^* \hat{S} - S W^* \|_F = O(\log n),
+%\]
+%\[
+%	\|W^* \hat{S}^{1/2} - S^{1/2} W^* \|_F = O(n^{-1/2} \log n)
+%\]
+%and
+%\[
+%	\| W^* \hat{S}^{-1/2} - S^{-1/2} W^* \|_F = O(n^{-3/2} \log n)
+%\]
+%with high probability.
+%\end{lemma}
+%\begin{proof}
+%Similar to the proof of Lemma \ref{lemma:exchangeL1}.
+%\end{proof}
+%
+%\begin{lemma}
+%\label{lemma:XhatDiffXWexpression}
+%There exists a rotation matrix $W$ such that for sufficiently large $n$,
+%\[
+%	\|\hat{Z} - Z W\|_F = \| (\hat{P} - H) U S^{-1/2} \|_F + O(n^{-1/2} (\log n)^{3/2})
+%\]
+%with high probability.
+%\end{lemma}
+%\begin{proof}
+%Exactly the same as proof for Lemma \ref{lemma:XhatDiffXWexpressionL1}.
+%\end{proof}
+%
+%\begin{theorem}
+%\label{thm:XhatDiffXW}
+%There exists a rotation matrix $W$ such that for sufficiently large $n$,
+%\[
+%	\max_i \| \hat{Z}_i - W Z_i \|_2 = O(n^{-1/2} (\log n)^{3/2})
+%\]
+%with high probability.
+%\end{theorem}
+%\begin{proof}
+%Similar to the proof of Theorem \ref{thm:XhatDiffXWL1}.
+%\end{proof}
+%
+%\begin{lemma}
+%\label{lemma:1stMomentPhatDiffLq}
+%$\left|  \hat{Z}_i^T \hat{Z}_j - Z_i^T Z_j \right| = O(n^{-1/2} (\log n)^{3/2})$ with high probability.
+%\end{lemma}
+%\begin{proof}
+%Similar to the proof of Lemma \ref{lemma:1stMomentPhatDiffL1}.
+%\end{proof}
+%
+%\begin{definition}
+%Define $\widetilde{P}_{ij}^{(q)} = (\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}$, our estimator for $P_{ij}$, to be a projection of $\hat{Z}_i^T \hat{Z}_j$ onto $[0, \min(\hat{P}_{ij}^{(q)}, R)]$.
+%\end{definition}
+%
+%\begin{lemma}[Theorem~\ref{thm:MLqEvsMLqEASE} Part 1]
+%\label{lm:LqConsistentproof}
+%Assuming that $m = O(n^b)$ for any $b > 0$, then the estimator based on ASE of ML$q$E has the same entry-wise asymptotic bias as ML$q$E, i.e.
+%\[
+%	\lim_{n \to \infty} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)}) = \lim_{n \to \infty} E[\widetilde{P}_{ij}^{(q)}] - P_{ij} = \lim_{n \to \infty} E[\hat{P}^{(q)}_{ij}] - P_{ij}
+%    = \lim_{n \to \infty} \mathrm{Bias}(\hat{P}_{ij}^{(q)}).
+%\]
+%\end{lemma}
+%\begin{proof}
+%Fix some $a > 0$, we have
+%\begin{align*}
+%	& E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j|] \\
+%	= & E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}]
+%	+ E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}].
+%\end{align*}
+%Note that we are thresholding according to $\hat{P}^{(1)}$ instead of $\hat{P}^{(q)}$. By Lemma \ref{lemma:LqlMLE}, we know $\hat{P}^{(q)} < \hat{P}^{(1)}$ given any data.
+%For the first term, we have
+%\begin{align*}
+%	& E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
+%	\le & E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ holds}\}] \\
+%	& + E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}\}] \\
+%	\le & E[(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} |\{\mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ holds}] \\
+%	& + n^{-c} E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
+%	\le & O(n^{-1/2} (\log n)^{3/2}) \\
+%	& + n^{-c} E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}^{(q)}_{ij}| \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
+%	& + n^{-c} E[|\hat{P}^{(q)}_{ij} - Z_i^T Z_j| \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
+%	\le & O(n^{-1/2} (\log n)^{3/2}) \\
+%	& + n^{-c} E[\hat{P}^{(q)}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
+%	& + n^{-c} E[(\hat{P}^{(q)}_{ij} + R) \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
+%	\le & O(n^{-1/2} (\log n)^{3/2}) \\
+%	& + n^{-c} E[\hat{P}^{(1)}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
+%	& + n^{-c} E[(\hat{P}^{(1)}_{ij} + R) \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
+%	\le & O(n^{-1/2} (\log n)^{3/2}) + a n^{-c} + (a+R) n^{-c} \\
+%	\le & O(n^{-1/2} (\log n)^{3/2}) + 2 n^{-c} (a + R).
+%\end{align*}
+%For the second term, we have
+%\begin{align*}
+%	& E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j| \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] \\
+%	\le & E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}^{(q)}_{ij}| \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] + E[|\hat{P}^{(q)}_{ij} - Z_i^T Z_j| \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] \\
+%	\le & E[\hat{P}^{(q)}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] + E[(\hat{P}^{(q)}_{ij} + R) \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] \\
+%	\le & E[\hat{P}^{(1)}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] + E[(\hat{P}^{(1)}_{ij} + R) \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] \\
+%	\le & 2 e^{-a/R} (a + 2 m R).
+%\end{align*}
+%Similarly, assuming $m = O(n^b)$ for any $b > 0$, we have
+%\[
+%E[|(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j|] = O(n^{-1/2} (\log n)^{3/2}).
+%\]
+%\end{proof}
+%
+%\begin{theorem}
+%\label{thm:VarASELqproof}
+%Assuming that $m = O(n^b)$ for any $b > 0$, then $\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}) = O(n^{-1} (\log n)^3)$.
+%\end{theorem}
+%\begin{proof}
+%By Lemma \ref{lemma:1stMomentPhatDiffLq},
+%\begin{align*}
+%	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}})
+%    = & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - E[(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}])^2] \\
+%    = & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j + Z_i^T Z_j - E[(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}])^2] \\
+%    = & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2] + E[(Z_i^T Z_j - E[(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}])^2] \\ 
+%    & + 2E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)(Z_i^T Z_j - E[(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}])] \\
+%    \le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2] + E[(Z_i^T Z_j - E[(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}])^2] \\ 
+%    & + 2\sqrt{E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2] E[(Z_i^T Z_j - E[(\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}}])^2]} \\
+%    \le & 4 E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2].
+%\end{align*}
+%Fix some $a > 0$, we have
+%\begin{align*}
+%	& E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2] \\
+%	= & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}]
+%	+ E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}].
+%\end{align*}
+%Note that we are thresholding according to $\hat{P}^{(1)}$ instead of $\hat{P}^{(q)}$. By Lemma \ref{lemma:LqlMLE}, we know $\hat{P}^{(q)} < \hat{P}^{(1)}$ given any data.
+%For the first term, we have
+%\begin{align*}
+%	& E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\}] \\
+%	\le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ holds}\}] \\
+%	& + E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} \mathbb{I}\{\mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}\}] \\
+%	\le & E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} |\{\mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ holds}] \\
+%	& + n^{-c} E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
+%	\le & O(n^{-1} (\log n)^3) \\
+%	& + 2 n^{-c} E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}^{(q)}_{ij})^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
+%	& + 2 n^{-c} E[(\hat{P}^{(q)}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
+%	\le & O(n^{-1} (\log n)^3) \\
+%	& + 2 n^{-c} E[\hat{P}^{(q)2}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
+%	& + 2 n^{-c} E[(\hat{P}^{(q)}_{ij} + R)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
+%	\le & O(n^{-1} (\log n)^3)
+%	+ 2 n^{-c} E[\hat{P}^{(1)2}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
+%	& + 2 n^{-c} E[(\hat{P}^{(1)}_{ij} + R)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} \le a\} | \mathrm{Lemma\ } \ref{lemma:1stMomentPhatDiffLq} \mathrm{\ does\ not\ hold}] \\
+%	\le & O(n^{-1} (\log n)^3) + 2 a^2 n^{-c} + 2 (a+R)^2 n^{-c} \\
+%	\le & O(n^{-1} (\log n)^3) + 4 n^{-c} (a + R)^2.
+%\end{align*}
+%For the second term, we have
+%\begin{align*}
+%	& E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] \\
+%	\le & 2 E[((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}} - \hat{P}^{(q)}_{ij})^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] + 2 E[(\hat{P}^{(q)}_{ij} - Z_i^T Z_j)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] \\
+%	\le & 2 E[\hat{P}^{(q)2}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] + 2 E[(\hat{P}^{(q)}_{ij} + R)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] \\
+%	\le & 2 E[\hat{P}^{(1)2}_{ij} \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] + 2 E[(\hat{P}^{(1)}_{ij} + R)^2 \mathbb{I}\{\hat{P}^{(1)}_{ij} > a\}] \\
+%	\le & 4 e^{-a/R} (a + 2 m^{1/2} R)^2.
+%\end{align*}
+%Similarly, assuming $m = O(n^b)$ for any $b > 0$, we have
+%\[
+%	\mathrm{Var}((\hat{Z}_i^T \hat{Z}_j)_{\mathrm{tr}})
+%	= O(n^{-1} (\log n)^3).
+%\]
+%\end{proof}
+%
+%\begin{theorem}[Theorem~\ref{thm:MLqEvsMLqEASE} Part 2]
+%\label{thm:ARELqproof}
+%Assuming that $m = O(n^b)$ for any $b > 0$,  then for $1 \le i, j \le n$ and $i \ne j$,
+%\[
+%	\frac{\mathrm{Var}(\widetilde{P}_{ij}^{(q)})}{\mathrm{Var}(\hat{P}_{ij}^{(q)})}
+%    = O(m n^{-1} (\log n)^3).
+%\]
+%Moreover, if $m = o(n (\log n)^{-3})$, then
+%\[
+%	\mathrm{ARE}(\hat{P}_{ij}^{(q)}, \widetilde{P}_{ij}^{(q)}) = 0.
+%\]
+%\end{theorem}
+%\begin{proof}
+%The results are direct from Theorem~\ref{thm:VarASELqproof} and Theorem~\ref{thm:MLEvsMLqE}.
+%\end{proof}
+%
+%\begin{theorem}
+%\label{thm:biasL1andLq}
+%For sufficiently large $C$ and any $1 \le i,j \le n$, if $m = O(n^b)$ for any $b > 0$, then
+%\[
+%	\lim_{m, n \to \infty} \mathrm{Bias}(\widetilde{P}_{ij}^{(1)})
+%    > \lim_{m, n \to \infty} \mathrm{Bias}(\widetilde{P}_{ij}^{(q)})
+%\]
+%\end{theorem}
+%\begin{proof}
+%Direct result from Theorem~\ref{thm:MLEvsMLqE}, Theorem~\ref{thm:MLEvsMLEASE} and Theorem~\ref{thm:MLqEvsMLqEASE}.
+%\end{proof}
+%
+%\begin{theorem}
+%\label{thm:varianceL1andLq}
+%For sufficiently large $C$ and any $1 \le i,j \le n$, if $m = O(n (\log n)^{-3})$, then
+%\[
+%	\lim_{m, n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(1)})
+%    = \lim_{m, n \to \infty} \mathrm{Var}(\widetilde{P}_{ij}^{(q)}) = 0.
+%\]
+%\end{theorem}
+%\begin{proof}
+%Direct result from Theorem~\ref{thm:MLEvsMLEASE} and Theorem~\ref{thm:MLqEvsMLqEASE}.
+%\end{proof}
+%
+%
+%
+%
+%
+%\begin{lemma}
+%\label{lm:poisson}
+%Let $A_{ij} \stackrel{ind}{\sim} (1-\epsilon) f_{P_{ij}} + \epsilon f_{C_{ij}}$ with $f$ to be Poisson, then $E[(A_{ij} - E[\hat{P}_{ij}^{(1)}])^k] \le \mathrm{const}^k \cdot k!$, where $\hat{P}^{(1)}$ is the entry-wise MLE as defined before.
+%\end{lemma}
+%\begin{proof}
+%First we prove $(x - \theta)^k \le k! (e^{x-\theta} + e^{\theta - x})$.
+%\begin{enumerate}
+%\item $k$ is even. Then by Taylor expansion, $e^{x - \theta} + e^{\theta - x} \ge \frac{(x-\theta)^k}{k!}$
+%\item $k$ is odd. When $x \ge \theta$, still by Taylor expansion, $(x-\theta)^k \le k! e^{x-\theta}$. When $x < \theta$, $(x-\theta)^k < 0 \le k! e^{x-\theta}$.
+%\end{enumerate}
+%Thus $(x - \theta)^k \le k! (e^{x-\theta} + e^{\theta - x})$.
+%So the $k$-th central moment of Poisson distribution with parameter $\theta$ is bounded by
+%\begin{align*}
+%E[(X-\theta)^k] & \le k! \left( E[e^{X-\theta}] + E[e^{\theta - X}] \right) \\
+%& = k! \left( e^{-\theta} E[e^X] + e^{\theta} E[e^{-X}] \right) \\
+%& = k! \left( e^{\theta(e - 2)} + e^{\theta e^{-1}} \right).
+%\end{align*}
+%Let $X_1 \sim \mathrm{Poisson}(P_{ij})$ and $X_2 \sim \mathrm{Poisson}(C_{ij})$.
+%Then if $A_{ij}$ is distributed from a mixture model as in the statement, we have
+%\begin{align*}
+%& E[(A_{ij} - E[\hat{P}_{ij}^{(1)}])^k] \\
+%= & (1-\epsilon) E[(X_1 - P_{ij} + P_{ij} - E[\hat{P}_{ij}^{(1)}])] +
+%\epsilon E[(X_2 - C_{ij} + C_{ij} - E[\hat{P}_{ij}^{(1)}])] \\
+%= & (1-\epsilon) \sum_{j = 0}^k \binom{k}{j} (P_{ij} - E[\hat{P}_{ij}^{(1)}])^{k - j} E[(X_1 - P_{ij})^j] \\
+%& + \epsilon \sum_{j = 0}^k \binom{k}{j} (C_{ij} - E[\hat{P}_{ij}^{(1)}])^{k - j} E[(X_2 - C_{ij})^j] \\
+%\le & (1-\epsilon) \sum_{j = 0}^k \binom{k}{j} (P_{ij} - E[\hat{P}_{ij}^{(1)}])^{k - j} \cdot j! \cdot \mathrm{const} \\
+%& + \epsilon \sum_{j = 0}^k \binom{k}{j} (C_{ij} - E[\hat{P}_{ij}^{(1)}])^{k - j} \cdot j! \cdot \mathrm{const} \\ 
+%\le & (1-\epsilon) k! \cdot \mathrm{const}^k + \epsilon k! \cdot \mathrm{const}^k \\
+%\le & \mathrm{const}^k \cdot k!.
+%\end{align*}
+%\end{proof}
 
 
 
