@@ -1,23 +1,20 @@
 rm(list = ls())
-setwd("/Users/Runze/Documents/GitHub/RobustASE/Code/R")
+setwd("/Users/Runze/Documents/GitHub/Dissertation/Code/R")
 source("mylibrary.R")
 library(ggplot2)
 library(plyr)
 library(dplyr)
 library(reshape2)
-library(latex2exp)
 
 ###### Parameter Setting ######
 mVec <- c(2, 5, 10)
+# mVec <- c(2, 5)
 q <- 0.9
-
-dataName1 <- "m2g"
-dataName2 <- "ndmg2"
 
 isSVD <- 0
 isWeighted <- 1
 
-dMin <- 0
+dMin <- 6
 dMax <- Inf
 
 if (isSVD) {
@@ -31,10 +28,8 @@ if (isWeighted) {
   strWeighted <- "Unweighted"
 }
 
-
-dataNameVec1 <- c("m2g")
-dataNameVec2 <- c("ndmg2")
-
+dataName1 <- "m2g"
+dataName2 <- "ndmg2"
 for (iM in 1:length(mVec)) {
   m <- mVec[iM]
   fileName = paste0("../../Result/result_brute_", dataName1, "_",
@@ -168,19 +163,34 @@ for (iM in 1:length(mVec)) {
   }
 }
 
+# errorByDimDf <- rbind(
+#   data.frame(mse = errorMLEMean, lci = errorMLELB, uci = errorMLEUB,
+#              which = "ABar", m = mVec, d = 1),
+#   data.frame(mse = errorMLEMean, lci = errorMLELB, uci = errorMLEUB,
+#              which = "ABar", m = mVec, d = n),
+#   data.frame(mse = c(errorMLEASEMean), lci = c(errorMLEASELB), uci = c(errorMLEASEUB),
+#              which = "ABarASE", m = rep(mVec,n), d = rep(1:n, each = length(mVec))),
+#   data.frame(mse = errorMLqEMean, lci = errorMLqELB, uci = errorMLqEUB,
+#              which = "PHat", m = mVec, d = 1),
+#   data.frame(mse = errorMLqEMean, lci = errorMLqELB, uci = errorMLqEUB,
+#              which = "PHat", m = mVec, d = n),
+#   data.frame(mse = c(errorMLqEASEMean), lci = c(errorMLqEASELB), uci = c(errorMLqEASEUB),
+#              which = "PHatASE", m = rep(mVec,n), d = rep(1:n, each = length(mVec)))) %>%
+#   mutate(m=factor(paste0("m=",m), sapply(mVec, function(m) {paste0("m=", m)})))
+
 errorByDimDf <- rbind(
   data.frame(mse = errorMLEMean, lci = errorMLEMean, uci = errorMLEMean,
-             which = "1ABar", m = mVec, d = max(dMin, 1)),
+             which = "ABar", m = mVec, d = max(dMin, 1)),
   data.frame(mse = errorMLEMean, lci = errorMLEMean, uci = errorMLEMean,
-             which = "1ABar", m = mVec, d = min(dMax, n)),
+             which = "ABar", m = mVec, d = min(dMax, n)),
   data.frame(mse = c(errorMLEASEMean), lci = c(errorMLEASEMean), uci = c(errorMLEASEMean),
-             which = "3ABarASE", m = rep(mVec,n), d = rep(1:n, each = length(mVec))),
+             which = "ABarASE", m = rep(mVec,n), d = rep(1:n, each = length(mVec))),
   data.frame(mse = errorMLqEMean, lci = errorMLqEMean, uci = errorMLqEMean,
-             which = "2PHat", m = mVec, d = max(dMin, 1)),
+             which = "PHat", m = mVec, d = max(dMin, 1)),
   data.frame(mse = errorMLqEMean, lci = errorMLqEMean, uci = errorMLqEMean,
-             which = "2PHat", m = mVec, d = min(dMax, n)),
+             which = "PHat", m = mVec, d = min(dMax, n)),
   data.frame(mse = c(errorMLqEASEMean), lci = c(errorMLqEASEMean), uci = c(errorMLqEASEMean),
-             which = "4PHatASE", m = rep(mVec,n), d = rep(1:n, each = length(mVec)))) %>%
+             which = "PHatASE", m = rep(mVec,n), d = rep(1:n, each = length(mVec)))) %>%
   mutate(m=factor(paste0("m=",m), sapply(mVec, function(m) {paste0("m=", m)})))
 
 nv <- ((errorByDimDf$d >= dMin) & (errorByDimDf$d <= dMax))
@@ -188,53 +198,61 @@ errorByDimDf <- errorByDimDf[nv, ]
 
 dimSelectionDf <- rbind(
   data.frame(mse = errorMLEZG, lci = errorMLEZG, uci = errorMLEZG,
-             which = "5ABar ZG 3rd", m = mVec, d = dZGMLEMean),
+             which = "ABar ZG 3rd", m = mVec, d = dZGMLEMean),
+  # data.frame(mse = errorMLEUSVT, lci = errorMLEUSVT, uci = errorMLEUSVT,
+  #            which = "ABar USVT c=0.7", m = mVec, d = dUSVTMLEMean),
   data.frame(mse = errorMLqEZG, lci = errorMLqEZG, uci = errorMLqEZG,
-             which = "6PHat ZG 3rd", m = mVec, d = dZGMLqEMean)) %>%
+             which = "PHat ZG 3rd", m = mVec, d = dZGMLqEMean)) %>%
+  # data.frame(mse = errorMLqEUSVT, lci = errorMLqEUSVT, uci = errorMLqEUSVT,
+  #            which = "PHat USVT c=0.7", m = mVec, d = dUSVTMLqEMean)) %>%
   mutate(m=factor(paste0("m=",m), sapply(mVec, function(m) {paste0("m=", m)})))
 
+
+
+
+# nv <- ((dimSelectionDf$d >= dMin) & (dimSelectionDf$d <= dMax))
+# dimSelectionDf <- dimSelectionDf[nv, ]
+
+# label_y <- with(errorByDimDf, .75*max(mse)+.25*min(mse))
 label_y <- 7e+6
 
 lSize = .8
 legendSize = 1.5
 
-labelVec <- c(expression(widehat(P)^{(1)}),
-              expression(widehat(P)^{(q)}),
-              expression(widetilde(P)^{(1)}),
-              expression(widetilde(P)^{(q)}),
-              expression(widehat(P)^{(1)}~ZG~dimension),
-              expression(widehat(P)^{(q)}~ZG~dimension))
-
 gg <- ggplot(errorByDimDf, aes(x = d, y = mse, linetype = factor(which), shape = factor(which))) +
   facet_wrap(~m) +
-  geom_point(data = dimSelectionDf, size = 2) +
-  scale_linetype_manual(name = "", values = c(1, 2, 3, 6, 0, 0),
-                        labels = labelVec) +
-  scale_shape_manual(name = "", values = c(-1, -1, -1, -1, 0, 1),
-                     labels = labelVec) +
-  # labels = c("MLE", "MLE ZG", "MLE_ASE", "MLqE", "MLqE ZG", "MLqE_ASE")) +
-  # geom_line(alpha = 1, size = lSize) +
-  geom_line() +
+  geom_point(data = dimSelectionDf, size = 3) +
+  # scale_linetype_manual(name = "", values = c(1, 0, 0, 2, 3, 0, 0, 4)) +
+  # scale_shape_manual(name = "", values = c(-1, 0, 1, -1, -1, 0, 2, -1)) +
+  scale_linetype_manual(name = "", values = c(1, 0, 2, 3, 0, 4),
+                        labels = c("MLE", "MLE ZG", "MLE_ASE", "MLqE", "MLqE ZG", "MLqE_ASE")) +
+  scale_shape_manual(name = "", values = c(-1, 0, -1, -1, 1, -1),
+                     labels = c("MLE", "MLE ZG", "MLE_ASE", "MLqE", "MLqE ZG", "MLqE_ASE")) +
+  # scale_linetype_manual(name = "", values = c(1, 2, 3, 4),
+  #                       labels = c("MLE", "MLE_ASE", "MLqE", "MLqE_ASE")) +
+  # scale_shape_manual(name = "", values = c(-1, -1, -1, -1),
+  #                    labels = c("MLE", "MLE_ASE", "MLqE", "MLqE_ASE")) +
+  geom_line(alpha = 1, size = lSize) +
   # scale_y_continuous(limits = c(0, label_y)) + 
   # geom_linerange(aes(ymin = lci, ymax = uci), alpha = .5, size = 1) +
-  xlab("dimension") + ylab("MSE") +
-  # theme(strip.text.x = element_text(size=20,face="bold"))+
-  # theme(axis.text=element_text(size=15),
-  #       axis.title=element_text(size=20,face="bold"))+
+  xlab("dimension")+ylab("MSE")+
+  theme(strip.text.x = element_text(size=20,face="bold"))+
+  theme(axis.text=element_text(size=15),
+        axis.title=element_text(size=20,face="bold"))+
   theme(panel.grid.major = element_line(colour="grey95"),
         panel.grid.minor = element_blank())+
   theme(panel.background = element_rect(fill = 'white', colour = 'grey70'))+
-  # theme(legend.text=element_text(size=20,face="bold"))+
+  theme(legend.text=element_text(size=20,face="bold"))+
   theme(legend.position="bottom")+
-  ggtitle(TeX(sprintf('%s using %s as baseline, $n = %d$, %d graphs', dataName1, dataName2, n, M)))+
-  # ggtitle(paste0(dataName1, ", ", dataName2, ", n=", n, ", ", M, " graphs"))+
+  ggtitle(paste0(dataName1, " using ", dataName2, " as baseline, n=", n, ", ", M, " graphs"))+
   theme(legend.key.size=unit(legendSize,"line"))+
-  # theme(plot.title=element_text(lineheight=.8,size=20,face="bold")) +
-  theme(legend.title=element_blank())
+  theme(plot.title=element_text(lineheight=.8,size=20,face="bold"))
 
-ggsave(paste0("../../Result/CCI_", dataName1, "_", dataName2,
-              "_", strWeighted, "_q_", q, "_", strSVD, ".pdf"),
-       plot=gg+theme(text=element_text(size=15,family="Times")),
-       width=6,height=4)
+ggsave(paste0("../../Figure/CCI.pdf"),
+       plot=gg+theme(text=element_text(size=10,family="Times")),
+       # plot=gg+theme(text=element_text(size=10,family="CM Roman")),
+       width=8,height=6)
 
-gg
+
+
+
