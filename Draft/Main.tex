@@ -120,7 +120,7 @@ In our high dimensional setting (a large number of vertices, $n$), the edge-wise
 %Graphs are high dimensional objects, since $n^2$ parameters are needed to model $n^2$ possible edges, where $n$ denotes the number of vertices. Thus the MLE does not perform very well especially when there are only a few observations available, which is likely the case in real world.
 However, if the graphs can be assumed to be (approximately) low-rank, then by biasing towards low-rank structure, more elaborate estimators can have greatly reduced variance and win the bias-variance tradeoff.
 For our connectome data (Section~\ref{section:real_data} Figure~\ref{fig:screehist})
-we observe this approximate low-rank property. \citet{tang2016law} develops an estimator based on a low-rank approximation and proves that this new estimator outperforms the edge-wise MLE, decreasing the overall asymptotic variance dramatically by smoothing towards the low-rank structure.
+we observe this approximate low-rank property. \citet{tang2016law} develops an estimator based on a low-rank approximation and proves that this new estimator outperforms the edge-wise MLE, decreasing the overall  variance dramatically by smoothing towards the low-rank structure.
 
 The second edge-wise MLE deficiency in our setting derives from the edge observations being subject to contamination. That is, the weights attributed to edges are possibly observed with noise.
 The sample mean is notoriously un-robust to outliers;
@@ -237,7 +237,7 @@ We organize the paper as follows. In Section~\ref{section:model}, we extend the 
 \section{Models}
 \label{section:model}
 
-For this work, we are in the scenario where $m$ weighted graphs on $n$ vertices are given as adjacency matrices $\{ A^{(t)} \} (t = 1, \dotsc, m)$. The graphs are undirected without self-loop, i.e. each $A^{(t)}$ is symmetric with zeros along the diagonal. Moreover, we assume the vertex correspondence is known across different graphs, so that vertex $i$ of the $t_1$-th graph corresponds to vertex $i$ of the $t_2$-th graph for any $i \in [n]$ and $t_1, t_2 \in [m]$.
+For this work, we are in the scenario where $m$ weighted graphs on $n$ vertices are given as adjacency matrices $\{ A^{(t)} \} (t = 1, \dotsc, m)$. The graphs are undirected without self-loops, i.e.\ each $A^{(t)}$ is symmetric with zeros along the diagonal. Moreover, we assume the vertex correspondence is known across different graphs, so that vertex $i$ of the $t_1$-th graph corresponds to vertex $i$ of the $t_2$-th graph for any $i \in [n]$ and $t_1, t_2 \in [m]$.
 
 In this section, we present three nested models, the weighted independent edge model (WIEM) in Section~\ref{section:WIEM}, the weighted random dot product graph model (WRDPG) in Section~\ref{section:WRDPG}, and the weighted stochastic blockmodel (WSBM) as a WRDPG in Section~\ref{section:WSBM}. Moreover, we introduce a contaminated model based on Section~\ref{section:WSBM} in Section~\ref{section:Contamination}.
 
@@ -1044,9 +1044,13 @@ Thus there exists at least one solution to the ML$q$E equation. And since all so
 
 \begin{lemma}
 \label{lemma:PopulationLqExist}
+Recall that the ML$q$E equation under the exponential distribution based on $m$ data points $x_1, \dots, x_m$ is $\sum_{i=1}^m e^{-\frac{(1-q)x_i}{\theta}}(x_i - \theta) = 0$. And the MLE equation under the exponential distribution based on the same data is $\sum_{i=1}^m (x_i - \theta) = 0$.
+Let $m$ data points sample from the contamination model $X, X_1, \cdots, X_m \stackrel{iid}{\sim} (1-\epsilon) \mathrm{Exp}(P) + \epsilon \mathrm{Exp}(C)$.
 Consider an exponential distribution model while the data is actually sampled from the contaminated model $X, X_1, \cdots, X_m \stackrel{iid}{\sim} (1-\epsilon) \mathrm{Exp}(P) + \epsilon \mathrm{Exp}(C)$. Denote such contaminated distribution as $F$.
-Then there exists exactly one real solution $\theta(F)$ of the population version of ML$q$ equation,
-i.e.\ $E_F[e^{-\frac{(1-q)X}{\theta(F)}}(X - \theta(F))] = 0$. Moreover, $\theta(F) < E_F[\bar{X}] = (1-\epsilon) P + \epsilon C$.
+Then there exists exactly one real solution $\theta(F)$ of the population version of ML$q$E equation under the exponential distribution,
+i.e.\ $E_F[e^{-\frac{(1-q)X}{\theta(F)}}(X - \theta(F))] = 0$.
+Moreover, the ML$q$E solution is less than the MLE where the MLE equation is also defined under the exponential distribution, i.e.\
+$\theta(F) < E_F[\bar{X}] = (1-\epsilon) P + \epsilon C$.
 \end{lemma}
 \begin{proof}
 For the MLE, i.e.\ $\bar{X}$, we have $E[\bar{X}] = (1-\epsilon) P + \epsilon C$.
